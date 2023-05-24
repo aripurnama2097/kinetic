@@ -56,19 +56,29 @@ Route::get('/forgot_password', [ForgotController::class, 'index']);
 Route::resource('/dashboard/help', DashboardHelpController::class);
 
 
-// ========================================SCHEDULE===========================
-Route::get('/schedule',[ScheduleController::class, 'index']);
-Route::post('/schedule/upload',[ScheduleController::class, 'importCSV']);
-Route::post('/schedule/uploadSB98',[ScheduleController::class, 'importSB98']);
-Route::get('schedule/email',[EmailController::class, 'index']);
 
-
-// ========================================STD PACK===========================
+// ========================================STD PACK ROUTE===========================
 Route::get('/stdpack',[StdpackController::class, 'index']);
 Route::post('/stdpack/create/',[StdpackController::class, 'create']);
 Route::post('/stdpack/upload-stdpack',[StdpackController::class, 'uploadstdpack']);
 
 Route::get('stdpack/delete', [StdpackController::class,'multiDelete']);
+
+
+
+
+// ========================================MASTER SCHEDULE ROUTING===========================
+Route::get('/schedule',[ScheduleController::class, 'index']);
+Route::post('/schedule/upload',[ScheduleController::class, 'importCSV']);
+Route::post('/schedule/uploadSB98',[ScheduleController::class, 'importSB98']);
+Route::get('/schedule/sumsb98',[ScheduleController::class, 'sumsb98']);
+Route::post('/schedule/uploadsa90',[ScheduleController::class, 'importSA90']);
+Route::get('/schedule/generate',[ScheduleController::class, 'generate']);
+
+Route::post('/schedule/filter',[ScheduleController::class, 'filter']);
+Route::get('schedule/email',[EmailController::class, 'index']); 
+
+
 
 // Route::post('/stdpack/multi-delete', [StdpackController::class, 'multiDelete'])->name('posts.multi-delete');
 

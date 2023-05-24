@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class TblSA90 extends Model
 {
     use HasFactory;
+
+    protected $table ='tblSA90';
+
+    protected $fillable =['model','prodNo', 'partnumber', 'qty'];
 }

@@ -28,251 +28,170 @@
                 <a href="#" class="btn btn-light btn-sm " data-bs-toggle="modal" data-bs-target="#modal-sa90"><i class="ti ti-arrow-big-down-filled"></i>
                   Upload SA90
                 </a>
-            
-                 
               </span>
-              <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
+                {{-- <br> --}}
+                <button id="confirm-sb98" class="btn btn-secondary d-none d-sm-inline-block btn-sm  float-right" >
+                  <i class="ti ti-merge"></i>
+                  Summary SB98
+                </button>
+                
+              
+               
+             
+              <button  id="generate-sch" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
                 {{-- <i class="ti ti-plus"></i> --}}
-                Create Schedule
-              </a>
+                Generate Schedule
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Page body -->
+
+
+
+    <!-- Page body MENU -->
     <div class="page-body">
       <div class="container-xl">
         <div class="row row-deck row-cards">
-          {{-- <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">Sales</div>
-                  <div class="ms-auto lh-1">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="h1 mb-3">75%</div>
-                <div class="d-flex mb-2">
-                  <div>Conversion rate</div>
-                  <div class="ms-auto">
-                    <span class="text-green d-inline-flex align-items-center lh-1">
-                      7% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
-                    </span>
-                  </div>
-                </div>
-                <div class="progress progress-sm">
-                  <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
-                    <span class="visually-hidden">75% Complete</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">Revenue</div>
-                  <div class="ms-auto lh-1">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex align-items-baseline">
-                  <div class="h1 mb-0 me-2">$4,300</div>
-                  <div class="me-auto">
-                    <span class="text-green d-inline-flex align-items-center lh-1">
-                      8% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div id="chart-revenue-bg" class="chart-sm"></div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">New clients</div>
-                  <div class="ms-auto lh-1">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex align-items-baseline">
-                  <div class="h1 mb-3 me-2">6,782</div>
-                  <div class="me-auto">
-                    <span class="text-yellow d-inline-flex align-items-center lh-1">
-                      0% <!-- Download SVG icon from http://tabler-icons.io/i/minus -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
-                    </span>
-                  </div>
-                </div>
-                <div id="chart-new-clients" class="chart-sm"></div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">Active users</div>
-                  <div class="ms-auto lh-1">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex align-items-baseline">
-                  <div class="h1 mb-3 me-2">2,986</div>
-                  <div class="me-auto">
-                    <span class="text-green d-inline-flex align-items-center lh-1">
-                      4% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
-                    </span>
-                  </div>
-                </div>
-                <div id="chart-active-users" class="chart-sm"></div>
-              </div>
-            </div>
-          </div> --}}
-       
-          {{-- <div class="col-12">
-            <div class="card card-md">
-              <div class="card-stamp card-stamp-lg">
-                
-              
-              </div>
-              <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col-10">
-                    <h3 class="h1">Schedule Result</h3>
-                    <div class="markdown text-muted">
-                    
-                    </div>
-                    <div class="mt-3">
-                      <a href="https://tabler-icons.io" class="btn bt n-primary" target="_blank" rel="noopener">Generate Partlist</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> --}}
           
           <div class="col-12">
             <div class="card rounded-1">
               <div class="card-header">
-                {{-- <h3 class="card-title">Schedule</h3> --}}
+                <h2>FILTER </h2>
+      
               </div>
 
-             
-              <div class="card-body border-bottom py-2">
-                <a href="{{url('/schedule/email')}}" class="btn btn-success d-none d-sm-inline-block btn-sm ">
-                  <i class="ti ti-mail-forward"></i>
-                  Share Schedule
-                </a>
-                <a href="{{url('/schedule')}}" class="btn btn-primary d-none d-sm-inline-block btn-sm " >
+              @if(Session::has('success'))
+              <p class="alert alert-success">{{Session::get('success')}}</p>
+              @endif
+
+              @if(Session::has('oke'))
+              <p class="alert alert-success">{{Session::get('oke')}}</p>
+              @endif
+
+              <div class="input-group col-3">
+                <select class="form-control" id="filter" name = "prodno">
+                  <option value="-">-- RELEASE DATE --</option>
+                  @foreach($data as $dd)
+                  <option value="{{$dd->prodno}}">{{$dd->prodno}}</option>
+                  @endforeach            
+                      <button class="btn btn-primary btn-sm" type="submit">Filter</button>
+                </select>          
+           
+
+            
+                <select class="form-control" id="filter" name = "prodno">
+                  <option value="-">-- PROD NO --</option>
+                  @foreach($data as $dd)
+                  <option value="{{$dd->prodno}}">{{$dd->prodno}}</option>
+                  @endforeach            
+                      <button class="btn btn-primary btn-sm" type="submit">Filter</button>
+                </select>          
+              </div>
+
+              <div class="card-body border-bottom ">
+                <button id="share-schedule" class="btn btn-success d-none d-sm-inline-block btn-sm" >
+                  <i class="ti ti-share"></i>
+                 Share Schedule
+                </button>
+
+                <a href="#" class="btn btn-primary d-none d-sm-inline-block  btn-sm" >
                   <i class="ti ti-file-export"></i>
-                 Generate Parlist
+                 Generate Partlist
                 </a>
-                <a href="{{url('/schedule')}}" class="btn btn-warning d-none d-sm-inline-block btn-sm  float-right" >
+                <a href="{{url('/schedule')}}" class="btn btn-warning d-none d-sm-inline-block float-right btn-xs" >
                   <i class="ti ti-360"></i>
                   Refresh
                 </a>
-                <div class="table-responsive  rounded-1">
-                  <table id="example"class="table card-table table-vcenter text-nowrap datatable">
-                    <thead class="thead-dark">
-                      <tr>
-                        {{-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th>
-                        <th class="w-1">No. <!-- Download SVG icon from http://tabler-icons.io/i/chevron-up -->
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 15l6 -6l6 6" /></svg>
-                        </th> --}}
-                        <th>No</th>
-                        <th>Customer Code</th>
-                        <th>Destination</th>
-                        <th>Attention</th>
-                        <th>Model</th>
-                        <th>Prod No</th>
-                        <th>Lot Qty</th>
-                        <th>JKEI Po Date</th>
-                        <th>Van Date</th>
-                        <th>ETD</th>
-                        <th>ETA</th>
-                        <th>Ship Via</th>
-                        <th>Order Item</th>
-                        <th>Cust PO</th>
-                        <th>Part Number</th>
-                        <th>Part Name</th>
-                        <th>Cust Shelf Number</th>
-                        <th>Demand</th>
-                        
-                      
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @foreach($data as $key => $value)
-                      <tr>
-                        <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
-                        <td> {{$value->custcode}}</td>
-                        <td > {{$value->dest}}</td>
-                        <td> {{$value->attention}}</td>
-                        <td> {{$value->model}}</td>
-                        <td> {{$value->prodno}}</td>
-                        <td> {{$value->lotqty}}</td>
-                        <td> {{$value->jkeipodate}}</td>
-                        <td> {{$value->vandate}}</td>
-                        <td> {{$value->etd}}</td>
-                        <td> {{$value->eta}}</td>
-                        <td> {{$value->shipvia}}</td>
-                        <td> {{$value->orderitem}}</td>
-                        <td>{{$value->custpo}} </td>
-                        <td>{{$value->partno}} </td>
-                        <td>{{$value->partname}} </td>
-                        <td> </td>
-                        <td> {{$value->demand}}</td>                
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-                </div>
               </div>
-            
-              <div class="card-footer d-flex align-items-center">           
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+               
+
+
+      {{-- <div class="page-body"> --}}
+        <div class="container-xl mt-1 ">
+          <div class="row row-deck row-cards ">
+            
+            <div class="col-12">
+              <div class="card rounded-1 " >
+                <div class="card-header">
+      
+                </div>
+                <div class="card-body border-bottom ">
+
+                 <div class="table-responsive  rounded-1 ">
+                   {{-- <table id="example" class="table card-table table-vcenter text-nowrap datatable"> --}}
+                    <table id="example" class="table  text-nowrap datatable table table-striped" >
+                     <thead class="thead-dark">
+                       <tr>
+                         {{-- <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th>
+                         <th class="w-1">No. <!-- Download SVG icon from http://tabler-icons.io/i/chevron-up -->
+                           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-sm icon-thick" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 15l6 -6l6 6" /></svg>
+                         </th> --}}
+                         <th>No</th>
+                         <th>Customer Code</th>
+                         <th>Destination</th>
+                         <th>Attention</th>
+                         <th>Model</th>
+                         <th>Prod No</th>
+                         <th>Lot Qty</th>
+                         <th>JKEI Po Date</th>
+                         <th>Van Date</th>
+                         <th>ETD</th>
+                         <th>ETA</th>
+                         <th>Ship Via</th>
+                         <th>Order Item</th>
+                         <th>Cust PO</th>
+                         <th>Part Number</th>
+                         <th>Part Name</th>
+                         <th>Cust Shelf Number</th>
+                         <th>Demand</th>
+                         
+                       
+                       </tr>
+                     </thead>
+                     <tbody>
+                       @foreach($data as $key => $value)
+                       <tr>
+                         <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
+                         <td> {{$value->custcode}}</td>
+                         <td > {{$value->dest}}</td>
+                         <td> {{$value->attention}}</td>
+                         <td> {{$value->model}}</td>
+                         <td> {{$value->prodno}}</td>
+                         <td> {{$value->lotqty}}</td>
+                         <td> {{$value->jkeipodate}}</td>
+                         <td> {{$value->vandate}}</td>
+                         <td> {{$value->etd}}</td>
+                         <td> {{$value->eta}}</td>
+                         <td> {{$value->shipvia}}</td>
+                         <td> {{$value->orderitem}}</td>
+                         <td>{{$value->custpo}} </td>
+                         <td>{{$value->partno}} </td>
+                         <td>{{$value->partname}} </td>
+                         <td> </td>
+                         <td> {{$value->demand}}</td>                
+                       </tr>
+                       @endforeach
+                     </tbody>
+                   </table>
+                 </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {{-- </div> --}}
+               
+
+             
+            
+              
     {{-- <footer class="footer footer-transparent d-print-none">
       <div class="container-xl">
         <div class="row text-center align-items-center flex-row-reverse">
@@ -378,116 +297,13 @@
     </div>
 </div>
 
-  {{-- ====================MODAL CREATE DATA ========================================= --}}
-<div class="modal modal-blur fade" id="modal-schedule" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">New Std Pack</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-control" name="example-text-input" placeholder="Your report name">
-        </div>
-        <label class="form-label">Report type</label>
-        <div class="form-selectgroup-boxes row mb-3">
-          <div class="col-lg-6">
-            <label class="form-selectgroup-item">
-              <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked>
-              <span class="form-selectgroup-label d-flex align-items-center p-3">
-                <span class="me-3">
-                  <span class="form-selectgroup-check"></span>
-                </span>
-                <span class="form-selectgroup-label-content">
-                  <span class="form-selectgroup-title strong mb-1">Simple</span>
-                  <span class="d-block text-muted">Provide only basic data needed for the report</span>
-                </span>
-              </span>
-            </label>
-          </div>
-          <div class="col-lg-6">
-            <label class="form-selectgroup-item">
-              <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
-              <span class="form-selectgroup-label d-flex align-items-center p-3">
-                <span class="me-3">
-                  <span class="form-selectgroup-check"></span>
-                </span>
-                <span class="form-selectgroup-label-content">
-                  <span class="form-selectgroup-title strong mb-1">Advanced</span>
-                  <span class="d-block text-muted">Insert charts and additional advanced analyses to be inserted in the report</span>
-                </span>
-              </span>
-            </label>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-lg-8">
-            <div class="mb-3">
-              <label class="form-label">Report url</label>
-              <div class="input-group input-group-flat">
-                <span class="input-group-text">
-                  https://tabler.io/reports/
-                </span>
-                <input type="text" class="form-control ps-0"  value="report-01" autocomplete="off">
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="mb-3">
-              <label class="form-label">Visibility</label>
-              <select class="form-select">
-                <option value="1" selected>Private</option>
-                <option value="2">Public</option>
-                <option value="3">Hidden</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label class="form-label">Client name</label>
-              <input type="text" class="form-control">
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="mb-3">
-              <label class="form-label">Reporting period</label>
-              <input type="date" class="form-control">
-            </div>
-          </div>
-          <div class="col-lg-12">
-            <div>
-              <label class="form-label">Additional information</label>
-              <textarea class="form-control" rows="3"></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-          Cancel
-        </a>
-        <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-          <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-          Create new stdpack
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
 
 {{-- ====================MODAL SA90 ========================================= --}}
 
-{{-- <div class="modal modal-blur fade" id="modal-sa90" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal modal-blur fade" id="modal-sa90" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -495,7 +311,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
          
-          <form  action="{{url('/schedule/upload')}}" enctype="multipart/form-data" method="POST" >
+          <form  action="{{url('/schedule/uploadsa90')}}" enctype="multipart/form-data" method="POST" >
             @csrf
            
             <div class="modal-body">
@@ -522,17 +338,142 @@
           </form>
         </div>
   </div>
-</div> --}}
+</div>
 
 </a>
 </div>
 
-
+<script type="text/javascript" src="{{asset ('')}}js/jquery-3.7.0.js "></script>
 <script type="text/javascript">
 
 $(document).ready(function () {
-    $('#example').DataTable();
+    // $('#example').DataTable();
+    
+    // CONFIRM SUMMARY SB98
+    $('#confirm-sb98').on('click', function() {
+      
+      $('#example .check:checked').each(function() {
+        selected.push($(this).val());
+      });
+
+      Swal.fire({
+        icon: 'warning',
+          title: 'Are you sure summary SB98?',
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes'
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $.ajax({
+            type: 'get',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{url('/schedule/sumsb98')}}",    
+            success: function(result) {
+                    swal.fire(
+                  'SUCCESS!',
+                  'Summary Finish.',
+                  'success'
+                    )
+              }
+          });
+        }
+      });
+    });
+
+    //SHARE SCHEDULE DIC
+    $('#share-schedule').on('click', function() {
+      
+      $('#example .check:checked').each(function() {
+        selected.push($(this).val());
+      });
+
+      Swal.fire({
+        icon: 'warning',
+          title: ' Share Update Schedule?',
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes'
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $.ajax({
+            type: 'get',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{url('/schedule/email')}}",    
+            success: function(result) {
+                    swal.fire(
+                  'SUCCESS!',
+                  'Share Schedule to DIC',
+                  'success'
+                    )
+              }
+          });
+        }
+      });
+    });
+
+    //GENERATE SCHEDULE 
+    $('#generate-sch').on('click', function() {
+      
+      $('#example .check:checked').each(function() {
+        selected.push($(this).val());
+      });
+
+      Swal.fire({
+        icon: 'warning',
+          title: 'Are you sure Generate schedule?',
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes'
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $.ajax({
+            type: 'get',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{url('schedule/generate')}}",    
+            success: function(result) {
+                    swal.fire(
+                  'SUCCESS!',
+                  'Update Schedule',
+                  'success'
+                    )
+              }
+          });
+        }
+      });
+    });
+
+
+    // $('#example').dataTable({
+    // processing: true,
+    // serverSide: true,
+    // ajax: '',
+    // columns: [
+    //     {data: 'custcode', name: 'custcode'},
+    //     {data: 'name', name: 'name'},
+    //     {data: 'email', name: 'email'},
+    //     {data: 'created_at', name: 'created_at'},
+    //     {data: 'updated_at', name: 'updated_at'}
+    // ],
+    //   search: {
+    //     "regex": true
+    //   }
+
+
     
 });
+
 </script>
+
+
+
+
   @endsection

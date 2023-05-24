@@ -14,23 +14,23 @@ class ScheduleTemp extends Model
 
     protected $table ='schedule_temp';
     protected $guarded= ['id'];
-    protected $fillable = ['custcode' ,
-    'dest'  ,
-    'attention' ,
-    'model' ,
-    'prodno' ,
-    'lotqty'  ,
-    'jkeipodate'  ,
-    'vandate'    ,
-    'etd'    ,
-    'eta'    ,
-    'shipvia' ,
-    'orderitem'  ,
-    'custpo'   ,
-    'partno'   ,
-    'partname',
-    'shelfno',
-    'demand'  ];            
+    // protected $fillable = ['custcode' ,
+    // 'dest'  ,
+    // 'attention' ,
+    // 'model' ,
+    // 'prodno' ,
+    // 'lotqty'  ,
+    // 'jkeipodate'  ,
+    // 'vandate'    ,
+    // 'etd'    ,
+    // 'eta'    ,
+    // 'shipvia' ,
+    // 'orderitem'  ,
+    // 'custpo'   ,
+    // 'partno'   ,
+    // 'partname',
+    // 'shelfno',
+    // 'demand'  ];            
    
 
 
