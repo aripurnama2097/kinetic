@@ -14,13 +14,13 @@ class StdPack extends Model
 
     protected $guarded =['id'];
 
-    protected $fillable=['partnumber',        
-    'partname',
-    'lenght',
-    'widht',
-    'height',
-    'weight',
-    'stdpack',
-    'vendor',
-    'jknshelf'];
+    // protected $fillable=['partnumber',        
+    // 'partname',
+    // 'lenght',
+    // 'widht',
+    // 'height',
+    // 'weight',
+    // 'stdpack',
+    // 'vendor',
+    // 'jknshelf'];
 }

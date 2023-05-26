@@ -8,9 +8,10 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ForgotController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\SchTentativeController;
 use App\Http\Controllers\StdpackController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ScheduleController;
 
 
 
@@ -68,14 +69,23 @@ Route::get('stdpack/delete', [StdpackController::class,'multiDelete']);
 
 
 // ========================================MASTER SCHEDULE ROUTING===========================
-Route::get('/schedule',[ScheduleController::class, 'index']);
-Route::post('/schedule/upload',[ScheduleController::class, 'importCSV']);
-Route::post('/schedule/uploadSB98',[ScheduleController::class, 'importSB98']);
-Route::get('/schedule/sumsb98',[ScheduleController::class, 'sumsb98']);
-Route::post('/schedule/uploadsa90',[ScheduleController::class, 'importSA90']);
-Route::get('/schedule/generate',[ScheduleController::class, 'generate']);
+Route::get('/schedule_tentative',[SchTentativeController::class, 'index']);
+Route::post('/schedule_tentative/upload',[SchTentativeController::class, 'importCSV']);
+Route::post('/schedule_tentative/uploadSB98',[SchTentativeController::class, 'importSB98']);
+Route::get('/schedule_tentative/sumsb98',[SchTentativeController::class, 'sumsb98']);
+Route::post('/schedule_tentative/uploadsa90',[SchTentativeController::class, 'importSA90']);
+Route::get('/schedule_tentative/generate',[SchTentativeController::class, 'generate']);
+Route::get('/schedule_tentative/SKDall',[SchTentativeController::class, 'SKDall']);
+Route::get('/schedule_tentative/SKDmodel',[SchTentativeController::class, 'SKDmodel']);
+Route::get('schedule_tentative/serviceNG',[SchTentativeController::class, 'serviceNG']);
+Route::get('schedule_tentative/serviceOK',[SchTentativeController::class, 'serviceOK']);
 
-Route::post('/schedule/filter',[ScheduleController::class, 'filter']);
+Route::get('schedule', [ScheduleController::class,'index']);
+
+
+
+
+Route::post('/schedule/filter',[SchTentativeController::class, 'filter']);
 Route::get('schedule/email',[EmailController::class, 'index']); 
 
 

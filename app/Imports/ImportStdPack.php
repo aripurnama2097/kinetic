@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Models\StdPack;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-class ImportStdPack implements ToModel, WithHeadingRow
+class ImportStdPack implements ToModel
 {
     /**
     * @param array $row
@@ -30,8 +30,8 @@ class ImportStdPack implements ToModel, WithHeadingRow
         return $data;
     }
 
-    public function headingRow(): int
-    {
-        return 2;
-    }
+    // public function headingRow(): int
+    // {
+    //     return 2;
+    // }
 }
