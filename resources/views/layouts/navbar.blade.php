@@ -115,7 +115,7 @@
                 <div class="dropdown-menu-columns">
                   <div class="dropdown-menu-column">                     
                     <div class="dropend">
-                      <a  href ="#"class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                      <a  href ="{{url('/partlist')}}" >
                         MC Part List               
                       </a>                 
                     </div>
