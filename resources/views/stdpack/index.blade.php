@@ -430,7 +430,7 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                 Cancel
-                Cancel
+             
               </button>
               <button type="submit"  class="btn btn-primary ms-auto" >
                 Create new stdpack

@@ -91,8 +91,8 @@ Route::get('schedule/email',[EmailController::class, 'index'])->middleware('auth
 
 // ========================================MASTER SCHEDULE  RELEASE ROUTING===========================
 Route::get('partlist',[PartlistController::class,'index'])->middleware('auth');
-Route::post('partlist/filter',[PartlistController::class,'filter'])->middleware('auth');
-
+Route::post('partlist/filter_scan',[PartlistController::class,'filter_scan'])->middleware('auth');
+Route::post('partlist/filterProdno',[PartlistController::class,'filterProdno'])->middleware('auth');
 
 // Route::post('/stdpack/multi-delete', [StdpackController::class, 'multiDelete'])->name('posts.multi-delete');
 
