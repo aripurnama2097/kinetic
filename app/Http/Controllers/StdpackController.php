@@ -8,17 +8,40 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportStdPack;
 use Illuminate\Support\Facades\DB;
 
+use Yajra\DataTables\DataTables;
 
 class StdpackController extends Controller
 {
     public function index(){
+       
+        // $data = DB::connection('sqlsrv')
+        //         ->select("SELECT * FROM std_pack ");
+           
+                if (request()->ajax()) {
+                    $data = StdPack::query();
+                    return DataTables::of($data)
+                    ->addIndexColumn()
+                        ->addColumn('action', function($row){
+                            $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                            return $actionBtn;
+                        })
+                        // ->parameters([
+                        //     'buttons' => ['export'],
+                        // ])
+                        ->rawColumns(['action'])
+                       
+        
+                        ->make(true);
+                }
+                return view('/stdpack.index');
 
-         $data = DB::table('std_pack')
-         ->get();
+        // $data = StdPack::limit(100)->get();
+    //    return Datatables::of($data)
+    //     ->make();
 
-        return view('stdpack.index', compact('data'));
-        }
-
+    //     return view('/stdpack');
+    //     }
+            }
     public function create(Request $request){
 
     
@@ -48,4 +71,32 @@ class StdpackController extends Controller
 
            return redirect()->back()->with('delete', 'data has been delete');
         }
+
+        public function update(Request $request, $id)
+    {
+
+        $model = stdPack::find($id);   
+
+        $model->partnumber      = $request->partnumber;
+        $model->partname        = $request->partname;
+        $model->lenght          = $request->lenght;
+        $model->widht           = $request->widht;
+        $model->height          = $request->height;
+        $model->weight          = $request->weight;
+        $model->stdpack         = $request->stdpack;
+        $model->vendor          = $request->vendor;
+        $model->jknshelf        = $request->jknshelf;
+        $model->save();
+        
+        return redirect('/stdpack')->with('success', 'Success! Data Berhasil Diupdate');
+    }
+
+    public function destroy($id)
+    {
+        $model=stdPack::find($id);
+        $model->delete();// METHOD DELETE
+        return redirect('/stdpack')->with('success', 'Success! Data Berhasil Dihapus');
+    }
+
+
 }

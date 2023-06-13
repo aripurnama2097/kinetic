@@ -11,5 +11,5 @@ class TblSA90 extends Model
 
     protected $table ='tblSA90';
 
-    protected $fillable =['model','prodNo', 'partnumber', 'qty'];
+    protected $fillable =['modelname','prodNo', 'partnumber', 'qty'];
 }

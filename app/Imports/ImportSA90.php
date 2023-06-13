@@ -15,7 +15,7 @@ class ImportSA90 implements ToModel
     public function model(array $row)
     {
         return new tblSA90([
-            'model' =>$row[2],
+            'modelname' =>$row[2],
             'prodNo' =>$row[3],
             'partnumber' =>$row[8],
             'qty'       =>$row[16]

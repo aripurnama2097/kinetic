@@ -34,8 +34,9 @@
 
   <link href="{{asset('')}}package/dist/sweetalert2.min.css" rel="stylesheet">
 
-  {{-- <link href="{{asset('')}}css/buttons.dataTables.min.css" rel="stylesheet">
-  <link href="{{asset('')}}css/dataTables.dateTime.min.css" rel="stylesheet">
+  <link href="{{asset('')}}css/buttons.dataTables.min.css" rel="stylesheet">
+  <link href="{{asset('')}}css/jquery.dataTables.min.css" rel="stylesheet">
+  {{-- <link href="{{asset('')}}css/dataTables.dateTime.min.css" rel="stylesheet">
   <link href="{{asset('')}}css/editor.dataTables.min.css" rel="stylesheet">
   <link href="{{asset('')}}css/jquery.dataTables.min.css" rel="stylesheet">
   <link href="{{asset('')}}css/select.dataTables.min.css" rel="stylesheet"> --}}

@@ -10,9 +10,16 @@ class TblSB98 extends Model
     use HasFactory;
 
     protected $table ='tblSB98';
-    protected $fillable = ['custcode',
-    'custpo',
-    'partno'  ,
-    'partname',
-    'jkeipodate' ];
+
+    protected $fillable =['custcode',    
+    'partno',        
+    'partname'  ,
+    'reqdate' ,
+    'jkeipodate' ,
+    'demand'       ,
+    'outset'        ,
+    'vandate'        ,
+    'etd'           ,
+    'eta'  ];
+
 }

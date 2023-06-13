@@ -22,12 +22,19 @@
    @endif
 
    @if(session()->has('loginError'))
-    <div class="alert alert-danger alert-dismi ssible fade show" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
       {{session('loginError')}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
    </div>
    @endif
 
+   @if(session()->has('failed'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{session('failed')}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+   </div>
+   @endif
+   
 
     <main class="form-signin">
       <h1 style="color:aliceblue" class="h3 mb-3 font-weight-normal text-center">Login Form</h1>

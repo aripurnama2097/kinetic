@@ -5,7 +5,7 @@
     <div class="page-header d-print-none">
       <div class="container-xl">
         <div class="row g-2 align-items-center">
-          <div class="col">
+          <div class="col-12 ">
             <!-- Page pre-title -->
             <div class="page-pretitle">
               Overview
@@ -41,34 +41,33 @@
                 <div class="card-header text-center justify-content-center">
                   <h2 style="font-size:30px"class="text-primary " >--RELEASE SCHEDULE--</h2> 
                 </div>
-                <div class=" col-sm-12 col-lg-6">
+                <div class=" col-sm-12 col-lg-12">
                   <h2>FILTER </h2>
                   <form id="filter-Data" >
+                     
                     <select style="font-size:15px" class="form-control col-2 btn btn-light btn-sm" id="prod-no" name = "prodno">
-                      {{-- <option value="-">-- FILTER --</option> --}}
+                      <option value="-">-- PROD NO --</option>
                       @foreach($data2 as $dd)
                       <option value="{{$dd->prodno}}">{{$dd->prodno}}</option>    
                       @endforeach               
                     </select> 
                     <button type="submit" class="btn btn-primary d-none d-sm-inline-block  " >
                       <i class="ti ti-filter"></i>
-                    Submit              
+                    Search            
                     </button>
                   </form> 
                   <br>
-             
-                  {{-- <form id="genPartlist" >
-                    <select style="font-size:15px" class="form-control col-2 btn btn-light btn-sm" id="prod-no" name = "prodno">
-                 
-                      @foreach($data2 as $dd)
-                      <option value="{{$dd->prodno}}">{{$dd->prodno}}</option>    
-                      @endforeach               
-                   </select> 
-                    <button id="submit" type="submit" class="btn btn-primary d-none d-sm-inline-block  " >
-                      <i class="ti ti-file-export"></i>
-                    Generate Parlist               
-                    </button>
-                  </form>  --}}
+                  <form id="filter-Data" class="btn-group" >
+                    <input type="date" class="form-control rounded-3 form-control-sm col-6" name="start_date" id="release-date" value="{{date('Y-m-d')}}">	 
+                    <input type="date" class="form-control rounded-3 form-control-sm col-6" name="end_date" id="release-date" value="{{date('Y-m-d')}}">	
+                  
+                  <button type="submit" class="btn btn-primary d-none d-sm-inline-block  " >
+                    <i class="ti ti-filter"></i>
+                  Search            
+                  </button>
+                </form> 
+                <br>
+                <br>
                 </div>
                 
               </div>
@@ -89,13 +88,13 @@
                   </a>
 
                    
-                  <button id="share-schedule" class="btn btn-info d-none d-sm-inline-block btn-sm" >
+                  <button id="share-schedule" class="btn btn-info  btn-sm ml-2" >
                     <i class="ti ti-share"></i>
                    Share Schedule
                   </button>
 
                  
-                  <a href="{{url('/schedule')}}" class="btn btn-warning d-none d-sm-inline-block btn-sm" >
+                  <a href="{{url('/schedule')}}" class="btn btn-warning btn-sm ml-2" >
                     <i class="ti ti-360"></i>
                     Refresh
                   </a>
@@ -103,13 +102,14 @@
                 
                   {{-- </div>   --}}
  
-                <div class="card-body border-bottom ">            
-               
+                <div class="card-body border-bottom ">                
                   <div class="table-responsive  rounded-1 shadow-sm">                  
-                   <table style="width:100%" id="example" class="text-nowrap  table table-bordered border border-primary shadow-sm" >
+                    {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
+                   <table style="width:100%" id="example" class="table table-striped border border-primary shadow-sm" >
                      <thead class="thead-dark">
                        <tr>                   
-                         <th style ="font-size: 10px;">Schedule Number</th>   
+                         <th style ="font-size: 10px;">Schedule Number</th> 
+                         <th style ="font-size: 10px;">Release Date</th>    
                          <th style ="font-size: 10px;">Customer Code</th>
                          <th style ="font-size: 10px;">Destination</th>
                          <th style ="font-size: 10px;">Attention</th>
@@ -126,7 +126,8 @@
                          <th style ="font-size: 10px;">Cust PO</th>
                          <th style ="font-size: 10px;">Part Number</th>
                          <th style ="font-size: 10px;">Part Name</th>                       
-                         <th style ="font-size: 10px;">Demand</th>                    
+                         <th style ="font-size: 10px;">Demand</th>               
+                              
                        </tr>
                       </thead>
          
@@ -146,7 +147,9 @@
                         
                         
                         </td>
+                        <td class="table-success" style ="font-size: 12px;"> {{$value->created_at}}</td>    
                          <td style ="font-size: 12px;"> {{$value->custcode}}</td>
+                         
                          <td style ="font-size: 12px;"> {{$value->dest}}</td>
                          <td style ="font-size: 12px;"> {{$value->attention}}</td>
                          <td style ="font-size: 12px;"> {{$value->model}}</td>
@@ -165,6 +168,7 @@
                          <td style ="font-size: 12px;">{{$value->partno}} </td>
                          <td style ="font-size: 12px;">{{$value->partname}} </td> 
                          <td style ="font-size: 12px;"> {{$value->demand}}</td>                  -
+                           
                        </tr>
                        @endforeach
                      </tbody>
@@ -251,6 +255,7 @@ $(document).ready(function() {
             data = data + "<tr>"      
           
             data = data + "<td>"+value.schcode+"</td>"
+            data = data + "<td>"+value.created_at+"</td>"
             data = data + "<td>"+value.custcode+"</td>"              
             data = data + "<td>"+value.dest+"</td>"  
             data = data + "<td>"+value.attention+"</td>"  
@@ -293,6 +298,7 @@ $(document).ready(function() {
           showDenyButton: false,
           showCancelButton: true,
           confirmButtonText: 'Yes'
+         
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
@@ -303,14 +309,25 @@ $(document).ready(function() {
             },
             url: "{{url('/schedule/email')}}",    
             success: function(result) {
-                  swal.fire(
+              swal.fire(
                   'SUCCESS!',
-                  'Share Schedule to DIC',
+                  'Share email to DIC',
                   'success'
                     )
               }
           });
+         
         }
+        else if (
+      /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+          ) {
+         swal.fire(
+        'Cancelled',
+        'Cancel Share Schedule :)',
+        'error'
+          )
+    }
       });
     });
 

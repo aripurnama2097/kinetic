@@ -30,8 +30,6 @@
     <script src="{{asset('')}}package/dist/sweetalert2.min.js"></script> 
     <script src="{{asset('')}}js/jquery.min.js"></script>
     <script src="{{asset('')}}DataTables/datatables.min.js"></script>
-
-    {{-- <script src="{{asset('')}}js/dataTables.buttons.min.js"></script>
-    <script src="{{asset('')}}js/dataTables.editor.min.js"></script>
-    <script src="{{asset('')}}js/dataTables.select.min.js"></script> --}}
-  
+    <script src="{{asset('')}}js/dataTables.buttons.min.js">
+    <script src="{{asset('')}}js/jquery.dataTables.min.js"></script>
+    <script src="{{asset('')}}js/buttons.print.min.js"></script>

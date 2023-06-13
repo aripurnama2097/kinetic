@@ -11,60 +11,80 @@ use App\Exports\FormatHeaderExport;
 use App\Models\ScheduleTemp;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Validator;
 
 class SchTentativeController extends Controller
 {
   public function index(){
     $data =  [];
 
-    // $prodno = $request->input('prodno');
 
-    // $data2 = ScheduleTemp::where('prodno', $prodno)->get();
-
-    // $data2 = DB::table('schedule_temp')
-    // ->where('dest', '=','PAKISTAN')
-    // ->get();
-
-    $data = DB::connection('sqlsrv')
-    ->select("SELECT 	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-              a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,  a.demand from schedule_temp as a
-              inner join tblSB98 as C ON    a.custcode = c.custcode  AND a.custpo = c.custpo  AND a.partno = c.partno AND  a.demand = c.demand
-              UNION ALL
-              select	 a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                  a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,  a.demand from schedule_temp as a 
-              inner  join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
-              where a.model is not null
-              order by a.vandate asc");
+     $data = DB::connection('sqlsrv')
+   ->select("SELECT c.partnumber, c.qty, a.*  FROM schedule_temp as a
+                left join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
+                where a.dest != 'PAKISTAN'
+                   UNION ALL
+             SELECT	d.partnumber, d.qty,a.*  FROM schedule_temp as a
+                left join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
+                where a.dest ='PAKISTAN'
+           ");
   
 
     return view('schedule_tentative.index',compact('data'));
   }
 
-  public function importCSV() 
+  public function importCSV(Request $request) 
   {
         
+    $files = $request->file();
 
-          // return request()->file('file');
-        $data =  Excel::import(new ImportScheduleTemp, request()->file('file'));
+    foreach ($files as $value => $file) {
+        $file->store('uploads'); // Menyimpan file pada direktori 'storage/app/uploads'
+    }
 
-        // dd($data);
-
-          return redirect()->back()->with('success', 'Upload Excell Schedule Success');
+    return redirect()->back()->with('success', 'File berhasil diunggah.');
 
   }
 
-  public function importSB98() 
+
+  public function importSB98(Request $request) 
+  {
+      
+      // $file = $request->input('file');
+      // return request()->file('file');
+      $data =  Excel::import(new ImportSB98, request()->file('file'));
+
+    
+
+    // if ($validator->fails()) {
+      
+    //     return redirect()->back()->withErrors($validator->errors());
+    // }
+
+      // return $data;
+
+
+    //     $validator = Validator::make($request->all(), [
+    //       'file' => 'required|mimes:xls,xlsx,csv,tsv'
+    //   ]);
+
+    // if ($validator->fails()) {
+    //     // Tangani jika validasi gagal
+    //     return redirect()->back()->withErrors($validator->errors());
+    // }
+  }
+
+
+  public function importSA90() 
   {
       
 
       // return request()->file('file');
-      $data =  Excel::import(new ImportSB98, request()->file('file'));
-
-
-
-      return $data;
+      $data =  Excel::import(new ImportSA90, request()->file('file'));
+      return redirect()->back()->with('oke', 'Upload SA90 Success');
   }
+
+
 
   public function sumSB98(){
     
@@ -87,15 +107,6 @@ class SchTentativeController extends Controller
   }
 
 
-  public function importSA90() 
-  {
-      
-
-      // return request()->file('file');
-      $data =  Excel::import(new ImportSA90, request()->file('file'));
-      return redirect()->back()->with('oke', 'Upload SA90 Success');
-  }
-
   public function filter(Request $request)
     {
         $filter = $request->input('filter');
@@ -106,7 +117,7 @@ class SchTentativeController extends Controller
     }
 
 
-  public function SKDall(){
+  public function SKDall(){  //SKD -OK
 
     $data = DB::connection('sqlsrv')
     ->select("SELECT	d.*,a.* from schedule_temp as a
@@ -118,7 +129,7 @@ class SchTentativeController extends Controller
   
   }
 
-  public function SKDmodel(){
+  public function SKDmodel(){ //SKD - NG
 
    
     $data = DB::connection('sqlsrv')
@@ -131,61 +142,35 @@ class SchTentativeController extends Controller
   }
 
 
-  public function serviceNG(){
+  public function serviceNG(){ //SERVICE - NG
 
    
     $data = DB::connection('sqlsrv')
     ->select("SELECT c.*,a.* FROM schedule_temp as a
-              left join tblSB98 as c ON    a.custcode = c.custcode AND a.custpo = c.custpo AND  a.partno = c.partno AND a.demand = c.demand 
+              left join tblSB98 as c ON    a.custcode = c.custcode AND a.custpo = c.custpo 
+              AND  a.partno = c.partnumber AND a.demand = c.qty
               order by a.vandate desc
       ");
 
 
-    // $col =[];
-    // $col [] = $data;
-
-      
-    //   while ($row = mysqli_fetch_array($col[])) {
-    //     $tables[]=$row;
-    // }
-
-    // $col = [];
-
-    // foreach($data as $key =>$value){
-    //   $col[0]= $key;
-
-      // echo '<table border="1"><tr>';
-      // foreach ($tables[0] as $key => $value)
-      //   {
-      //       echo "<th>{$key}</th>";
-      //       $keys[] = $key;
-      //   }
-      //   echo '</tr>';
-      //   foreach ($tables as $value)
-      //   {
-      //       echo '<tr>';
-      //       foreach($keys as $key) {
-      //           echo '<td>' . $value[$key] . '</td>';
-      //       }
-      //       echo '</tr>';
-            
-      //   }
-      // echo'</table>';
+   
 
 
- return view('schedule_tentative.index', compact('data'));
+      return view('schedule_tentative.serviceNG', compact('data'));
   
     }
 
 
 
-    public function serviceOK(){
+    public function serviceOK(){ //SERVICE OK
 
       $data = DB::connection("sqlsrv")
       ->select("SELECT c.*, a.* from schedule_temp as a
-                inner join tblSB98 as c ON    a.custcode = c.custcode AND a.custpo = c.custpo AND  a.partno = c.partno AND a.demand = c.demand 
+                inner join tblSB98 as c ON    a.custcode = c.custcode AND a.custpo = c.custpo AND  a.partno = c.partnumber AND a.demand = c.qty
                 order by a.vandate desc
              ");
+
+            //  echo "Schedule Service Oke";
    
        return view('schedule_tentative.index', compact('data'));
     }
@@ -207,12 +192,13 @@ class SchTentativeController extends Controller
       $substring = substr($sub,12);
 
       $lastOrder = DB::table('schedule')
-      ->whereDate('created_at', $currentDate)
+      ->whereDate('created_at',$currentDate)
       ->max('id');
 
       // ->max('created_at');    
       // Jika tidak ada file yang diupload pada tanggal saat ini, set urutan menjadi 1
       // Jika ada file yang diupload pada tanggal saat ini, tambahkan 1 pada urutan terakhir
+
       $order = $lastOrder ? $lastOrder + 1 : 1;
       
       // Generate unique number berdasarkan tanggal dan urutan
@@ -223,20 +209,29 @@ class SchTentativeController extends Controller
                 partname,demand,input_user) 
                 select	'{$uniqueNumber}', a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
                                 a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,  a.demand,'{$user}' from schedule_temp as a
-                inner join tblSB98 as C ON    a.custcode = c.custcode  AND a.custpo = c.custpo  AND a.partno = c.partno AND  a.demand = c.demand
+                                left join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
+                where a.dest != 'PAKISTAN'
                 UNION ALL
                 select	 '{$uniqueNumber}',a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
                                 a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,  a.demand, '{$user}' from schedule_temp as a 
-                inner  join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
-                where a.model is not null
+                                left join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
+                where a.dest ='PAKISTAN'
                 order by vandate asc");
     }
 
+
+
+      //     SELECT c.partnumber, c.qty, a.*  FROM schedule_temp as a
+      //   left join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
+      //   where a.dest != 'PAKISTAN'
+      //   UNION ALL
+      // SELECT	d.partnumber, d.qty,a.*  FROM schedule_temp as a
+      //   left join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
+      //   where a.dest ='PAKISTAN'
     
   
 
 
    
-  
 
 }

@@ -1,11 +1,14 @@
 @extends('layouts.main')
 
+
+
 @section('section')
 
 
 
 <div class="page-wrapper">
-    <!-- Page header -->
+ 
+  
     <div class="page-header d-print-none">
       <div class="container-xl">
         <div class="row g-2 align-items-center">
@@ -39,157 +42,11 @@
     
     <!-- Page body -->
     <div class="page-body">
-      <div class="container-xl">
-        <div class="row row-deck row-cards">
-          {{-- <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">Sales</div>
-                  <div class="ms-auto lh-1">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="h1 mb-3">75%</div>
-                <div class="d-flex mb-2">
-                  <div>Conversion rate</div>
-                  <div class="ms-auto">
-                    <span class="text-green d-inline-flex align-items-center lh-1">
-                      7% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
-                    </span>
-                  </div>
-                </div>
-                <div class="progress progress-sm">
-                  <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
-                    <span class="visually-hidden">75% Complete</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">Revenue</div>
-                  <div class="ms-auto lh-1">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex align-items-baseline">
-                  <div class="h1 mb-0 me-2">$4,300</div>
-                  <div class="me-auto">
-                    <span class="text-green d-inline-flex align-items-center lh-1">
-                      8% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div id="chart-revenue-bg" class="chart-sm"></div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">New clients</div>
-                  <div class="ms-auto lh-1">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex align-items-baseline">
-                  <div class="h1 mb-3 me-2">6,782</div>
-                  <div class="me-auto">
-                    <span class="text-yellow d-inline-flex align-items-center lh-1">
-                      0% <!-- Download SVG icon from http://tabler-icons.io/i/minus -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0" /></svg>
-                    </span>
-                  </div>
-                </div>
-                <div id="chart-new-clients" class="chart-sm"></div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="subheader">Active users</div>
-                  <div class="ms-auto lh-1">
-                    <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
-                      <div class="dropdown-menu dropdown-menu-end">
-                        <a class="dropdown-item active" href="#">Last 7 days</a>
-                        <a class="dropdown-item" href="#">Last 30 days</a>
-                        <a class="dropdown-item" href="#">Last 3 months</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="d-flex align-items-baseline">
-                  <div class="h1 mb-3 me-2">2,986</div>
-                  <div class="me-auto">
-                    <span class="text-green d-inline-flex align-items-center lh-1">
-                      4% <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 17l6 -6l4 4l8 -8" /><path d="M14 7l7 0l0 7" /></svg>
-                    </span>
-                  </div>
-                </div>
-                <div id="chart-active-users" class="chart-sm"></div>
-              </div>
-            </div>
-          </div> --}}
-       
-          {{-- <div class="col-12">
-            <div class="card card-md">
-              <div class="card-stamp card-stamp-lg">
-                
-              
-              </div>
-              <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col-10">
-                    <h3 class="h1">Schedule Result</h3>
-                    <div class="markdown text-muted">
-                    
-                    </div>
-                    <div class="mt-3">
-                      <a href="https://tabler-icons.io" class="btn bt n-primary" target="_blank" rel="noopener">Generate Partlist</a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> --}}
-          
-          <div class="col-12">
-            <div class="card rounded-1">
-              <div class="card-header">
-                {{-- <h3 class="card-title">Schedule</h3> --}}
-              </div>
+      <div class="container-xl ">
+        <div class="card card-lg">
+         
+        
+             
 
              
               <div class="card-body border-bottom py-2">
@@ -205,19 +62,21 @@
                 <p class="alert alert-success">{{Session::get('success')}}</p>
                 @endif
 
-                <a href="{{url('/schedule')}}" class="btn btn-info d-none d-sm-inline-block btn-sm " >
+                <a href="{{url('/stdpack')}}" class="btn btn-info d-none d-sm-inline-block btn-sm " >
                   <i class="ti ti-360"></i>
                   Refresh
                 </a>
 
-                <button class="btn btn-danger btn-sm" id="delete-all-data" ><i class="ti ti-trash"></i>Delete Data</button>
+                {{-- <button class="btn btn-danger btn-sm" id="delete-all-data" ><i class="ti ti-trash"></i>Delete Data</button>
 
                 <a href="{{url('/schedule')}}" class="btn btn-success d-none d-sm-inline-block btn-sm " >
                   <i class="ti ti-edit"></i>
                   Change Data
-                </a>
+                </a> --}}
+                <br>
+                <br>
                 <div class="table-responsive  rounded-1">
-                  <table id="example"class="table card-table table-vcenter text-nowrap datatable">
+                  <table id="tbl-data" class="table table-bordered yajra-datatable">
                     <thead class="thead-dark">
                       <tr>
                       
@@ -231,13 +90,15 @@
                         <th>Pack</th>
                         <th>Vendor</th>
                         <th>JKN Shelf No</th>
-                        <th>MC Shelf No</th>
+                   
+                        <th>Action</th> 
+
                         
                       
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach($data as $key => $value)
+                      {{-- @foreach($data as $key => $value)
                       <tr>
                         <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
                         <td> {{$value->partnumber}}</td>
@@ -250,10 +111,120 @@
                         <td> {{$value->vendor}}</td>
                           <td> {{$value->jknshelf}}</td>
                         <td> </td>
+                        <td class="btn-group"> 
+                         
+                           <form  action="{{url('/stdpack/'.$value->id. '/destroy')}}" onclick="return confirm('Delete This data?')" method="GET" >
+                            @method('delete')
+                            @csrf							
+                            <input type="hidden" name="s_method" value="DELETE">
+                            <button type="submit" class="btn btn-danger  btn-sm" ></i>Delete</button> 
+                          </form>	
+
+                          <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#updateModal_{{$value->id}}">Edit</a>
+                        
+                          <div class="modal modal-blur fade" id="updateModal_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Update Std Pack</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                               
+                                    <div class="modal-body">
+                                      <form  action="{{ url('stdpack/update/' . $value->id) }}"  method="POST" >
+                                        @csrf
+                                    <div class="mb-3">
+                                        <label class="form-label">Item Number</label>
+                                        <input type="text" name="partnumber" class="form-control" name="example-text-input" value="{{$value->partnumber}}" placeholder="PART NUMBER">
+                                    </div>
+                                    <br>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                            <label class="form-label">Part Name</label>
+                                            <input type="text" class="form-control" name="partname" value="{{$value->partname}}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                            <label class="form-label">Lenght</label>
+                                            <input type="text" class="form-control"  name="lenght" value="{{$value->lenght}}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div>
+                                            <label class="form-label">Widht</label>
+                                            <input type="text" class="form-control" name="widht" value="{{$value->widht}}" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div>
+                                                <label class="form-label">Height</label>
+                                                <input type="text" class="form-control" name="height" value="{{$value->height}}" required>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="col-lg-6">
+                                            <div>
+                                            <label class="form-label">Weight</label>
+                                            <input type="text" class="form-control" name="weight"  value="{{$value->weight}}"required>
+                                            </div>
+                                        </div>
+                                      
+                                        <br>
+                                        <br>
+                                        <div class="col-lg-6">
+                                            <div>
+                                            <label class="form-label">Pack</label>
+                                            <input type="text" class="form-control"name="stdpack"  value="{{$value->stdpack}}"required>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div class="col-lg-6">
+                                            <div>
+                                            <label class="form-label">Vendor</label>
+                                            <input type="text" class="form-control" name="vendor" value="{{$value->vendor}}" required>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div class="col-lg-6">
+                                            <div>
+                                            <label class="form-label">JKN Shelf No</label>
+                                            <input type="text" class="form-control"  name="jknshelf" value="{{$value->jknshelf}}" required>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                       
+                                       
+                                    </div>  
+                        
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-light link-warning" data-bs-dismiss="modal">
+                                        Cancel
+                                      </button>
+                                      <button type="submit"  class="btn btn-primary ms-auto" >
+                                        Update
+                                      </button>
+                                  </div>
+                                </form>
+                                    </div>
+                        
+                               
+                              
+                              
+                              </div>
+                            </div>
+                          </div>
+                        
+                        </td>
                        
                        
                       </tr>
-                      @endforeach
+                      @endforeach --}}
                      
                   
                     </tbody>
@@ -266,43 +237,9 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
+       
     </div>
-    {{-- <footer class="footer footer-transparent d-print-none">
-      <div class="container-xl">
-        <div class="row text-center align-items-center flex-row-reverse">
-          <div class="col-lg-auto ms-lg-auto">
-            <ul class="list-inline list-inline-dots mb-0">
-              <li class="list-inline-item"><a href="./docs/" class="link-secondary">Documentation</a></li>
-              <li class="list-inline-item"><a href="./license.html" class="link-secondary">License</a></li>
-              <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
-              <li class="list-inline-item">
-                <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary" rel="noopener">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                  Sponsor
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-            <ul class="list-inline list-inline-dots mb-0">
-              <li class="list-inline-item">
-                Copyright &copy; 2023
-                <a href="." class="link-secondary">Tabler</a>.
-                All rights reserved.
-              </li>
-              <li class="list-inline-item">
-                <a href="./changelog.html" class="link-secondary" rel="noopener">
-                  v1.0.0-beta17
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer> --}}
+  
   </div>
 
 
@@ -354,7 +291,7 @@
                 @csrf
             <div class="mb-3">
                 <label class="form-label">Item Number</label>
-                <input type="text" name="itemno" class="form-control" name="example-text-input" placeholder="Your report name">
+                <input type="text" name="partnumber" class="form-control" name="example-text-input" placeholder="PART NUMBER">
             </div>
             <br>
             <br>
@@ -396,7 +333,7 @@
                 <div class="col-lg-6">
                     <div>
                     <label class="form-label">Pack</label>
-                    <input type="text" class="form-control"name="pack" required>
+                    <input type="text" class="form-control"name="stdpack" required>
                     </div>
                 </div>
                 <br>
@@ -412,25 +349,19 @@
                 <div class="col-lg-6">
                     <div>
                     <label class="form-label">JKN Shelf No</label>
-                    <input type="text" class="form-control"  name="jknshelfno" required>
+                    <input type="text" class="form-control"  name="jknshelf" required>
                     </div>
                 </div>
                 <br>
                 <br>
-                <div class="col-lg-6">
-                    <div>
-                    <label class="form-label">MC Shelf No</label>
-                    <input type="text" class="form-control"   name="mcshelfno" required>
-                    </div>
-                </div>
+                
                 <br>
                 <br>
             </div>  
 
             <div class="modal-footer">
-              <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+              <button type="button shadow-lg" class="btn btn-light link-warning" data-bs-dismiss="modal">
                 Cancel
-             
               </button>
               <button type="submit"  class="btn btn-primary ms-auto" >
                 Create new stdpack
@@ -454,6 +385,34 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+
+
+    // <th> No </th>
+    //                     <th>Part Number</th>
+    //                     <th>Part Name</th>
+    //                     <th>Lenght</th>
+    //                     <th>Widht</th>
+    //                     <th>Height</th>
+    //                     <th>Weight</th>
+    //                     <th>Pack</th>
+    //                     <th>Vendor</th>
+    //                     <th>JKN Shelf No</th>
+    //                     <th>MC Shelf No</th>
+    //                     <th>Action</th>
+
+
+    $('#tbl_data').DataTable({
+        processing: true,
+        serverSide: true,
+        url: "{{url('/stdpack')}}",
+        
+        columns: [
+            { data: 'id', name: 'id' },
+            { data: 'partnumber', name: 'partnumber' },
+            { data: 'partname', name: 'partname' },
+
+        ]
+    });
 
     // $("#example").TableCheckAll();
 
@@ -536,6 +495,53 @@
       });
       
     })
+  });
+ 
+  $(function () {
+    $.fn.dataTable.ext.errMode = 'throw';
+
+    var table = $('.yajra-datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ url('stdpack') }}",
+        columns: [
+          {data: 'id', name: 'id'},
+            {data: 'partnumber', name: 'partnumber'},
+            {data: 'partname', name: 'partname'},
+            {data: 'lenght', name: 'lenght'},
+            {data: 'widht', name: 'widht'},
+            {data: 'height', name: 'height'},
+            {data: 'weight', name: 'weight'},
+            {data: 'stdpack', name: 'stdpack'},
+            {data: 'vendor', name: 'vendor'},
+            {data: 'jknshelf', name: 'jknshelf'},
+
+            
+           
+            {
+                data: 'action', 
+                name: 'action', 
+                orderable: true, 
+                searchable: true
+            },
+        ]
+        // ,
+        // button: [
+        //         $.extend(true, {}, buttonCommon, {
+        //             extend: 'copy',
+        //             exportOptions: { columns: ':visible' }
+        //         }),
+        //         $.extend(true, {}, buttonCommon, {
+        //             extend: 'csv',
+        //             exportOptions: { columns: ':visible' }
+        //         }),
+        //         $.extend(true, {}, buttonCommon, {
+        //             extend: 'print',
+        //             exportOptions: { columns: ':visible' }
+        //         }),
+        //     ]
+    });
+    
   });
 </script>
 @endsection

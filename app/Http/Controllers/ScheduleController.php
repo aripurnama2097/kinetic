@@ -11,7 +11,6 @@ class ScheduleController extends Controller
     public function index(){
 
         $data = DB::table('schedule')
-      
         ->orderByRaw('id', 'ASC')
         ->get();
 
@@ -20,7 +19,6 @@ class ScheduleController extends Controller
 
         $data3=DB::connection('sqlsrv')
         ->select("SELECT distinct (prodno) from schedule where dest !='PAKISTAN' ");
-        // return $data;
 
         return view('schedule.index', compact('data','data2','data3'));
     }
@@ -28,16 +26,11 @@ class ScheduleController extends Controller
 
     public function filter(Request $request){
 
-        // return $request;
-
         $prodNo = $request->input('prodno');
-        
+
         $data = DB::table('schedule')
-        ->where('prodno','=',  $prodNo)    
+        ->where('prodno','=',  $prodNo)
         ->get();
-
-
-
 
          return response()->json($data);
     }
@@ -46,26 +39,27 @@ class ScheduleController extends Controller
     public function partlist(Request $request){
 
 
-        // return $request;
-
         $user = $request->input('input_user');
         $prodNo = $request->input('prodno');
-        
-        // $data = DB::table('schedule')
-        // ->where('prodno','=',  $prodNo)    
-        // ->get();
+        $custcode = DB::connection('sqlsrv')
+        ->select("SELECT distinct custcode  from schedule where prodno ='{$prodNo}' ");
 
-        $parlist = DB::connection('sqlsrv')
-        ->select("INSERT into tblpartlist(custcode, dest,model,prodno,vandate,orderitem,
+        $partlistno = $prodNo . $custcode[0]->custcode;
+
+         DB::connection('sqlsrv')
+        ->insert("INSERT into partlist(custcode, dest,model,prodno,jkeipodate,vandate,partlist_no,orderitem,
                   custpo,partno,partname, demand, stdpack,vendor,input_user)
-                  SELECT a.custcode,a.dest, a.model, a.prodno,a.vandate, a.orderitem, 
+                  SELECT a.custcode,a.dest, a.model, a.prodno,a.jkeipodate,a.vandate,'{$partlistno}', a.orderitem,
                   a.custpo, a.partno, a.partname,  a.demand,
-                  b.stdpack, b.vendor, '{$user}' from schedule as a 
-                  left join std_pack as b  ON a.partno = b.partnumber    
-                  where a.prodno ='{$prodNo}'                 
+                  b.stdpack, b.vendor, '{$user}' from schedule as a
+                  left join std_pack as b  ON a.partno = b.partnumber
+                  where a.prodno ='{$prodNo}'
                   order by a.vandate desc");
-                  
-                  return redirect()->back()->with('success', 'success generate');
+
+
+                  return redirect()->back()->with('success', 'Generate partlist success ');
+
+
     }
 
 }

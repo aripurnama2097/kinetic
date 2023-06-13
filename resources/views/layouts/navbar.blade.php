@@ -1,5 +1,5 @@
 <header class="navbar navbar-expand-md navbar-dark navbar-overlap d-print-none">
-    <div class="container-xl">
+    <div class="container-xl ml-2">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -36,7 +36,7 @@
             {{-- <span class="avatar avatar-sm" style="background-image: url()"></span> --}}
             <div class="d-none d-xl-block ps-2">
               @auth
-            <div class="btn btn-success  btn-sm text-light">   <i class="ti ti-people">   </i>  {{auth()->user()->name}}  </div>
+            <div class="btn btn-success  btn-sm text-light float-right  ">   <i class="ti ti-people">   </i>  {{auth()->user()->name}}  </div>
               <!-- <div class="mt-1 small text-muted">UI Designer</div> -->
               @endauth
             </div>
@@ -76,7 +76,7 @@
                 </span>
               </a>
               <div class="dropdown-menu">
-                <div class="dropdown-menu-columns badge bg-primary">
+                <div class="dropdown-menu-columns ">
                   <div class="dropdown-menu-column">
                    
                     <div class="dropend">

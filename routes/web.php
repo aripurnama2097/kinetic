@@ -14,6 +14,11 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\PartlistController;
 
+use App\Http\Controllers\SchServiceNGController;
+use App\Http\Controllers\SchSKDNGController;
+use App\Http\Controllers\SB98Controller;
+use App\Http\Controllers\SA90Controller;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -62,21 +67,33 @@ Route::resource('/dashboard/help', DashboardHelpController::class);
 Route::get('/stdpack',[StdpackController::class, 'index'])->middleware('auth');
 Route::post('/stdpack/create/',[StdpackController::class, 'create'])->middleware('auth');
 Route::post('/stdpack/upload-stdpack',[StdpackController::class, 'uploadstdpack'])->middleware('auth');
+Route::post('/stdpack/update/{id}',[StdpackController::class, 'update'])->middleware('auth');
+Route::get('stdpack/{id}/destroy', [StdpackController::class,'destroy'])->middleware('auth');
 
-Route::get('stdpack/delete', [StdpackController::class,'multiDelete'])->middleware('auth');
 
 
 // ========================================MASTER SCHEDULE TENTATIVE ROUTING===========================
 Route::get('/schedule_tentative',[SchTentativeController::class, 'index'])->middleware('auth');
-Route::post('/schedule_tentative/upload',[SchTentativeController::class, 'importCSV'])->middleware('auth');
+Route::post('/schedule_tentative/uploadSch',[SchTentativeController::class, 'importCSV'])->middleware('auth');
 Route::post('/schedule_tentative/uploadSB98',[SchTentativeController::class, 'importSB98'])->middleware('auth');
-Route::get('/schedule_tentative/sumsb98',[SchTentativeController::class, 'sumsb98'])->middleware('auth');
 Route::post('/schedule_tentative/uploadsa90',[SchTentativeController::class, 'importSA90'])->middleware('auth');
+Route::get('/schedule_tentative/sumsb98',[SchTentativeController::class, 'sumsb98'])->middleware('auth');
+
+
+Route::get('/schedule_tentative/SB98',[SB98Controller::class, 'index'])->middleware('auth');
+Route::get('/schedule_tentative/SA90',[SA90Controller::class, 'index'])->middleware('auth');
+Route::get('schedule_tentative/SA90/delete',[SA90Controller::class, 'delete'])->middleware('auth');
+
+
+
+Route::get('/schedule_tentative/servicePart',[SchServiceNGController::class, 'index'])->middleware('auth');
+Route::get('schedule_tentative/skdPart',[SchSKDNGController::class, 'index'])->middleware('auth');
 Route::get('/schedule_tentative/generate',[SchTentativeController::class, 'generate'])->middleware('auth');
-Route::get('/schedule_tentative/SKDall',[SchTentativeController::class, 'SKDall'])->middleware('auth');
-Route::get('/schedule_tentative/SKDmodel',[SchTentativeController::class, 'SKDmodel'])->middleware('auth');
-Route::get('schedule_tentative/serviceNG',[SchTentativeController::class, 'serviceNG'])->middleware('auth');
-Route::get('schedule_tentative/serviceOK',[SchTentativeController::class, 'serviceOK'])->middleware('auth');
+
+// Route::get('schedule_tentative/serviceNG',[SchServiceNGController::class, 'index'])->middleware('auth');
+// Route::get('/schedule_tentative/SKDmodel',[SchSKDNGController::class, 'index'])->middleware('auth');
+
+
 
 
 
@@ -91,8 +108,10 @@ Route::get('schedule/email',[EmailController::class, 'index'])->middleware('auth
 
 // ========================================MASTER SCHEDULE  RELEASE ROUTING===========================
 Route::get('partlist',[PartlistController::class,'index'])->middleware('auth');
-Route::post('partlist/filter_scan',[PartlistController::class,'filter_scan'])->middleware('auth');
 Route::post('partlist/filterProdno',[PartlistController::class,'filterProdno'])->middleware('auth');
+Route::post('partlist/filter_scan',[PartlistController::class,'filter_scan'])->middleware('auth');
+Route::post('partlist/scan_issue',[PartlistController::class,'scan_issue'])->middleware('auth');
+
 
 // Route::post('/stdpack/multi-delete', [StdpackController::class, 'multiDelete'])->name('posts.multi-delete');
 
