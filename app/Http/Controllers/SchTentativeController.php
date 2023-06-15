@@ -203,7 +203,7 @@ class SchTentativeController extends Controller
       
       // Generate unique number berdasarkan tanggal dan urutan
       $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
-  
+      
       $result = DB::connection('sqlsrv')
                 ->select("INSERT into schedule(schcode,custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
                 partname,demand,input_user) 
@@ -216,7 +216,7 @@ class SchTentativeController extends Controller
                                 a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,  a.demand, '{$user}' from schedule_temp as a 
                                 left join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                 where a.dest ='PAKISTAN'
-                order by vandate asc");
+                order by vandate asc ");
     }
 
 

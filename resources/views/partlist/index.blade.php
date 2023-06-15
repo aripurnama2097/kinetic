@@ -92,13 +92,15 @@ thead {
                       <br>    
                       {{-- <iframe id="print-iframe"> --}}
                         
-                        <p id="table-print1">{!! QrCode::size(50)->generate('test'); !!} </p>
-                        <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">     
-                        <table style="width:100%" id="table-print" class="text-nowrap  table table-striped border border-dark shadow-sm" >
+                       
+                        <div class="table-responsive  rounded-1 shadow-sm  col-12 shadow-lg  mt-5">     
+                        <table style="width:100%" id="table-print" class="text-nowrap  table table-striped border border-dark shadow-sm "  >
+                          <p class="mt-4"id="table-print1">{!! QrCode::size(50)->generate('qrcode'); !!} </p>
                           <br>
                           <thead class="thead-dark">
                              <tr>      
                               <th style ="font-size: 10px;">No</th>  
+                              <th style ="font-size: 10px;">QR</th>  
                               <th style ="font-size: 10px;">Part list No</th>                                 
                                <th style ="font-size: 10px;">Cust Code</th>
                                <th style ="font-size: 10px;">Prod No</th>
@@ -115,22 +117,7 @@ thead {
                             </thead>
                
                            <tbody id="data-print">
-                             {{-- @foreach($data as $key => $value)
-                             <tr class="table-light">   
-                              <td style ="font-size: 12px;">{{$value->partlist_no}} </td>                          
-                               <td style ="font-size: 12px;">{{$value->custcode}} </td>
                             
-                               <td style ="font-size: 12px;">{{$value->prodno}} </td>
-                               <td style ="font-size: 12px;">{{$value->vandate}} </td>
-                               <td style ="font-size: 12px;">{{$value->partno}} </td>
-                               <td style ="font-size: 12px;">{{$value->partname}} </td> 
-                               <td style ="font-size: 12px;"> {{$value->demand}}</td>                  -
-                               <td style ="font-size: 12px;">{{$value->stdpack}} </td>
-                               <td style ="font-size: 12px;"> </td>
-                              
-                               
-                             </tr>
-                             @endforeach --}}
                            </tbody>
                          </table>
                         </div>
@@ -152,7 +139,7 @@ thead {
                         </div>
                         </div>
                         <div class="card-body border-bottom d-flex justify-content-center ">                   
-                          <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-8 shadow-lg ">     
+                          <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">     
                             {{-- <div class="card-header text-center justify-content-center mt-3">
                               <h2 style="font-size:30px"class="text-dark " >SCAN ISSUE</h2> 
                             </div> --}}
@@ -165,8 +152,8 @@ thead {
                                  <th style ="font-size: 10px;">Part Number</th>
                                  <th style ="font-size: 10px;">Part Name</th>                       
                                  <th style ="font-size: 10px;">Demand</th>                    
-                             
                                  <th style ="font-size: 10px;">Total Scan</th>
+                                 <th style ="font-size: 10px;">Balance Scan</th>
                                </tr>
                               </thead>
                  
@@ -272,8 +259,10 @@ $(document).ready(function() {
         console.log("data partlist",data);   
         $.each(response,function( key,value){
       
+          // new QRCode(document.getElementById("qrcode"), "http://jindo.dev.naver.com/collie");
+
         data = data + "<tr>" 
-          data = data + "<td>"+value.id+"</td>"
+        data = data + "<td>"+value.id+"</td>"
         data = data + "<td>"+value.partlist_no+"</td>"   
         data = data + "<td>"+value.custcode+"</td>"  
         data = data + "<td>"+value.prodno+"</td>"  
@@ -321,14 +310,28 @@ $(document).ready(function() {
 
     //STEP 1.  DAPATKAN DATA PARTLIST NUMBER
     $('#partlist_no').on('keypress', function(e){
+      event.preventDefault();
+      var counter = 0;
+
+        //menambahkan nomor urut pada tabel
+        $("#tabel_data tr:has(td)").each(function(){
+          $(this).prepend("<td>"+(++counter)+"</td>");
+        });
+
+
+          $('.color-cell').each(function() {
+          var cellValue = parseInt($(this).text());
+          if (cellValue > 20) {
+            $(this).css('background-color', 'red');
+          }
+        });
+
         if(e.which == 13) {
             let val_partlistNo = $('#partlist_no').val();
             if (val_partlistNo != '') {
                 $('#scan_label').attr('disabled', false);
                 
               var partlistNo = $('#partlist_no').val();
-              
-                    
 
               // SEND AJAX REQUEST DATA
                 $.ajax({
@@ -340,17 +343,31 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                 var dataScan=""
-                  console.log("dataScan partlist",dataScan);   
+               
+
+                  // console.log("dataScan partlist",dataScan);   
                   $.each(response,function(key, value){ 
 
                     dataScan = dataScan + "<tr>"   
+                      if(value.tot_scan == 0 && value.balance_issue ==  0 ){
+                        dataScan = dataScan + "<tr class=table-light>";
+                          }
+                      if(value.tot_scan != 0 && value.balance_issue !=  0 ){
+                        dataScan = dataScan + "<tr class=table-warning>";
+                          }
+                      if(value.tot_scan == value.demand && value.balance_issue ==  0 ){
+                        dataScan = dataScan + "<tr class=table-success>";
+                          }
+                       
                     dataScan = dataScan + "<td>"+value.id+"</td>"     
                     dataScan = dataScan + "<td>"+value.custcode+"</td>"  
                     dataScan = dataScan + "<td>"+value.prodno+"</td>"  
                     dataScan = dataScan + "<td>"+value.partno+"</td>" 
                     dataScan = dataScan + "<td>"+value.partname+"</td>" 
                     dataScan = dataScan + "<td>"+value.demand+"</td>"
-                    dataScan = dataScan + "<td>"+value.tot_scan+"</td>"                   
+                    dataScan = dataScan + "<td>"+value.tot_scan+"</td>"    
+                    dataScan = dataScan + "<td>"+value.balance_issue+"</td>"  
+                                   
                     dataScan = dataScan + "</tr>"
                     })
                     $('#data-scanin').html(dataScan);
@@ -367,6 +384,7 @@ $(document).ready(function() {
 
     //STEP 2. SCAN LABEL MC 
       $('#scan_label').on('keypress', function(e){
+        // event.preventDefault();
 			if(e.which == 13) {
 
         // var parlistno = $('#partlist_no').val();
@@ -378,57 +396,87 @@ $(document).ready(function() {
             url     :"{{url('/partlist/scan_issue/')}}",
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             data    :{scan_label:scan_label},
-            success : function(response){      
-
-              console.log(response,"scanning"); 
-              return;
-              // console.log(response.success); 
-              // console.log(response.message); 
-
-              alert(response.success.message);
+            success: function(response) {
+              // if (response.success) {
+              // swal.fire({
+              //     icon: 'success',
+              //     title: "Scan Part Oke",
+              //     text: response.data,
+              //     timer: 5000,
+              //     showConfirmButton: true,
+                
+              //   })
+              // }
+              // else  {
+              // swal.fire({
+              //     icon: 'error',
+              //     title: "Double Scan",
+              //     text: response.data,
+              //     timer: 5000,
+              //     showConfirmButton: true,
+                
+              //   })
+              // }
+              alert(response.message)
               
-              if (response.data) {
-              swal.fire({
-                  icon: 'warning',
-                  title: "Message",
-                  text: response.data,
-                  timer: 5000,
-                  showConfirmButton: false,
-                  type: "success"
-                })
-              }
+                var dataScan=""
+                  $.each(response,function(key, value){ 
 
-            // var data=""
-            console.log(data);
-            data = data + "<tr>"   
-            data = data + "<td>"+value.id+"</td>"     
-            data = data + "<td>"+value.custcode+"</td>"  
-            data = data + "<td>"+value.prodno+"</td>"  
-  
-            data = data + "<td>"+value.partno+"</td>" 
-            data = data + "<td>"+value.partname+"</td>" 
-            data = data + "<td>"+value.demand+"</td>" 
-          
-            data = data + "<td>"+value.tot_scan+"</td>" 
-            data = data + "</tr>"
-
-          
-            $('#data-scanin').html(data);
-            }
-            
-          
-
-            })                            
+                    dataScan = dataScan + "<tr>"   
+                      if(value.tot_scan == 0 && value.balance_issue ==  0 ){
+                        dataScan = dataScan + "<tr class=table-light>";
+                          }
+                      if(value.tot_scan != 0 && value.balance_issue !=  0 ){
+                        dataScan = dataScan + "<tr class=table-warning>";
+                          }
+                      if(value.tot_scan == value.demand && value.balance_issue ==  0 ){
+                        dataScan = dataScan + "<tr class=table-success>";
+                          }
+                       
+                    dataScan = dataScan + "<td>"+value.id+"</td>"     
+                    dataScan = dataScan + "<td>"+value.custcode+"</td>"  
+                    dataScan = dataScan + "<td>"+value.prodno+"</td>"  
+                    dataScan = dataScan + "<td>"+value.partno+"</td>" 
+                    dataScan = dataScan + "<td>"+value.partname+"</td>" 
+                    dataScan = dataScan + "<td>"+value.demand+"</td>"
+                    dataScan = dataScan + "<td>"+value.tot_scan+"</td>"    
+                    dataScan = dataScan + "<td>"+value.balance_issue+"</td>"  
+                                   
+                    dataScan = dataScan + "</tr>"
+                    })
+                    $('#data-scanin').html(dataScan);
+                    $('#scan_label').focus();
+                     }  
+         });
         }
-        
-      
-    });
+  });
     // ========================END SCAN  IN PROCESSS================================
 
-
-
-
+    
 });
+
+//           
+              
+              // if (response.success) {
+              // swal.fire({
+              //     icon: 'success',
+              //     title: "Scan Part Oke",
+              //     text: response.data,
+              //     timer: 5000,
+              //     showConfirmButton: true,
+                
+              //   })
+              // }
+              // else  {
+              // swal.fire({
+              //     icon: 'error',
+              //     title: "Double Scan",
+              //     text: response.data,
+              //     timer: 5000,
+              //     showConfirmButton: true,
+                
+              //   })
+              // }
 
 
 </script>
