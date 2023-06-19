@@ -19,6 +19,8 @@ use App\Http\Controllers\SchSKDNGController;
 use App\Http\Controllers\SB98Controller;
 use App\Http\Controllers\SA90Controller;
 
+use App\Http\Controllers\RepackingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -115,3 +117,8 @@ Route::post('partlist/scan_issue',[PartlistController::class,'scan_issue'])->mid
 
 // Route::post('/stdpack/multi-delete', [StdpackController::class, 'multiDelete'])->name('posts.multi-delete');
 
+
+
+
+Route::get('repacking',[RepackingController::class,'index'])->middleware('auth');
+Route::post('repacking/printOriginal/{id}/',[RepackingController::class,'printOriginal'])->middleware('auth');

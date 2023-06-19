@@ -78,7 +78,8 @@
 
                           <th style ="font-size: 10px;">Customer Code</th>
                           <th style ="font-size: 10px;">Cust Po</th>
-                          <th style ="font-size: 10px;">Part No</th>                       
+                          <th style ="font-size: 10px;">Prodno</th>                       
+                          <th style ="font-size: 10px;">Part No</th>  
                           <th style ="font-size: 10px;">Demand</th>
                        
                         
@@ -99,23 +100,32 @@
                            echo '<span class= "badge text-bg-success">OK</span>';
                          }
                          
-                        //  else{
-                     
-                        //  echo '<span class= "badge text-bg-success">Success</span>';
+                   
                         //  }?>
                          </td>
 
-                         <td style ="font-size: 12px;"> {{$value->partnumber}}</td>
-                         <td style ="font-size: 12px;"> {{$value->qty}}</td>
+                         <td style ="font-size: 12px;"> 
+                          <?php 
+                           if($value->partnumber == NULL) {
+                                    echo '-';
+                            }                          
+                          ?>
+                              {{$value->partnumber}}
+                          </td>
                          
+                          <td style ="font-size: 12px;"> 
+                            <?php 
+                             if($value->qty == NULL) {
+                                      echo '-';
+                              }                          
+                            ?>
+                                {{$value->qty}}
+                            </td>                      
                           <td style ="font-size: 12px;"> {{$value->custcode}}</td>
                           <td style ="font-size: 12px;"> {{$value->custpo}} </td>
+                          <td style ="font-size: 12px;"> {{$value->prodno}} </td> 
                           <td style ="font-size: 12px;"> {{$value->partno}} </td> 
-                          <td style ="font-size: 12px;"> {{$value->demand}}</td>      
-                
-                        
-                         
-                           
+                          <td style ="font-size: 12px;"> {{$value->demand}}</td>               
                         </tr>
                         @endforeach
                       </tbody>
@@ -128,10 +138,7 @@
               </div>
             </div>
           </div>
-        </div>
-                
-      
-   
+        </div>  
     </div>
    
 
