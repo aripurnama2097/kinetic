@@ -14,7 +14,7 @@ class SchskdNGController extends Controller
                     ->select(" SELECT	d.*,a.* from schedule_temp as a
                                 left join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                                 where dest ='PAKISTAN'
-                                order by d.modelname asc
+                                order by a.vandate asc 
                     ");
      return view('schedule_tentative.skdPart', compact('data'));
     }

@@ -11,7 +11,7 @@ class ScheduleController extends Controller
     public function index(){
 
         $data = DB::table('schedule')
-        ->orderByRaw('id', 'ASC')
+        ->orderByRaw('vandate', 'ASC')
         ->get();
 
         $data2=DB::connection('sqlsrv')
