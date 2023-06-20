@@ -10,46 +10,38 @@
     <div class="page-header d-print-none">
       <div class="container-xl">
         <div class="row g-2 align-items-center">
-          {{-- <div class="col">
-            <!-- Page pre-title -->
-            <div class="page-pretitle">
-              Overview
-            </div>
-            <h2 class="page-title">
-              Tentative SB98
-            </h2>
-          </div> --}}
-        
+         
         </div>
       </div>
     </div>
 
 
 
-
     <!-- Page body MENU -->
-   <div class="page-body">
+   {{-- <div class="page-body">
       
-      <div class="container-xl mt-1 "> 
+      <div class="container-xl mt-1 ">  --}}
           <div class="row row-deck row-cards ">          
             <div class="col-12 ">
               <div class="card rounded-1 " >
-            
                 <div class="card-body border-bottom ">
           
-                 <div class="table-responsive  rounded-1 mb-5">
-                  <div class="btn-group mb-5">               
-                    <br>                  
-                   
-                  </div>
+               
                   <h2 style="font-size:30px" class="text-dark text-center"> SA 90 DATA </h2>
-                  <a href="{{url('/schedule_tentative')}} " class="btn btn-primary" >Back </a>
-                  <a href="{{url('/schedule_tentative/SA90')}} " class="btn btn-warning  float-right" >Refresh </a>
+              
+                 
+                  <div class="btn-group">
+              
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
+                  <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sa90"> <i class="ti ti-arrow-big-down-filled"></i>
+                    Upload SA90
+                  </a>
+                  <a href="{{url('/schedule_tentative/SA90')}} " class="btn btn-success  float-right" >Refresh </a>
+                </div>
+                   <br>
                   <br>
                   <br>
-                  <br>
-                  <div class="col-12">
+                  <div class="table-responsive  rounded-1 mb-5">
                     <table   class="table table-bordered yajra-datatable" >
                       <thead class="thead-dark">
                         <tr>                   
@@ -59,7 +51,9 @@
                           <th style ="font-size: 10px;">Prod No</th>
                           <th style ="font-size: 10px;">Part Number</th>                      
                           
+                          
                           <th style ="font-size: 10px;">Demand</th>                       
+                          <th style ="font-size: 10px;">Last Update</th>  
                          
                          
                           
@@ -70,8 +64,10 @@
                        
                       </tbody>
                     </table>
-                  </div>
-
+                    <br>
+            
+                    <a href="{{url('/schedule_tentative')}} " class="btn btn-primary" >Back </a>
+          
              
                   </div>
                 </div>
@@ -211,10 +207,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 
 {{-- ====================MODAL SA90 ========================================= --}}
 
@@ -410,28 +402,28 @@ $(document).ready(function () {
 });
 
 
-$(function () {
-    $.fn.dataTable.ext.errMode = 'throw';
-    var table = $('.yajra-datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ url('/schedule_tentative/SA90') }}",
-        columns: [
+// $(function () {
+//     $.fn.dataTable.ext.errMode = 'throw';
+//     var table = $('.yajra-datatable').DataTable({
+//         processing: true,
+//         serverSide: true,
+//         ajax: "{{ url('/schedule_tentative/SA90') }}",
+//         columns: [
          
-            {data: 'modelname', name: 'modelname'},
-            {data: 'prodNo', name: 'prodNo'},
-            {data: 'partnumber', name: 'partnumber'},
+//             {data: 'modelname', name: 'modelname'},
+//             {data: 'prodNo', name: 'prodNo'},
+//             {data: 'partnumber', name: 'partnumber'},
            
-            {data: 'qty', name: 'qty'}
+//             {data: 'qty', name: 'qty'}
            
 
        
            
            
-        ]
-    });
+//         ]
+//     });
     
-  });
+//   });
 
 
 

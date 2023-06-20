@@ -90,7 +90,7 @@
                             <div class="card-body border-bottom ">
                                 <div class="table-responsive  rounded-1 shadow-sm">
                                     {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
-                                    <table style="width:100%" id="datatable-buttons"  class="table table-striped border border-primary shadow-sm">
+                                    <table style="width:100%" id="schedule-release"  class="table  table-bordered border-dark shadow-sm">
                                        
                                         <thead class="thead-dark">
                                             <tr class="headings">
@@ -119,13 +119,13 @@
 
                                         <tbody>
                                             @foreach ($data as $key => $value)
-                                                </td>
+                                             
                                                 <td style="font-size: 12px;"> {{ $value->schcode }}
                                                     <?php if ($value->schcode == null) {
                                                         echo '<span class= "badge text-bg-danger">Generate Failed</span>';
                                                     } ?>
                                               </td>
-                                                <td class="table-success" style="font-size: 12px;"> {{ $value->created_at }}
+                                                <td  style="font-size: 12px;"> {{ $value->created_at }}
                                                 </td>
                                                 <td style="font-size: 12px;"> {{ $value->custcode }}</td>
                                                 <td style="font-size: 12px;"> {{ $value->dest }}</td>
@@ -216,9 +216,26 @@
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">
 
+
+
+
+
     
     
         $(document).ready(function() {
+
+
+            $('#schedule-release').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+           
+            'excelHtml5',
+            'csvHtml5'
+        ]
+    } );
+
+
+
             $('#filter-Data').submit(function(event) {
 
                 event.preventDefault();

@@ -9,36 +9,34 @@
     <!-- Page header -->
     <div class="page-header d-print-none">
       {{-- <div class="container-xl"> --}}
-        <div class="row g-2 align-items-center">
+        <div class="row g-2 align-items-center d-flex justify-content-center">
           
           <!-- Page title actions -->
-          <div class="col-auto ms-auto d-print-none">
-            <div class="btn-list">
-              <span class="d-none d-sm-inline">
-                <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-master"> <i class="ti ti-arrow-big-down-filled"></i>
-                  Upload Master
-                </a>
-                <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sb98"> <i class="ti ti-arrow-big-down-filled"></i>
-                  Upload SB98
-                </a>
-
-                <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sa90"> <i class="ti ti-arrow-big-down-filled"></i>
-                  Upload SA90
-                </a>
-
-              </span>
-                {{-- <br> --}}
-                <button id="confirm-sb98" class="btn btn-secondary btn btn-sm" >
-                  <i class="ti ti-merge"></i>
-                  Summary SB98
-                </button>
        
-              <button  id="generate-sch" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
-                {{-- <i class="ti ti-plus"></i> --}}
-                Generate Schedule
-              </button>
+            <div class="btn-group col-8 ">
+              {{-- <span class="d-none d-sm-inline"> --}}
+                {{-- <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-master"> <i class="ti ti-arrow-big-down-filled"></i>
+                  Upload Master
+                </a> --}}
+
+                <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-light" >
+                  Excell Schedule           
+                 </a>'' 
+                <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-light" >
+                  SB98 Master                 
+                 </a>''
+                 <a   href="{{url('/schedule_tentative/SA90')}}" class="btn btn-light">
+                   SA90 Master
+                 </a>
+            
+             
+
+              {{-- </span> --}}
+                {{-- <br> --}}
+              
+             
             </div>
-          </div>
+       
         </div>
       </div>
     </div>
@@ -68,24 +66,17 @@
                         <button class="btn btn-primary btn-sm" type="submit">Filter</button>
                   </select>   --}}
                  <div class="table-responsive  rounded-1">
-                 
-                    <button type="button" class="btn btn-info dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
-                     Schedule Category
-                     
+                 <div class="btn-group ml-4">
+                    <button type="button" class="btn btn-primary dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
+                     Schedule Category   
                     </button>
-
-                    <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-info dropdown-toggle " >
-                     SB98
-                     
-                    </a>
-
-                    <a   href="{{url('/schedule_tentative/SA90')}}" class="btn btn-info dropdown-toggle " >
-                      SA90
-                      
-                    </a>
-                    
-                    <br>
-                   
+       
+                    <button  id="generate-sch" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
+                      <i class="ti ti-plus"></i>
+                      Generate Schedule
+                    </button>
+                
+                 
                     <ul class="dropdown-menu ">
                       {{-- <li><a class="dropdown-item" href="{{url('schedule_tentative/serviceOK')}}">Schedule Tentative</a></li>  --}}
                       {{-- <li><a style ="font-weight:bold" class="dropdown-item " href="{{url('schedule_tentative/serviceOK')}}">Service Part</a></li> 
@@ -93,10 +84,16 @@
                       <li><a style ="font-weight:bold"class="dropdown-item" href="{{url('schedule_tentative/servicePart')}}">Service Part</a></li>               
                       <li><a  style ="font-weight:bold" class="dropdown-item" href="{{url('schedule_tentative/skdPart')}}">SKD Part</a></li>
                     </ul>
-              
-                  <a href="{{url('/schedule_tentative')}} " class="btn btn-warning  float-right" >Refresh </a>
+                  </div>
+
+                  <a href="{{url('/schedule_tentative')}} " class="btn btn-success float-end" >Refresh </a>
+                   
+                  <br>
+                  <br>
+               
+
                   <div class="col-12">
-                    <table style="width:100%" id="example" class="text-nowrap  table table-striped border border-secondary table-sm" >
+                    <table style="width:100%" id="sch-tentative" class="text-nowrap  table table-striped border border-secondary table-sm" >
                       <thead class="thead-dark">
                         <tr>                   
                           <th style ="font-size: 10px;">Result</th>  
@@ -338,7 +335,15 @@
 
             
 $(document).ready(function () {
-    // $('#example').DataTable();
+  $('#sch-tentative').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+           
+            'excelHtml5',
+            'csvHtml5'
+        ]
+    } );
+
     
     // CONFIRM SUMMARY SB98
     $('#confirm-sb98').on('click', function() {
