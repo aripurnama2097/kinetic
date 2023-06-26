@@ -4,16 +4,16 @@
     <div class="page-wrapper">
         <!-- Page header -->
         <div class="page-header d-print-none">
-          <div class="container-xl">
+          <div class="container-xl ml-2">
               Overview
-              <h2 class="page-title"> Release Schedule </h2>
+              <h2 class="page-title text-light"> Release Schedule </h2>
           </div>
         </div>
 
         <!-- Page body MENU -->
         <div class="bg-dark mt-3">
             <div class="container-fluid">
-              <div class="card">
+              <div class="card ml-3 mr-3">
                 {{-- <div class="card-header"> --}}
                   {{-- </div> --}}
                   <div class="card-body">
@@ -34,10 +34,9 @@
                         </button>
                       </form>
                     </div>
-                    <div class="col-7">
 
-
-                      <form id="filter-Data" class="form-inline  float-right">
+                    <div class="col-7 ml-6">
+                      <form id="filter-Data" class="form-inline  float-left">
                         <input type="date" class="form-control mr-2" name="start_date" id="release-date"
                           value="{{ date('Y-m-d') }}">
                         <input type="date" class="form-control mr-2" name="end_date" id="release-date"
@@ -65,7 +64,7 @@
                     <div class="col-12 ">
                         <div class="card  col-12 ">
 
-                            <div class="card-header  ">
+                            <div class="card-header ml-3 ">
                                 <a data-bs-toggle="modal" data-bs-target="#modal-partlist"
                                     class="btn btn-secondary   text-light">
                                     <i class="ti ti-file-export"></i>
@@ -112,6 +111,7 @@
                                                 <th style="font-size: 10px;">Cust PO</th>
                                                 <th style="font-size: 10px;">Part Number</th>
                                                 <th style="font-size: 10px;">Part Name</th>
+                                                <th style="font-size: 10px;">JKN Shelf No</th>
                                                 <th style="font-size: 10px;">Demand</th>
 
                                             </tr>
@@ -145,6 +145,7 @@
                                                 <td style="font-size: 12px;">{{ $value->custpo }} </td>
                                                 <td style="font-size: 12px;">{{ $value->partno }} </td>
                                                 <td style="font-size: 12px;">{{ $value->partname }} </td>
+                                                <td style="font-size: 12px;">{{ $value->jknshelf}} </td>
                                                 <td style="font-size: 12px;"> {{ $value->demand }}</td> 
 
                                                 </tr>

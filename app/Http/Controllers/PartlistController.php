@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
+use Carbon\Carbon;
 class PartlistController extends Controller
 {
     public function index(){
@@ -27,14 +27,14 @@ class PartlistController extends Controller
         // }
     //    $filterprodno = $this->filterProdno();
 
-    //     $partlistno = DB::connection('sqlsrv')
-    //     ->select("SELECT partlist_no from partlist where partlist_no ='{$filterprodno}' ");
+        $partlistno = DB::connection('sqlsrv')
+        ->select("SELECT distinct(partlist_no) from partlist ");
 
     //  return $qrdata;
      // Membuat QR code dari konten tabel
     //  $qrCode = QrCode::size(200)->generate($dataQR);
 
-        return view('partlist.index', compact('data','dataprodno','qrcode'));
+        return view('partlist.index', compact('data','dataprodno','qrcode','partlistno'));
     }
 
 
@@ -44,47 +44,63 @@ class PartlistController extends Controller
 
         $prodNo = $request->input('prodno');
         $jkeipo= $request->input('jkeipodate');
-        
+
         $data = DB::table('partlist')
-        //  ->select(DB::raw('*, @rownum := @rownum + 1 AS nomor_urut'))
-        // ->crossJoin(DB::raw('(SELECT @rownum := 0) r'))
+        ->distinct('prodno')
         ->where('prodno','=',  $prodNo)
-        // ->where('jkeipodate','=',$jkeipo)    
         ->get();
 
-           return response()->json($data);
+        // $data2 = DB::table('partlist')
+        // ->distinct('partlist_no')
+        // ->where('prodno','=',  $prodNo)
+        // ->get();
+        // $partlistno = "a";
+
+        $qr = $data[0]->partlist_no;
+
+
+        // dd($distinct);
+
+        $dataNew = [$data, $qr];
+
+
+        return response()->json([
+            "data" => $data,
+            "qr" => $qr
+        ]);
+
+
     }
 
 
 
     public function filter_scan(Request $request){
 
-    
+
         $partlistNo= $request->partlist_no;
 
         $data= DB::table('partlist')
-        ->where('partlist_no','=',  $partlistNo)    
+        ->where('partlist_no','=',  $partlistNo)
         ->get();
-        
+
         $cek_partlist = DB::connection('sqlsrv')
         ->select("SELECT * FROM partlist where partlist_no ='{$partlistNo}'");
 
-      
-        // if(empty($cek_partlist))
-        //     {
-        //     echo "<h1>Partlist number not available</h1>";
-        //     return false;
-        //     }
-        // else{
-        //     echo "<h1 >Partlist number available</h1>";
-        //    return response()->json($data);
 
-        // }
+        if(empty($cek_partlist))
+            {
+                return response()->json(['success' => false,
+                'message' => 'Part list Not Available...']);
+            }
+        else{
+            return response()->json($data);
+
+        }
 
         // $success = true; // Set based on your logic
         // $message = $success ? "Request succeeded!" : "Request failed!";
         // $error = $error ? null : "Some error message";
-    
+
         // Create the response
         // $data= [
         //     'success' => $success,
@@ -92,120 +108,275 @@ class PartlistController extends Controller
         //     'error' => $error,
         //     'dataScan' =>$dataScan
         // ];
-    
+
         // Return the response in JSON format
-        return response()->json($data);
+
     }
 
 
 
-    public function scan_issue(Request $request){
-        
+    public function scan_issue(Request $request, $status_print=null){
+
         $scan_nik = $request ->scan_nik;
         $scan_label = $request->scan_label;
-        
+
         //PARAM LABEL
         $label_scan = substr($scan_label,0,11);
         $qty = substr($scan_label, 24,5);
         $unique = substr($scan_label,28,49);
-       
-        $cek_part =DB::connection('sqlsrv')
+
+        $cek_part = DB::connection('sqlsrv')
                     ->select("SELECT * FROM partlist where partno ='{$label_scan}'");
-       
-        
+
         // STEP  CEK PART
         if (!$cek_part) {
-            return response()->json("Wrong Part!!!");
+            return response()->json(['success' => false,
+            'message' => 'WRONG PART...']);
         }
-       
-        // =========STEP 1. CEK DEMAND  PARTNO PADA PARLIST 
 
+
+        // =========STEP 1. CEK LABEL/UNIQUE ID PART PADA PARTSCAN TABLE
         $cek_label = DB::connection('sqlsrv')
-                    ->select("SELECT label from partscan where label ='{$scan_label}'");
-        
-        $cek_total = DB::connection('sqlsrv')
-                        ->select("SELECT   top 1 * from partlist 
-                                where  partno = '{$label_scan}'
+                    ->select("SELECT unique_id from partscan where unique_id ='{$unique}'");
+
+        if($cek_label){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'DOUBLE SCAN...'
+                ]);
+        }
+
+        $selectPart = DB::connection('sqlsrv')
+                        ->select("SELECT top 1 * from partlist
+                                  where  partno = '{$label_scan}'
                                   and demand >= (coalesce(tot_scan,0) + $qty)
+                                  order by custpo asc");
 
-                                order by custpo asc");
+        $cek_continue = DB::connection('sqlsrv')
+                        ->select("SELECT count(*) as continue_status from partscan where partno = '{$label_scan}' and status_print = 'continue'");
 
-            
-        // return response()->json($cek_total);
+        // cek qty scan < stdpack
+        if($qty < $selectPart[0]->stdpack or $cek_continue === 0){
+            return response()
+            ->json([
+                'success' => false,
+                'message' => 'Loose Carton ?'
+            ]);
+        }
 
-        // CEK QTY SCAN ISSUE SESUAI STD PACK/TIDAK
-        // $cek_scan = DB::connection('sqlsrv')
-        //                 ->select("SELECT scan_issue from partscan where sum(scan_issue) = demand");
+
+        // GET ID PRINT
+        // $currentDate = Carbon::now();     
+        // $dateAsNumber = $currentDate->format('Ymd');    
+        // $date = substr($dateAsNumber,2,8);
 
         
-        if($cek_total[0]->tot_scan == $cek_total[0]->demand ){
-            // $response = [
-            //     'status' => 'success',
-            //     'message' => 'Scan Finish'
-            // ];
-            return response()->json("Scan Finish");
+        // $get_id = DB::table('log_print_kit_original')
+        //             ->whereDate('created_at',$currentDate)
+        //             ->max('id');
+  
+        // $order = $get_id ? $get_id + 1 : 1;
+        // $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+
+        // simpan data ke partscan
+        if(!empty(@$status_print)){
+            DB::connection('sqlsrv')
+            ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
+                    ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik, status_print)
+                    select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
+                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}'
+                    from partlist
+                    where partno = '{$label_scan}'
+                    and  (coalesce(tot_scan,0)+{$qty}) <= demand
+                    order by custpo asc ");
         }
-        if($cek_total[0]->tot_scan >= $cek_total[0]->demand ){
-            // $response = [
-            //     'status' => 'success',
-            //     'message' => 'Qty Over'
-            // ];
-            return response()->json("Qty Over, Please Check again");
+        else{
+            DB::connection('sqlsrv')
+            ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
+                    ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik)
+                    select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
+                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}'
+                    from partlist
+                    where partno = '{$label_scan}'
+                    and  (coalesce(tot_scan,0)+{$qty}) <= demand
+                    order by custpo asc ");
         }
+
+
+
+        // update partlist
+        DB::connection('sqlsrv')
+            ->update("UPDATE partlist
+                        set tot_scan = (
+                            SELECT sum(scan_issue) FROM partscan as b where
+                            b.partno = partlist.partno and b.custpo = partlist.custpo
+                        ),
+                        status_scan ='1',
+                        balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
+                    from partscan as b where
+                    partlist.id = '{$selectPart[0]->id}'
+                    ");
+
+        return response()
+        ->json([
+            'success' => true,
+            'message' => 'Scan Succesfully'
+        ]);
+
+        //    SAMPLE :: K2K-0165-02     1708159 40     I10816 K2K-0165-02    202301250432102198000001
+    }
+
+
+    // INSERT KE PARTSCAN DAN CEK LOOSE CARTON LAGI
+    public function looseCarton(Request $request){
+        $this->scan_issue($request,"loosecarton");
+    }
+
+    public function scan_continue(Request $request){
+        $this->scan_issue($request,"continue");
+    }
+
+    public function looseCarton_backup(Request $request){
+
+        $scan_nik = $request ->scan_nik;
+        $scan_label = $request->scan_label;
+
+        //PARAM LABEL
+        $label_scan = substr($scan_label,0,11);
+        $qty = substr($scan_label, 24,5);
+        $unique = substr($scan_label,28,49);
+        $status_print ='loosecarton';
+
+        $cek_part =DB::connection('sqlsrv')
+                    ->select("SELECT * FROM partlist where partno ='{$label_scan}'");
+
+        // STEP  CEK PART
+        if (!$cek_part) {
+            return response()->json(['success' => false,
+            'message' => 'WRONG PART...']);
+        }
+
+
+        // =========STEP 1. CEK LABEL/UNIQUE ID PART PADA PARTSCAN TABLE
+        $cek_label = DB::connection('sqlsrv')
+                    ->select("SELECT unique_id from partscan where unique_id ='{$unique}'");
+
+
+        $selectPart = DB::connection('sqlsrv')
+                        ->select("SELECT top 1 * from partlist
+                                  where  partno = '{$label_scan}'
+                                  and demand >= (coalesce(tot_scan,0) + $qty )
+                                  order by custpo asc");
 
         if(empty($cek_label)){
-            if($cek_total == TRUE){
-                // =========STEP 2. INSERT DATA KE PARTSCAN TABLE
-
-                // $sum_scan = DB::connection('sqlsrv')
-                //                 ->select("SELECT sum(scan_issue) from partlist where ");
-
-                $data = DB::connection('sqlsrv')
-                        ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
-                                ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik)
-                                select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
-                                orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}'
-                                from partlist 
-                                where partno = '{$label_scan}' 
-                                and  coalesce(tot_scan,0) <= demand
-                                order by custpo asc ");
+            DB::connection('sqlsrv')
+            // Insert into Partscan
+            ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
+                    ,orderitem,custpo,partno,partname,label,demand,status_print,unique_id,stdpack,scan_issue, scan_nik)
+                    select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
+                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$status_print}','{$unique}', stdpack,'{$qty}', '{$scan_nik}'
+                    from partlist
+                    where partno = '{$label_scan}'
+                    and  (coalesce(tot_scan,0)+{$qty}) <= demand
+                    order by custpo asc ");
 
 
-                    // $data = DB::connection('sqlsrv')
-                    // ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
-                    //         ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik)
-                    //         select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
-                    //         orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}'
-                    //         from partlist 
-                    //         where partno = '{$label_scan}' 
-                    //         and  coalesce(tot_scan,0) < demand
-                    //         order by custpo asc ");
-    
-                        // STEP 3. UPDATE PARTNO PADA PARLIST BERDASARKAN DATA PARTSCAN
-                        DB::connection('sqlsrv')
-                        ->update("UPDATE partlist set tot_scan = (SELECT sum(scan_issue) FROM partscan as b where  
+
+                    DB::connection('sqlsrv')
+                    ->update("UPDATE partlist set tot_scan = (SELECT sum(scan_issue) FROM partscan as b where
                                 b.partno = partlist.partno and b.custpo = partlist.custpo
-                                ),status_scan ='1' ");
-                
-              
+                                ),
+                                status_scan ='1',
+                                balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
+                                    from partscan as b where
+                                    partlist.id = '{$selectPart[0]->id}'
 
-               return response()->json(['success' => true, 'message' => 'Continue Scan']); 
-             
-                dd($cek_total);
-            
-            }
+                            ");
+
+                    return response()->json(['success' => true,
+                    'message' => 'Scan Succesfully']);
+
+            // cek qty scan < stdpack
+                if($qty < $selectPart[0]->stdpack){
+                    return response()->json(['success' => false,
+                                             'message' => 'Loose Carton?']);
+                }
+
 
         }
-
-        else{
-            return response()->json(['error' => true, 'message' => 'Double Scan']);   
-        }
-
-    //    return response()->json([$message]);
-
-        // return response()->json($data);
-    //    SAMPLE :: K2K-0165-02     1708159 40     I10816 K2K-0165-02    202301250432102198000001
-       
 
     }
+
+    public function scan_continue_backup(Request $request){
+
+        $scan_nik = $request ->scan_nik;
+        $scan_label = $request->scan_label;
+
+        //PARAM LABEL
+        $label_scan = substr($scan_label,0,11);
+        $qty = substr($scan_label, 24,5);
+        $unique = substr($scan_label,28,49);
+        $status_scan ='continue';
+
+        $cek_part =DB::connection('sqlsrv')
+                    ->select("SELECT * FROM partlist where partno ='{$label_scan}'");
+
+        // STEP  CEK PART
+        if (!$cek_part) {
+            return response()->json(['success' => false,
+            'message' => 'WRONG PART...']);
+        }
+
+
+        // =========STEP 1. CEK LABEL/UNIQUE ID PART PADA PARTSCAN TABLE
+        $cek_label = DB::connection('sqlsrv')
+                    ->select("SELECT unique_id from partscan where unique_id ='{$unique}'");
+
+
+        $selectPart = DB::connection('sqlsrv')
+                        ->select("SELECT top 1 * from partlist
+                                  where  partno = '{$label_scan}'
+                                  and demand >= (coalesce(tot_scan,0) + $qty )
+                                  order by custpo asc");
+
+        if(empty($cek_label)){
+            DB::connection('sqlsrv')
+            // Insert into Partscan
+            ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
+                    ,orderitem,custpo,partno,partname,label,demand,status_scan,unique_id,stdpack,scan_issue, scan_nik)
+                    select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
+                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$status_scan}','{$unique}', stdpack,'{$qty}', '{$scan_nik}'
+                    from partlist
+                    where partno = '{$label_scan}'
+                    and  (coalesce(tot_scan,0)+{$qty}) <= demand
+                    order by custpo asc ");
+
+
+
+                    DB::connection('sqlsrv')
+                    ->update("UPDATE partlist set tot_scan = (SELECT sum(scan_issue) FROM partscan as b where
+                                b.partno = partlist.partno and b.custpo = partlist.custpo
+                                ),
+                                status_scan ='1',
+                                balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
+                                    from partscan as b where
+                                    partlist.id = '{$selectPart[0]->id}'
+
+                            ");
+
+                    return response()->json(['success' => true,
+                    'message' => 'Scan Succesfully']);
+
+            // cek qty scan < stdpack
+                if($qty < $selectPart[0]->stdpack){
+                    return response()->json(['success' => false,
+                                             'message' => 'Loose Carton?']);
+                }
+
+
+    }
+}
+
+
 }
