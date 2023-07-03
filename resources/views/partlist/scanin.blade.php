@@ -60,14 +60,13 @@
                                         role="button" aria-expanded="false" aria-controls="collapseExample">
                                         ---SCAN IN---
                                     </a>
-
-                                    {{-- <a class="btn btn-light col-12" href="{{url('partlist/scanin')}}">
-                                        ---SCAN IN---
-                                    </a> --}}
                                 </div>
                             </div>
 
                             <br>
+
+
+
 
                             <div class="collapse mt-4" id="collapse2">
                                 <div class="card card-body col-12 mt-4">
@@ -93,18 +92,28 @@
                                     </div>
 
                                     <br>
+                                    {{-- <br>
+                          <h2 id="judul" style="font-size:30px"class="text-dark text-center " >PART LIST MC</h2>                          
+                      <br>     --}}
+                                    {{-- <iframe id="print-iframe"> --}}
 
 
                                     <div class="table-responsive  rounded-1 shadow-sm  col-12 shadow-lg  mt-5">
                                         <table style="width:100%" id="table-print"
                                             class="text-nowrap  table table-striped border border-dark shadow-sm ">
+
                                             <div class="row">
+
+                                               
+                                            
                                                 <div class="col-12  mt-3 p-2 ">
                                                     <h2 id="judul" style="font-size:30px"class="text-dark text-center">
-                                                        PART LIST MC
-                                                    </h2>
+                                                        PART
+                                                        LIST MC</h2>
                                                 </div>
                                                 <div class="card mt-3 p-2 col-3">
+                                                   
+                                                    
                                                     <div class="col-4" id="contentQR"></div>
                                                     <div class="col-8" id="QRText"></div>
                                                 </div>
@@ -114,6 +123,7 @@
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th style="font-size: 10px;">No</th>
+                                                    <th style="font-size: 10px;">QR</th>
                                                     <th style="font-size: 10px;">Part list No</th>
                                                     <th style="font-size: 10px;">Cust Code</th>
                                                     <th style="font-size: 10px;">Prod No</th>
@@ -136,18 +146,16 @@
                                     </div>
                                     {{-- </iframe> --}}
                                 </div>
-                                <button id="print-btn" class="print-button float-right btn btn-primary">
-                                    Print
-                                    <i class="ti ti-printer"></i>
-                                </button>
+                                <button id="print-btn" class="print-button float-right btn btn-primary"> Print<i
+                                        class="ti ti-printer"></i></button>
                             </div>
 
                             {{-- DATA SCAN IN --}}
                             <div class="collapsed-flex justify-content-right " id="collapseExample">
-                                <p class="text-dark text-center" style="font-size:20px;font-weight:bold">
-                                    MC Issue Planning
-                                </p>
+                                <p class="text-dark text-center" style="font-size:20px;font-weight:bold"> MC Issue
+                                    Planning </p>
                                 <div class="card card-body col-12 border border-secondary shadow-lg">
+
                                     <input
                                         class="form-control form-control-lg mb-3 text-center border border-secondary  d-flex justify-content-center"
                                         type="text" name="scan_nik" value="" id="scan_nik" maxlength="8"
@@ -161,14 +169,15 @@
                                         type="text" name="scan_label" value="" id="scan_label"
                                         placeholder="SCAN LABEL MC" disabled>
                                     <div class="col-12 d-flex justify-content-end">
-                                        <button class="btn btn-info" onclick="document.getElementById('scan_label').value = ''"> Clear </button>
+                                        <button class="btn btn-info"
+                                            onclick="document.getElementById('scan_label').value = ''">Clear</button>
                                     </div>
                                 </div>
-
-
                                 <div class="card-body border-bottom d-flex justify-content-center ">
                                     <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">
-
+                                        {{-- <div class="card-header text-center justify-content-center mt-3">
+                              <h2 style="font-size:30px"class="text-dark " >SCAN ISSUE</h2> 
+                            </div> --}}
                                         <table style="width:100%"
                                             class="text-nowrap  table border-bordered border border-primary shadow-sm">
                                             <thead class="thead-dark">
@@ -202,7 +211,6 @@
                                     <br>
                                 </div>
                             </div>
-                            {{-- END SCAN IN --}}
                             <br>
                             <a href="{{ url('/partlist') }}" class="btn btn-success ">
                                 <i class="ti ti-360"></i>
@@ -220,7 +228,7 @@
             </div>
         </div>
     </div>
-    {{-- @endsection
+{{-- @endsection
 
 @section('script') --}}
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
@@ -237,6 +245,8 @@
 
             $('#partlist').dataTable({
                 "paging": true,
+              
+
             });
 
 
@@ -278,20 +288,21 @@
                     method: 'POST',
                     data: {
                         prodno: prodNo,
-                        // jkeipodate:releaseDate,
+                        // jkeipodate:releaseDate,       
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
                         console.log(response);
+
+
                         var data = ""
-                        var text = $("#QRText").val(response.qr);
+                        var  text = $("#QRText").val(response.qr);
                         var canvas = document.getElementById('QRtext');
                         var canvas = document.getElementById('contentQR');
 
                         // // Create a QRCode object
                         var qr = new QRCode(canvas, {
-                            text: response
-                            .qr, // The data you want to encode as a QR code
+                            text: response.qr, // The data you want to encode as a QR code
                             width: 65, // The width of the QR code
                             height: 65, // The height of the QR code
                         });
@@ -318,7 +329,7 @@
 
                             //  var qr = $("#contentQR").html(value.partlist_no));
 
-                            //  generateQRCode
+                            //  generateQRCode  
 
 
                             // data = value.partlist_no
@@ -356,6 +367,7 @@
                 $(this).css("background-color", "lightgreen");
             });
             // =========
+
 
             $('#scan_nik').on('keypress', function(e) {
                 if (e.which == 13) {
@@ -404,46 +416,59 @@
                             },
                             success: function(response) {
                                 var dataScan = ""
-                                // if (response.success) {
-                                //     swal.fire({
-                                //         icon: 'success',
-                                //         title: response.message,
-                                //         // timer: 5000,
-                                //         showConfirmButton: true,
+                                if (response.success) {
+                                    swal.fire({
+                                        icon: 'success',
+                                        title: response.message,
+                                        // timer: 5000,
+                                        showConfirmButton: true,
 
-                                //     })
-                                // } else {
-                                //     swal.fire({
-                                //         icon: 'error',
-                                //         title: response.message,
-                                //         // timer: 5000,
-                                //         showConfirmButton: true,
+                                    })
+                                } else {
+                                    swal.fire({
+                                        icon: 'error',
+                                        title: response.message,
+                                        // timer: 5000,
+                                        showConfirmButton: true,
 
 
-                                //     })
-                                // }
-                                // console.log("dataScan partlist",dataScan);
+                                    })
+                                }
+                                // console.log("dataScan partlist",dataScan);   
                                 $.each(response, function(key, value) {
 
                                     dataScan = dataScan + "<tr>"
-                                        if (value.tot_scan == 0 && value.balance_issue == 0) {
-                                            dataScan = dataScan + "<tr class=table-light>";
-                                        }
-                                        if (value.tot_scan != 0 && value.balance_issue != 0) {
-                                            dataScan = dataScan + "<tr class=table-warning>";
-                                        }
-                                        if (value.tot_scan == value.demand && value.balance_issue == 0) {
-                                            dataScan = dataScan + "<tr class=table-success>";
-                                        }
+                                    if (value.tot_scan == 0 && value.balance_issue ==
+                                        0) {
+                                        dataScan = dataScan + "<tr class=table-light>";
+                                    }
+                                    if (value.tot_scan != 0 && value.balance_issue !=
+                                        0) {
+                                        dataScan = dataScan +
+                                            "<tr class=table-warning>";
+                                    }
+                                    if (value.tot_scan == value.demand && value
+                                        .balance_issue == 0) {
+                                        dataScan = dataScan +
+                                            "<tr class=table-success>";
+                                    }
 
-                                        dataScan = dataScan + "<td>" + value.id + "</td>"
-                                        dataScan = dataScan + "<td>" + value.custcode + "</td>"
-                                        dataScan = dataScan + "<td>" + value.prodno + "</td>"
-                                        dataScan = dataScan + "<td>" + value.partno + "</td>"
-                                        dataScan = dataScan + "<td>" + value.partname + "</td>"
-                                        dataScan = dataScan + "<td>" + value.demand + "</td>"
-                                        dataScan = dataScan + "<td>" + value.tot_scan + "</td>"
-                                        dataScan = dataScan + "<td>" + value.balance_issue + "</td>"
+                                    dataScan = dataScan + "<td>" + value.id + "</td>"
+                                    dataScan = dataScan + "<td>" + value.custcode +
+                                        "</td>"
+                                    dataScan = dataScan + "<td>" + value.prodno +
+                                        "</td>"
+                                    dataScan = dataScan + "<td>" + value.partno +
+                                        "</td>"
+                                    dataScan = dataScan + "<td>" + value.partname +
+                                        "</td>"
+                                    dataScan = dataScan + "<td>" + value.demand +
+                                        "</td>"
+                                    dataScan = dataScan + "<td>" + value.tot_scan +
+                                        "</td>"
+                                    dataScan = dataScan + "<td>" + value.balance_issue +
+                                        "</td>"
+
                                     dataScan = dataScan + "</tr>"
                                 })
                                 $('#data-scanin').html(dataScan);
@@ -458,7 +483,7 @@
             });
 
 
-            //STEP 2. SCAN LABEL MC
+            //STEP 2. SCAN LABEL MC 
             $('#scan_label').on('keypress', function(e) {
                 // event.preventDefault();
                 if (e.which == 13) {
@@ -488,83 +513,15 @@
 
                                 })
                             } else {
-                                console.log("warning",response.message);
-                                let warningMessage = response.message;
-                                console.log("message",warningMessage.indexOf('Loose'))
-                                if(warningMessage.indexOf('Loose') == -1){
-                                    Swal.fire({
-                                        icon: 'warning',
-                                        title: response.message
-                                    })
-                                    return;
-                                }
-
-                                Swal.fire({
-                                    icon: 'warning',
+                                swal.fire({
+                                    icon: 'error',
                                     title: response.message,
-                                    showDenyButton: true,
-                                    confirmButtonText: 'Loose Control',
-                                    denyButtonText: `Continue`,
-                                }).then((result) => {
-                                 
-                                    if (result.isConfirmed) {
-                                        // Swal.fire('Oke Loose Carton')
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            url: "{{ url('/partlist/looseCarton/') }}",
-                                            headers: {
-                                                'X-CSRF-TOKEN': $(
-                                                    'meta[name="csrf-token"]'
-                                                    ).attr('content')
-                                            },
-                                            data: {
-                                                scan_label: scan_label
-                                            },
-                                            success: function(response) {
-                                                console.log(response)
-                                            }
-                                        })
-                                    } else if (result.isDenied) {
-                                        Swal.fire('Continue scan')
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            url: "{{ url('/partlist/scan_continue/') }}",
-                                            headers: {
-                                                'X-CSRF-TOKEN': $(
-                                                    'meta[name="csrf-token"]'
-                                                    ).attr('content')
-                                            },
-                                            data: {
-                                                scan_label: scan_label
-                                            },
-                                            success: function(response) {
-                                                console.log(response)
-                                            }
-                                        })
-                                    }
+
+                                    timer: 5000,
+                                    showConfirmButton: true,
+
                                 })
-                                return;
-
                             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                             var dataScan = ""
                             $.each(response, function(key, value) {
@@ -604,7 +561,7 @@
 
         });
 
-        //
+        //           
 
         // if (response.success) {
         // swal.fire({

@@ -524,22 +524,22 @@
                 orderable: true, 
                 searchable: true
             },
-        ]
+        ],
         // ,
-        // button: [
-        //         $.extend(true, {}, buttonCommon, {
-        //             extend: 'copy',
-        //             exportOptions: { columns: ':visible' }
-        //         }),
-        //         $.extend(true, {}, buttonCommon, {
-        //             extend: 'csv',
-        //             exportOptions: { columns: ':visible' }
-        //         }),
-        //         $.extend(true, {}, buttonCommon, {
-        //             extend: 'print',
-        //             exportOptions: { columns: ':visible' }
-        //         }),
-        //     ]
+        button: [
+          $.extend(true, {}, buttonCommon, {
+                    extend: 'copy',
+                    exportOptions: { columns: ':visible' }
+                }),
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'csv',
+                    exportOptions: { columns: ':visible' }
+                }),
+                $.extend(true, {}, buttonCommon, {
+                    extend: 'print',
+                    exportOptions: { columns: ':visible' }
+                }),  
+            ]
     });
     
   });

@@ -10,9 +10,11 @@ class ScheduleController extends Controller
 {
     public function index(){
 
-        $data = DB::table('schedule')
-        ->orderByRaw('vandate', 'ASC')
-        ->get();
+        $data = DB::connection('sqlsrv')
+                ->select ("SELECT a.* , b.stdpack, b.vendor, b.jknshelf from schedule as a
+                inner  join std_pack as b 
+                ON  a.partno = b.partnumber
+                order by a.vandate asc");
 
         $data2=DB::connection('sqlsrv')
         ->select("SELECT distinct (prodno) from schedule ");

@@ -77,12 +77,13 @@ Route::get('stdpack/{id}/destroy', [StdpackController::class,'destroy'])->middle
 // ========================================MASTER SCHEDULE TENTATIVE ROUTING===========================
 Route::get('/schedule_tentative',[SchTentativeController::class, 'index'])->middleware('auth');
 Route::post('/schedule_tentative/uploadSch',[SchTentativeController::class, 'importCSV'])->middleware('auth');
-Route::post('/schedule_tentative/uploadSB98',[SchTentativeController::class, 'importSB98'])->middleware('auth');
+Route::post('/schedule_tentative/SB98/uploadSB98',[SchTentativeController::class, 'importSB98'])->middleware('auth');
 Route::post('/schedule_tentative/uploadsa90',[SchTentativeController::class, 'importSA90'])->middleware('auth');
-Route::get('/schedule_tentative/sumsb98',[SchTentativeController::class, 'sumsb98'])->middleware('auth');
+Route::get('/schedule_tentative/SB98/sumsb98',[SchTentativeController::class, 'sumsb98'])->middleware('auth');
 
 
 Route::get('/schedule_tentative/SB98',[SB98Controller::class, 'index'])->middleware('auth');
+
 Route::get('/schedule_tentative/SA90',[SA90Controller::class, 'index'])->middleware('auth');
 Route::get('schedule_tentative/SA90/delete',[SA90Controller::class, 'delete'])->middleware('auth');
 
@@ -104,7 +105,7 @@ Route::get('/schedule_tentative/generate',[SchTentativeController::class, 'gener
 Route::get('schedule', [ScheduleController::class,'index'])->middleware('auth');
 Route::post('/schedule/filter',[ScheduleController::class, 'filter'])->middleware('auth');
 Route::post('schedule/partlist',[ScheduleController::class, 'partlist'])->middleware('auth');
-Route::get('schedule/email',[EmailController::class, 'index'])->middleware('auth');
+Route::post('schedule/email',[EmailController::class, 'index'])->middleware('auth');
 
 
 
@@ -113,12 +114,20 @@ Route::get('partlist',[PartlistController::class,'index'])->middleware('auth');
 Route::post('partlist/filterProdno',[PartlistController::class,'filterProdno'])->middleware('auth');
 Route::post('partlist/filter_scan',[PartlistController::class,'filter_scan'])->middleware('auth');
 Route::post('partlist/scan_issue',[PartlistController::class,'scan_issue'])->middleware('auth');
-
-
-// Route::post('/stdpack/multi-delete', [StdpackController::class, 'multiDelete'])->name('posts.multi-delete');
-
+Route::post('partlist/looseCarton',[PartlistController::class,'looseCarton'])->middleware('auth');
+Route::post('partlist/scan_continue',[PartlistController::class,'scan_continue'])->middleware('auth');
 
 
 
+// =======================================REPACKING ROUTING===========================
 Route::get('repacking',[RepackingController::class,'index'])->middleware('auth');
-Route::post('repacking/printOriginal/{id}/',[RepackingController::class,'printOriginal'])->middleware('auth');
+// Route::post('repacking/printOriginal/{id}/',[RepackingController::class,'printOriginal'])->middleware('auth');
+Route::post('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit'])->middleware('auth');
+// Route::post('repacking/printkit',[RepackingController::class,'printkit'])->middleware('auth');
+
+Route::get('repacking/logPrintOrg',[RepackingController::class,'logPrintOrg'])->middleware('auth');
+Route::get('repacking/scanIn',[RepackingController::class,'scanIn'])->middleware('auth');
+Route::post('repacking/scanIn/inputData',[RepackingController::class,'inputData'])->middleware('auth');
+
+Route::get('repacking/scanCombine/{id}',[RepackingController::class,'scanCombine'])->middleware('auth');
+
