@@ -157,7 +157,7 @@ class PartlistController extends Controller
                         ->select("SELECT count(*) as continue_status from partscan where partno = '{$label_scan}' and status_print = 'continue'");
 
         // cek qty scan < stdpack
-        if($qty < $selectPart[0]->stdpack or $cek_continue === 0){
+        if($qty < $selectPart[0]->stdpack or $cek_continue == 0){
             return response()
             ->json([
                 'success' => false,
@@ -167,25 +167,25 @@ class PartlistController extends Controller
 
 
         // GET ID PRINT
-        // $currentDate = Carbon::now();     
-        // $dateAsNumber = $currentDate->format('Ymd');    
-        // $date = substr($dateAsNumber,2,8);
+        $currentDate = Carbon::now();     
+        $dateAsNumber = $currentDate->format('Ymd');    
+        $date = substr($dateAsNumber,2,8);
 
         
-        // $get_id = DB::table('log_print_kit_original')
-        //             ->whereDate('created_at',$currentDate)
-        //             ->max('id');
+        $get_id = DB::table('partscan')
+                    ->whereDate('scan_date',$currentDate)
+                    ->max('id');
   
-        // $order = $get_id ? $get_id + 1 : 1;
-        // $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $order = $get_id ? $get_id + 1 : 1;
+        $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
         // simpan data ke partscan
         if(!empty(@$status_print)){
             DB::connection('sqlsrv')
             ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
-                    ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik, status_print)
+                    ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik, status_print,idnumber)
                     select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
-                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}'
+                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}','{$idnumber}'
                     from partlist
                     where partno = '{$label_scan}'
                     and  (coalesce(tot_scan,0)+{$qty}) <= demand
@@ -194,9 +194,9 @@ class PartlistController extends Controller
         else{
             DB::connection('sqlsrv')
             ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
-                    ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik)
+                    ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik,idnumber)
                     select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
-                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}'
+                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$idnumber}'
                     from partlist
                     where partno = '{$label_scan}'
                     and  (coalesce(tot_scan,0)+{$qty}) <= demand
@@ -313,7 +313,7 @@ class PartlistController extends Controller
         $scan_nik = $request ->scan_nik;
         $scan_label = $request->scan_label;
 
-        //PARAM LABEL
+
         $label_scan = substr($scan_label,0,11);
         $qty = substr($scan_label, 24,5);
         $unique = substr($scan_label,28,49);
