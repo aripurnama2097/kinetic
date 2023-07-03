@@ -121,6 +121,7 @@ Route::post('partlist/scan_continue',[PartlistController::class,'scan_continue']
 
 // =======================================REPACKING ROUTING===========================
 Route::get('repacking',[RepackingController::class,'index'])->middleware('auth');
+Route::get('repacking/kitdata',[RepackingController::class,'kitdata'])->middleware('auth');
 // Route::post('repacking/printOriginal/{id}/',[RepackingController::class,'printOriginal'])->middleware('auth');
 Route::post('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit'])->middleware('auth');
 // Route::post('repacking/printkit',[RepackingController::class,'printkit'])->middleware('auth');
