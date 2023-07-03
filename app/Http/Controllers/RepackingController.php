@@ -97,7 +97,8 @@ class RepackingController extends Controller
 
          // STEP 2. AMBIL PARAMETER LABEL QR
         $param = DB::connection('sqlsrv')
-                      ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, a.tot_scan,a.balance_issue , b.unique_id, b.label
+                      ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, 
+                                    a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
                                         from partlist as a
                                 inner join partscan as b on a.partno = b.partno and a.demand = b.demand                              
                                 where 	b.label = '{$scan_label}' ");
@@ -111,7 +112,7 @@ class RepackingController extends Controller
         $param2 = DB::connection('sqlsrv')
                         ->select("SELECT distinct a.id,a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,
                                   a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, 
-                                  a.tot_scan,a.balance_issue , b.unique_id, b.label
+                                  a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
                                             from partlist as a
                                   inner join partscan as b on a.partno = b.partno and a.demand = b.demand                                  
                                   where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'");
@@ -161,8 +162,69 @@ class RepackingController extends Controller
         return view('repacking.scanin');
     }
 
+    public function inputData(Request $request){
+
+        $scan_nik = $request->scan_nik;
+        $mcLabel = $request->mc_label;
+        $kitLabel = $request->kit_label;
+
+        // GET PARAM FROM KIT LABEL
+        $partno = substr($kitLabel, 0,11);
+        $qty    = substr($kitLabel, 17,19);
+
+        // $data = "K2K-0165-02:KNOB assy:40:JK NAGANO:9344785::2306260005";
+        $data = $kitLabel;
+        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
+
+        //AMBNIL DEMAND PARTNO
+        $get_demand = DB::connection('sqlsrv')
+                    ->select("SELECT demand from partlist where partno = '{$partno}' and custpo = '{$custpo}'
+                         ");
+
+        $cek_label = DB::connection('sqlsrv')
+                    ->select("SELECT * FROM scanin_repacking where label_mc ='{$mcLabel}' and
+                            label_kit ='{$kitLabel}'");
+
+      
+        if($cek_label){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'DOUBLE SCAN...'
+                ]);
+        }
+
+
+        // STEP 1.INSERT INTO SCAN IN
+        DB::connection('sqlsrv')
+        ->insert("INSERT into scanin_repacking(custpo,partno, partname,demand, qty_receive,dest,label_mc,label_kit,scan_nik) 
+                  SELECT  '{$custpo}', '{$partno}','{$partname}','{$get_demand[0]->demand}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}'
+                ");
+
+         // STEP 2.GET JOIN WITH PARTLIST OR SCHEDULE
+         return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Scan success...'
+                ]);
+       
+    
+    
+    }
+
     public function scanCombine(){
 
         return view('repacking.scanCombine');
     }
+
+
+    public function kitdata(){
+        $data = DB::connection('sqlsrv')
+            ->select("SELECT  b.*,a.qty_receive, a.act_receive,a.bal_receive  from scanin_repacking as a
+                    inner join partlist as b 
+                    on a.partno = b.partno and a.custpo = b.custpo ");
+        
+        return view('repacking.kitdata',compact('data'));
+    }
+
 }

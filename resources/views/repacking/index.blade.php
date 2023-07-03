@@ -87,7 +87,12 @@
                     <div class="col-12 ">
                         <div class="card rounded-1 col-12 mb-2">
                             <div class="justify-content-center mt-3 ml-3 mr-3 ">
-                                    <h1 class="text-dark"> Original Print</h1>
+                                <a class="btn btn-secondary mb-2" href="{{ url('repacking/logPrintOrg') }}"> Log Print
+                                    <i class="ti ti-printer"></i> </a>
+                                <a class="btn btn-success mb-2" href="{{ url('repacking') }}"> Refresh <i
+                                        class="ti ti-refresh"></i> </a>
+                                <a class="btn btn-primary mb-2" href="{{ url('repacking/scanIn') }}"> --Scan In--  </a>
+                                    <h1 class="text-dark text-center"> Original Print</h1>
                                     <div class="row row-cards col-12 mb-4">
                                         <div class="mb-3 col-sm-12 col-12">
                                             <input style="font-size:20px"
@@ -100,7 +105,7 @@
                                                 placeholder="SCAN MC LABEL" disabled>                                          
                                         </div>                                      
                                     </div>
-                                    <div class="col-12 d-flex justify-content-end mb-3 mr-6">
+                                    <div class="col-12 d-flex justify-content-end mb-2 mr-6">
                                         <button class="btn btn-info"
                                             onclick="document.getElementById('scan_label').value = ''">clear</button>
                                     </div>
