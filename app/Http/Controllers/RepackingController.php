@@ -169,6 +169,7 @@ class RepackingController extends Controller
         $kitLabel = $request->kit_label;
 
         // GET PARAM FROM KIT LABEL
+        $label_scan = substr($mcLabel,0,11);
         $partno = substr($kitLabel, 0,11);
         $qty    = substr($kitLabel, 17,19);
 
@@ -176,13 +177,11 @@ class RepackingController extends Controller
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
-        //AMBNIL DEMAND PARTNO
-        $get_demand = DB::connection('sqlsrv')
-                    ->select("SELECT demand from partlist where partno = '{$partno}' and custpo = '{$custpo}'
-                         ");
-
+    
+    
+        // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
-                    ->select("SELECT * FROM scanin_repacking where label_mc ='{$mcLabel}' and
+                    ->select("SELECT * FROM scanin_repacking where label_mc ='{$mcLabel}' or
                             label_kit ='{$kitLabel}'");
 
       
@@ -193,22 +192,53 @@ class RepackingController extends Controller
                     'message' => 'DOUBLE SCAN...'
                 ]);
         }
+        // END CEK LABEL SCAN
 
 
-        // STEP 1.INSERT INTO SCAN IN
+        // ambil part dari list repacking
+        $selectPart = DB::connection('sqlsrv')
+        ->select("SELECT top 1 * from repacking_list
+                  where  partno = '{$label_scan}'
+                  and demand >= (coalesce(act_receive,0) + $qty)
+                  order by custpo asc");
+
+        // dd($selectPart);
+
+        // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custpo,partno, partname,demand, qty_receive,dest,label_mc,label_kit,scan_nik) 
-                  SELECT  '{$custpo}', '{$partno}','{$partname}','{$get_demand[0]->demand}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}'
+        ->insert("INSERT into scanin_repacking(custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik) 
+                  SELECT  '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}'
                 ");
 
-         // STEP 2.GET JOIN WITH PARTLIST OR SCHEDULE
+
+
+         // STEP 3.UPDATE IN REPACKING LIST     
+     $update =    DB::connection('sqlsrv')
+        ->update("UPDATE repacking_list 
+                                SET act_receive = ( select sum(qty_receive )
+                                    from scanin_repacking  as b where 
+                                b.partno = repacking_list.partno  and b.custpo = repacking_list.custpo),
+                                    bal_receive = repacking_list.demand - (repacking_list.act_receive + {$qty})
+                                    from scanin_repacking as b  where
+                                repacking_list.id = '{$selectPart[0]->id}' ") ;
+
+        // return $update;
+
+        // -- // UPDATE partlist
+        // -- //                 set tot_scan = (
+        // -- //                     SELECT sum(scan_issue) FROM partscan as b where
+        // -- //                     b.partno = partlist.partno and b.custpo = partlist.custpo
+        // -- //                 ),
+        // -- //                 status_scan ='1',
+        // -- //                 balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
+        // -- //             from partscan as b where
+        // -- //             partlist.id = '{$selectPart[0]->id}'
+
          return response()
                 ->json([
                     'success' => true,
                     'message' => 'Scan success...'
-                ]);
-       
-    
+                ]);  
     
     }
 
@@ -220,9 +250,9 @@ class RepackingController extends Controller
 
     public function kitdata(){
         $data = DB::connection('sqlsrv')
-            ->select("SELECT  b.*,a.qty_receive, a.act_receive,a.bal_receive  from scanin_repacking as a
+            ->select("SELECT  b.*,a.qty_receive, a.act_receive,a.bal_receive  from repacking_list as a
                     inner join partlist as b 
-                    on a.partno = b.partno and a.custpo = b.custpo ");
+                    on a.partno = b.partno and a.custpo = b.custpo  order by id desc");
         
         return view('repacking.kitdata',compact('data'));
     }

@@ -235,7 +235,7 @@
                     if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
                         console.log(qty_kit)
                       
-                        alert('Result Oke')
+                        // alert('Result Oke')
 
                         $.ajax({
                             type: "POST",
@@ -257,19 +257,21 @@
                                             var audio   = document.getElementById('audio');
                                             var source  = document.getElementById('audioSource');
                                             var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
-                                            document.getElementById("result_OK").innerHTML = "OKE";
-                                            document.getElementById("result_OK").style.display = "block";
-                                            document.getElementById("result_NG").style.display = "none";           
-                                            audio.load();
-                                            audio.play();
-                                        // swal.fire({
-                                        //     icon: 'success',
-                                        //     title: response.message,
+                                            // document.getElementById("result_OK").innerHTML = "OKE";
+                                            // document.getElementById("result_OK").style.display = "block";
+                                            // document.getElementById("result_NG").style.display = "none";           
+                                            // audio.load();
+                                            // audio.play();
 
-                                        //     timer: 5000,
-                                        //     showConfirmButton: true,
 
-                                        // })
+                                        swal.fire({
+                                            icon: 'success',
+                                            title: response.message,
+
+                                            timer: 5000,
+                                            showConfirmButton: true,
+
+                                        })
                                         } 
                                         else {
                                             swal.fire({
