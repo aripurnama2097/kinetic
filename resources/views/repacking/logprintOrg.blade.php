@@ -36,15 +36,15 @@
         </div> --}}
       </div>
     
-        <div class="container-xl mt-1 ">
-          <div class="row row-deck row-cards ">          
+        {{-- <div class="container-xl mt-1 ">
+          <div class="row row-deck row-cards ">           --}}
             <div class="col-12 ">
               <div class="card rounded-1 col-12 " >
                 <div class="card-header text-center justify-content-center">
-                  <h2 style="font-size:30px"class="text-dark " >--LOG PRINT ORIGINAL-</h2> 
+                  <h2 style="font-size:30px"class="text-dark " >--LOG PRINT LABEL KIT-</h2> 
                 </div>
             
-            
+
               </div>
             </div>
 
@@ -61,7 +61,7 @@
 
                   <div class="table-responsive  rounded-1 shadow-sm">      
                               
-              
+                    <a class="btn btn-success mb-2" href="{{url('/repacking/logPrintOrg')}}"> <i class="ti ti-360"></i> Refresh  </a>
                    <table style="width:100%" id="example" class="table table-striped border border-primary shadow-sm" >
                      <thead class="thead-dark">
                        <tr>                   
@@ -75,6 +75,7 @@
                         <th style ="font-size: 10px;">Shelf No</th>                       
                         <th style ="font-size: 10px;">Prod No</th>
                          <th style ="font-size: 10px;">Last Print</th>  
+                         <th style ="font-size: 10px;">Print</th> 
                               
                        </tr>
                       </thead>
@@ -87,17 +88,20 @@
                          <td style ="font-size: 12px;">{{$value->custpo}} </td>
                          <td style ="font-size: 12px;">{{$value->partno}} </td>
                          <td style ="font-size: 12px;">{{$value->partname}} </td> 
-                         <td style ="font-size: 12px;"> {{$value->tot_scan}}</td>  
+                         <td style ="font-size: 12px;"> {{$value->qty_scan}}</td>  
                          <td style ="font-size: 12px;"> {{$value->dest}}</td>                    
                          <td style ="font-size: 12px;"> {{$value->shelfno}}</td>       
                          <td style ="font-size: 12px;"> {{$value->prodno}}</td>               
                          </td>    
+                         <td style ="font-size: 12px;"> {{$value->last_print}} </td>               
+                         </td>   
+
                          <td style ="font-size: 12px;">
 
                         
-                          {{-- <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#printLblOriginal_{{$value->id}}">Print KIT</a>
+                          <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#logPrintOrg_{{$value->id}}">Print KIT</a>
                         
-                          <div class="modal modal-blur fade" id="printLblOriginal_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal modal-blur fade" id="logPrintOrg_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                               <div class="modal-content">
                                 <div class="modal-header">
@@ -106,12 +110,13 @@
                                 </div>
                                
                                     <div class="modal-body">
-                                      <form action="{{ url('repacking/printOriginal/' . $value->id) }}" method="POST" >
+                                
+                                      <form action="{{ url('repacking/logPrintOrg/' . $value->id) }}" method="POST" >
                                       
                                         @csrf
                                         <div class="mb-3">
                                             <label class="form-label">PIC</label>
-                                            <input type="text" name="scan_nik"  id="scan_nik" class="form-control" name="example-text-input"  placeholder="PIC">
+                                            <input type="text" name="pic_print"  id="pic_print" class="form-control" name="example-text-input"  placeholder="PIC">
                                         </div>                                       
                                     </div>  
                         
@@ -127,7 +132,7 @@
                             </div> 
                               </div>
                             </div>
-                          </div> --}}
+                          </div>
 
 
 

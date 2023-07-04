@@ -186,10 +186,10 @@
             $("#scan_nik").focusin(function() {
                 $(this).css("background-color", "lightblue");
             });
-            $("#partlist_no").focusin(function() {
+            $("#mc_label").focusin(function() {
                 $(this).css("background-color", "lightblue");
             });
-            $("#scan_label").focusin(function() {
+            $("#kit_label").focusin(function() {
                 $(this).css("background-color", "lightblue");
             });
             // =========

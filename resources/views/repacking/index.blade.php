@@ -1,6 +1,15 @@
 @extends('layouts.main')
 @section('section')
     <div class="page-wrapper">
+
+        <div class="d-flex justify-content-end">
+            <div id="spinner" class="spinner" style="display: none;">
+              <div class="spinner-border text-info text-end" role="status">
+                  <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          </div>
+
         <!-- Page header -->
         <div class="page-header d-print-none">
             <div class="container-xl">
@@ -92,7 +101,8 @@
                                 <a class="btn btn-success mb-2" href="{{ url('repacking') }}"> Refresh <i
                                         class="ti ti-refresh"></i> </a>
                                 <a class="btn btn-primary mb-2" href="{{ url('repacking/scanIn') }}"> --Scan In--  </a>
-                                    <h1 class="text-dark text-center"> Original Print</h1>
+                                <a class="btn btn-light mb-2" href="{{ url('repacking/scanCombine') }}"> --Scan Combine--  </a>
+                                    <h1 class="text-dark text-center"> Print Label KIT</h1>
                                     <div class="row row-cards col-12 mb-4">
                                         <div class="mb-3 col-sm-12 col-12">
                                             <input style="font-size:20px"
@@ -259,6 +269,7 @@
     <script type="text/javascript">
     
         $(document).ready(function() {
+            const spinner = document.querySelector('#spinner');
 
           $('#repacking-org').DataTable( {
         dom: 'Bfrtip',
@@ -327,6 +338,27 @@
             $('#scan_label').on('keypress', function(e) {
                 // event.preventDefault();
                 if (e.which == 13) {
+
+             
+                        const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 10000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                        })
+                        
+                        Toast.fire({
+                        icon: 'info',
+                        title: 'Process Print'
+                        })
+                        
+                 
+
                     var scan_label = $('#scan_label').val();
 
                     $.ajax({
@@ -340,7 +372,25 @@
                             scan_label: scan_label
                         },
                         success: function(response) {
+                            alert('succes print label')
                             console.log(response)
+
+                            // if (response.success) {
+                            // swal.fire({
+                            //                 icon: 'success',
+                            //                 title: response.message,
+
+                            //                 timer: 5000,
+                            //                 showConfirmButton: true,
+
+                            //             })
+                            //             } 
+                            // else {
+                            //                 swal.fire({
+                            //                 icon: 'warning',
+                            //                 title: response.message
+                            //             })  
+                            // }
                        
                         }
                     });
