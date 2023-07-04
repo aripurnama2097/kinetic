@@ -179,6 +179,7 @@ class SchTentativeController extends Controller
 
   
 
+    // GENERATE SCHEDULE RELEASE
     public function generate(){
 
       $user = auth()->user()->name;
@@ -208,18 +209,21 @@ class SchTentativeController extends Controller
       
       $result = DB::connection('sqlsrv')
                 ->select("INSERT into schedule(schcode,custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
-                partname,demand,input_user) 
+                partname,shelfno,demand,input_user) 
                 select	'{$uniqueNumber}', a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,  a.demand,'{$user}' from schedule_temp as a
+                                a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,'{$user}' from schedule_temp as a
                                 inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
                 where a.dest != 'PAKISTAN'
                 UNION ALL
                 select	 '{$uniqueNumber}',a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,  a.demand, '{$user}' from schedule_temp as a 
+                                a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand, '{$user}' from schedule_temp as a 
                                 inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                 where a.dest ='PAKISTAN'
                 order by vandate asc ");
     }
+
+
+   
 
 
 

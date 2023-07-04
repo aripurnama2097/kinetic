@@ -50,10 +50,10 @@ class ScheduleController extends Controller
 
          DB::connection('sqlsrv')
         ->insert("INSERT into partlist(custcode, dest,model,prodno,jkeipodate,vandate,partlist_no,orderitem,
-                  custpo,partno,partname, demand, stdpack,vendor,input_user)
+                  custpo,partno,partname, demand, stdpack,mcshelfno,vendor,input_user)
                   SELECT a.custcode,a.dest, a.model, a.prodno,a.jkeipodate,a.vandate,'{$partlistno}', a.orderitem,
                   a.custpo, a.partno, a.partname,  a.demand,
-                  b.stdpack, b.vendor, '{$user}' from schedule as a
+                  b.stdpack, a.shelfno,b.vendor, '{$user}' from schedule as a
                   left join std_pack as b  ON a.partno = b.partnumber
                   where a.prodno ='{$prodNo}'
                   order by a.vandate desc");
