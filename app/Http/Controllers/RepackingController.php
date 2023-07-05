@@ -20,57 +20,7 @@ class RepackingController extends Controller
 
 
 
-    // public function printOriginal(Request $request, $id){
-
-    //     $nik = $request->sorting_by;
-    //     $id = $request->id;
-    //     $raw_nik = substr($nik, 2,5);
-    //     $currentDate = Carbon::now();     
-
-    //     // Mendapatkan format tanggal sebagai angka
-    //     $dateAsNumber = $currentDate->format('Ymd'); 
-        
-    //     $date = substr($dateAsNumber,2,8);
-
-        
-    //     $get_id = DB::table('log_print_kit_original')
-    //                 ->whereDate('created_at',$currentDate)
-    //                 ->max('id');
-  
-
-
-
-    //     $order = $get_id ? $get_id + 1 : 1;
-      
-    //        // Generate unique number berdasarkan tanggal dan urutan
-    //     $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
-
-    //     // dd($idnumber);
-
-    //     // STEP 1. INSERT TO PRINT LOG
-    //     DB::connection('sqlsrv')
-    //                         ->insert(" INSERT 
-    //                                         into log_print_kit_original (idnumber,partno,partname,tot_scan,dest,custpo,shelfno,  prodno, balance_issue)
-    //                                    SELECT 	'{$idnumber}',a.partno, a.partname, a.tot_scan, a.dest, a.custpo, a.mcshelfno,  a.prodno,a.balance_issue
-    //                                         from	partlist as a                                 
-    //                                     where 	id = '{$id}' ");
-
-    //     // STEP 2. AMBIL PARAMETER LABEL QR
-    //     $param = DB::connection('sqlsrv')
-    //                         ->select(" SELECT 	partno, partname, tot_scan, dest, custpo, mcshelfno,  prodno,balance_issue,stdpack
-    //                                         from	partlist                                 
-    //                                     where 	id = '{$id}' ");
-
-
-    //  // STEP 3. UPDATE STATUS PRINT
-    //     $update_status = DB::connection('sqlsrv')
-    //                         -> update("UPDATE partlist set status_print = 2
-    //                                     where id ='{$id}' ");
-
-
-    //      return view('repacking.original', compact('param','idnumber'));
-      
-    // }
+   
 
     public function startPrint(Request $request){
 
@@ -81,6 +31,7 @@ class RepackingController extends Controller
     }
 
 
+    // PROCESS PRINT LABEL KIT
     public function printlbl_kit(Request $request){
 
 
@@ -109,6 +60,7 @@ class RepackingController extends Controller
         $custpo     =   $param[0]->custpo ;
 
 
+        //SEND DATA UNTUK CONTENT PRINT LABEL
         $param2 = DB::connection('sqlsrv')
                         ->select("SELECT distinct a.id,a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,
                                   a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, 
@@ -118,32 +70,20 @@ class RepackingController extends Controller
                                   where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'");
         
 
-        $currentDate = Carbon::now();     
-        $dateAsNumber = $currentDate->format('Ymd');    
-        $date = substr($dateAsNumber,2,8);
-
-        
-        $get_id = DB::table('log_print_kit_original')
-                    ->whereDate('created_at',$currentDate)
-                    ->max('id');
-  
-        $order = $get_id ? $get_id + 1 : 1;
-      
-           // Generate unique number berdasarkan tanggal dan urutan
-        $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
-
-
 
         // STEP 1. INSERT TO PRINT LOG
-        // DB::connection('sqlsrv')
-        //                     ->insert(" INSERT 
-        //                                     into log_print_kit_original (idnumber,partno,partname,tot_scan,dest,custpo,shelfno,  prodno, balance_issue)
-        //                                SELECT 	'{$idnumber}',a.partno, a.partname, a.tot_scan, a.dest, a.custpo, a.mcshelfno,  a.prodno,a.balance_issue
-        //                                     from	partlist as a                                 
-        //                                 where 	id = '{$id}' ");
-
+       $logPrint = DB::connection('sqlsrv')
+                            ->insert(" INSERT 
+                                            into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
+                                            SELECT distinct 
+                                            b.idnumber,a.partno,a.partname,  b.scan_issue,a.dest,a.custpo,a.mcshelfno, a.prodno
+                                                        from partlist as a
+                                            inner join partscan as b on a.partno = b.partno and a.demand = b.demand                                  
+                                            where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'                      
+                                        ");
+    //     return $logPrint;
     
-        return view('repacking.original', compact('param2','idnumber'));
+        return view('repacking.original', compact('param2'));
     
 
     }
@@ -247,6 +187,87 @@ class RepackingController extends Controller
         return view('repacking.scanCombine');
     }
 
+    public function inputCombine(Request $request){
+
+        $scan_nik = $request->scan_nik;
+        $mcLabel = $request->mc_label;
+        $kitLabel = $request->kit_label;
+
+        // GET PARAM FROM KIT LABEL
+        $label_scan = substr($mcLabel,0,11);
+        $partno = substr($kitLabel, 0,11);
+        $qty    = substr($kitLabel, 17,19);
+
+        $status_print = 'combine';
+
+        // $data = "K2K-0165-02:KNOB assy:40:JK NAGANO:9344785::2306260005";
+        $data = $kitLabel;
+        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
+
+    
+    
+        // STEP 1.CEK LABEL SCAN PADA SCAN IN
+        $cek_label = DB::connection('sqlsrv')
+                    ->select("SELECT * FROM scanin_repacking where label_mc ='{$mcLabel}' or
+                            label_kit ='{$kitLabel}'");
+
+      
+        if($cek_label){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'DOUBLE SCAN...'
+                ]);
+        }
+        // END CEK LABEL SCAN
+
+
+        // ambil part dari list repacking
+        $selectPart = DB::connection('sqlsrv')
+        ->select("SELECT top 1 * from repacking_list
+                  where  partno = '{$label_scan}'
+                  and demand >= (coalesce(act_receive,0) + $qty)
+                  order by custpo asc");
+
+
+        // STEP 2.INSERT INTO REPACKING SCAN IN
+        DB::connection('sqlsrv')
+        ->insert("INSERT into scanin_repacking(custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik) 
+                  SELECT  '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}'
+                ");
+
+
+
+         // STEP 3.UPDATE IN REPACKING LIST     
+    $update =     DB::connection('sqlsrv')
+        ->update("UPDATE repacking_list 
+                                SET act_receive = ( select sum(qty_receive )
+                                    from scanin_repacking  as b where 
+                                b.partno = repacking_list.partno  and b.custpo = repacking_list.custpo),
+                                    status_print = 'combine',
+                                    bal_receive = repacking_list.demand - (repacking_list.act_receive + {$qty})
+                                    from scanin_repacking as b  where
+                                repacking_list.id = '{$selectPart[0]->id}'
+                                   ") ;
+
+
+
+        // STEP 4.GET CONTENT LABEL
+   
+
+    // return $getLabel;
+            
+    
+    // return view('repacking.combine',compact('data'));
+    
+         return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Scan success...'
+                ]);  
+    
+    }
+
 
     public function kitdata(){
         $data = DB::connection('sqlsrv')
@@ -255,6 +276,74 @@ class RepackingController extends Controller
                     on a.partno = b.partno and a.custpo = b.custpo  order by id desc");
         
         return view('repacking.kitdata',compact('data'));
+    }
+
+
+    // PRINT MASTER LABEL(COMBINE LABEL)
+    public function printMaster(){
+
+      $get_content = DB::connection('sqlsrv')
+                     ->select("SELECT * FROM repacking_list where status_print ='combine' ");
+    
+     
+    //   foreach ($get_content as $value)
+     
+
+
+
+        return view('repacking.combine', compact('get_content'));
+    }
+
+
+
+    //  PRINT LOG KIT
+     public function get_Print(Request $request, $id){
+
+       
+
+        $pic = $request->pic_print;
+        $id = $request->id;
+      
+        $currentDate = Carbon::now();     
+
+        // dd($currentDate);
+
+        // Mendapatkan format tanggal sebagai angka
+        $dateAsNumber = $currentDate->format('Ymd'); 
+        
+        $date = substr($dateAsNumber,2,8);
+
+        
+        $get_id = DB::table('log_print_kit_original')
+                    ->whereDate('created_at',$currentDate)
+                    ->max('id');
+  
+
+
+
+        $order = $get_id ? $get_id + 1 : 1;
+      
+           // Generate unique number berdasarkan tanggal dan urutan
+        $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+
+
+        //GET PARAM UNTUK PRINT LOG 
+        $param = DB::connection('sqlsrv')
+        ->select(" SELECT distinct	a.idnumber,a.partno, a.partname, a.qty_scan, a.dest, a.custpo, a.shelfno,  a.prodno,a.balance_issue
+                        from	log_print_kit_original as a                                             
+                        where a.id = '{$id}' ");
+
+
+
+     // STEP 3. UPDATE STATUS PRINT
+        $update_status = DB::connection('sqlsrv')
+                            -> update("UPDATE log_print_kit_original set status_print = 2, pic_print = '{$pic}',
+                                        last_print = '{$currentDate}'
+                                        where id ='{$id}' ");
+
+
+         return view('repacking.logprintkit', compact('param','idnumber'));
+      
     }
 
 }
