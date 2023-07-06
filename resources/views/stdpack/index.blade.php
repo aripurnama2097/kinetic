@@ -50,14 +50,7 @@
 
              
               <div class="card-body border-bottom py-2">
-                {{-- <a href="#" class="btn btn-success d-none d-sm-inline-block btn-sm " data-bs-toggle="modal" data-bs-target="#modal-schedule">
-                  <i class="ti ti-mail-forward"></i>
-                  Share Schedule
-                </a>
-                <a href="{{url('/schedule')}}" class="btn btn-primary d-none d-sm-inline-block btn-sm " >
-                  <i class="ti ti-360"></i>
-                 Generate 
-                </a> --}}
+               
                 @if(Session::has('success'))
                 <p class="alert alert-success">{{Session::get('success')}}</p>
                 @endif
@@ -67,16 +60,11 @@
                   Refresh
                 </a>
 
-                {{-- <button class="btn btn-danger btn-sm" id="delete-all-data" ><i class="ti ti-trash"></i>Delete Data</button>
-
-                <a href="{{url('/schedule')}}" class="btn btn-success d-none d-sm-inline-block btn-sm " >
-                  <i class="ti ti-edit"></i>
-                  Change Data
-                </a> --}}
+            
                 <br>
                 <br>
                 <div class="table-responsive  rounded-1">
-                  <table id="tbl-data" class="table table-bordered yajra-datatable">
+                  <table id="schedule-release" class="table table-bordered yajra-datatable">
                     <thead class="thead-dark">
                       <tr>
                       
@@ -89,8 +77,7 @@
                         <th>Weight</th>
                         <th>Pack</th>
                         <th>Vendor</th>
-                        <th>JKN Shelf No</th>
-                   
+                        <th>JKN Shelf No</th>         
                         <th>Action</th> 
 
                         
@@ -98,7 +85,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {{-- @foreach($data as $key => $value)
+                      @foreach($data as $key => $value)
                       <tr>
                         <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
                         <td> {{$value->partnumber}}</td>
@@ -110,7 +97,7 @@
                         <td> {{$value->stdpack}}</td>
                         <td> {{$value->vendor}}</td>
                           <td> {{$value->jknshelf}}</td>
-                        <td> </td>
+                       
                         <td class="btn-group"> 
                          
                            <form  action="{{url('/stdpack/'.$value->id. '/destroy')}}" onclick="return confirm('Delete This data?')" method="GET" >
@@ -224,16 +211,18 @@
                        
                        
                       </tr>
-                      @endforeach --}}
+                      @endforeach
                      
                   
                     </tbody>
                   </table>
                 </div>
+                {{-- <div class="d-flex justify-content-center">
+                            {{ $data->links() }}
+                </div> --}}
               </div>
-            
+           
               <div class="card-footer d-flex align-items-center">
-             
               </div>
             </div>
           </div>
@@ -385,7 +374,14 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-
+    $('#schedule-release').DataTable( {
+        // dom: 'Bfrtip',
+        buttons: [
+           
+            'excelHtml5',
+            'csvHtml5'
+        ]
+    } );
 
     // <th> No </th>
     //                     <th>Part Number</th>
@@ -401,18 +397,18 @@
     //                     <th>Action</th>
 
 
-    $('#tbl_data').DataTable({
-        processing: true,
-        serverSide: true,
-        url: "{{url('/stdpack')}}",
+    // $('#tbl_data').DataTable({
+    //     processing: true,
+    //     serverSide: true,
+    //     url: "{{url('/stdpack')}}",
         
-        columns: [
-            { data: 'id', name: 'id' },
-            { data: 'partnumber', name: 'partnumber' },
-            { data: 'partname', name: 'partname' },
+    //     columns: [
+    //         { data: 'id', name: 'id' },
+    //         { data: 'partnumber', name: 'partnumber' },
+    //         { data: 'partname', name: 'partname' },
 
-        ]
-    });
+    //     ]
+    // });
 
     // $("#example").TableCheckAll();
 
@@ -497,51 +493,53 @@
     })
   });
  
-  $(function () {
-    $.fn.dataTable.ext.errMode = 'throw';
+  
 
-    var table = $('.yajra-datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ url('stdpack') }}",
-        columns: [
-          {data: 'id', name: 'id'},
-            {data: 'partnumber', name: 'partnumber'},
-            {data: 'partname', name: 'partname'},
-            {data: 'lenght', name: 'lenght'},
-            {data: 'widht', name: 'widht'},
-            {data: 'height', name: 'height'},
-            {data: 'weight', name: 'weight'},
-            {data: 'stdpack', name: 'stdpack'},
-            {data: 'vendor', name: 'vendor'},
-            {data: 'jknshelf', name: 'jknshelf'},
+  // $(function () {
+  //   $.fn.dataTable.ext.errMode = 'throw';
+
+  //   // var table = $('.yajra-datatable').DataTable({
+  //   //     processing: true,
+  //   //     serverSide: true,
+  //   //     ajax: "{{ url('stdpack') }}",
+  //   //     columns: [
+  //   //       {data: 'id', name: 'id'},
+  //   //         {data: 'partnumber', name: 'partnumber'},
+  //   //         {data: 'partname', name: 'partname'},
+  //   //         {data: 'lenght', name: 'lenght'},
+  //   //         {data: 'widht', name: 'widht'},
+  //   //         {data: 'height', name: 'height'},
+  //   //         {data: 'weight', name: 'weight'},
+  //   //         {data: 'stdpack', name: 'stdpack'},
+  //   //         {data: 'vendor', name: 'vendor'},
+  //   //         {data: 'jknshelf', name: 'jknshelf'},
 
             
            
-            {
-                data: 'action', 
-                name: 'action', 
-                orderable: true, 
-                searchable: true
-            },
-        ],
-        // ,
-        button: [
-          $.extend(true, {}, buttonCommon, {
-                    extend: 'copy',
-                    exportOptions: { columns: ':visible' }
-                }),
-                $.extend(true, {}, buttonCommon, {
-                    extend: 'csv',
-                    exportOptions: { columns: ':visible' }
-                }),
-                $.extend(true, {}, buttonCommon, {
-                    extend: 'print',
-                    exportOptions: { columns: ':visible' }
-                }),  
-            ]
-    });
+  //   //         // {
+  //   //         //     data: 'action', 
+  //   //         //     name: 'action', 
+  //   //         //     orderable: true, 
+  //   //         //     searchable: true
+  //   //         // },
+  //   //     ],
+  //       // ,
+  //       // button: [
+  //       //   $.extend(true, {}, buttonCommon, {
+  //       //             extend: 'copy',
+  //       //             exportOptions: { columns: ':visible' }
+  //       //         }),
+  //       //         $.extend(true, {}, buttonCommon, {
+  //       //             extend: 'csv',
+  //       //             exportOptions: { columns: ':visible' }
+  //       //         }),
+  //       //         $.extend(true, {}, buttonCommon, {
+  //       //             extend: 'print',
+  //       //             exportOptions: { columns: ':visible' }
+  //       //         }),  
+  //       //     ]
+  //   // });
     
-  });
+  // });
 </script>
 @endsection

@@ -75,31 +75,32 @@ Route::get('stdpack/{id}/destroy', [StdpackController::class,'destroy'])->middle
 
 
 
-// ========================================MASTER SCHEDULE TENTATIVE ROUTING===========================
+// ========================================SCHEDULE TENTATIVE ROUTING===========================
 Route::get('/schedule_tentative',[SchTentativeController::class, 'index'])->middleware('auth');
-Route::post('/schedule_tentative/uploadSch',[SchTentativeController::class, 'importCSV'])->middleware('auth');
-Route::post('/schedule_tentative/SB98/uploadSB98',[SchTentativeController::class, 'importSB98'])->middleware('auth');
-Route::post('/schedule_tentative/uploadsa90',[SchTentativeController::class, 'importSA90'])->middleware('auth');
+Route::get('/schedule_tentative/master_scheduleTemp',[SchTentativeController::class, 'view_tempschedule'])->middleware('auth');
+Route::post('/schedule_tentative/master_scheduleTemp/importsch',[SchTentativeController::class, 'importsch_temp'])->middleware('auth');
+Route::get('schedule_tentative/schTemp/delete',[SchTentativeController::class, 'reset_mastersch'])->middleware('auth');
+
+
+// ========================================SB98 ROUTING===========================
+Route::get('/schedule_tentative/SB98',[SchTentativeController::class, 'view_sB98'])->middleware('auth');
+Route::post('/schedule_tentative/SB98/upload',[SchTentativeController::class, 'importSB98'])->middleware('auth');
 Route::get('/schedule_tentative/SB98/sumsb98',[SchTentativeController::class, 'sumsb98'])->middleware('auth');
 
 
-Route::get('/schedule_tentative/SB98',[SB98Controller::class, 'index'])->middleware('auth');
-
-Route::get('/schedule_tentative/SA90',[SA90Controller::class, 'index'])->middleware('auth');
+// ========================================SA90 ROUTING===========================
+Route::get('/schedule_tentative/SA90',[SchTentativeController::class, 'view_sa90'])->middleware('auth');
+Route::post('schedule_tentative/SA90/upload',[SchTentativeController::class, 'importSA90'])->middleware('auth');
 Route::get('schedule_tentative/SA90/delete',[SA90Controller::class, 'delete'])->middleware('auth');
 
 
-
+// ========================================VIEW PROCESS COMPARE SCH===========================
 Route::get('/schedule_tentative/servicePart',[SchServiceNGController::class, 'index'])->middleware('auth');
 Route::get('schedule_tentative/skdPart',[SchSKDNGController::class, 'index'])->middleware('auth');
 Route::get('/schedule_tentative/generate',[SchTentativeController::class, 'generate'])->middleware('auth');
 
 // Route::get('schedule_tentative/serviceNG',[SchServiceNGController::class, 'index'])->middleware('auth');
 // Route::get('/schedule_tentative/SKDmodel',[SchSKDNGController::class, 'index'])->middleware('auth');
-
-
-
-
 
 
 // ========================================MASTER SCHEDULE  RELEASE ROUTING===========================

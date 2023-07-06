@@ -19,7 +19,7 @@
                   Upload Master
                 </a> --}}
 
-                <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-light" >
+                <a  href="{{url('/schedule_tentative/master_scheduleTemp')}}" class="btn btn-light" >
                   Excell Schedule           
                  </a>'' 
                 <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-light" >
@@ -28,11 +28,6 @@
                  <a   href="{{url('/schedule_tentative/SA90')}}" class="btn btn-light">
                    SA90 Master
                  </a>
-            
-             
-
-              {{-- </span> --}}
-                {{-- <br> --}}
               
              
             </div>
@@ -46,25 +41,14 @@
 
     <!-- Page body MENU -->
     <div class="page-body">
-               
-        {{-- <div class="container "> --}}
           <div class="row row-deck row-cards ">          
             <div class="col-12 ">
               <div class="card rounded-1 " >
-                {{-- <div class="card-header text-center justify-content-left">
-                  <h2 style="font-size:25px;" class="btn btn-dark text-light  " >TENTATIVE SCHEDULE</h2> 
-                </div> --}}
                 <div class="col-12 border-bottom bt-2  ">
                 </div>
 
                 <div class="card-body border-bottom ">
-                  {{-- <select class="form-control btn-outline btn-secondary col-3" id="filter" name = "prodno">
-                    <option value="-">-- PROD NO --</option>
-                    @foreach($data as $dd)
-                    <option value="{{$dd->prodno}}">{{$dd->prodno}}</option>
-                    @endforeach            
-                        <button class="btn btn-primary btn-sm" type="submit">Filter</button>
-                  </select>   --}}
+                  
                  <div class="table-responsive  rounded-1">
                  <div class="btn-group ml-4">
                     <button type="button" class="btn btn-primary dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
@@ -78,9 +62,7 @@
                 
                  
                     <ul class="dropdown-menu ">
-                      {{-- <li><a class="dropdown-item" href="{{url('schedule_tentative/serviceOK')}}">Schedule Tentative</a></li>  --}}
-                      {{-- <li><a style ="font-weight:bold" class="dropdown-item " href="{{url('schedule_tentative/serviceOK')}}">Service Part</a></li> 
-                      <li><a style ="font-weight:bold" class="dropdown-item " href="{{url('schedule_tentative/SKDall')}}">SKD - OK</a></li>  --}}
+              
                       <li><a style ="font-weight:bold"class="dropdown-item" href="{{url('schedule_tentative/servicePart')}}">Service Part</a></li>               
                       <li><a  style ="font-weight:bold" class="dropdown-item" href="{{url('schedule_tentative/skdPart')}}">SKD Part</a></li>
                     </ul>

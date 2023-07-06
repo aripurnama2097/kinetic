@@ -7,7 +7,7 @@
     <h1>{{ $details['title'] }}</h1>
     <p>{{ $details['body'] }}</p>
 
-    <p>Address : https:://136.198.117.7/kinetic/public/schedule</p>
+    <p>Address : http://10.230.30.113/kinetic/public/login</p>
 
 
    

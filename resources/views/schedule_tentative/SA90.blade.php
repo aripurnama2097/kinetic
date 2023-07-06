@@ -30,7 +30,7 @@
                   <h2 style="font-size:30px" class="text-dark text-center"> SA 90 DATA </h2>
               
                  
-                  <div class="btn-group">
+                  <div class="btn-group mb-2">
               
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
                   <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sa90"> <i class="ti ti-arrow-big-down-filled"></i>
@@ -38,37 +38,35 @@
                   </a>
                   <a href="{{url('/schedule_tentative/SA90')}} " class="btn btn-success  float-right" >Refresh </a>
                 </div>
-                   <br>
-                  <br>
-                  <br>
+                <br>
+             
                   <div class="table-responsive  rounded-1 mb-5">
-                    <table   class="table table-bordered yajra-datatable" >
+                    <table  id="sa-90" class="table table-bordered yajra-datatable" >
                       <thead class="thead-dark">
-                        <tr>                   
-                        
-                         
+                        <tr>                                         
                           <th style ="font-size: 10px;">Model</th>
                           <th style ="font-size: 10px;">Prod No</th>
-                          <th style ="font-size: 10px;">Part Number</th>                      
-                          
-                          
+                          <th style ="font-size: 10px;">Part Number</th>                                                
                           <th style ="font-size: 10px;">Demand</th>                       
-                          <th style ="font-size: 10px;">Last Update</th>  
-                         
-                         
-                          
+                          <th style ="font-size: 10px;">Last Update</th>                       
                         </tr>
                        </thead>
-          
                       <tbody>
+                        @foreach ($data as $item)
+                        <tr>
+
+                          <td style ="font-size: 12px;"> {{$item->modelname}} </td>
+                          <td style ="font-size: 12px;"> {{$item->prodNo}} </td>
+                          <td style ="font-size: 12px;"> {{$item->partnumber}} </td>                
+                          <td style ="font-size: 12px;"> {{$item->qty}}</td>     
+                          <td style ="font-size: 12px;"> {{$item->created_at}}</td> 
+                        </tr>
+                        @endforeach
                        
                       </tbody>
                     </table>
-                    <br>
-            
-                    <a href="{{url('/schedule_tentative')}} " class="btn btn-primary" >Back </a>
-          
-             
+                    <br>       
+                    <a href="{{url('/schedule_tentative')}} " class="btn btn-primary" >Back </a>      
                   </div>
                 </div>
               </div>
@@ -77,139 +75,8 @@
         </div>
       </div>
     </div>
-      
-
-   
-    {{-- </div> --}}
-   
-
-
-      {{-- ====================MODAL Master ========================================= --}}
-<div class="modal modal-blur fade" id="modal-master" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Master File</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form  action="{{url('/schedule/upload')}}" enctype="multipart/form-data" method="POST" >
-            @csrf  
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-10">
-                  <div>
-                    <label class="form-label">Schedule Excell</label>
-                    <input  type="file" class="form-control" rows="3" name="sch"  id="sch" required>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-10">
-                  <div>
-                    <label class="form-label">SB98</label>
-                    <input  type="file" class="form-control" rows="3" name="sb98"  id="sb98" required>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-10">
-                  <div>
-                    <label class="form-label">SA90</label>
-                    <input  type="file" class="form-control" rows="3" name="sa90"  id="sa90" required>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn btn-light " data-bs-dismiss="modal">
-                Cancel
-              </a>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-plus"></i>
-                Upload 
-              </button>
-            </div>
-          </form>
-        </div>
-    </div>
-</div>
-
-
-
-  {{-- ====================MODAL Schedule Temp ========================================= --}}
-<div class="modal modal-blur fade" id="modal-scheduleTemp" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Schedule Temp</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form  action="{{url('/schedule/upload')}}" enctype="multipart/form-data" method="POST" >
-            @csrf  
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div>
-                    <label class="form-label">Upload file</label>
-                    <input  type="file" class="form-control" rows="3" name="file"  id="file" required>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn btn-link link-warning" data-bs-dismiss="modal">
-                Cancel
-              </a>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-plus"></i>
-                Upload 
-              </button>
-            </div>
-          </form>
-        </div>
-    </div>
-</div>
-
-{{-- ====================MODAL SB98 ========================================= --}}
-<div class="modal modal-blur fade" id="modal-sb98" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Upload - SB98</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form  action="{{url('/schedule/uploadSB98')}}" enctype="multipart/form-data" method="POST" >
-            @csrf  
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div>
-                    <label class="form-label">Upload file</label>
-                    <input  type="file" class="form-control" rows="3" name="file" required id="file">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn btn-link link-warning" data-bs-dismiss="modal">
-                Cancel
-              </a>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-plus"></i>
-                Upload 
-              </button>
-            </div>
-          </form>
-        </div>
-    </div>
-</div>
-
+ 
 {{-- ====================MODAL SA90 ========================================= --}}
-
 <div class="modal modal-blur fade" id="modal-sa90" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -218,7 +85,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
          
-          <form  action="{{url('/schedule/uploadsa90')}}" enctype="multipart/form-data" method="POST" >
+          <form  action="{{url('schedule_tentative/SA90/upload')}}" enctype="multipart/form-data" method="POST" >
             @csrf
            
             <div class="modal-body">
@@ -232,9 +99,9 @@
               </div>
             </div>
             <div class="modal-footer">
-              <a href="#" class="btn btn-link link-warning" data-bs-dismiss="modal">
+              <button type="button" class="btn btn-link link-warning" data-bs-dismiss="modal">
                 Cancel
-              </a>
+              </button>
               <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
                 <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                 <i class="ti ti-plus"></i>
@@ -257,6 +124,16 @@
 
             
 $(document).ready(function () {
+
+    // DATATABLE
+    $('#sa-90').DataTable( {
+        // dom: 'Bfrtip',
+        buttons: [
+           
+            'excelHtml5',
+            'csvHtml5'
+        ]
+    } );
 
   $('#delete-all-data').click(function() {
         

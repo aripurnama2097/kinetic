@@ -42,7 +42,12 @@
                 <div class="card-body border-bottom ">
           
                  <div class="table-responsive  rounded-1">
-                
+                  @if(Session::has('success'))
+                  <p class="alert alert-success">{{Session::get('success')}}</p>
+                  @endif
+                  @if(Session::has('delete'))
+                  <p class="alert alert-info">{{Session::get('delete')}}</p>
+                  @endif
                   <h2 style="font-size:30px" class="text-dark text-center"> SB98 TENTATIVE </h2>
                  
                   <a href="{{url('/schedule_tentative/SB98')}} " class="btn btn-warning  float-right" >Refresh </a>
@@ -77,7 +82,7 @@
                       <tbody>
 
                         @foreach($data as $key => $value)
-                          <tr>
+                       <tr>
                         <td style ="font-size: 12px;"> {{$value->cust_code}}</td>
                         <td style ="font-size: 12px;"> {{$value->cust_po}} </td>
                         <td style ="font-size: 12px;"> {{$value->partnumber}} </td>
@@ -111,155 +116,26 @@
       
 
    
-    {{-- </div> --}}
-   
 
-
-      {{-- ====================MODAL Master ========================================= --}}
-<div class="modal modal-blur fade" id="modal-master" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Master File</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form  action="{{url('/schedule/upload')}}" enctype="multipart/form-data" method="POST" >
-            @csrf  
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-10">
-                  <div>
-                    <label class="form-label">Schedule Excell</label>
-                    <input  type="file" class="form-control" rows="3" name="sch"  id="sch" required>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-10">
-                  <div>
-                    <label class="form-label">SB98</label>
-                    <input  type="file" class="form-control" rows="3" name="sb98"  id="sb98" required>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-10">
-                  <div>
-                    <label class="form-label">SA90</label>
-                    <input  type="file" class="form-control" rows="3" name="sa90"  id="sa90" required>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn btn-light " data-bs-dismiss="modal">
-                Cancel
-              </a>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-plus"></i>
-                Upload 
-              </button>
-            </div>
-          </form>
-        </div>
-    </div>
-</div>
-
-
-
-  {{-- ====================MODAL Schedule Temp ========================================= --}}
-<div class="modal modal-blur fade" id="modal-scheduleTemp" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Schedule Temp</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form  action="{{url('/schedule/upload')}}" enctype="multipart/form-data" method="POST" >
-            @csrf  
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div>
-                    <label class="form-label">Upload file</label>
-                    <input  type="file" class="form-control" rows="3" name="file"  id="file" required>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn btn-link link-warning" data-bs-dismiss="modal">
-                Cancel
-              </a>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-plus"></i>
-                Upload 
-              </button>
-            </div>
-          </form>
-        </div>
-    </div>
-</div>
 
 {{-- ====================MODAL SB98 ========================================= --}}
 <div class="modal modal-blur fade" id="modal-sb98" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Upload - SB98</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <form  action="{{url('/schedule/uploadSB98')}}" enctype="multipart/form-data" method="POST" >
-            @csrf  
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-lg-12">
-                  <div>
-                    <label class="form-label">Upload file</label>
-                    <input  type="file" class="form-control" rows="3" name="file" required id="file">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <a href="#" class="btn btn-link link-warning" data-bs-dismiss="modal">
-                Cancel
-              </a>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-plus"></i>
-                Upload 
-              </button>
-            </div>
-          </form>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-{{-- ====================MODAL SA90 ========================================= --}}
-
-<div class="modal modal-blur fade" id="modal-sa90" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">SA90 Upload</h5>
+            <h5 class="modal-title">Sb98 Upload</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
          
-          <form  action="{{url('/schedule/uploadsa90')}}" enctype="multipart/form-data" method="POST" >
+          <form  action="{{url('/schedule_tentative/SB98/upload')}}" enctype="multipart/form-data" method="POST" >
             @csrf
            
             <div class="modal-body">
               <div class="row">
                 <div class="col-lg-12">
                   <div>
+                    <label class="form-label">Input NIK</label>
+                    <input  type="text" class="form-control mb-3" rows="3" name="uploadby"  id="uploadby" required>
                     <label class="form-label">Upload file</label>
                     <input  type="file" class="form-control" rows="3" name="file" required id="file">
                   </div>
@@ -267,11 +143,10 @@
               </div>
             </div>
             <div class="modal-footer">
-              <a href="#" class="btn btn-link link-warning" data-bs-dismiss="modal">
+              <button type="button" class="btn btn-link link-warning" data-bs-dismiss="modal">
                 Cancel
-              </a>
+              </button>
               <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                 <i class="ti ti-plus"></i>
                 Upload 
               </button>

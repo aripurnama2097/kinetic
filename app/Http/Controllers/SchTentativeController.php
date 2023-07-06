@@ -35,58 +35,50 @@ class SchTentativeController extends Controller
     return view('schedule_tentative.index',compact('data'));
   }
 
-  public function importCSV(Request $request) 
+  public function view_tempschedule(){
+
+   $data =  DB::table('schedule_temp')
+    ->get();
+
+    return view('schedule_tentative.temp_masterSch',compact('data'));
+  }
+
+  public function importsch_temp(Request $request) 
   {
         
-    $files = $request->file();
+   
+    $data =  Excel::import(new ImportScheduleTemp, request()->file('file'));
+ 
+    return redirect()->back()->with('success', 'Upload Excell Schedule Success');
 
-    foreach ($files as $value => $file) {
-        $file->store('uploads'); // Menyimpan file pada direktori 'storage/app/uploads'
-    }
+  }
 
-    return redirect()->back()->with('success', 'File berhasil diunggah.');
+  public function reset_mastersch(){
+
+    DB::table('schedule_temp')->truncate();
+
+    return redirect()->back()->with('delete', 'All records have been deleted.');
 
   }
 
 
-  public function importSB98(Request $request) 
-  {
-      
-      // $file = $request->input('file');
-      // return request()->file('file');
+  public function view_sb98(){
+
+    $data = DB::table('tblSB98')
+            ->get();
+
+    return view('schedule_tentative.sb98', compact('data'));
+  }
+
+
+  public function importSB98(Request $request){
+    $pic = $request->uploadby;
+
       $data =  Excel::import(new ImportSB98, request()->file('file'));
 
-    
+        return redirect()->back()->with('success', 'Upload Excell Schedule Success');
 
-    // if ($validator->fails()) {
-      
-    //     return redirect()->back()->withErrors($validator->errors());
-    // }
-
-      // return $data;
-
-
-    //     $validator = Validator::make($request->all(), [
-    //       'file' => 'required|mimes:xls,xlsx,csv,tsv'
-    //   ]);
-
-    // if ($validator->fails()) {
-    //     // Tangani jika validasi gagal
-    //     return redirect()->back()->withErrors($validator->errors());
-    // }
   }
-
-
-  public function importSA90() 
-  {
-      
-
-      // return request()->file('file');
-      $data =  Excel::import(new ImportSA90, request()->file('file'));
-      return redirect()->back()->with('oke', 'Upload SA90 Success');
-  }
-
-
 
   public function sumSB98(){
     
@@ -108,6 +100,30 @@ class SchTentativeController extends Controller
     }
   }
 
+  public function view_sa90(){
+
+    $data = DB::table('tblsa90')
+            ->get();
+
+    return view('schedule_tentative.sa90', compact('data'));
+  }
+
+
+  public function importSA90(Request $request) 
+  {
+      $pic = $request->uploadby;
+    
+      $data =  Excel::import(new ImportSA90, request()->file('file'));
+
+    //  $update =  DB::connection('sqlsrv')
+    //   ->insert("INSERT INTO schedule_temp(input_user) select '{$pic}' 
+    //            '");
+
+    //   return $update;
+
+      return redirect()->back()->with('oke', 'Upload SA90 Success');
+  }
+
 
   public function filter(Request $request)
     {
@@ -117,6 +133,18 @@ class SchTentativeController extends Controller
 
         return view('schedule.table', compact('data2'));
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   public function SKDall(){  //SKD -OK
@@ -198,10 +226,6 @@ class SchTentativeController extends Controller
       ->whereDate('created_at',$currentDate)
       ->max('id');
 
-      // ->max('created_at');    
-      // Jika tidak ada file yang diupload pada tanggal saat ini, set urutan menjadi 1
-      // Jika ada file yang diupload pada tanggal saat ini, tambahkan 1 pada urutan terakhir
-
       $order = $lastOrder ? $lastOrder + 1 : 1;
       
       // Generate unique number berdasarkan tanggal dan urutan
@@ -223,21 +247,7 @@ class SchTentativeController extends Controller
     }
 
 
-   
-
-
-
-      //     SELECT c.partnumber, c.qty, a.*  FROM schedule_temp as a
-      //   left join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
-      //   where a.dest != 'PAKISTAN'
-      //   UNION ALL
-      // SELECT	d.partnumber, d.qty,a.*  FROM schedule_temp as a
-      //   left join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
-      //   where a.dest ='PAKISTAN'
-    
   
-
-
    
 
 }
