@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SchTentativeController;
 use App\Http\Controllers\StdpackController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\FinishGoodController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\PartlistController;
 
@@ -127,8 +128,19 @@ Route::post('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit']
 // Route::post('repacking/printkit',[RepackingController::class,'printkit'])->middleware('auth');
 
 Route::get('repacking/logPrintOrg',[RepackingController::class,'logPrintOrg'])->middleware('auth');
+Route::post('repacking/logPrintOrg/{id}',[RepackingController::class,'get_Print'])->middleware('auth');
+
 Route::get('repacking/scanIn',[RepackingController::class,'scanIn'])->middleware('auth');
 Route::post('repacking/scanIn/inputData',[RepackingController::class,'inputData'])->middleware('auth');
 
-Route::get('repacking/scanCombine/{id}',[RepackingController::class,'scanCombine'])->middleware('auth');
+Route::get('repacking/scanCombine',[RepackingController::class,'scanCombine'])->middleware('auth');
+Route::post('repacking/scanCombine/inputCombine',[RepackingController::class,'inputCombine'])->middleware('auth');
+Route::get('repacking/scanCombine/printMaster',[RepackingController::class,'printMaster'])->middleware('auth');
 
+
+
+// =======================================FINISH GOOD ROUTING===========================
+Route::get('finishgood',[FinishGoodController::class,'index'])->middleware('auth');
+Route::post('finishgood/scanout_box',[FinishGoodController::class,'scanout_box'])->middleware('auth');
+Route::get('finishgood/printID',[FinishGoodController::class,'printid_box'])->middleware('auth');
+Route::get('/finishgood/scanoutData',[FinishGoodController::class,'scanout_data'])->middleware('auth');
