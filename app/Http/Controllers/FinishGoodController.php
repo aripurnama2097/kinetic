@@ -99,12 +99,31 @@ class FinishGoodController extends Controller
         $packing_no = $request->packing_no;
         $boxno      = $request->box_no;
         $prodno     = $request->prodno;
-
+        
 
         // GET PARAM CONTENT
         $param = DB::connection('sqlsrv')
             ->select("SELECT distinct dest,shipvia,vandate from schedule where prodno ='{$prodno}'");
 
-        return view('finishgood.printidbox', compact('packing_no', 'boxno', 'param'));
+        $param['boxno'] = $boxno;
+        $param['packing_no'] = $packing_no;
+
+        // return view('finishgood.printid', compact('packing_no', 'boxno', 'param'));
+        return view('finishgood.printid',compact('param'));
+
+
+        // return redirect('finishgood/printid')->with('success');
+    }
+
+    public function scanout_data(){
+
+        $data = DB::connection('sqlsrv')
+        ->select("SELECT distinct a.prodno, a.custcode,a.custpo,a.vandate, a.orderitem,a.jkeipodate, a.model, a.partno,a.partname,
+                    a.dest,a.demand,a.act_running,a.bal_running,b.box_no,b.skid_no  from finishgood_list as a
+                    left join scanout as b 
+                    on a.partno = b.partno and a.custpo = b.custpo  order by vandate asc");
+
+        return view('finishgood.scanoutData',compact('data'));
+
     }
 }

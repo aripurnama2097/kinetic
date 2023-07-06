@@ -121,7 +121,7 @@
                                                    placeholder="SCAN KIT LABEL" disabled>    
                                                    <div class="d-flex justify-content-center">
                                                        <button class="btn btn-primary col-4 text-center"
-                                                       id="print-box" onclick="printBox()">Print ID</button>                                   
+                                                       id="print-box" onclick="printBox()" disabled>Print ID</button>                                   
                                                    </div>   
                                            </div>                                      
                                        </div>
@@ -333,6 +333,13 @@
                //STEP 2. SCAN OUT LABEL KIT
                $('#kit_label').on('keypress', function(e) {
                 if (e.which == 13) {
+                    var val_kitlabel = $('#kit_label').val();
+                    if (val_kitlabel != '') {                  
+                     $('#print-box').attr('disabled', false);
+                    
+                    }
+                    var val_kitlabel = $('#kit_label').value = ''
+
                     let scan_nik        = $('#scan_nik').val();
                     let packing_no        = $('#packing_no').val();
                     let box_no        = $('#box_no').val();
@@ -397,41 +404,41 @@
                     let box_no        = $('#box_no').val();
                     let prodno        = $('#prodno').val();
                     let kit_label    = $('#kit_label').val();
-
-                        $.ajax({
-                            type: "POST",
-                            dataType: "json",
-                            url: "{{ url('/finishgood/printID') }}",
-                            data: {
-                                scan_nik : scan_nik,
-                                packing_no : packing_no,
-                                box_no: box_no,
-                                prodno: prodno,
-                                kit_label:kit_label,
-                                _token: '{{ csrf_token() }}'
-                            },          
-                            success: function(response) {                  
-                                console.log(response)
-                                //  if (response.success) {
+                    window.location.assign(       "{{ url('/finishgood/printID') }}" + "?scan_nik=" + scan_nik + "&packing_no=" + packing_no + "&box_no=" + box_no +"&prodno=" + prodno + "&kit_label=" + kit_label  )
+                        // $.ajax({
+                        //     type: "get",
+                        //     dataType: "json",
+                        //     url: "{{ url('/finishgood/printID') }}",
+                        //     data: {
+                        //         scan_nik : scan_nik,
+                        //         packing_no : packing_no,
+                        //         box_no: box_no,
+                        //         prodno: prodno,
+                        //         kit_label:kit_label,
+                        //         _token: '{{ csrf_token() }}'
+                        //     },          
+                        //     success: function(response) {                  
+                        //         console.log(response)
+                        //         //  if (response.success) {
                                       
-                                //         swal.fire({
-                                //             icon: 'success',
-                                //             title: response.message,
+                        //         //         swal.fire({
+                        //         //             icon: 'success',
+                        //         //             title: response.message,
 
-                                //             timer: 5000,
-                                //             showConfirmButton: true,
+                        //         //             timer: 5000,
+                        //         //             showConfirmButton: true,
 
-                                //         })
-                                //     } 
-                                //     else {
-                                //             swal.fire({
-                                //             icon: 'warning',
-                                //             title: response.message
-                                //         })  
-                                //  }
+                        //         //         })
+                        //         //     } 
+                        //         //     else {
+                        //         //             swal.fire({
+                        //         //             icon: 'warning',
+                        //         //             title: response.message
+                        //         //         })  
+                        //         //  }
 
-                            }
-                        })
+                        //     }
+                        // })
 
 
         }
