@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Imports\ImportScheduleTemp;
 use App\Imports\ImportSB98;
 use App\Imports\ImportSA90;
+use App\Imports\InhouseImport;
 use App\Exports\FormatHeaderExport;
 use App\Models\ScheduleTemp;
 use Maatwebsite\Excel\Facades\Excel;
@@ -89,9 +90,9 @@ class SchTentativeController extends Controller
       $result = DB::select("EXEC insSb98sum $param1 ");
      
       if ($result) {
-          return redirect()->back()->with('success', 'Stored procedure berhasil dijalankan!');
+          return redirect()->back()->with('success', 'Stored procedure oke');
       } else {
-          return redirect()->back()->with('error', 'Terjadi kesalahan saat menjalankan stored procedure.');
+          return redirect()->back()->with('error', 'failed store procedure.');
       }
     } 
     
@@ -99,6 +100,16 @@ class SchTentativeController extends Controller
         return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
     }
   }
+
+  public function reset_sb98(){
+
+    DB::table('tblSB98')->truncate();
+    DB::table('tblSB98temp')->truncate();
+
+    return redirect()->back()->with('delete', 'All records have been deleted.');
+
+  }
+
 
   public function view_sa90(){
 
@@ -123,6 +134,34 @@ class SchTentativeController extends Controller
 
       return redirect()->back()->with('oke', 'Upload SA90 Success');
   }
+
+  public function view_inhouse(){
+    $data = DB::table('masterinhouse')
+    ->get();
+
+   return view('schedule_tentative.inhouse', compact('data'));
+  }
+
+  public function import_Inhouse(Request $request){
+    $data =  Excel::import(new InhouseImport, request()->file('file'));
+
+     return redirect()->back()->with('oke', 'Upload file Success');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   public function filter(Request $request)

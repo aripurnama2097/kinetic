@@ -101,11 +101,20 @@
                               <div class="dropdown-menu-column">
                                   <div class="dropend">
                                       <a class="dropdown-item " href="{{ url('/partlist') }}">
-                                          MC Part List
+                                          MC Issue
                                       </a>
                                   </div>
                               </div>
                           </div>
+                          <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <div class="dropend">
+                                    <a class="dropdown-item " href="{{ url('/partlist') }}">
+                                        In House Process
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                       </div>
                   </li>
 
@@ -160,30 +169,12 @@
                       <div class="dropdown-menu">
                           <div class="dropdown-menu-columns">
                               <div class="dropdown-menu-column">
-                                  <a class="dropdown-item" href="./activity.html">
-                                      Activity
+                                  <a class="dropdown-item" href="{{url('/finishgood')}}">
+                                      Packing Menu
                                   </a>
-                                  <a class="dropdown-item" href="./gallery.html">
-                                      Gallery
-                                  </a>
-
-                                  <a class="dropdown-item" href="./pricing-table.html">
-                                      Pricing table
-                                  </a>
-                                  <a class="dropdown-item" href="./faq.html">
-                                      FAQ
-                                      <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                                  </a>
-                                  <a class="dropdown-item" href="./users.html">
-                                      Users
-                                  </a>
-                                  <a class="dropdown-item" href="./license.html">
-                                      License
-                                  </a>
-                                  <a class="dropdown-item" href="./logs.html">
-                                      Logs
-                                      <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                                  </a>
+                                  <a class="dropdown-item" href="{{url('/finishgood/scanoutData')}}">
+                                      Data FinishGood
+                                  </a>           
                               </div>
 
                           </div>

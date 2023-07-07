@@ -2,7 +2,25 @@
 
 @section('section')
  
+<style>
+.blink {
+           /* original color */
+           background: white;
+           color: white;
+            animation: blinker 1s linear infinite !important;
+  /* color: red; */
+            }
 
+        @keyframes blinker {
+        50% {
+            /* opacity: 0; */
+            color: white;
+            background: red;
+            
+        
+        }
+}
+</style>
 <div class="page">
 
    
@@ -33,13 +51,13 @@
         <div class="row row-deck row-cards">
   
           <div class="col-sm-6 col-lg-3">
-            <div class="card">
+            <div class="card blink">
               <div class="card-body">
                 <div class="d-flex align-items-center">
-                  <div class="subheader">Sales</div>
+                  <div style="font-size:15px" class="subheader text-white">Problem Found</div>
                   <div class="ms-auto lh-1">
                     <div class="dropdown">
-                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Last 7 days</a>
+                      <a class="dropdown-toggle text-muted" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Problem Found</a>
                       <div class="dropdown-menu dropdown-menu-end">
                         <a class="dropdown-item active" href="#">Last 7 days</a>
                         <a class="dropdown-item" href="#">Last 30 days</a>

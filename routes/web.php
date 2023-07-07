@@ -86,21 +86,21 @@ Route::get('schedule_tentative/schTemp/delete',[SchTentativeController::class, '
 Route::get('/schedule_tentative/SB98',[SchTentativeController::class, 'view_sB98'])->middleware('auth');
 Route::post('/schedule_tentative/SB98/upload',[SchTentativeController::class, 'importSB98'])->middleware('auth');
 Route::get('/schedule_tentative/SB98/sumsb98',[SchTentativeController::class, 'sumsb98'])->middleware('auth');
-
+Route::get('schedule_tentative/SB98/delete',[SchTentativeController::class, 'reset_sb98'])->middleware('auth');
 
 // ========================================SA90 ROUTING===========================
 Route::get('/schedule_tentative/SA90',[SchTentativeController::class, 'view_sa90'])->middleware('auth');
 Route::post('schedule_tentative/SA90/upload',[SchTentativeController::class, 'importSA90'])->middleware('auth');
 Route::get('schedule_tentative/SA90/delete',[SA90Controller::class, 'delete'])->middleware('auth');
 
+Route::get('/schedule_tentative/inhouse',[SchTentativeController::class, 'view_inhouse'])->middleware('auth');
+Route::post('/schedule_tentative/inhouse/upload',[SchTentativeController::class, 'import_Inhouse'])->middleware('auth');
 
-// ========================================VIEW PROCESS COMPARE SCH===========================
+// ========================================VIEW RESULT COMPARE SCH===========================
 Route::get('/schedule_tentative/servicePart',[SchServiceNGController::class, 'index'])->middleware('auth');
 Route::get('schedule_tentative/skdPart',[SchSKDNGController::class, 'index'])->middleware('auth');
 Route::get('/schedule_tentative/generate',[SchTentativeController::class, 'generate'])->middleware('auth');
 
-// Route::get('schedule_tentative/serviceNG',[SchServiceNGController::class, 'index'])->middleware('auth');
-// Route::get('/schedule_tentative/SKDmodel',[SchSKDNGController::class, 'index'])->middleware('auth');
 
 
 // ========================================MASTER SCHEDULE  RELEASE ROUTING===========================

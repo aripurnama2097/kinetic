@@ -97,19 +97,6 @@ class PartlistController extends Controller
 
         }
 
-        // $success = true; // Set based on your logic
-        // $message = $success ? "Request succeeded!" : "Request failed!";
-        // $error = $error ? null : "Some error message";
-
-        // Create the response
-        // $data= [
-        //     'success' => $success,
-        //     'message' => $message,
-        //     'error' => $error,
-        //     'dataScan' =>$dataScan
-        // ];
-
-        // Return the response in JSON format
 
     }
 
@@ -157,7 +144,7 @@ class PartlistController extends Controller
                         ->select("SELECT count(*) as continue_status from partscan where partno = '{$label_scan}' and status_print = 'continue'");
 
         // cek qty scan < stdpack
-        if($qty < $selectPart[0]->stdpack or $cek_continue == 0){
+        if($qty < $selectPart[0]->stdpack and $qty < $selectPart[0]->stdpack and $cek_continue == 0){
             return response()
             ->json([
                 'success' => false,
@@ -179,7 +166,7 @@ class PartlistController extends Controller
         $order = $get_id ? $get_id + 1 : 1;
         $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
-        // simpan data ke partscan
+        // simpan data ke partscan + UPDATE STATUS PRINT
         if(!empty(@$status_print)){
             DB::connection('sqlsrv')
             ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
@@ -230,6 +217,8 @@ class PartlistController extends Controller
 
     // INSERT KE PARTSCAN DAN CEK LOOSE CARTON LAGI
     public function looseCarton(Request $request){
+
+        // return $request;
         $this->scan_issue($request,"loosecarton");
     }
 
