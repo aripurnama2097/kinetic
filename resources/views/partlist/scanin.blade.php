@@ -561,27 +561,6 @@
 
         });
 
-        //           
-
-        // if (response.success) {
-        // swal.fire({
-        //     icon: 'success',
-        //     title: "Scan Part Oke",
-        //     text: response.data,
-        //     timer: 5000,
-        //     showConfirmButton: true,
-
-        //   })
-        // }
-        // else  {
-        // swal.fire({
-        //     icon: 'error',
-        //     title: "Double Scan",
-        //     text: response.data,
-        //     timer: 5000,
-        //     showConfirmButton: true,
-
-        //   })
-        // }
+    
     </script>
 @endsection

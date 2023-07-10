@@ -298,30 +298,7 @@
 
                         $.each(response.data, function(key, value) {
 
-                            // var qrContent = $("#contentQR").html(value.partlist_no);
-                            // qrContent.make();
-                            //  generateQrCode(qrContent);
-
-
-
-
-
-
-
-
-                            // var unique = qr.filter(function(item, i, qr) {
-                            //               return i == qr.indexOf(item);
-                            //   });
-
-                            // Generate the QR code
-                            // qrCode.makeCode(value.partlist_no);
-
-                            //  var qr = $("#contentQR").html(value.partlist_no));
-
-                            //  generateQRCode
-
-
-                            // data = value.partlist_no
+                       
 
                             data = data + "<tr>"
                             data = data + "<td>" + value.id + "</td>"
@@ -549,51 +526,36 @@
 
                             }
 
+                            var data = ""
+                            console.log(response.data);
+                            $.each(response.data, function(key, value) {
+                                // console.log('key=>'+key+'|value=>'+value)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            var dataScan = ""
-                            $.each(response, function(key, value) {
-
-                                dataScan = dataScan + "<tr>"
+                                data = data + "<tr>"
                                 if (value.tot_scan == 0 && value.balance_issue == 0) {
-                                    dataScan = dataScan + "<tr class=table-light>";
+                                    data = data + "<tr class=table-light>";
                                 }
                                 if (value.tot_scan != 0 && value.balance_issue != 0) {
-                                    dataScan = dataScan + "<tr class=table-warning>";
+                                    data = data + "<tr class=table-warning>";
                                 }
                                 if (value.tot_scan == value.demand && value
                                     .balance_issue == 0) {
-                                    dataScan = dataScan + "<tr class=table-success>";
+                                    data = data + "<tr class=table-success>";
                                 }
 
-                                dataScan = dataScan + "<td>" + value.id + "</td>"
-                                dataScan = dataScan + "<td>" + value.custcode + "</td>"
-                                dataScan = dataScan + "<td>" + value.prodno + "</td>"
-                                dataScan = dataScan + "<td>" + value.partno + "</td>"
-                                dataScan = dataScan + "<td>" + value.partname + "</td>"
-                                dataScan = dataScan + "<td>" + value.demand + "</td>"
-                                dataScan = dataScan + "<td>" + value.tot_scan + "</td>"
-                                dataScan = dataScan + "<td>" + value.balance_issue +
+                                data = data + "<td>" + value.id + "</td>"
+                                data = data + "<td>" + value.custcode + "</td>"
+                                data = data + "<td>" + value.prodno + "</td>"
+                                data = data + "<td>" + value.partno + "</td>"
+                                data = data + "<td>" + value.partname + "</td>"
+                                data = data + "<td>" + value.demand + "</td>"
+                                data = data + "<td>" + value.tot_scan + "</td>"
+                                data = data + "<td>" + value.balance_issue +
                                     "</td>"
 
-                                dataScan = dataScan + "</tr>"
+                                data = data + "</tr>"
                             })
-                            $('#data-scanin').html(dataScan);
+                            $('#data-scanin').html(data);
                             $('#scan_label').focus();
                         }
                     });
@@ -604,27 +566,6 @@
 
         });
 
-        //
-
-        // if (response.success) {
-        // swal.fire({
-        //     icon: 'success',
-        //     title: "Scan Part Oke",
-        //     text: response.data,
-        //     timer: 5000,
-        //     showConfirmButton: true,
-
-        //   })
-        // }
-        // else  {
-        // swal.fire({
-        //     icon: 'error',
-        //     title: "Double Scan",
-        //     text: response.data,
-        //     timer: 5000,
-        //     showConfirmButton: true,
-
-        //   })
-        // }
+       
     </script>
 @endsection

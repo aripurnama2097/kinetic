@@ -130,7 +130,8 @@ class PartlistController extends Controller
             return response()
                 ->json([
                     'success' => false,
-                    'message' => 'DOUBLE SCAN...'
+                    'message' => 'DOUBLE SCAN...',
+                    
                 ]);
         }
 
@@ -143,8 +144,10 @@ class PartlistController extends Controller
         $cek_continue = DB::connection('sqlsrv')
                         ->select("SELECT count(*) as continue_status from partscan where partno = '{$label_scan}' and status_print = 'continue'");
 
+        // return $cek_continue;
+
         // cek qty scan < stdpack
-        if($qty < $selectPart[0]->stdpack and $qty < $selectPart[0]->stdpack and $cek_continue == 0){
+        if(($qty < $selectPart[0]->stdpack && $status_print==null) or ($cek_continue == NULL && $status_print==null)){
             return response()
             ->json([
                 'success' => false,
@@ -154,15 +157,15 @@ class PartlistController extends Controller
 
 
         // GET ID PRINT
-        $currentDate = Carbon::now();     
-        $dateAsNumber = $currentDate->format('Ymd');    
+        $currentDate = Carbon::now();
+        $dateAsNumber = $currentDate->format('Ymd');
         $date = substr($dateAsNumber,2,8);
 
-        
+
         $get_id = DB::table('partscan')
                     ->whereDate('scan_date',$currentDate)
                     ->max('id');
-  
+
         $order = $get_id ? $get_id + 1 : 1;
         $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
@@ -177,6 +180,30 @@ class PartlistController extends Controller
                     where partno = '{$label_scan}'
                     and  (coalesce(tot_scan,0)+{$qty}) <= demand
                     order by custpo asc ");
+                    
+                    // update partlist
+                    DB::connection('sqlsrv')
+                    ->update("UPDATE partlist
+                                set tot_scan = (
+                                    SELECT sum(scan_issue) FROM partscan as b where
+                                    b.partno = partlist.partno and b.custpo = partlist.custpo
+                                ),
+                                status_scan ='1',
+                                balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
+                            from partscan as b where
+                            partlist.id = '{$selectPart[0]->id}'
+                            ");
+
+            $data = DB::connection('sqlsrv')
+            ->select("SELECT * from partlist where partno ='{$label_scan}'");
+                return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Scan Succesfully',
+                    'data'      =>$data
+                   
+
+                ]);
         }
         else{
             DB::connection('sqlsrv')
@@ -188,28 +215,51 @@ class PartlistController extends Controller
                     where partno = '{$label_scan}'
                     and  (coalesce(tot_scan,0)+{$qty}) <= demand
                     order by custpo asc ");
+
+                    // update partlist
+            DB::connection('sqlsrv')
+             ->update("UPDATE partlist
+                                set tot_scan = (
+                                    SELECT sum(scan_issue) FROM partscan as b where
+                                    b.partno = partlist.partno and b.custpo = partlist.custpo
+                                ),
+                                status_scan ='1',
+                                balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
+                            from partscan as b where
+                            partlist.id = '{$selectPart[0]->id}'
+                            ");              
+              
+            
+        // TAMPILKAN DATA PARTLIST HASIL SCAN     
+        $param = DB::connection('sqlsrv')
+        ->select("SELECT * from partlist where partno ='{$label_scan}'");
+       
+
+        // GET PARTLIST NO
+        $partlistno   =   $param[0]->partlist_no;    
+
+     
+
+        $data = DB::connection('sqlsrv')
+        ->select("SELECT * from partlist where partlist_no='{$partlistno}'");
+
+        // return $data;
+
+              return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Scan Succesfully',
+                    'data'     =>$data
+
+                ]);
+                               
         }
 
+       
 
+        // return response()->json($data);
+       
 
-        // update partlist
-        DB::connection('sqlsrv')
-            ->update("UPDATE partlist
-                        set tot_scan = (
-                            SELECT sum(scan_issue) FROM partscan as b where
-                            b.partno = partlist.partno and b.custpo = partlist.custpo
-                        ),
-                        status_scan ='1',
-                        balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
-                    from partscan as b where
-                    partlist.id = '{$selectPart[0]->id}'
-                    ");
-
-        return response()
-        ->json([
-            'success' => true,
-            'message' => 'Scan Succesfully'
-        ]);
 
         //    SAMPLE :: K2K-0165-02     1708159 40     I10816 K2K-0165-02    202301250432102198000001
     }
