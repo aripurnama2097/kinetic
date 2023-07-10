@@ -57,9 +57,7 @@
                                             <tr class="headings">
                                                
                                                 <th style="font-size: 10px;">Customer Code</th>
-                                                <th style="font-size: 10px;">Qty Receive</th>
-                                                <th style="font-size: 10px;">Actual Receive</th>
-                                                <th style="font-size: 10px;">Balance Receive</th>
+                                                {{-- <th style="font-size: 10px;">Qty Receive</th> --}}
                                                 <th style="font-size: 10px;">Dest</th>
                                                 <th style="font-size: 10px;">Attent</th>
                                                 <th style="font-size: 10px;">Model</th>
@@ -77,6 +75,8 @@
                                                 <th style="font-size: 10px;">Part Name</th>
                                                 <th style="font-size: 10px;">JKN Shelf No</th>
                                                 <th style="font-size: 10px;">Demand</th>
+                                                <th style="font-size: 10px;">Actual Receive</th>
+                                                <th style="font-size: 10px;">Balance Receive</th>
 
                                             </tr>
                                         </thead>
@@ -85,11 +85,9 @@
                                             @foreach ($data as $key => $value)
                                              
                                             <td style="font-size: 12px;"> {{ $value->custcode }}</td>
-                                            <td class="text-dark text-center" style="font-size: 14px; font-weight:bold">{{ $value->qty_receive }} </td>
-                                            <td class="text-primary text-center"   style="font-size: 14px; font-weight:bold"> {{ $value->act_receive }}</td>
-                                            <td class="text-danger text-center" style="font-size: 14px;">{{ $value->bal_receive }} </td> 
-                                                <td style="font-size: 12px;"> {{ $value->dest }}</td>
-                                                <td style="font-size: 12px;"> </td>
+                                            {{-- <td class="text-dark text-center" style="font-size: 14px; font-weight:bold">{{ $value->qty_receive }} </td> --}}
+                                            <td style="font-size: 12px;"> {{ $value->dest }}</td>
+                                            <td style="font-size: 12px;"> </td>
                                                 <td style="font-size: 12px;"> {{ $value->model }}</td>
                                                 <td style="font-size: 12px;"> {{ $value->prodno }}</td>
                                                 <td style="font-size: 12px;"> </td>
@@ -107,7 +105,9 @@
                                                 <td style="font-size: 12px;">{{ $value->partname }} </td>
                                                 <td style="font-size: 12px;"> </td>
                                                 <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td> 
-                                                </tr>
+                                                <td class="text-primary text-center"   style="font-size: 14px; font-weight:bold"> {{ $value->act_receive }}</td>
+                                                <td class="text-danger text-center" style="font-size: 14px;">{{ $value->bal_receive }} </td> 
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -116,35 +116,20 @@
                         </div>
                     </div>
             </div>
-
-
-
-
         </div>
     </div>
 
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
-    <script type="text/javascript">
-
-
-
-
-
-    
-    
+    <script type="text/javascript">   
         $(document).ready(function() {
-
-
             $('#schedule-release').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-           
-            'excelHtml5',
-            'csvHtml5'
-        ]
-    } );
-
-
+                dom: 'Bfrtip',
+                buttons: [
+                
+                    'excelHtml5',
+                    'csvHtml5'
+                ]
+            } );
 
             $('#filter-Data').submit(function(event) {
 
@@ -192,9 +177,6 @@
                     }
                 });
             });
-
-
-
 
             //SHARE SCHEDULE DIC//
             $('#share-schedule').on('click', function() {
@@ -254,8 +236,6 @@
                     }
                 });
             });
-
-
             //  =====================GENERATE PARLIST============================
 
 
