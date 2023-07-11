@@ -25,24 +25,7 @@
                     <div class="col-12 ">
                         <div class="card  col-12 ">
 
-                            {{-- <div class="card-header ml-3 ">
-                                <a data-bs-toggle="modal" data-bs-target="#modal-partlist"
-                                    class="btn btn-secondary   text-light">
-                                    <i class="ti ti-file-export"></i>
-                                    Generate Partlist
-                                </a>
-
-
-                                <button id="share-schedule" class="btn btn-info  ml-2">
-                                    <i class="ti ti-share"></i>
-                                    Share Schedule
-                                </button>
-
-
-                              
-                            </div> --}}
-
-                            {{-- </div>   --}}
+                        
 
                             <div class="card-body border-bottom ">
                                 <a href="{{ url('/repacking/kitdata') }}" class="btn btn-primary ml-2 mb-3">

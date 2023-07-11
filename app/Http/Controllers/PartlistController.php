@@ -108,7 +108,7 @@ class PartlistController extends Controller
         $scan_label = $request->scan_label;
 
         //PARAM LABEL
-        $label_scan = substr($scan_label,0,11);
+        $label_scan = substr($scan_label,0,15);
         $qty = substr($scan_label, 24,5);
         $unique = substr($scan_label,28,49);
 
@@ -282,7 +282,7 @@ class PartlistController extends Controller
         $scan_label = $request->scan_label;
 
         //PARAM LABEL
-        $label_scan = substr($scan_label,0,11);
+        $label_scan = substr($scan_label,0,15);
         $qty = substr($scan_label, 24,5);
         $unique = substr($scan_label,28,49);
         $status_print ='loosecarton';
@@ -353,7 +353,7 @@ class PartlistController extends Controller
         $scan_label = $request->scan_label;
 
 
-        $label_scan = substr($scan_label,0,11);
+        $label_scan = substr($scan_label,0,15);
         $qty = substr($scan_label, 24,5);
         $unique = substr($scan_label,28,49);
         $status_scan ='continue';

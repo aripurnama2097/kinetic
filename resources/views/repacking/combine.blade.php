@@ -7,20 +7,23 @@
 
 <div class="container">
 
-  <h3 class="text-center mt-3"> PT JVC Kenwood Electronics Indonesia</h3>
-  {{-- 
 
-    ------------------------------------------------------------------------------
-  </div> --}}
-  {{-- @foreach($get_content as $key => $value)  --}}
-    <p class="text-center mb-1"> PROD NO :</p>  
-    <p class="text-center mb-1"> CARTON NO :</p>
-    <p class="text-center mb-1"> TOTAL ITEM:</p>
-{{-- @endforeach --}}
 <div class="d-flex justify-content-center">
   <div class="table" widht="100%">
-    <table class="table-border-style">
+    <table class="border border-dark border-3">
       <thead>
+        <tr>
+          <h4 align="center" colspan="3" > PT JVC Kenwood Electronics Indonesia</h4>
+        </tr>
+        <tr>
+        <p class="text-center mb-1 "> PROD NO : {{$param[0]->prodno}}</p>  
+        </tr>
+        <tr>
+        <p class="text-center mb-1 "> CARTON NO :{{$param[0]->carton_no}}</p>
+      </tr>
+      <tr>
+        <p class="text-center mb-1   "> TOTAL ITEM:{{ $totalItem}}</p>
+      </tr>
         <tr>
           <th class="text-center mb-1" style="font-size: 15px;">QR code</th>
           <th class="text-center mb-1"style="font-size: 15px;">Cust PO</th>
@@ -32,7 +35,7 @@
         </tr>
       </thead>
       <tbody>
-        @foreach($get_content as $key => $value)   
+        @foreach($param as $key => $value)   
         <tr>   
           {{-- @if (is_array($label) || is_object($label))
           @foreach ($label as $lbl )            --}}

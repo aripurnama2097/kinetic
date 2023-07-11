@@ -39,7 +39,7 @@ class RepackingController extends Controller
         $scan_label = $request->scan_label;
 
         //PARAM LABEL
-        $label_scan = substr($scan_label,0,11);
+        $label_scan = substr($scan_label,0,15);
         $qty = substr($scan_label, 24,5);
         $unique = substr($scan_label,28,49);
 
@@ -109,7 +109,7 @@ class RepackingController extends Controller
         $kitLabel = $request->kit_label;
 
         // GET PARAM FROM KIT LABEL
-        $label_scan = substr($mcLabel,0,11);
+        $label_scan = substr($mcLabel,0,15);
         $partno = substr($kitLabel, 0,11);
         $qty    = substr($kitLabel, 17,19);
 
@@ -194,9 +194,7 @@ class RepackingController extends Controller
         $kitLabel = $request->kit_label;
 
         // GET PARAM FROM KIT LABEL
-        $label_scan = substr($mcLabel,0,11);
-      
-
+        $label_scan = substr($mcLabel,0,15);
         $status_print = 'combine';
 
         // $data = "K2K-0165-02:KNOB assy:40:JK NAGANO:9344785::2306260005";
@@ -229,7 +227,7 @@ class RepackingController extends Controller
                       and demand >= (coalesce(act_receive,0) + $qty)
                       order by custpo asc");
     
-    
+            // return $selectPart;
             // STEP 2.INSERT INTO REPACKING SCAN IN
             DB::connection('sqlsrv')
                     ->insert("INSERT into scanin_repacking(custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik) 
@@ -249,27 +247,60 @@ class RepackingController extends Controller
                                                 from scanin_repacking as b  where
                                             repacking_list.id = '{$selectPart[0]->id}'
                                             ") ;
-                  $get_demand = DB::connection('sqlsrv')
-                  ->select("SELECT demand from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
+
+
+            //GET DEMAND
+            $get_demand = DB::connection('sqlsrv')
+                              ->select("SELECT demand from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
   
-                
-  
-                  $get_prodno = DB::connection('sqlsrv')
-                  ->select("SELECT prodno from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
+            $get_prodno = DB::connection('sqlsrv')
+                              ->select("SELECT prodno from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
+
                  //VIEW RESULT SCAN
-                $data = DB::connection('sqlsrv')
-                ->select("SELECT * FROM repacking_list where partno ='{$partno}' and custpo ='{$custpo}' ");
-      
-          
+            $data       = DB::connection('sqlsrv')
+                             ->select("SELECT * FROM repacking_list where partno ='{$partno}' and custpo ='{$custpo}' ");
+            
+            $carton_no = '1';
+            $currentDate = Carbon::now();     
+            $dateAsNumber = $currentDate->format('Ymd');    
+            $lastOrder = DB::table('temp_print')
+                             ->whereDate('created_at',$currentDate)
+                             ->max('id');
+                       
+            $order = $lastOrder ? $lastOrder + 1 : 1;
+            $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
+            $sequence_no = substr($uniqueNumber,12,1);
 
-              
+            $seq = $get_prodno[0]->prodno . '-'  . $carton_no . '-' . $sequence_no;  
+            //CEK CUST PO
+            $cek_po = DB::connection('sqlsrv')
+                            ->select("SELECT  count(custpo) as custpo from temp_print where custpo ='{$custpo}'");
 
-                // INSERT DATA TO TEMP PRINT TABLE
-                DB::connection('sqlsrv')
-                    ->insert("INSERT INTO temp_print(custpo,prodno,partno,partname,shelfno,qty)
-                             select '{$custpo}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$get_demand[0]->demand}' ");
+            // dd($cek_po[0]->custpo);
+
+           
+
+            if($cek_po[0]->custpo == 0  ){
+                 // INSERT DATA TO TEMP PRINT TABLE
+                 DB::connection('sqlsrv')
+                 ->insert("INSERT INTO temp_print(custpo,prodno,partno,partname,shelfno,qty,carton_no,sequence_no)
+                         select '{$custpo}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$get_demand[0]->demand}','{$carton_no}','{$seq}' 
+                         ");
+                         return response()->json(['success'=>TRUE,
+                         'message'=>'scan successfully',
+                          'data'=>$data ]);
+            }
+
+            else{
+               echo"failed";
+            }
+                        
+                       
+
                              
-               return response()->json($data);
+            return response()->json(['success'=>TRUE,
+                                    'message'=>'scan successfully',
+                                     'data'=>$data ]);
     
          }
     }
@@ -287,12 +318,19 @@ class RepackingController extends Controller
 
     // PRINT MASTER LABEL(COMBINE LABEL)
     public function printMaster(){
+       
+       
+      
+      
+        
+      
+      $param= DB::connection('sqlsrv')
+                     ->select("SELECT distinct custpo, prodno,partno,partname,shelfno, qty,carton_no,sequence_no FROM temp_print");
+    
+      $totalItem = DB::table('temp_print')->distinct('custpo')->count('custpo');
 
-      $get_content = DB::connection('sqlsrv')
-                     ->select("SELECT distinct custpo, prodno,partno,partname,shelfno, qty FROM temp_print");
 
-
-        return view('repacking.combine', compact('get_content'));
+        return view('repacking.combine', compact('param','totalItem'));
     }
 
 
@@ -306,11 +344,8 @@ class RepackingController extends Controller
       
         $currentDate = Carbon::now();     
 
-        // dd($currentDate);
-
-        // Mendapatkan format tanggal sebagai angka
-        $dateAsNumber = $currentDate->format('Ymd'); 
-        
+      
+        $dateAsNumber = $currentDate->format('Ymd');         
         $date = substr($dateAsNumber,2,8);
 
         
@@ -322,8 +357,6 @@ class RepackingController extends Controller
 
 
         $order = $get_id ? $get_id + 1 : 1;
-      
-           // Generate unique number berdasarkan tanggal dan urutan
         $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
 
