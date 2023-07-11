@@ -126,4 +126,40 @@ class FinishGoodController extends Controller
         return view('finishgood.scanoutData',compact('data'));
 
     }
+
+
+    public function viewSkid(){
+
+        
+        $prodno = DB::connection('sqlsrv')
+            ->select("SELECT distinct prodno from schedule");
+
+        $dest = DB::connection('sqlsrv')
+            ->select("SELECT distinct dest from schedule");
+
+        $vandate = DB::connection('sqlsrv')
+            ->select("SELECT distinct vandate from schedule");
+
+        return view('finishgood.viewSkid',compact('prodno','dest','vandate'));
+    }
+
+
+
+    public function printSkid(Request $request)
+    {
+     
+        $packing_no = $request->packing_no;
+        $skid_no    = $request->skid_no;
+        $vandate    = $request->vandate;
+        $dest       = $request->dest;
+        $type_skid  = $request->type_skid;
+        
+
+        // // GET PARAM CONTENT
+        // $param = ['packing_no','skid_no','vandate','dest','type_skid'];
+      
+        // return $param;
+
+        return view('finishgood.printskid',compact('packing_no','skid_no','vandate','dest','type_skid'));
+    }
 }
