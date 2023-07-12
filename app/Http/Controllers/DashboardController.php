@@ -9,11 +9,11 @@ class DashboardController extends Controller
 {
     public function index(){      
 
-      $data =  DB::connection('sqlsrv2')
-        ->table('tblPartlist')
-        ->get();
-
-        // return $data;
-        return view('dashboardMenu.index', compact('data'));
+      $data = DB::connection('sqlsrv')
+      ->select("SELECT  b.*, a.act_receive,a.bal_receive  from repacking_list as a
+              inner join partlist as b 
+              on a.partno = b.partno and a.custpo = b.custpo  order by id desc");
+        
+        return view('dashboardMenu.index',compact('data'));
     }
 }
