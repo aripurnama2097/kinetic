@@ -14,12 +14,11 @@ use App\Http\Controllers\EmailController;
 use App\Http\Controllers\FinishGoodController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\PartlistController;
-
+use App\Http\Controllers\ProblemFoundController;
 use App\Http\Controllers\SchServiceNGController;
 use App\Http\Controllers\SchSKDNGController;
 use App\Http\Controllers\SB98Controller;
 use App\Http\Controllers\SA90Controller;
-
 use App\Http\Controllers\RepackingController;
 
 
@@ -133,6 +132,9 @@ Route::post('repacking/logPrintOrg/{id}',[RepackingController::class,'get_Print'
 
 Route::get('repacking/scanIn',[RepackingController::class,'scanIn'])->middleware('auth');
 Route::post('repacking/scanIn/inputData',[RepackingController::class,'inputData'])->middleware('auth');
+Route::get('repacking/cancel',[RepackingController::class,'view_cancel_scanin'])->middleware('auth');
+Route::post('repacking/cancel_scanin',[RepackingController::class,'cancel_scanin'])->middleware('auth');
+
 
 Route::get('repacking/scanCombine',[RepackingController::class,'scanCombine'])->middleware('auth');
 Route::post('repacking/scanCombine/inputCombine',[RepackingController::class,'inputCombine'])->middleware('auth');
@@ -145,3 +147,15 @@ Route::get('finishgood',[FinishGoodController::class,'index'])->middleware('auth
 Route::post('finishgood/scanout_box',[FinishGoodController::class,'scanout_box'])->middleware('auth');
 Route::get('finishgood/printID',[FinishGoodController::class,'printid_box'])->middleware('auth');
 Route::get('/finishgood/scanoutData',[FinishGoodController::class,'scanout_data'])->middleware('auth');
+
+Route::get('finishgood/viewSkid',[FinishGoodController::class,'viewSkid'])->middleware('auth');
+Route::get('finishgood/viewSkid/printSkid',[FinishGoodController::class,'printSkid'])->middleware('auth');
+Route::post('finishgood/viewSkid/scanout_skid',[FinishGoodController::class,'scanout_skid'])->middleware('auth');
+Route::get('/finishgood/view_check',[FinishGoodController::class,'view_check'])->middleware('auth');
+
+
+
+
+// =======================================PROBLEM FOUND  ROUTING===========================
+Route::get('problem',[ProblemFoundController::class,'index'])->middleware('auth');
+Route::post('problem/create',[ProblemFoundController::class,'create'])->middleware('auth');
