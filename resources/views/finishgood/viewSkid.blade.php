@@ -77,6 +77,8 @@
                         <p class="alert alert-success">{{ Session::get('success') }}</p>
                     @endif
 
+
+                    {{-- FORM PRINT SKID --}}
                     <div class="collapsed-flex justify-content-center " id="skid-packing">
                         <div class="col-12 ">
                             <div class="card rounded-1 col-12 mb-2">
@@ -98,8 +100,12 @@
                                                     placeholder="PACKING NO" autofocus>
                                                 <input style="font-size:20px"
                                                     class="form-control form-control-xs mb-2 text-center border border-secondary "
-                                                    type="text" name="skid_no" value="" id="skid_no" maxlength="8"
+                                                    type="text" name="skid_no" value="{{$skidno}}" id="skid_no" maxlength="8"
                                                     placeholder="SKID NO"  disabled>
+                                                <input style="font-size:20px"
+                                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                    type="text" name="custpo"  id="custpo" maxlength="8"
+                                                    placeholder="CUSTPO"  disabled>
                                                 <select style="font-size:15px"  class="form-control form-control-xs mb-2 text-center border border-secondary "
                                                     id="vandate" name="vandate" disabled>
             
@@ -132,47 +138,73 @@
                         </div>
                     </div>               
                     
+                     {{-- FORM SCAN OUT --}}
                     <div class="collapsed-flex justify-content-center " id="scan-out">
                         <div class="col-12 ">
                             <div class="card rounded-1 col-12 mb-2">
-                                <div class="justify-content-center mt-3 ml-3 mr-3 ">
-                                  
-                                
+                                <div class="justify-content-center mt-3 ml-3 mr-3 ">                             
                                     <h1 class="text-dark text-center"> --SCAN OUT--</h1>                
                                     <div class="d-flex justify-content-center">
                                         <div class="row row-cards col-12 mb-4">
                                             <div class="mb-3 col-sm-12 col-12">
                                                 <input style="font-size:20px"
                                                     class="form-control form-control-xs mb-2 text-center border border-secondary "
-                                                    type="text" name="skid_no" value="" id="skid_no" maxlength="8"
-                                                    placeholder="SCAN QR SKID" autofocus>
+                                                    type="text" name="scan_nik" value="" id="scan_nik" 
+                                                    placeholder="SCAN NIK" autofocus>
+                                                <input style="font-size:20px"
+                                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                    type="text" name="qr_skid" value="" id="qr_skid" 
+                                                    placeholder="SCAN QR SKID"disabled>
                                                 <input
                                                     class="form-control form-control-lg mb-2 text-center border border-secondary "
                                                     type="text" name="skid_height" value="" id="skid_height"
-                                                    placeholder="SKID HEIGH" disabled>    
+                                                    placeholder="SKID HEIGHT" disabled>    
                                                 <input style="font-size:20px"
                                                     class="form-control form-control-xs mb-2 text-center border border-secondary "
-                                                    type="text" name="kit_label" value="" id="kit_label" maxlength="8"
+                                                    type="text" name="kit_label" value="" id="kit_label" 
                                                     placeholder="KIT LABEL"  disabled>                                                                                         
                                             </div>                                      
                                         </div>
+                                        
                                     </div>
                                         <div class="col-12 d-flex justify-content-end mb-2 mr-6">
                                             <button class="btn btn-info"
-                                                onclick="document.getElementById('scan_label').value = ''">clear</button>
+                                                onclick="document.getElementById('scan_label').value = ''">clear
+                                            </button>
                                         </div>
+
+                                        <table style="width:100%"
+                                        class="text-nowrap  table border-bordered  shadow-sm">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th style="font-size: 10px;">No</th>
+                                                <th style="font-size: 10px;">Cust Code</th>
+                                                <th style="font-size: 10px;">Skid No</th>
+                                                <th style="font-size: 10px;">Prod No</th>
+                                                <th style="font-size: 10px;">Part Number</th>
+                                                <th style="font-size: 10px;">Part Name</th>
+                                                <th style="font-size: 10px;">Demand</th>
+                                                <th style="font-size: 10px;">Total Running</th>
+                                                <th style="font-size: 10px;">Balance Running</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="view-scanout">
+                                        </tbody>
+                                    </table>
+                                    <a  id="print-master" href="{{url('finishgood/viewSkid/printMaster')}}"class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
+                                        Print Master Label
+                                    </a>
                                     </div>
                             </div>
                         </div>
                     </div> 
-                </div>
-              
+                </div>         
             </div>
-    </div>
+         </div>
     </div>
 
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
-
     <script type="text/javascript">
     
         $(document).ready(function() {
@@ -195,6 +227,17 @@
                 if (e.which == 13) {
                     var val_skid_no = $('#skid_no').val();
                     if (val_skid_no != '') {
+                     
+                        $('#custpo').attr('disabled', false);
+                        $('#custpo').focus();
+                    }
+                }
+            })
+
+            $('#custpo').on('keypress', function(e) {
+                if (e.which == 13) {
+                    var val_custpo = $('#custpo').val();
+                    if (val_custpo != '') {
                      
                         $('#vandate').attr('disabled', false);
                         $('#vandate').focus();
@@ -225,16 +268,134 @@
                    
              });
 
-      });
-        // START PRINT SKID
-        function printskid(){
+     
+
+
+
+     // START SCAN-OUT SKID
+        $('#scan_nik').on('keypress', function(e) {
+                if (e.which == 13) {
+                    var val_scan_nik = $('#scan_nik').val();
+                    if (val_scan_nik != '') {
+                     
+                        $('#qr_skid').attr('disabled', false);
+                        $('#qr_skid').focus();
+                    }
+                }
+            })
+      
+
+        $('#qr_skid').on('keypress', function(e) {
+                if (e.which == 13) {
+                    var val_qrskid = $('#qr_skid').val();
+                    if (val_qrskid != '') {
+                     
+                        $('#skid_height').attr('disabled', false);
+                        $('#skid_height').focus();
+                    }
+                }
+            })
+
+             // START SCAN-OUT SKID
+        $('#skid_height').on('keypress', function(e) {
+                if (e.which == 13) {
+                    var val_skid_height = $('#skid_height').val();                     
+                        $('#kit_label').attr('disabled', false);
+                        $('#kit_label').focus();
+                }
+            })
+
+                   // START SCAN-OUT SKID
+        $('#kit_label').on('keypress', function(e) {
+                if (e.which == 13) {
+
+                    let scan_nik        = $('#scan_nik').val();
+                    let qr_skid          = $('#qr_skid').val();
+                    let skid_height     = $('#skid_height').val();
+                    let kit_label       = $('#kit_label').val();
+
+
+                    $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "{{ url('/finishgood/viewSkid/scanout_skid/') }}",
+                            data: {
+                                scan_nik : scan_nik,
+                                qr_skid : qr_skid,
+                                skid_height: skid_height,
+                                kit_label: kit_label,
+                                _token: '{{ csrf_token() }}'
+                            },
+                       
+                            success: function(response) {                  
+                                console.log(response)
+                                
+                                        if (response.success) {
+                                            var audio   = document.getElementById('audio');
+                                            var source  = document.getElementById('audioSource');
+                                            var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+
+                                        swal.fire({
+                                            icon: 'success',
+                                            title: response.message,
+
+                                            timer: 5000,
+                                            showConfirmButton: true,
+
+                                        })
+                                        } 
+                                        else {
+                                            swal.fire({
+                                            icon: 'warning',
+                                            title: response.message
+                                        })  
+                                        }
+
+                              var data = ""                          
+                              $.each(response.data, function(key, value) {
+
+                                  data = data + "<tr>"
+                                    //   if (value.tot_scan == 0 && value.balance_issue == 0) {
+                                    //       data = data + "<tr class=table-light>";
+                                    //   }
+                                    //   if (value.tot_scan != 0 && value.balance_issue != 0) {
+                                    //       data = data + "<tr class=table-warning>";
+                                    //   }
+                                    //   if (value.tot_scan == value.demand && value.balance_issue == 0) {
+                                    //       data = data + "<tr class=table-success>";
+                                    //   }
+
+                                      data = data + "<td>" + value.id + "</td>"
+                                      data = data + "<td>" + value.custcode + "</td>"
+                                      data = data + "<td>" + value.skid_no + "</td>"
+                                      data = data + "<td>" + value.prodno + "</td>"
+                                      data = data + "<td>" + value.partno + "</td>"
+                                      data = data + "<td>" + value.partname + "</td>"
+                                      data = data + "<td>" + value.demand + "</td>"
+                                      data = data + "<td>" + value.act_running + "</td>"
+                                      data = data + "<td>" + value.bal_running + "</td>"
+                                  data = data + "</tr>"
+                              })
+                              $('#view-scanout').html(data);
+                            }
+                        })
+                }
+            })
+
+    });
+
+    function printskid(){
             let packing_no           = $('#packing_no').val();
             let skid_no              = $('#skid_no').val();
+            let custpo               = $('#custpo').val();
             let vandate              = $('#vandate').val();
             let dest                 = $('#dest').val();
-            let type_skid                 = $('#type_skid').val();
+            let type_skid            = $('#type_skid').val();
             
-            window.location.assign(       "{{ url('/finishgood/viewSkid/printSkid') }}" + "?packing_no=" + packing_no + "&skid_no=" + skid_no + "&vandate=" + vandate +"&dest=" + dest + "&type_skid=" + type_skid  )
+            window.location.assign(       "{{ url('/finishgood/viewSkid/printSkid') }}" + "?packing_no=" + packing_no + "&skid_no=" + skid_no + "&custpo=" + custpo + "&vandate=" + vandate +"&dest=" + dest + "&type_skid=" + type_skid  )
         }
+
+
+       
     </script>
 @endsection
