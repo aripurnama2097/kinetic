@@ -113,11 +113,11 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6 col-lg-3">
-            <div class="card">
+          <div class="col-sm-6 col-lg-3 ">
+            <div class="card bg-primary">
               <div class="card-body">
                 <div class="d-flex align-items-center">
-                  <div style="font-size:15px" class="subheader text-dark">Active User</div>
+                  <div style="font-size:15px" class="subheader text-light">Active User</div>
                   <div class="ms-auto lh-1">
                    
                   </div>

@@ -151,9 +151,10 @@ Route::get('/finishgood/scanoutData',[FinishGoodController::class,'scanout_data'
 Route::get('finishgood/viewSkid',[FinishGoodController::class,'viewSkid'])->middleware('auth');
 Route::get('finishgood/viewSkid/printSkid',[FinishGoodController::class,'printSkid'])->middleware('auth');
 Route::post('finishgood/viewSkid/scanout_skid',[FinishGoodController::class,'scanout_skid'])->middleware('auth');
+Route::get('finishgood/viewSkid/printMaster',[FinishGoodController::class,'printMasterlist'])->middleware('auth');
+Route::get('/finishgood/viewDummy',[FinishGoodController::class,'view_dummy'])->middleware('auth');
 Route::get('/finishgood/view_check',[FinishGoodController::class,'view_check'])->middleware('auth');
-
-
+Route::get('finishgood/viewSkid/checkData',[FinishGoodController::class,'check_data'])->middleware('auth');
 
 
 // =======================================PROBLEM FOUND  ROUTING===========================

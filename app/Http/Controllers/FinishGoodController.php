@@ -297,10 +297,37 @@ class FinishGoodController extends Controller
 
     }
 
+    public function view_dummy(){
+
+        return view('finishgood.viewDummy');
+    }
+
     public function view_check(){
 
         return view('finishgood.view_check');
     }
+
+    public function check_data(request $request){
+
+        $qrskid     = $request->qr_skid;
+
+        // SKD20230712001:1:PAKISTAN:NA356:03:2022-06-17
+        $qrdata = $qrskid;
+        list($skidcode, $skidno, $destSkid, $packing_no, $type_skid, $vandate) = explode(":", $qrdata);
+    
+           $data =  DB::connection ('sqlsrv')
+               ->select("SELECT * FROM finishgood_list where skid_no ='{$skidno}'");
+    
+            // return $data;
+
+            return response()->json(['success'=>TRUE,
+                                    'message'=>'Success',
+                                    'data'  => $data
+             ]);
+    }
+
+
+ 
 
 
 

@@ -66,7 +66,7 @@
                                     </a>
                                 </div>
                                 <div class="col-4  ">
-                                    <a class="btn btn-light col-12 text-dark">
+                                    <a class="btn btn-light col-12 text-dark" href="{{url('finishgood/viewDummy')}} ">
                                         <i class="ti ti-box"></i>
                                         DUMMY SKID
                                     </a>
@@ -91,7 +91,7 @@
                                                 class="ti ti-refresh"></i> </a>
                                         {{-- <a class="btn btn-primary mb-2" href="{{ url('repacking/scanIn') }}"> --Scan In--  </a>
                                         <a class="btn btn-light mb-2" href="{{ url('repacking/scanCombine') }}"> --Scan Combine--  </a> --}}
-                                        <h1 class="text-dark text-center"> --SCAN OUT--</h1>                
+                                        <h1 class="text-dark text-center"> --SCAN OUT BOX--</h1>                
                                         <div class="d-flex justify-content-center">
                                             <div class="row row-cards col-12 mb-4">
                                                 <div class="mb-3 col-sm-12 col-12">
