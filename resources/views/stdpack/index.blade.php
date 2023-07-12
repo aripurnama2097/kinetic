@@ -96,7 +96,7 @@
                         <td> {{$value->weight}}</td>
                         <td> {{$value->stdpack}}</td>
                         <td> {{$value->vendor}}</td>
-                          <td> {{$value->jknshelf}}</td>
+                        <td> {{$value->jknshelf}}</td>
                        
                         <td class="btn-group"> 
                          
@@ -122,7 +122,7 @@
                                         @csrf
                                     <div class="mb-3">
                                         <label class="form-label">Item Number</label>
-                                        <input type="text" name="partnumber" class="form-control" name="example-text-input" value="{{$value->partnumber}}" placeholder="PART NUMBER">
+                                        <input type="text" name="partnumber" id="partnumber" class="form-control"  value="{{$value->partnumber}}" placeholder="PART NUMBER">
                                     </div>
                                     <br>
                                     <br>
@@ -193,7 +193,7 @@
                                       <button type="button" class="btn btn-light link-warning" data-bs-dismiss="modal">
                                         Cancel
                                       </button>
-                                      <button type="submit"  class="btn btn-primary ms-auto" >
+                                      <button type="submit" id="update" class="btn btn-primary ms-auto" >
                                         Update
                                       </button>
                                   </div>
@@ -494,6 +494,9 @@
   });
  
   
+ 
+
+
 
   // $(function () {
   //   $.fn.dataTable.ext.errMode = 'throw';

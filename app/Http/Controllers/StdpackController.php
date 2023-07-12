@@ -14,37 +14,31 @@ class StdpackController extends Controller
 {
     public function index(){
        
-        // $data = DB::connection('sqlsrv')
-        //         ->select("SELECT * FROM std_pack ");
-           
-                if (request()->ajax()) {
-                    $data = StdPack::query();
-                    return DataTables::of($data)
-                    ->addIndexColumn()
-                        ->addColumn('action', function($row){
-                            $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-                            return $actionBtn;
-                        })
+        $data = DB::table('std_pack')
+                ->orderBy('created_at', 'desc')
+                ->paginate(100);
+
+                return view('/stdpack.index',compact('data'));
+                // if (request()->ajax()) {
+                //     $data = StdPack::query();
+                //     return DataTables::of($data)
+                //     ->addIndexColumn()
+                //         // ->addColumn('action', function($row){
+                //         //     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                //         //     return $actionBtn;
+                //         // })
                       
-                        ->rawColumns(['action'])
+                //         ->rawColumns(['action'])
                        
         
-                        ->make(true);
-                }
-                return view('/stdpack.index');
+                //         ->make(true);
+                // }
+                // return view('/stdpack.index');
 
-        // $data = StdPack::limit(100)->get();
-    //    return Datatables::of($data)
-    //     ->make();
-
-    //     return view('/stdpack');
-    //     }
             }
+
     public function create(Request $request){
 
-    
-
-  
           StdPack ::create($request->all());
 
           return redirect()->back()->with('success', 'Data Berhasil Disimpan');
@@ -86,7 +80,13 @@ class StdpackController extends Controller
         $model->jknshelf        = $request->jknshelf;
         $model->save();
         
-        return redirect('/stdpack')->with('success', 'Success! Data Berhasil Diupdate');
+
+        return response()->json([
+            'success' =>TRUE,
+            'message' =>'berhasil update'
+        ]);
+
+        // return redirect('/stdpack')->with('success', 'Success! Data Berhasil Diupdate');
     }
 
     public function destroy($id)

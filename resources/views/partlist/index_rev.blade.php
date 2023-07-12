@@ -298,7 +298,30 @@
 
                         $.each(response.data, function(key, value) {
 
-                       
+                            // var qrContent = $("#contentQR").html(value.partlist_no);
+                            // qrContent.make();
+                            //  generateQrCode(qrContent);
+
+
+
+
+
+
+
+
+                            // var unique = qr.filter(function(item, i, qr) {
+                            //               return i == qr.indexOf(item);
+                            //   });
+
+                            // Generate the QR code
+                            // qrCode.makeCode(value.partlist_no);
+
+                            //  var qr = $("#contentQR").html(value.partlist_no));
+
+                            //  generateQRCode
+
+
+                            // data = value.partlist_no
 
                             data = data + "<tr>"
                             data = data + "<td>" + value.id + "</td>"
@@ -381,7 +404,7 @@
                             },
                             success: function(response) {
                                 var dataScan = ""
-                              
+                               
                                 $.each(response, function(key, value) {
 
                                     dataScan = dataScan + "<tr>"
@@ -465,7 +488,7 @@
                                     confirmButtonText: 'Loose Control',
                                     denyButtonText: `Continue`,
                                 }).then((result) => {
-                                 
+                                    // KONFIRM LOOSE CONTROL
                                     if (result.isConfirmed) {
                                         // Swal.fire('Oke Loose Carton')
                                         $.ajax({
@@ -508,36 +531,34 @@
 
                             }
 
-                            var data = ""
-                            console.log(response.data);
-                            $.each(response.data, function(key, value) {
-                                // console.log('key=>'+key+'|value=>'+value)
+                            var dataScan = ""
+                            $.each(response, function(key, value) {
 
-                                data = data + "<tr>"
+                                dataScan = dataScan + "<tr>"
                                 if (value.tot_scan == 0 && value.balance_issue == 0) {
-                                    data = data + "<tr class=table-light>";
+                                    dataScan = dataScan + "<tr class=table-light>";
                                 }
                                 if (value.tot_scan != 0 && value.balance_issue != 0) {
-                                    data = data + "<tr class=table-warning>";
+                                    dataScan = dataScan + "<tr class=table-warning>";
                                 }
                                 if (value.tot_scan == value.demand && value
                                     .balance_issue == 0) {
-                                    data = data + "<tr class=table-success>";
+                                    dataScan = dataScan + "<tr class=table-success>";
                                 }
 
-                                data = data + "<td>" + value.id + "</td>"
-                                data = data + "<td>" + value.custcode + "</td>"
-                                data = data + "<td>" + value.prodno + "</td>"
-                                data = data + "<td>" + value.partno + "</td>"
-                                data = data + "<td>" + value.partname + "</td>"
-                                data = data + "<td>" + value.demand + "</td>"
-                                data = data + "<td>" + value.tot_scan + "</td>"
-                                data = data + "<td>" + value.balance_issue +
+                                dataScan = dataScan + "<td>" + value.id + "</td>"
+                                dataScan = dataScan + "<td>" + value.custcode + "</td>"
+                                dataScan = dataScan + "<td>" + value.prodno + "</td>"
+                                dataScan = dataScan + "<td>" + value.partno + "</td>"
+                                dataScan = dataScan + "<td>" + value.partname + "</td>"
+                                dataScan = dataScan + "<td>" + value.demand + "</td>"
+                                dataScan = dataScan + "<td>" + value.tot_scan + "</td>"
+                                dataScan = dataScan + "<td>" + value.balance_issue +
                                     "</td>"
 
-                                data = data + "</tr>"
+                                dataScan = dataScan + "</tr>"
                             })
-                            $('#data-scanin').html(data);
+                            $('#data-scanin').html(dataScan);
                             $('#scan_label').focus();
                         }
                     });

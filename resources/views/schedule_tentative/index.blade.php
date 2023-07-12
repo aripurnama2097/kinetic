@@ -21,15 +21,16 @@
 
                 <a  href="{{url('/schedule_tentative/master_scheduleTemp')}}" class="btn btn-light" >
                   Excell Schedule           
-                 </a>'' 
+                 </a>
                 <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-light" >
                   SB98 Master                 
-                 </a>''
+                 </a>
                  <a   href="{{url('/schedule_tentative/SA90')}}" class="btn btn-light">
                    SA90 Master
                  </a>
-              
-             
+                 <a   href="{{url('/schedule_tentative/inhouse')}}" class="btn btn-primary">
+                  Inhouse Master
+                 </a>
             </div>
        
         </div>
@@ -50,8 +51,9 @@
                 <div class="card-body border-bottom ">
                   
                  <div class="table-responsive  rounded-1">
-                 <div class="btn-group ml-4">
+                 <div class="row-2">
                     <button type="button" class="btn btn-primary dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="ti ti-note"></i>
                      Schedule Category   
                     </button>
        

@@ -15,7 +15,7 @@
                     {{-- <span class="avatar avatar-sm" style="background-image: url()"></span> --}}
                     <div class="d-none d-xl-block ps-2">
                         @auth
-                            <div class="btn btn-light  btn-sm text-dark float-right d-flex justify-content-end mr-3 ">
+                            <div style="font-weight:bold;font-size:15px" class="text-white float-right d-flex justify-content-end mr-3  ">
                                 <i class="ti ti-people mr-3"> </i> {{ auth()->user()->name }}
                             </div>
                             <!-- <div class="mt-1 small text-muted">UI Designer</div> -->
@@ -175,6 +175,9 @@
                                   <a class="dropdown-item" href="{{url('/finishgood/scanoutData')}}">
                                       Data FinishGood
                                   </a>           
+                                  <a class="dropdown-item" href="{{url('/finishgood/view_check')}}">
+                                      Scan Out Check
+                                </a>  
                               </div>
 
                           </div>
@@ -208,7 +211,7 @@
                       <div class="dropdown-menu">
                           <div class="dropdown-menu-columns">
                               <div class="dropdown-menu-column">
-                                  <a class="dropdown-item" href="./layout-horizontal.html">
+                                  <a class="dropdown-item" href="{{url('/problem')}}">
                                       Problem Found
                                   </a>
                                   <a class="dropdown-item" href="./layout-boxed.html">
