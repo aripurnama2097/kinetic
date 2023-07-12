@@ -140,7 +140,50 @@ class FinishGoodController extends Controller
         return view('finishgood.viewSkid',compact('prodno','dest','vandate','skidno'));
     }
 
+    public function printSkid(Request $request)
+    {
+     
+      $currentDate = Carbon::now();     
+      $date        = $currentDate->format('Ymd');      
 
+
+      $lastOrder = DB::table('tblheaderskid')
+      ->whereDate('created_at',$currentDate)
+      ->max('id');
+
+      $order = $lastOrder ? $lastOrder + 1 : 1;
+      
+      // Generate unique number berdasarkan tanggal dan urutan
+      $skidcode = 'SKD' . $date . str_pad($order, 3, '0', STR_PAD_LEFT);
+
+
+        $packing_no = $request->packing_no;
+        $skid_no    = $request->skid_no;
+        $custpo    = $request->custpo;
+        $vandate    = $request->vandate;
+        $dest       = $request->dest;
+        $type_skid  = $request->type_skid;
+
+        $via = DB::connection('sqlsrv')
+            ->select("SELECT shipvia from schedule where dest ='{$dest}'");
+
+         
+
+        // $qr = DB::connection('sqlsrv')
+        //         ->select('SELECT * FROM finishgood_list where skid_no is null');
+
+        $skidqr = DB::connection('sqlsrv')
+                ->insert("INSERT into tblheaderskid(skidcode,packing_no,skid_no,custpo,vandate,dest,type_skid)
+                            select '{$skidcode}','{$packing_no}', '{$skid_no}','{$custpo}','{$vandate}', '{$dest}', '{$type_skid}' ");
+
+    
+
+        
+
+        return view('finishgood.printskid',compact('packing_no','skid_no','custpo','vandate','dest','type_skid','skidcode','via'));
+    }
+
+    // SCAN OUT DENGAN SKID
     public function scanout_skid(Request $request)
     {
 
@@ -226,49 +269,21 @@ class FinishGoodController extends Controller
                 ]);
         }
     }
-    public function printSkid(Request $request)
-    {
-     
-      $currentDate = Carbon::now();     
-      $date        = $currentDate->format('Ymd');      
+   
+    public function printMasterlist(request $request){
 
+        $qrskid     = $request->qr_skid;
 
-      $lastOrder = DB::table('tblheaderskid')
-      ->whereDate('created_at',$currentDate)
-      ->max('id');
+         // SKD20230712001:1:PAKISTAN:NA356:03:2022-06-17
+         $qrdata = $qrskid;
+         list($skidcode, $skidno, $destSkid, $packing_no, $type_skid, $vandate) = explode(":", $qrdata);
 
-      $order = $lastOrder ? $lastOrder + 1 : 1;
-      
-      // Generate unique number berdasarkan tanggal dan urutan
-      $skidcode = 'SKD' . $date . str_pad($order, 3, '0', STR_PAD_LEFT);
+       $data =  DB::connection ('sqlsrv')
+                ->select("SELECT * FROM finishgood_list where skid_no ='{$skidno}'");
 
+       return view('finishgood.printmaster',compact('data'));
 
-        $packing_no = $request->packing_no;
-        $skid_no    = $request->skid_no;
-        $custpo    = $request->custpo;
-        $vandate    = $request->vandate;
-        $dest       = $request->dest;
-        $type_skid  = $request->type_skid;
-
-        $via = DB::connection('sqlsrv')
-            ->select("SELECT shipvia from schedule where dest ='{$dest}'");
-
-         
-
-        // $qr = DB::connection('sqlsrv')
-        //         ->select('SELECT * FROM finishgood_list where skid_no is null');
-
-        $skidqr = DB::connection('sqlsrv')
-                ->insert("INSERT into tblheaderskid(skidcode,packing_no,skid_no,custpo,vandate,dest,type_skid)
-                            select '{$skidcode}','{$packing_no}', '{$skid_no}','{$custpo}','{$vandate}', '{$dest}', '{$type_skid}' ");
-
-    
-
-        
-
-        return view('finishgood.printskid',compact('packing_no','skid_no','custpo','vandate','dest','type_skid','skidcode','via'));
     }
-
 
     public function scanout_data(){
 
@@ -286,5 +301,7 @@ class FinishGoodController extends Controller
 
         return view('finishgood.view_check');
     }
+
+
 
 }

@@ -192,7 +192,7 @@
                                         <tbody id="view-scanout">
                                         </tbody>
                                     </table>
-                                    <a  id="print-master" href="{{url('finishgood/viewSkid/printMaster')}}"class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
+                                    <a  id="print-master" onclick="printMaster()" class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
                                         Print Master Label
                                     </a>
                                     </div>
@@ -394,6 +394,12 @@
             
             window.location.assign(       "{{ url('/finishgood/viewSkid/printSkid') }}" + "?packing_no=" + packing_no + "&skid_no=" + skid_no + "&custpo=" + custpo + "&vandate=" + vandate +"&dest=" + dest + "&type_skid=" + type_skid  )
         }
+
+    function printMaster(){
+            let qr_skid               = $('#qr_skid').val();
+
+            window.location.assign("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid   )
+    }
 
 
        
