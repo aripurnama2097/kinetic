@@ -14,7 +14,7 @@ class ProblemFoundController extends Controller
 
         $data = DB::connection('sqlsrv')
                     ->select("SELECT a.*, b.* from problemfound as b
-                                inner join schedule as a on a.partno = b.part_no and a.custpo = b.cust_po");
+                                inner join finishgood_list as a on a.partno = b.part_no and a.custpo = b.cust_po");
         // return $data;
 
         return view('problem.index',compact('data'));
@@ -29,19 +29,27 @@ class ProblemFoundController extends Controller
         $symptom = $request->symptom;
         $found_date = Carbon::now();    
 
-        $file = $request->file('image');
-        $destPath = 'public/img/';
+        // $file = $request->file('image');
+        // $destPath = 'public/img/';
+        // $savefile = storage_path('public/img/', $file);
         
-
+        // $request->validate([
+        //     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        // ]);
+    
+        $imageName =time().'.'.$request->image->extension();  
+     
+        $foto =  $request->image->move(public_path('img'), $imageName);
   
 
+        // public/images/file.png
 
         $datakit = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
 
         DB::connection('sqlsrv')
             ->insert("INSERT into problemfound(cust_po,part_no,found_by,symptom,image,timefound)
-                      SELECT '{$custpo}','{$partno}','{$pic}','{$symptom}','{$file}','{$found_date}' 
+                      SELECT '{$custpo}','{$partno}','{$pic}','{$symptom}','{$foto}','{$found_date}' 
                       ");
 
         $user= 'ari.purnama@jkei.jvckenwood.com';
@@ -49,22 +57,41 @@ class ProblemFoundController extends Controller
             'title' => 'Mail from Kinetic',
             'body' => 'Problem found in part number :' . $partno 
         ];
-        Mail::to($user)->send(new \App\Mail\NotifyMail($details));
-            // $request->validate([
-            //     'found_by' => 'required',
-            //     'label_kit' => 'required',
-            //     'symptom' => 'required',
-            //     'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
-            // ]);
-    
-            // $fileName = time() . '.' . $request->image->extension();
-            // $request->image->storeAs('public/img', $fileName);
-                  
-            // $user = new Problemfound;
-            // $user->found_by = $request->input('found_by');
-            // $user->custpo = $request->input('label_kit');
-            // $user->found_by = $request->input('found_by');
-            // $user->image = $fileName;
-            // $user->save();
+
+        // Mail::to($user)->send(new \App\Mail\NotifyMail($details));
+
+        return redirect()->back()->with('success', 'Data Created Success');
+          
+
+    }
+
+
+    public function view(){
+
+        $data = DB::connection('sqlsrv')
+        ->select("SELECT a.*, b.* from problemfound as b
+                    inner join finishgood_list as a on a.partno = b.part_no and a.custpo = b.cust_po");
+
+        return view('problem.view',compact('data'));
+    }
+
+
+    public function responProblem(Request $request, $id)
+    {
+
+        $model = Problemfound::find($id);   
+
+        $model->dic      = $request->dic;
+        $model->cause        = $request->cause;
+        $model->action          = $request->action;
+        $model->status          = 'Done';
+        $model->updated_at      = Carbon::now();  
+        
+        $model->save();
+        
+
+      
+
+        return redirect()->back()->with('success', 'Response Success');
     }
 }

@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Problemfound extends Model
 {
-    protected $fillable = [
-        'found_by',
-        'foto'
-    ];
+    // protected $fillable = [
+    //     'found_by',
+    //     'foto'
+    // ];
+
+    protected $table ='problemfound';
 }

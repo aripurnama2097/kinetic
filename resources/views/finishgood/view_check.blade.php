@@ -48,15 +48,15 @@
                     <div class="col-12 ">
                         <div class="card rounded-1 col-12 ">
                             <div class="card-header text-center justify-content-center">
-                                <h2 style="font-size:30px"class="text-dark "> --CHECK DATA SCANOUT--</h2>
+                                <h2 style="font-size:30px"class="text-dark "> -- DATA SCANOUT--</h2>
                             </div>
 
                             <div class="btn-group mb-3" role="group">
                                 <div class="col-12  ">
                                     <a class="btn btn-primary   col-12" data-bs-toggle="collapse" href="#scan-check"
                                         role="button" aria-expanded="false" aria-controls="skid-packing">
-                                        <i class="ti ti-data"></i>
-                                        --START--
+                                        <i class="ti ti-start"></i>
+                                        START CHECK
                                     </a>
                                 </div>
                               
@@ -114,8 +114,7 @@
 
                                         <tbody id="view-check">
                                         </tbody>
-                                    </table>
-                                   
+                                    </table>                           
                                     </div>
                             </div>
                         </div>
