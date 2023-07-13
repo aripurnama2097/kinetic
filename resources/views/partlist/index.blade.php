@@ -69,7 +69,7 @@
 
                             <br>
 
-                            <div class="collapse mt-4" id="collapse2">
+                            <div class="collapse mt-4" id="collapse2" hide>
                                 <div class="card card-body col-12 mt-4">
                                     <h2>FILTER </h2>
 
@@ -93,47 +93,49 @@
                                     </div>
 
                                     <br>
-
-
+                                    
                                     <div class="table-responsive  rounded-1 shadow-sm  col-12 shadow-lg  mt-5">
+                                        {{-- <iframe id='print-iframe' name='print-frame-name'> --}}
                                         <table style="width:100%" id="table-print"
-                                            class="text-nowrap  table table-striped border border-dark shadow-sm ">
-                                            <div class="row">
-                                                <div class="col-12  mt-3 p-2 ">
-                                                    <h2 id="judul" style="font-size:30px"class="text-dark text-center">
-                                                        PART LIST MC
-                                                    </h2>
+                                        class="table table-bordered print">
+                                                <div class="row">
+                                                    <div class="col-12  mt-3 p-2 ">
+                                                        <h2 id="judul" style="font-size:30px"class="text-dark text-center">
+                                                            PART LIST MC
+                                                        </h2>
+                                                    </div>
+                                                    <div class="card mt-3 p-2 col-3">
+                                                        <div class="col-4" id="contentQR"></div>
+                                                        <div class="col-8" id="QRText"></div>
+                                                    </div>
                                                 </div>
-                                                <div class="card mt-3 p-2 col-3">
-                                                    <div class="col-4" id="contentQR"></div>
-                                                    <div class="col-8" id="QRText"></div>
-                                                </div>
-                                            </div>
+    
+                                                <br>
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        {{-- <th style="font-size: 10px;">No</th> --}}
+                                                        {{-- <th style="font-size: 10px;">Part list No</th> --}}
+                                                        {{-- <th style="font-size: 10px;">Cust Code</th>
+                                                        <th style="font-size: 10px;">Prod No</th>
+                                                        <th style="font-size: 10px;">JKEI Po date</th>
+                                                        <th style="font-size: 10px;">van Date</th> --}}
+                                                        <th style="font-size: 15px;text-center">Cust PO</th>
+                                                        <th style="font-size: 15px;text-center">Part Number</th>
+                                                        <th style="font-size: 15px;text-center">Part Name</th>
+                                                        <th style="font-size: 15px;text-center">Demand</th>
+                                                        <th style="font-size: 15px;text-center">Std Pack</th>
+                                                        {{-- <th style ="font-size: 15px;">MC Shelf No</th> --}}
+                                                        <th style="font-size: 15px;text-center">Vendor</th>
+                                                    </tr>
+                                                </thead>
+    
+                                                <tbody id="data-print">
+    
+                                                </tbody>
+                                            </table>
+                                        {{-- </iframe> --}}
+                                        </div>
 
-                                            <br>
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th style="font-size: 10px;">No</th>
-                                                    <th style="font-size: 10px;">Part list No</th>
-                                                    <th style="font-size: 10px;">Cust Code</th>
-                                                    <th style="font-size: 10px;">Prod No</th>
-                                                    <th style="font-size: 10px;">JKEI Po date</th>
-                                                    <th style="font-size: 10px;">van Date</th>
-                                                    <th style="font-size: 10px;">Cust PO</th>
-                                                    <th style="font-size: 10px;">Part Number</th>
-                                                    <th style="font-size: 10px;">Part Name</th>
-                                                    <th style="font-size: 10px;">Demand</th>
-                                                    <th style="font-size: 10px;">Std Pack</th>
-                                                    {{-- <th style ="font-size: 10px;">MC Shelf No</th> --}}
-                                                    <th style="font-size: 10px;">Vendor</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody id="data-print">
-
-                                            </tbody>
-                                        </table>
-                                    </div>
                                     {{-- </iframe> --}}
                                 </div>
                                 <button id="print-btn" class="print-button float-right btn btn-primary">
@@ -235,8 +237,9 @@
 
         $(document).ready(function() {
 
-            $('#partlist').dataTable({
-                "paging": true,
+            $('#table-print').dataTable({
+                 paging: true,
+                serverside:true
             });
 
 
@@ -246,11 +249,14 @@
                 iframe.style.display = 'oke';
                 document.body.appendChild(iframe);
 
-                var content = '<html><head><title>Partlist MC</title></head><body>' +
-                    $('#judul').clone().wrap('<div>').parent().html() +
-                    $('#table-print1').clone().wrap('<div>').parent().html() +
-                    $('#table-print').clone().wrap('<div>').parent().html() +
-                    '</body></html>';
+                var content = '<html><head class="text-center"><title style="text-center">Partlist MC</title></head><body>' + 
+                                     $('#judul').clone().wrap('<div>').parent().html() + 
+                                     $('#contentQR').clone().wrap('<div>').parent().html() +'<br>' +
+                                     '<table id="table-print" style="border:1px solid black"> <thead style="text-center"> <th>' +
+                                     $('#table-print').clone().wrap('<div>').parent().html() +'</th></thead>'+                
+                                     '<tbody style="border:1px solid black"> </tbody> </table>'                             
+                                    '</body></html>';
+                  
 
                 var doc = iframe.contentWindow.document;
                 doc.open();
@@ -259,12 +265,14 @@
 
                 iframe.contentWindow.focus();
                 iframe.contentWindow.print();
+       
             });
 
+         
 
 
 
-
+         
 
             // ========================FIlter PRINT PARTLIST=================================
             $('#print-Partlist').submit(function(event) {
@@ -301,24 +309,70 @@
                        
 
                             data = data + "<tr>"
-                            data = data + "<td>" + value.id + "</td>"
-                            data = data + "<td>" + value.partlist_no + "</td>"
-                            data = data + "<td>" + value.custcode + "</td>"
-                            data = data + "<td>" + value.prodno + "</td>"
-                            data = data + "<td>" + value.jkeipodate + "</td>"
-                            data = data + "<td>" + value.vandate + "</td>"
-                            data = data + "<td>" + value.custpo + "</td>"
-                            data = data + "<td>" + value.partno + "</td>"
-                            data = data + "<td>" + value.partname + "</td>"
-                            data = data + "<td>" + value.demand + "</td>"
-                            data = data + "<td>" + value.stdpack + "</td>"
-                            data = data + "<td>" + value.vendor + "</td>"
+                            // data = data + "<td>" + value.id + "</td>"
+                            // data = data + "<td>" + value.partlist_no + "</td>"
+                            // data = data + "<td>" + value.custcode + "</td>"
+                            // data = data + "<td>" + value.prodno + "</td>"
+                            // data = data + "<td>" + value.jkeipodate + "</td>"
+                            // data = data + "<td>" + value.vandate + "</td>"
+                            data = data + "<td class=text-center>" + value.custpo + "</td>"
+                            data = data + "<td class=text-center>" + value.partno + "</td>"
+                            data = data + "<td class=text-center>" + value.partname + "</td>"
+                            data = data + "<td class=text-center>" + value.demand + "</td>"
+                            data = data + "<td class=text-center>" + value.stdpack + "</td>"
+                            data = data + "<td class=text-center>" + value.vendor + "</td>"
                             data = data + "</tr>"
                         })
                         $('#data-print').html(data);
                     }
                 });
             });
+
+        //     function printskid(){
+        //       let  prodNo = $('#filtprod-no').val();
+
+        //       $.ajax({
+        //             url: "{{ url('/partlist/filterProdno/') }}",
+        //             method: 'POST',
+        //             data: {
+        //                 prodno: prodNo,
+        //                 // jkeipodate:releaseDate,
+        //                 _token: '{{ csrf_token() }}'
+        //             },
+        //             success: function(response) {
+        //                 console.log(response);
+        //                 var data = ""
+        //                 var text = $("#QRText").val(response.qr);
+        //                 var canvas = document.getElementById('QRtext');
+        //                 var canvas = document.getElementById('contentQR');
+
+        //                 // // Create a QRCode object
+        //                 var qr = new QRCode(canvas, {
+        //                     text: response
+        //                     .qr, // The data you want to encode as a QR code
+        //                     width: 65, // The width of the QR code
+        //                     height: 65, // The height of the QR code
+        //                 });
+
+        //                 $.each(response.data, function(key, value) {
+
+                       
+
+        //                     data = data + "<tr>"
+        //                     data = data + "<td>" + value.id + "</td>"
+        //                     data = data + "<td>" + value.custpo + "</td>"
+        //                     data = data + "<td>" + value.partno + "</td>"
+        //                     data = data + "<td>" + value.partname + "</td>"
+        //                     data = data + "<td>" + value.demand + "</td>"
+        //                     data = data + "<td>" + value.stdpack + "</td>"
+        //                     data = data + "<td>" + value.vendor + "</td>"
+        //                     data = data + "</tr>"
+        //                 })
+        //                 $('#data-print').html(data);
+        //             }
+        //         });
+        //       window.location.assign("{{ url('/partlist/print_part/') }}" + "?filt=" + packing_no + "&skid_no=" + skid_no + "&custpo=" + custpo + "&vandate=" + vandate +"&dest=" + dest + "&type_skid=" + type_skid  )
+        // }
 
 
 

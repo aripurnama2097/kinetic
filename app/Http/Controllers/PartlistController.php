@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -40,7 +41,6 @@ class PartlistController extends Controller
 
     public function filterProdno(Request $request){
 
-        // return $request;s
 
         $prodNo = $request->input('prodno');
         $jkeipo= $request->input('jkeipodate');
@@ -50,11 +50,6 @@ class PartlistController extends Controller
         ->where('prodno','=',  $prodNo)
         ->get();
 
-        // $data2 = DB::table('partlist')
-        // ->distinct('partlist_no')
-        // ->where('prodno','=',  $prodNo)
-        // ->get();
-        // $partlistno = "a";
 
         $qr = $data[0]->partlist_no;
 
@@ -75,6 +70,36 @@ class PartlistController extends Controller
 
 
     public function filter_scan(Request $request){
+
+
+        $partlistNo= $request->partlist_no;
+
+        $data= DB::table('partlist')
+        ->where('partlist_no','=',  $partlistNo)
+        ->get();
+
+        // $data = Partlist::with('user')->
+        // where('partlist_no','=',  $partlistNo)
+        // ->paginate(1);
+
+        $cek_partlist = DB::connection('sqlsrv')
+        ->select("SELECT * FROM partlist where partlist_no ='{$partlistNo}'");
+
+
+        if(empty($cek_partlist))
+            {
+                return response()->json(['success' => false,
+                'message' => 'Part list Not Available...']);
+            }
+        else{
+            return response()->json($data);
+
+        }
+
+
+    }
+
+    public function filter_scancoopy(Request $request){
 
 
         $partlistNo= $request->partlist_no;
