@@ -30,7 +30,9 @@
   <link href="{{asset('')}}DataTables/datatables.min.css" rel="stylesheet"/>
   <link href="{{asset('')}}css/tabler-icons.min.css" rel="stylesheet"/>
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"> --}}
+
+  <link href="{{asset('')}}css/tabler.min.css" rel="stylesheet"/>
 
   <link href="{{asset('')}}package/dist/sweetalert2.min.css" rel="stylesheet">
 
