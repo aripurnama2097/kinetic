@@ -57,6 +57,13 @@
                  
                 </div>
               </div>
+
+              <div class="mb-3">
+                <label class="form-label required">DIC</label>
+                <div>
+                  <input type="email" class="form-control" name="dic" placeholder="INPUT DIC" required>          
+                </div>
+              </div>
           </div>
           <div class="card-footer text-end">
             <button type = "submit"  class="btn btn-primary">Submit</button>

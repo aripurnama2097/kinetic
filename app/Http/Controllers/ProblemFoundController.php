@@ -28,6 +28,7 @@ class ProblemFoundController extends Controller
         $kitLabel = $request->label_kit;
         $symptom = $request->symptom;
         $found_date = Carbon::now();    
+        $dic = $request->dic;
 
         // $file = $request->file('image');
         // $destPath = 'public/img/';
@@ -52,13 +53,14 @@ class ProblemFoundController extends Controller
                       SELECT '{$custpo}','{$partno}','{$pic}','{$symptom}','{$foto}','{$found_date}' 
                       ");
 
-        $user= 'ari.purnama@jkei.jvckenwood.com';
+        // $user= 'ari.purnama@jkei.jvckenwood.com';
         $details = [
             'title' => 'Mail from Kinetic',
             'body' => 'Problem found in part number :' . $partno 
+                    // . 'Symptom :' . $symptom
         ];
 
-        // Mail::to($user)->send(new \App\Mail\NotifyMail($details));
+        Mail::to($dic)->send(new \App\Mail\NotifyMail($details));
 
         return redirect()->back()->with('success', 'Data Created Success');
           

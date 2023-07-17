@@ -69,28 +69,28 @@
                                         <thead >
                                             <tr class="headings">                   
                                                
-                                                <th style="font-size: 10px;">Dest</th>
-                                                <th style="font-size: 10px;">Model</th>
-                                                <th style="font-size: 10px;">Prod No</th>
-                                                {{-- <th style="font-size: 10px;">Lot Qty</th> --}}
-                                                <th style="font-size: 10px;">VanDate</th>
-                                                {{-- <th style="font-size: 10px;">Via</th> --}}
-                                                <th style="font-size: 10px;">Cust PO</th>
-                                                <th style="font-size: 10px;">Part Number</th>
-                                                <th style="font-size: 10px;">Part Name</th>
-                                                <th style="font-size: 10px;">Demand</th>
-                                                <th style="font-size: 10px;">Skid No</th>
-                                                <th style="font-size: 10px;">Symptom</th>
+                                                <th class="text-center" style="font-size: 10px;">Dest</th>
+                                                <th class="text-center" style="font-size: 10px;">Model</th>
+                                                <th class="text-center" style="font-size: 10px;">Prod No</th>
+                                                {{-- <th class="text-center" style="font-size: 10px;">Lot Qty</th> --}}
+                                                <th class="text-center" style="font-size: 10px;">VanDate</th>
+                                                {{-- <th class="text-center" style="font-size: 10px;">Via</th> --}}
+                                                <th class="text-center" style="font-size: 10px;">Cust PO</th>
+                                                <th class="text-center" style="font-size: 10px;">Part Number</th>
+                                                <th class="text-center" style="font-size: 10px;">Part Name</th>
+                                                <th class="text-center" style="font-size: 10px;">Demand</th>
+                                                <th class="text-center" style="font-size: 10px;">Skid No</th>
+                                                <th class="text-center" style="font-size: 10px;">Symptom</th>
                           
-                                                <th style="font-size: 10px;">Foto</th>
-                                                <th style="font-size: 10px;">Time Found</th>
-                                                <th style="font-size: 10px;">Found By</th>
-                                                <th style="font-size: 10px;">DIC</th>
-                                                <th style="font-size: 10px;">Cause</th>
-                                                <th style="font-size: 10px;">Action</th>
-                                                <th style="font-size: 10px;">Status</th>
-                                                <th style="font-size: 10px;">Last Updated</th>
-                                                <th style="font-size: 10px;">Response</th>
+                                                <th class="text-center" style="font-size: 10px;">Foto</th>
+                                                <th class="text-center" style="font-size: 10px;">Time Found</th>
+                                                <th class="text-center" style="font-size: 10px;">Found By</th>
+                                                <th class="text-center" style="font-size: 10px;">DIC</th>
+                                                <th class="text-center" style="font-size: 10px;">Cause</th>
+                                                <th class="text-center" style="font-size: 10px;">Action</th>
+                                                <th class="text-center" style="font-size: 10px;">Status</th>
+                                                <th class="text-center" style="font-size: 10px;">Last Updated</th>
+                                                <th class="text-center" style="font-size: 10px;">Response</th>
                                             
                           
                                             </tr>
@@ -119,7 +119,7 @@
                                             <td class="text-danger text-center" style="font-size: 14px;font-weight:bold"> 
                                                 <?php if ($value->status == 'waiting' ) {
                                         
-                                                    echo '<span class= "badge bg-danger">WAITING</span>';
+                                                    echo '<span class= "badge bg-danger"><i class="ti ti-clock-pause"></i>WAITING</span>';
                                                   }
                                                   if ($value->status =='Done') {
                                        
@@ -128,11 +128,9 @@
                     
                                                   ?> 
     
-                                            </td> 
-                                           
+                                            </td>                                    
                                             <td class="text-primary text-center"   style="font-size: 12px; font-weight:bold">{{$value->updated_at}} </td>
-                                            <td class="" style="font-size: 14px;">
-                                            
+                                            <td  style="font-size: 14px;">                                         
                                             <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#updateModal_{{$value->id}}"><i class="ti ti-arrow-big-right-filled"></i>Response</a>
 
                                             <div class="modal modal-blur fade" id="updateModal_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">

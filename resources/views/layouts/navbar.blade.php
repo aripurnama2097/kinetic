@@ -4,7 +4,7 @@
             aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <h1 class="ml-3"style="font-size:25px">KINETIC</h1>
+        <h1 class="ml-3"style="font-size:30px">KINETIC</h1>
         
 
         <div class="navbar-nav flex-row  order-md-last">
@@ -38,9 +38,9 @@
                   <li class="nav-item">
                       <a class="nav-link" href="{{ url('dashboardMenu') }}">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            <i class="ti ti-home-ribbon"></i>
+                          
                           </span>
-                          <span style="font-size:20px" class="nav-link-title">
+                          <span style="font-size:20px" class="nav-link-title">  <i class="ti ti-home-ribbon"></i>
                               Home
                           </span>
                       </a>
