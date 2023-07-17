@@ -107,11 +107,6 @@
                                                 placeholder="Height"> --}}
                                         {{-- </div> --}}
                                     </div>
-
-                                    <div class="col-12 d-flex justify-content-end mb-3 mr-6">
-                                        <button class="btn btn-info"
-                                            onclick="document.getElementById('kit_label').value = ''">clear</button>
-                                    </div>
                                 </div>
                             </div>
 

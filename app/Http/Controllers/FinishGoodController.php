@@ -75,6 +75,11 @@ class FinishGoodController extends Controller
                                      from scanout as b  where
                                  finishgood_list.id = '{$selectPart[0]->id}' ");
 
+            DB::connection('sqlsrv')
+               ->update("UPDATE finishgood_list 
+                                set box_no = '{$boxno}',
+                                packing_no = '{$packing_no}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
+
             return response()
                 ->json([
                     'success' => true,
@@ -120,7 +125,7 @@ class FinishGoodController extends Controller
   
   
         $lastOrder = DB::table('tblheaderskid')
-        // ->where('skid_no')
+        // ->where('box_no')
         ->max('id');
   
         $skidno = $lastOrder ? $lastOrder + 1 : 1;
@@ -235,7 +240,7 @@ class FinishGoodController extends Controller
                     SELECT  '{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}'
                     ");
 
-            // STEP 3.UPDATE IN FINISH GOOD LIST     
+            // STEP 3.UPDATE IN FINISH GOOD LIST     // ADD boxno dan packing no
             $update =    DB::connection('sqlsrv')
                 ->update("UPDATE finishgood_list 
                                  SET 
@@ -252,7 +257,7 @@ class FinishGoodController extends Controller
               ->update("UPDATE finishgood_list 
                                set skid_no = '{$skidno}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
 
-            $view_scan = DB::connection('sqlsrv')
+              $view_scan = DB::connection('sqlsrv')
                             ->select("SELECT * from finishgood_list where skid_no ='{$skidno}'");
 
             return response()

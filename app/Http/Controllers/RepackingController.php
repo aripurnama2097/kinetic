@@ -276,9 +276,6 @@ class RepackingController extends Controller
             $cek_po = DB::connection('sqlsrv')
                             ->select("SELECT  count(custpo) as custpo from temp_print where custpo ='{$custpo}'");
 
-            // dd($cek_po[0]->custpo);
-
-           
 
             if($cek_po[0]->custpo == 0  ){
                  // INSERT DATA TO TEMP PRINT TABLE

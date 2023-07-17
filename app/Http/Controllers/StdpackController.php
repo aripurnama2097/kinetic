@@ -14,26 +14,27 @@ class StdpackController extends Controller
 {
     public function index(){
        
-        $data = DB::table('std_pack')
-                ->orderBy('created_at', 'desc')
-                ->paginate(100);
+        // $data = DB::table('std_pack')
+        //         ->orderBy('created_at', 'desc')
+        //         ->get();
+        //         // ->paginate(100);
 
-                return view('/stdpack.index',compact('data'));
-                // if (request()->ajax()) {
-                //     $data = StdPack::query();
-                //     return DataTables::of($data)
-                //     ->addIndexColumn()
-                //         // ->addColumn('action', function($row){
-                //         //     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-                //         //     return $actionBtn;
-                //         // })
+        //         return view('/stdpack.index',compact('data'));
+                if (request()->ajax()) {
+                    $data = StdPack::query();
+                    return DataTables::of($data)
+                    ->addIndexColumn()
+                        // ->addColumn('action', function($row){
+                        //     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                        //     return $actionBtn;
+                        // })
                       
-                //         ->rawColumns(['action'])
+                        // ->rawColumns(['action'])
                        
         
-                //         ->make(true);
-                // }
-                // return view('/stdpack.index');
+                        ->make(true);
+                }
+                return view('/stdpack.index');
 
             }
 
@@ -81,12 +82,12 @@ class StdpackController extends Controller
         $model->save();
         
 
-        return response()->json([
-            'success' =>TRUE,
-            'message' =>'berhasil update'
-        ]);
+        // return response()->json([
+        //     'success' =>TRUE,
+        //     'message' =>'berhasil update'
+        // ]);
 
-        // return redirect('/stdpack')->with('success', 'Success! Data Berhasil Diupdate');
+        return redirect('/stdpack')->with('success', 'Success! Data Berhasil Diupdate');
     }
 
     public function destroy($id)
@@ -94,6 +95,12 @@ class StdpackController extends Controller
         $model=stdPack::find($id);
         $model->delete();// METHOD DELETE
         return redirect('/stdpack')->with('success', 'Success! Data Berhasil Dihapus');
+    }
+
+    public function delete_all(){
+        DB::table('std_pack')->truncate();
+
+         return redirect()->back()->with('delete', 'All records have been deleted.');
     }
 
 
