@@ -20,7 +20,8 @@ use App\Http\Controllers\SchSKDNGController;
 use App\Http\Controllers\SB98Controller;
 use App\Http\Controllers\SA90Controller;
 use App\Http\Controllers\RepackingController;
-
+use App\Http\Controllers\BorrowController;
+use App\Http\Controllers\KitmonitorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,3 +163,14 @@ Route::get('problem',[ProblemFoundController::class,'index'])->middleware('check
 Route::post('problem/create',[ProblemFoundController::class,'create'])->middleware('checkRole:admin');
 Route::get('problem/view',[ProblemFoundController::class,'view'])->middleware(['checkRole:user,admin']);
 Route::post('problem/update/{id}',[ProblemFoundController::class,'responProblem'])->middleware('checkRole:user');
+
+
+
+// =======================================BORROW  ROUTING===========================
+Route::get('borrow',[BorrowController::class,'index'])->middleware('checkRole:admin');
+Route::post('borrow/takeout',[BorrowController::class,'takeout'])->middleware('checkRole:admin');
+
+
+// =======================================PROBLEM FOUND  ROUTING===========================
+Route::get('kitmonitoring',[KitmonitorController::class,'index'])->middleware('checkRole:admin');
+// Route::post('borrow/takeout',[BorrowController::class,'takeout'])->middleware('checkRole:admin');
