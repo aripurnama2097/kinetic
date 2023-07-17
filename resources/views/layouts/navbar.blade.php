@@ -198,7 +198,7 @@
                                   <a class="dropdown-item" href="{{url('/problem')}}">
                                       Problem Found
                                   </a>
-                                  <a class="dropdown-item" href="./layout-boxed.html">
+                                  <a class="dropdown-item" href="{{url('/borrow')}}">
                                       Borrow Menu
                                       <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                                   </a>
@@ -210,7 +210,7 @@
                   </li>
 
                   <li class="nav-item dropdown">
-                      <a class="">
+                      <a  href ="{{url('/kitmonitoring')}}" class="text-light">
                        
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
                           </span>
@@ -223,8 +223,6 @@
                   <li class="nav-item">
                       <a class="nav-link" href="./icons.html">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
-                              <!-- Download SVG icon from http://tabler-icons.io/i/ghost -->
-
                           </span>
                           <span style="font-size:18px" class="nav-link-title">   <i class="ti ti-package-export"></i>
                               KIT SSO

@@ -81,7 +81,7 @@
                         <p class="alert alert-success">{{ Session::get('success') }}</p>
                     @endif
 
-                        <div class="collapsed-flex justify-content-center " id="box-packing">
+                        <div class="collapse mt-4" id="box-packing" hide>
                             <div class="col-12 ">
                                 <div class="card rounded-1 col-12 mb-2">
                                     <div class="justify-content-center mt-3 ml-3 mr-3 ">
@@ -126,8 +126,7 @@
                                             </div>
                                         </div>
                                             <div class="col-12 d-flex justify-content-end mb-2 mr-6">
-                                                <button class="btn btn-info"
-                                                    onclick="document.getElementById('scan_label').value = ''">clear</button>
+                                              
                                             </div>
                                         </div>
                                 </div>

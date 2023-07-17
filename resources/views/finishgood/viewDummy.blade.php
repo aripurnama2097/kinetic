@@ -119,12 +119,6 @@
                                         </div>
                                         
                                     </div>
-                                        <div class="col-12 d-flex justify-content-end mb-2 mr-6">
-                                            <button class="btn btn-info"
-                                                onclick="document.getElementById('scan_label').value = ''">clear
-                                            </button>
-                                        </div>
-
                                         <table style="width:100%"
                                         class="text-nowrap  table border-bordered  shadow-sm">
                                         <thead class="thead-dark">

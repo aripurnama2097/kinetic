@@ -50,26 +50,22 @@
                             <br>
 
                             <div class="btn-group" role="group">
-                                <a class="btn btn-primary  "data-bs-toggle="collapse" href="#collapse2" role="button"
-                                    aria-expanded="false" aria-controls="collapse2">
+                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#partlist" role="button"
+                                    aria-expanded="false" aria-controls="partlist">
                                     <i class="ti ti-printer"></i>
                                     PARTLIST SCHEDULE
                                 </a>
                                 <div class="col-6  ">
-                                    <a class="btn btn-light col-12" data-bs-toggle="collapse" href="#collapseExample"
-                                        role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    <a class="btn btn-light col-12" data-bs-toggle="collapse" href="#scanin"
+                                        role="button" aria-expanded="false" aria-controls="scanin">
                                         ---SCAN IN---
                                     </a>
-
-                                    {{-- <a class="btn btn-light col-12" href="{{url('partlist/scanin')}}">
-                                        ---SCAN IN---
-                                    </a> --}}
                                 </div>
                             </div>
 
                             <br>
 
-                            <div class="collapse mt-4" id="collapse2" hide>
+                            <div class="collapse mt-4" id="partlist" hide>
                                 <div class="card card-body col-12 mt-4">
                                     <h2>FILTER </h2>
 
@@ -146,7 +142,7 @@
                             </div>
 
                             {{-- DATA SCAN IN --}}
-                            <div class="collapsed-flex justify-content-right " id="collapseExample">
+                            <div class="collapse mt-4" id="scanin" hide>
                                 <p class="text-dark text-center" style="font-size:20px;font-weight:bold">
                                     MC Issue Planning
                                 </p>

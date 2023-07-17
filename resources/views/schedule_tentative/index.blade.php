@@ -51,6 +51,9 @@
                 <div class="card-body border-bottom ">
                   
                  <div class="table-responsive  rounded-1">
+                  @if(Session::has('success'))
+                  <p class="alert alert-success">{{Session::get('success')}}</p>
+                  @endif
                  <div class="row-2">
                     <button type="button" class="btn btn-primary dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="ti ti-note"></i>
@@ -58,7 +61,7 @@
                     </button>
        
                     <button  id="generate-sch" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
-                      <i class="ti ti-plus"></i>
+                      <i class="ti ti-file-export"></i>
                       Generate Schedule
                     </button>
                 
@@ -373,7 +376,7 @@ $(document).ready(function () {
 
       Swal.fire({
         icon: 'warning',
-          title: 'Are you sure Generate schedule?',
+          title: ' Generate schedule?',
           // input :text,
           showDenyButton: false,
           showCancelButton: true,
@@ -391,7 +394,7 @@ $(document).ready(function () {
             success: function(result) {
                     swal.fire(
                   'SUCCESS!',
-                  'Update Schedule',
+                  'Generate Schedule',
                   'success'
                     )
               }

@@ -96,12 +96,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-12 d-flex justify-content-end mb-3 mr-6">
-                                        <button class="btn btn-info"
-                                            onclick="document.getElementById('scan_label').value = ''">submit</button>
-                                     
-                                    </div>
-                                   
                                     <div class="table-responsive">
                                         <table style="width:100%"
                                         class="text-nowrap  table border-bordered border border-primary shadow-sm">
@@ -131,37 +125,7 @@
                                
                             </div>
                      
-                            {{-- <div class="col-md-12 col-lg-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">RESULT SCAN</h3>
-                                    </div>
-                                    <div class="card-table table-responsive">
-                                        <table class="table table-vcenter" id="example">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th style="font-size: 10px;">Model</th>
-                                                    <th style="font-size: 10px;">Prod No</th>
-                                                    <th style="font-size: 10px;">JKEI Po Date</th>
-                                                    <th style="font-size: 10px;">Van Date</th>
-                                                    <th style="font-size: 10px;">Order Item</th>
-                                                    <th style="font-size: 10px;">Cust PO</th>
-                                                    <th style="font-size: 10px;">Part Number</th>
-                                                    <th style="font-size: 10px;">Part Name</th>
-                                                    <th style="font-size: 10px;">Demand</th>
-                                                    <th style="font-size: 10px;">Shelf No</th>
-                                                    <th style="font-size: 10px;">Qty Issue</th>
-
-                                                    <th style="font-size: 10px;">Print</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                                <a href="{{url('/repacking')}} " class="btn btn-warning mb-3" ><i class="ti ti-back"></i>Back 
-                                </a>
-                               
-                           </div> --}}
+                          
                     </div>
                     <br>
 
@@ -327,27 +291,6 @@
 
         });
 
-        //           
-
-        // if (response.success) {
-        // swal.fire({
-        //     icon: 'success',
-        //     title: "Scan Part Oke",
-        //     text: response.data,
-        //     timer: 5000,
-        //     showConfirmButton: true,
-
-        //   })
-        // }
-        // else  {
-        // swal.fire({
-        //     icon: 'error',
-        //     title: "Double Scan",
-        //     text: response.data,
-        //     timer: 5000,
-        //     showConfirmButton: true,
-
-        //   })
-        // }
+      
     </script>
 @endsection

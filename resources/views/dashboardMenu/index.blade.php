@@ -56,12 +56,14 @@
                 <div class="d-flex align-items-center">
                   <div style="font-size:15px" class="subheader text-dark">Problem Found</div>
                   <div class="ms-auto lh-1">
-                   
+                              
                   </div>
                 </div>
                 <div class="h1 mb-3"></div>
                 <div class="d-flex mb-2">
-                  <div></div>
+                  <div class="align-content-around text-primary">
+                    <p class="text-center text-danger" style="font-weight:bold;font-size:20px">{{$problem}} </p>
+                  </div>
                 
                 </div>
                 <div class="progress progress-sm">
@@ -114,10 +116,10 @@
             </div>
           </div>
           <div class="col-sm-6 col-lg-3 ">
-            <div class="card bg-primary">
+            <div class="card bg-light">
               <div class="card-body">
                 <div class="d-flex align-items-center">
-                  <div style="font-size:15px" class="subheader text-light">Active User</div>
+                  <div style="font-size:15px" class="subheader text-dark">Active User</div>
                   <div class="ms-auto lh-1">
                    
                   </div>

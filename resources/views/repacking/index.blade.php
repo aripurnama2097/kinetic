@@ -53,22 +53,22 @@
 
                             <div class="btn-group mb-3" role="group">
                                 <div class="col-4  ">
-                                    <a class="btn btn-primary   col-12" data-bs-toggle="collapse" href="#collapse2"
-                                        role="button" aria-expanded="false" aria-controls="collapse2">
+                                    <a class="btn btn-primary   col-12" data-bs-toggle="collapse" href="#assy"
+                                        role="button" aria-expanded="false" aria-controls="assy">
                                         <i class="ti ti-printer"></i>
                                         ASSY PRINT
                                     </a>
                                 </div>
                                 <div class="col-4  ">
-                                    <a class="btn btn-primary col-12" data-bs-toggle="collapse" href="#origin-print"
-                                    role="button" aria-expanded="false" aria-controls="origin-print">
+                                    <a class="btn btn-primary col-12" data-bs-toggle="collapse" href="#original"
+                                    role="button" aria-expanded="false" aria-controls="original">
                                         <i class="ti ti-printer"></i>
                                         ORIGINAL PRINT
                                     </a>
                                 </div>
                                 <div class="col-4  ">
-                                    <a class="btn btn-success col-12 text-white" data-bs-toggle="collapse" href="#combine-scanin"
-                                    role="button" aria-expanded="false" aria-controls="combine-scanin">
+                                    <a class="btn btn-success col-12 text-white" data-bs-toggle="collapse" href="#combine"
+                                    role="button" aria-expanded="false" aria-controls="combine">
                                         <i class="ti ti-printer"></i>COMBINE PRINT
                                     </a>
                                 </div>
@@ -81,7 +81,7 @@
                         <p class="alert alert-success">{{ Session::get('success') }}</p>
                     @endif
 
-                        <div class="collapsed-flex justify-content-right " id="origin-print">
+                        <div class="collapse mt-4" id="original">
                             <div class="col-12 ">
                                 <div class="card rounded-1 col-12 mb-2">
                                     <div class="justify-content-center mt-3 ml-3 mr-3 ">
@@ -105,17 +105,14 @@
                                                         placeholder="SCAN MC LABEL" disabled>                                          
                                                 </div>                                      
                                             </div>
-                                            <div class="col-12 d-flex justify-content-end mb-2 mr-6">
-                                                <button class="btn btn-info"
-                                                    onclick="document.getElementById('scan_label').value = ''">clear</button>
-                                            </div>
+                                           
                                         </div>
                                 </div>
                             </div>
                         </div>
 
                         {{-- COMBINE SCAN IN --}}
-                        <div class="collapsed-flex justify-content-right " id="combine-scanin">
+                        <div class="collapse mt-4" id="combine">
                             <div class="col-12 ">
                                 <div class="card rounded-1 col-12 mb-2">
                                     <div class="justify-content-center mt-3 ml-3 mr-3 ">
@@ -140,10 +137,7 @@
                                                         placeholder="SCAN MC LABEL" disabled>                                          
                                                 </div>                                      
                                             </div>
-                                            <div class="col-12 d-flex justify-content-end mb-2 mr-6">
-                                                <button class="btn btn-info"
-                                                    onclick="document.getElementById('scan_label').value = ''">clear</button>
-                                            </div>
+                                           
                                         </div>
                                 </div>
                             </div>

@@ -67,6 +67,13 @@
                                     </a>
                                 </div>
                                
+                               
+                            </div>
+                            <div class="col-12 mb-2 ">
+                                <a class="btn btn-light col-12" href="{{url('/finishgood')}}">
+                                    <i class="ti ti-360"></i>
+                                    Back
+                                </a>
                             </div>
                            
                         </div>
@@ -79,7 +86,7 @@
 
 
                     {{-- FORM PRINT SKID --}}
-                    <div class="collapsed-flex justify-content-center " id="skid-packing">
+                    <div class="collapse mt-4"id="skid-packing">
                         <div class="col-12 ">
                             <div class="card rounded-1 col-12 mb-2">
                                 <div class="justify-content-center mt-3 ml-3 mr-3 ">
@@ -139,7 +146,7 @@
                     </div>               
                     
                      {{-- FORM SCAN OUT --}}
-                    <div class="collapsed-flex justify-content-center " id="scan-out">
+                    <div class="collapse mt-4" id="scan-out">
                         <div class="col-12 ">
                             <div class="card rounded-1 col-12 mb-2">
                                 <div class="justify-content-center mt-3 ml-3 mr-3 ">                             
@@ -167,11 +174,7 @@
                                         </div>
                                         
                                     </div>
-                                        <div class="col-12 d-flex justify-content-end mb-2 mr-6">
-                                            <button class="btn btn-info"
-                                                onclick="document.getElementById('scan_label').value = ''">clear
-                                            </button>
-                                        </div>
+                                      
 
                                         <table style="width:100%"
                                         class="text-nowrap  table border-bordered  shadow-sm">
