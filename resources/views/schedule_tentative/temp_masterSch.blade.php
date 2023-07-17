@@ -30,10 +30,14 @@
                     
                   
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
-                  <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-schtemp"> <i class="ti ti-arrow-big-down-filled"></i>
+                  <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-schtemp"> <i class="ti ti-file-upload"></i></i>
                     Upload Master
                   </a>
+                  <a href="{{url('schedule_tentative/headersch')}}" class="btn btn-primary"> <i class="ti ti-arrow-big-down-filled"></i>
+                    Header
+                  </a>
                   <a href="{{url('/schedule_tentative/master_scheduleTemp')}} " class="btn btn-success  float-right" >Refresh </a>
+
                 </div>
                    <br>
                    @if(Session::has('success'))

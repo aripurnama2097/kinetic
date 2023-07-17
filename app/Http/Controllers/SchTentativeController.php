@@ -8,7 +8,7 @@ use App\Imports\ImportScheduleTemp;
 use App\Imports\ImportSB98;
 use App\Imports\ImportSA90;
 use App\Imports\InhouseImport;
-use App\Exports\FormatHeaderExport;
+use App\Exports\FormatHeaderSchExport;
 use App\Models\ScheduleTemp;
 use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
@@ -311,6 +311,13 @@ class SchTentativeController extends Controller
                     where a.dest ='PAKISTAN'
                     order by vandate asc ");
 
+    }
+
+    public function headersch(){
+          $date = Carbon::now()->format('Y-m-d');
+          $filename = 'Format_Headersch' . $date . '.csv';
+     
+      return Excel::download(new FormatHeaderSchExport, $filename, \Maatwebsite\Excel\Excel::CSV);
     }
 
 

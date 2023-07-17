@@ -7,8 +7,8 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Carbon\Carbon;
-
-class ImportScheduleTemp implements ToModel
+use Maatwebsite\Excel\Concerns\WithStartRow;
+class ImportScheduleTemp implements ToModel,WithStartRow
 {
     
     /**
@@ -22,7 +22,6 @@ class ImportScheduleTemp implements ToModel
         // DB::beginTransaction();
      $data=  new ScheduleTemp([
           
-            // 'typedata'           => 'test',
             'custcode'           => $row[0],
             'dest'               => $row[1],
             'attention'          => $row[2],
@@ -30,7 +29,6 @@ class ImportScheduleTemp implements ToModel
             'prodno'             => $row[4],
             'lotqty'             => $row[5],
             'jkeipodate'         => $row[6],
-            // 'jkeipodate'         => (Carbon::createFromFormat('d/m/Y', $row[6])!==false) ? Carbon::createFromFormat('d/m/Y', $row[6])->format('Y-m-d') : $row[6],
             'vandate'            => $row[7],
             'etd'                => $row[8],
             'eta'                => $row[9],
@@ -43,7 +41,12 @@ class ImportScheduleTemp implements ToModel
             'demand'             => $row[16],
 
 
-            
+            //  'doc_no'         => "{$row['doc_no'      ]}",
+            //     'old_part_no'    => "{$row['old_part_no'  ]}",
+            //     'new_part_no'    => "{$row['new_part_no'    ]}",
+            //     'model'          => "{$row['model'       ]}",
+            //     'start_serial'   => "{$row['start_serial'      ]}",
+            //     'wu'             => "{$row['wu'          ]}"
         ]);
 
         return $data;
@@ -51,8 +54,8 @@ class ImportScheduleTemp implements ToModel
         
     }
 
-    // public function headingRow(): int
-    // {
-    //     return 2;
-    // }
+    public function startRow(): int
+    {
+        return 2;
+    }
 }

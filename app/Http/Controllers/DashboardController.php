@@ -13,7 +13,15 @@ class DashboardController extends Controller
       ->select("SELECT  b.*, a.act_receive,a.bal_receive  from repacking_list as a
               inner join partlist as b 
               on a.partno = b.partno and a.custpo = b.custpo  order by id desc");
+
+     
+                    
+         $problem = DB::table('problemfound')
+                    ->where('status','=','waiting')->count('status');
+
+                    // return $problem;
+      
         
-        return view('dashboardMenu.index',compact('data'));
+        return view('dashboardMenu.index',compact('data','problem'));
     }
 }

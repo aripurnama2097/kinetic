@@ -24,6 +24,7 @@
           <!-- Page title actions -->
           <div class="col-auto ms-auto d-print-none">
             <div class="btn-list">
+              <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
               <span class="d-none d-sm-inline">
                 <a href="#" class="btn btn-light " data-bs-toggle="modal" data-bs-target="#stdpack-upload"> <i class="ti ti-arrow-big-down-filled"></i>
                   Upload Std Pack
@@ -78,14 +79,14 @@
                         <th>Pack</th>
                         <th>Vendor</th>
                         <th>JKN Shelf No</th>         
-                        <th>Action</th> 
+                        {{-- <th>Action</th>  --}}
 
                         
                       
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach($data as $key => $value)
+                      {{-- @foreach($data as $key => $value)
                       <tr>
                         <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
                         <td> {{$value->partnumber}}</td>
@@ -210,8 +211,8 @@
                         </td>
                        
                        
-                      </tr>
-                      @endforeach
+                      </tr> --}}
+                      {{-- @endforeach --}}
                      
                   
                     </tbody>
@@ -374,14 +375,14 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#schedule-release').DataTable( {
-        // dom: 'Bfrtip',
-        buttons: [
+    // $('#schedule-release').DataTable( {
+    //     // dom: 'Bfrtip',
+    //     buttons: [
            
-            'excelHtml5',
-            'csvHtml5'
-        ]
-    } );
+    //         'excelHtml5',
+    //         'csvHtml5'
+    //     ]
+    // } );
 
     // <th> No </th>
     //                     <th>Part Number</th>
@@ -412,85 +413,94 @@
 
     // $("#example").TableCheckAll();
 
-    $('#delete-all-data').on('click', function() {
-      var button = $(this);
-      var selected = [];
-      $('#example .check:checked').each(function() {
-        selected.push($(this).val());
-      });
-
-      Swal.fire({
-        icon: 'warning',
-          title: 'Are you sure you want to delete selected record(s)?',
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: 'Yes'
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          $.ajax({
-            type: 'post',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: button.data('route'),
-            data: {
-              'selected': selected
-            },
-            success: function (response, textStatus, xhr) {
-              Swal.fire({
-                icon: 'success',
-                  title: response,
-                  showDenyButton: false,
-                  showCancelButton: false,
-                  confirmButtonText: 'Yes'
-              }).then((result) => {
-                window.location='/posts'
-              });
-            }
-          });
-        }
-      });
-    });
-
-    $('.delete-form').on('submit', function(e) {
-      e.preventDefault();
-      var button = $(this);
-
-      Swal.fire({
-        icon: 'warning',
-          title: 'Are you sure you want to delete this record?',
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: 'Yes'
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          $.ajax({
-            type: 'get',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: "{{url('stdpack/delete')}}",
-            data: {
-              '_method': 'delete'
-            },
-            success: function (response, textStatus, xhr) {
-              Swal.fire({
-                icon: 'success',
-                  title: response,
-                  showDenyButton: false,
-                  showCancelButton: false,
-                  confirmButtonText: 'Yes'
-              }).then((result) => {
-                window.location='/stdpack'
-              });
-            }
-          });
-        }
-      });
-      
+    $('#delete-all-data').click(function() {
+        
+        const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          
+  
+        confirmButton: 'btn btn-primary',
+        cancelButton: 'btn btn-danger'
+    },
+    buttonsStyling: false
     })
+
+        swalWithBootstrapButtons.fire({
+        title: 'Are you sure ?',        
+        text: "Reset STDPACK!",
+       
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Reset Data',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+  }).then((result) => {
+  if (result.isConfirmed) {
+
+    $.ajax({
+                url: "{{url('stdpack/delete_all')}}",
+                type: 'get',
+                success: function(result) {
+                  swalWithBootstrapButtons.fire(
+                'SUCCESS!',
+                'Your file has been reset.',
+                'success'
+                  )
+                }
+
+            });
+    
+  } else if (
+    /* Read more about handling dismissals below */
+    result.dismiss === Swal.DismissReason.cancel
+  ) {
+    swalWithBootstrapButtons.fire(
+      'Cancelled',
+      'Your imaginary file is safe :)',
+      'error'
+    )
+  }
+  });
+});
+
+    // $('.delete-form').on('submit', function(e) {
+    //   e.preventDefault();
+    //   var button = $(this);
+
+    //   Swal.fire({
+    //     icon: 'warning',
+    //       title: 'Are you sure you want to delete this record?',
+    //       showDenyButton: false,
+    //       showCancelButton: true,
+    //       confirmButtonText: 'Yes'
+    //   }).then((result) => {
+    //     /* Read more about isConfirmed, isDenied below */
+    //     if (result.isConfirmed) {
+    //       $.ajax({
+    //         type: 'get',
+    //         headers: {
+    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    //         },
+    //         url: "{{url('stdpack/delete')}}",
+    //         data: {
+    //           '_method': 'delete'
+    //         },
+    //         success: function (response, textStatus, xhr) {
+    //           Swal.fire({
+    //             icon: 'success',
+    //               title: response,
+    //               showDenyButton: false,
+    //               showCancelButton: false,
+    //               confirmButtonText: 'Yes'
+    //           }).then((result) => {
+    //             window.location='/stdpack'
+    //           });
+    //         }
+    //       });
+    //     }
+    //   });
+      
+    // })
   });
  
   
@@ -498,51 +508,51 @@
 
 
 
-  // $(function () {
-  //   $.fn.dataTable.ext.errMode = 'throw';
+  $(function () {
+    $.fn.dataTable.ext.errMode = 'throw';
 
-  //   // var table = $('.yajra-datatable').DataTable({
-  //   //     processing: true,
-  //   //     serverSide: true,
-  //   //     ajax: "{{ url('stdpack') }}",
-  //   //     columns: [
-  //   //       {data: 'id', name: 'id'},
-  //   //         {data: 'partnumber', name: 'partnumber'},
-  //   //         {data: 'partname', name: 'partname'},
-  //   //         {data: 'lenght', name: 'lenght'},
-  //   //         {data: 'widht', name: 'widht'},
-  //   //         {data: 'height', name: 'height'},
-  //   //         {data: 'weight', name: 'weight'},
-  //   //         {data: 'stdpack', name: 'stdpack'},
-  //   //         {data: 'vendor', name: 'vendor'},
-  //   //         {data: 'jknshelf', name: 'jknshelf'},
+    var table = $('.yajra-datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{ url('stdpack') }}",
+        columns: [
+          {data: 'id', name: 'id'},
+            {data: 'partnumber', name: 'partnumber'},
+            {data: 'partname', name: 'partname'},
+            {data: 'lenght', name: 'lenght'},
+            {data: 'widht', name: 'widht'},
+            {data: 'height', name: 'height'},
+            {data: 'weight', name: 'weight'},
+            {data: 'stdpack', name: 'stdpack'},
+            {data: 'vendor', name: 'vendor'},
+            {data: 'jknshelf', name: 'jknshelf'},
 
             
            
-  //   //         // {
-  //   //         //     data: 'action', 
-  //   //         //     name: 'action', 
-  //   //         //     orderable: true, 
-  //   //         //     searchable: true
-  //   //         // },
-  //   //     ],
-  //       // ,
-  //       // button: [
-  //       //   $.extend(true, {}, buttonCommon, {
-  //       //             extend: 'copy',
-  //       //             exportOptions: { columns: ':visible' }
-  //       //         }),
-  //       //         $.extend(true, {}, buttonCommon, {
-  //       //             extend: 'csv',
-  //       //             exportOptions: { columns: ':visible' }
-  //       //         }),
-  //       //         $.extend(true, {}, buttonCommon, {
-  //       //             extend: 'print',
-  //       //             exportOptions: { columns: ':visible' }
-  //       //         }),  
-  //       //     ]
-  //   // });
+    //         // {
+    //         //     data: 'action', 
+    //         //     name: 'action', 
+    //         //     orderable: true, 
+    //         //     searchable: true
+    //         // },
+        ],
+        // ,
+        // button: [
+        //   $.extend(true, {}, buttonCommon, {
+        //             extend: 'copy',
+        //             exportOptions: { columns: ':visible' }
+        //         }),
+        //         $.extend(true, {}, buttonCommon, {
+        //             extend: 'csv',
+        //             exportOptions: { columns: ':visible' }
+        //         }),
+        //         $.extend(true, {}, buttonCommon, {
+        //             extend: 'print',
+        //             exportOptions: { columns: ':visible' }
+        //         }),  
+        //     ]
+    });
     
-  // });
+  });
 </script>
 @endsection
