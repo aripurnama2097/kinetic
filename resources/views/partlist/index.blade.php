@@ -120,6 +120,7 @@
                                                         <th style="font-size: 10px;">JKEI Po date</th>
                                                         <th style="font-size: 10px;">van Date</th> --}}
                                                         <th style="font-size: 15px;text-center">Cust PO</th>
+                                                        <th style="font-size: 15px;text-center">Vandate</th>
                                                         <th style="font-size: 15px;text-center">Part Number</th>
                                                         <th style="font-size: 15px;text-center">Part Name</th>
                                                         <th style="font-size: 15px;text-center">Demand</th>
@@ -154,16 +155,17 @@
                                         class="form-control form-control-lg mb-3 text-center border border-secondary  d-flex justify-content-center"
                                         type="text" name="scan_nik" value="" id="scan_nik" maxlength="8"
                                         placeholder="SCAN NIK HERE" autofocus>
-                                    <input
+                                        <input
                                         class="form-control form-control-lg mb-3 text-center border border-secondary  d-flex justify-content-center"
-                                        type="text" name="parlist_no" value="" id="partlist_no"
-                                        placeholder="INPUT PART LIST NO" disabled>
+                                        type="text" name="partlist_no" value="" id="partlist_no"
+                                        placeholder="SCAN QR PARTLIST" disabled>
                                     <input
                                         class="form-control form-control-lg mb-3 text-center border border-secondary  d-flex justify-content-center"
                                         type="text" name="scan_label" value="" id="scan_label"
                                         placeholder="SCAN LABEL MC" disabled>
                                     <div class="col-12 d-flex justify-content-end">
-                                        <button class="btn btn-info" onclick="document.getElementById('scan_label').value = ''"> Clear </button>
+                                        <button class="btn btn-warning mr-2" onclick ="showData()" ><i class="ti ti-theater"></i> Show Data</button>
+                                       
                                     </div>
                                 </div>
 
@@ -175,7 +177,7 @@
                                             class="text-nowrap  table border-bordered border border-primary shadow-sm">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th style="font-size: 10px;">No</th>
+                                                    {{-- <th style="font-size: 10px;">No</th> --}}
                                                     <th style="font-size: 10px;">Cust Code</th>
                                                     <th style="font-size: 10px;">Prod No</th>
                                                     <th style="font-size: 10px;">Part Number</th>
@@ -226,7 +228,7 @@
 
 @section('script') --}}
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> --}}
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -237,10 +239,10 @@
 
         $(document).ready(function() {
 
-            $('#table-print').dataTable({
-                 paging: true,
-                serverside:true
-            });
+            // $('#table-print').dataTable({
+            //      paging: true,
+            //     serverside:true
+            // });
 
 
             // ==============PRINT PARTLIST==========================
@@ -314,8 +316,8 @@
                             // data = data + "<td>" + value.custcode + "</td>"
                             // data = data + "<td>" + value.prodno + "</td>"
                             // data = data + "<td>" + value.jkeipodate + "</td>"
-                            // data = data + "<td>" + value.vandate + "</td>"
                             data = data + "<td class=text-center>" + value.custpo + "</td>"
+                            data = data + "<td class=text-center>" + value.vandate + "</td>"
                             data = data + "<td class=text-center>" + value.partno + "</td>"
                             data = data + "<td class=text-center>" + value.partname + "</td>"
                             data = data + "<td class=text-center>" + value.demand + "</td>"
@@ -328,63 +330,16 @@
                 });
             });
 
-        //     function printskid(){
-        //       let  prodNo = $('#filtprod-no').val();
-
-        //       $.ajax({
-        //             url: "{{ url('/partlist/filterProdno/') }}",
-        //             method: 'POST',
-        //             data: {
-        //                 prodno: prodNo,
-        //                 // jkeipodate:releaseDate,
-        //                 _token: '{{ csrf_token() }}'
-        //             },
-        //             success: function(response) {
-        //                 console.log(response);
-        //                 var data = ""
-        //                 var text = $("#QRText").val(response.qr);
-        //                 var canvas = document.getElementById('QRtext');
-        //                 var canvas = document.getElementById('contentQR');
-
-        //                 // // Create a QRCode object
-        //                 var qr = new QRCode(canvas, {
-        //                     text: response
-        //                     .qr, // The data you want to encode as a QR code
-        //                     width: 65, // The width of the QR code
-        //                     height: 65, // The height of the QR code
-        //                 });
-
-        //                 $.each(response.data, function(key, value) {
-
-                       
-
-        //                     data = data + "<tr>"
-        //                     data = data + "<td>" + value.id + "</td>"
-        //                     data = data + "<td>" + value.custpo + "</td>"
-        //                     data = data + "<td>" + value.partno + "</td>"
-        //                     data = data + "<td>" + value.partname + "</td>"
-        //                     data = data + "<td>" + value.demand + "</td>"
-        //                     data = data + "<td>" + value.stdpack + "</td>"
-        //                     data = data + "<td>" + value.vendor + "</td>"
-        //                     data = data + "</tr>"
-        //                 })
-        //                 $('#data-print').html(data);
-        //             }
-        //         });
-        //       window.location.assign("{{ url('/partlist/print_part/') }}" + "?filt=" + packing_no + "&skid_no=" + skid_no + "&custpo=" + custpo + "&vandate=" + vandate +"&dest=" + dest + "&type_skid=" + type_skid  )
-        // }
-
-
 
             //  ===============SCAN  IN PROCESSS=================================
             $("#scan_nik").focusin(function() {
-                $(this).css("background-color", "lightgreen");
+                $(this).css("background-color", "lightblue");
             });
             $("#partlist_no").focusin(function() {
-                $(this).css("background-color", "lightgreen");
+                $(this).css("background-color", "lightblue");
             });
             $("#scan_label").focusin(function() {
-                $(this).css("background-color", "lightgreen");
+                $(this).css("background-color", "lightblue");
             });
             // =========
 
@@ -402,21 +357,21 @@
 
             //STEP 1.  DAPATKAN DATA PARTLIST NUMBER
             $('#partlist_no').on('keypress', function(e) {
-                event.preventDefault();
-                var counter = 0;
+               
+                // var counter = 0;
 
-                //menambahkan nomor urut pada tabel
-                $("#tabel_data tr:has(td)").each(function() {
-                    $(this).prepend("<td>" + (++counter) + "</td>");
-                });
+                // //menambahkan nomor urut pada tabel
+                // $("#tabel_data tr:has(td)").each(function() {
+                //     $(this).prepend("<td>" + (++counter) + "</td>");
+                // });
 
 
-                $('.color-cell').each(function() {
-                    var cellValue = parseInt($(this).text());
-                    if (cellValue > 20) {
-                        $(this).css('background-color', 'red');
-                    }
-                });
+                // $('.color-cell').each(function() {
+                //     var cellValue = parseInt($(this).text());
+                //     if (cellValue > 20) {
+                //         $(this).css('background-color', 'red');
+                //     }
+                // });
 
                 if (e.which == 13) {
                     let val_partlistNo = $('#partlist_no').val();
@@ -436,31 +391,54 @@
                             success: function(response) {
                                 var dataScan = ""
                               
-                                $.each(response, function(key, value) {
+                              $.each(response.data, function(key, value) {
 
-                                    dataScan = dataScan + "<tr>"
-                                        if (value.tot_scan == 0 && value.balance_issue == 0) {
-                                            dataScan = dataScan + "<tr class=table-light>";
-                                        }
-                                        if (value.tot_scan != 0 && value.balance_issue != 0) {
-                                            dataScan = dataScan + "<tr class=table-warning>";
-                                        }
-                                        if (value.tot_scan == value.demand && value.balance_issue == 0) {
-                                            dataScan = dataScan + "<tr class=table-success>";
-                                        }
+                                  dataScan = dataScan + "<tr>"
+                                      if (value.tot_scan == 0 && value.balance_issue == 0) {
+                                          dataScan = dataScan + "<tr class=table-light>";
+                                      }
+                                      if (value.tot_scan != 0 && value.balance_issue != 0) {
+                                          dataScan = dataScan + "<tr class=table-warning>";
+                                      }
+                                      if (value.tot_scan == value.demand && value.balance_issue == 0) {
+                                          dataScan = dataScan + "<tr class=table-success>";
+                                      }
 
-                                        dataScan = dataScan + "<td>" + value.id + "</td>"
-                                        dataScan = dataScan + "<td>" + value.custcode + "</td>"
-                                        dataScan = dataScan + "<td>" + value.prodno + "</td>"
-                                        dataScan = dataScan + "<td>" + value.partno + "</td>"
-                                        dataScan = dataScan + "<td>" + value.partname + "</td>"
-                                        dataScan = dataScan + "<td>" + value.demand + "</td>"
-                                        dataScan = dataScan + "<td>" + value.tot_scan + "</td>"
-                                        dataScan = dataScan + "<td>" + value.balance_issue + "</td>"
-                                    dataScan = dataScan + "</tr>"
+                                    //   dataScan = dataScan + "<td>" + value.id + "</td>"
+                                      dataScan = dataScan + "<td>" + value.custcode + "</td>"
+                                    //   dataScan = dataScan + "<td>" + value.vandate + "</td>"
+                                      dataScan = dataScan + "<td>" + value.prodno + "</td>"
+                                      dataScan = dataScan + "<td>" + value.partno + "</td>"
+                                      dataScan = dataScan + "<td>" + value.partname + "</td>"
+                                      dataScan = dataScan + "<td>" + value.demand + "</td>"
+                                      dataScan = dataScan + "<td>" + value.tot_scan + "</td>"
+                                      dataScan = dataScan + "<td>" + value.balance_issue + "</td>"
+                                  dataScan = dataScan + "</tr>"
+                              })
+                              $('#data-scanin').html(dataScan);
+                              $('#scan_label').focus();
+                              $('#scan_label').clear();
+
+                                if (response.success) {
+                                swal.fire({
+                                    icon: 'success',
+                                    title: response.message,
+
+                                  
+
                                 })
-                                $('#data-scanin').html(dataScan);
-                                $('#scan_label').focus();
+                            }
+
+                            else{
+                                swal.fire({
+                                    icon: 'error',
+                                    title: response.message,
+
+                                
+                                })
+                            }
+
+                               
                             }
 
 
@@ -491,14 +469,47 @@
                         },
                         success: function(response) {
                             console.log(response)
+                            var data = ""
+                            console.log(response.data);
+                            $.each(response.data, function(key, value) {
+                                // console.log('key=>'+key+'|value=>'+value)
+
+                                data = data + "<tr>"
+                                if (value.tot_scan == 0 && value.balance_issue == 0) {
+                                    data = data + "<tr class=table-light>";
+                                }
+                                if (value.tot_scan != 0 && value.balance_issue != 0) {
+                                    data = data + "<tr class=table-warning>";
+                                }
+                                if (value.tot_scan == value.demand && value
+                                    .balance_issue == 0) {
+                                    data = data + "<tr class=table-success>";
+                                }
+
+                                // data = data + "<td>" + value.id + "</td>"
+                                data = data + "<td>" + value.custcode + "</td>"
+                                data = data + "<td>" + value.prodno + "</td>"
+                                data = data + "<td>" + value.partno + "</td>"
+                                data = data + "<td>" + value.partname + "</td>"
+                                data = data + "<td>" + value.demand + "</td>"
+                                data = data + "<td>" + value.tot_scan + "</td>"
+                                data = data + "<td>" + value.balance_issue +
+                                    "</td>"
+
+                                data = data + "</tr>"
+                            })
+                            $('#data-scanin').html(data);
+                            $('#scan_label').focus();
+                            $('#scan_label').val("");
+
+                            //ALERT SUCCESS/LOOSE CARTON
                             if (response.success) {
                                 swal.fire({
                                     icon: 'success',
                                     title: response.message,
 
                                     timer: 5000,
-                                    showConfirmButton: true,
-
+                                 
                                 })
                             } else {
                                 console.log("warning",response.message);
@@ -508,6 +519,7 @@
                                     Swal.fire({
                                         icon: 'warning',
                                         title: response.message
+
                                     })
                                     return;
                                 }
@@ -535,14 +547,46 @@
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
-                                                console.log(response)
+                                                console.log(response.data);
+                                                var data = ""
+                                                $.each(response.data, function(key, value) {
+                                // console.log('key=>'+key+'|value=>'+value)
+
+                                               data =data + "<tr>"
+                                                if (value.tot_scan == 0 && value.balance_issue == 0) {
+                                                   data =data + "<tr class=table-light>";
+                                                }
+                                                if (value.tot_scan != 0 && value.balance_issue != 0) {
+                                                   data =data + "<tr class=table-warning>";
+                                                }
+                                                if (value.tot_scan == value.demand && value
+                                                    .balance_issue == 0) {
+                                                   data =data + "<tr class=table-success>";
+                                                }
+
+                                            //    data =data + "<td>" + value.id + "</td>"
+                                               data =data + "<td>" + value.custcode + "</td>"
+                                               data =data + "<td>" + value.prodno + "</td>"
+                                               data =data + "<td>" + value.partno + "</td>"
+                                               data =data + "<td>" + value.partname + "</td>"
+                                               data =data + "<td>" + value.demand + "</td>"
+                                               data =data + "<td>" + value.tot_scan + "</td>"
+                                               data =data + "<td>" + value.balance_issue +
+                                                    "</td>"
+
+                                               data = data + "</tr>"
+                                            })
+                                            $('#data-scanin').html(data);
+                                            $('#scan_label').focus();
+                                            $('#scan_label').val("");
+                                                
                                             }
                                         })
                                     } else if (result.isDenied) {
-                                        Swal.fire('Continue scan')
+                                        // Swal.fire('Continue scan')
                                         $.ajax({
                                             type: "POST",
-                                            dataType: "json",
+                                           dataType: "json",
                                             url: "{{ url('/partlist/scan_continue/') }}",
                                             headers: {
                                                 'X-CSRF-TOKEN': $(
@@ -553,7 +597,40 @@
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
+                               
                                                 console.log(response)
+
+                                                var data = ""
+                                                $.each(response.data, function(key, value) {
+                                // console.log('key=>'+key+'|value=>'+value)
+
+                                               data =data + "<tr>"
+                                                if (value.tot_scan == 0 && value.balance_issue == 0) {
+                                                   data =data + "<tr class=table-light>";
+                                                }
+                                                if (value.tot_scan != 0 && value.balance_issue != 0) {
+                                                   data =data + "<tr class=table-warning>";
+                                                }
+                                                if (value.tot_scan == value.demand && value
+                                                    .balance_issue == 0) {
+                                                   data =data + "<tr class=table-success>";
+                                                }
+
+                                            //    data =data + "<td>" + value.id + "</td>"
+                                               data =data + "<td>" + value.custcode + "</td>"
+                                               data =data + "<td>" + value.prodno + "</td>"
+                                               data =data + "<td>" + value.partno + "</td>"
+                                               data =data + "<td>" + value.partname + "</td>"
+                                               data =data + "<td>" + value.demand + "</td>"
+                                               data =data + "<td>" + value.tot_scan + "</td>"
+                                               data =data + "<td>" + value.balance_issue +
+                                                    "</td>"
+
+                                               data = data + "</tr>"
+                                            })
+                                            $('#data-scanin').html(data);
+                                            $('#scan_label').focus();
+                                            $('#scan_label').val("");
                                             }
                                         })
                                     }
@@ -562,37 +639,7 @@
 
                             }
 
-                            var data = ""
-                            console.log(response.data);
-                            $.each(response.data, function(key, value) {
-                                // console.log('key=>'+key+'|value=>'+value)
-
-                                data = data + "<tr>"
-                                if (value.tot_scan == 0 && value.balance_issue == 0) {
-                                    data = data + "<tr class=table-light>";
-                                }
-                                if (value.tot_scan != 0 && value.balance_issue != 0) {
-                                    data = data + "<tr class=table-warning>";
-                                }
-                                if (value.tot_scan == value.demand && value
-                                    .balance_issue == 0) {
-                                    data = data + "<tr class=table-success>";
-                                }
-
-                                data = data + "<td>" + value.id + "</td>"
-                                data = data + "<td>" + value.custcode + "</td>"
-                                data = data + "<td>" + value.prodno + "</td>"
-                                data = data + "<td>" + value.partno + "</td>"
-                                data = data + "<td>" + value.partname + "</td>"
-                                data = data + "<td>" + value.demand + "</td>"
-                                data = data + "<td>" + value.tot_scan + "</td>"
-                                data = data + "<td>" + value.balance_issue +
-                                    "</td>"
-
-                                data = data + "</tr>"
-                            })
-                            $('#data-scanin').html(data);
-                            $('#scan_label').focus();
+                      
                         }
                     });
                 }
@@ -602,6 +649,12 @@
 
         });
 
-       
+       function showData(){
+        // let scan_label = $('#scan_label').val();
+        let partlist_no = $('#partlist_no').val();
+
+        window.location.assign("{{ url('/partlist/showscan') }}" + "?partlist_no=" + partlist_no  )
+
+       }
     </script>
 @endsection

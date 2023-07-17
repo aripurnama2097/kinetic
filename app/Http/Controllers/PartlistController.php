@@ -60,6 +60,7 @@ class PartlistController extends Controller
 
 
         return response()->json([
+            
             "data" => $data,
             "qr" => $qr
         ]);
@@ -89,10 +90,15 @@ class PartlistController extends Controller
         if(empty($cek_partlist))
             {
                 return response()->json(['success' => false,
-                'message' => 'Part list Not Available...']);
+                                          'message' => 'Part list Not Available...']);
             }
         else{
-            return response()->json($data);
+           
+            return response()->json([
+                                    'data'=>$data,
+                                    'success' => true,
+                                    'message' => 'Partlist Oke'
+                                ]);
 
         }
 
@@ -171,7 +177,7 @@ class PartlistController extends Controller
 
         // return $cek_continue;
 
-        // cek qty scan < stdpack
+        // cek qty scan < stdpack || qty > stdpack
         if(($qty < $selectPart[0]->stdpack && $status_print==null) or ($cek_continue == NULL && $status_print==null)){
             return response()
             ->json([
@@ -207,7 +213,7 @@ class PartlistController extends Controller
                     order by custpo asc ");
                     
                     // update partlist
-                    DB::connection('sqlsrv')
+            DB::connection('sqlsrv')
                     ->update("UPDATE partlist
                                 set tot_scan = (
                                     SELECT sum(scan_issue) FROM partscan as b where
@@ -219,16 +225,30 @@ class PartlistController extends Controller
                             partlist.id = '{$selectPart[0]->id}'
                             ");
 
-            $data = DB::connection('sqlsrv')
-            ->select("SELECT * from partlist where partno ='{$label_scan}'");
-                return response()
-                ->json([
-                    'success' => true,
-                    'message' => 'Scan Succesfully',
-                    'data'      =>$data
-                   
 
-                ]);
+                // TAMPILKAN DATA PARTLIST HASIL SCAN     
+                $param = DB::connection('sqlsrv')
+                ->select("SELECT * from partlist where partno ='{$label_scan}'");
+            
+
+                // GET PARTLIST NO
+                $partlistno   =   $param[0]->partlist_no;    
+
+            
+
+                $data = DB::connection('sqlsrv')
+                ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+
+                // return $data;
+
+                    return response()
+                        ->json([
+                            'success' => true,
+                            'message' => 'Scan Succesfully',
+                            'data'     =>$data
+
+                        ]);
+                               
         }
         else{
             DB::connection('sqlsrv')
@@ -255,28 +275,28 @@ class PartlistController extends Controller
                             ");              
               
             
-        // TAMPILKAN DATA PARTLIST HASIL SCAN     
-        $param = DB::connection('sqlsrv')
-        ->select("SELECT * from partlist where partno ='{$label_scan}'");
-       
+                // TAMPILKAN DATA PARTLIST HASIL SCAN     
+                $param = DB::connection('sqlsrv')
+                ->select("SELECT * from partlist where partno ='{$label_scan}'");
+            
 
-        // GET PARTLIST NO
-        $partlistno   =   $param[0]->partlist_no;    
+                // GET PARTLIST NO
+                $partlistno   =   $param[0]->partlist_no;    
 
-     
+            
 
-        $data = DB::connection('sqlsrv')
-        ->select("SELECT * from partlist where partlist_no='{$partlistno}'");
+                $data = DB::connection('sqlsrv')
+                ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
 
-        // return $data;
+                // return $data;
 
-              return response()
-                ->json([
-                    'success' => true,
-                    'message' => 'Scan Succesfully',
-                    'data'     =>$data
+                    return response()
+                        ->json([
+                            'success' => true,
+                            'message' => 'Scan Succesfully',
+                            'data'     =>$data
 
-                ]);
+                        ]);
                                
         }
 
@@ -295,10 +315,44 @@ class PartlistController extends Controller
 
         // return $request;
         $this->scan_issue($request,"loosecarton");
+
+        $scan_label = $request->scan_label;
+
+        //PARAM LABEL
+        $label_scan = substr($scan_label,0,15);
+        $data = DB::connection('sqlsrv')
+        ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+
+        // return $data;
+
+            return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Scan Succesfully',
+                    'data'     =>$data
+
+                ]);
     }
 
     public function scan_continue(Request $request){
         $this->scan_issue($request,"continue");
+
+        $scan_label = $request->scan_label;
+
+        //PARAM LABEL
+        $label_scan = substr($scan_label,0,15);
+        $data = DB::connection('sqlsrv')
+        ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+
+        // return $data;
+
+            return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Scan Succesfully',
+                    'data'     =>$data
+
+                ]);
     }
 
     public function looseCarton_backup(Request $request){
@@ -439,8 +493,22 @@ class PartlistController extends Controller
                 }
 
 
+     }
     }
-}
+
+
+    public function showscan(Request $request){
+
+        $partlistno = $request->partlist_no;
+        $scan_label = $request->scan_label;
+        $label_scan = substr($scan_label,0,15);
+
+        $data = DB::connection('sqlsrv')
+            ->select("SELECT * from partlist where partlist_no='{$partlistno}' ");
+
+        return view('partlist.showscan',compact('data'));
+
+    }
 
 
 }
