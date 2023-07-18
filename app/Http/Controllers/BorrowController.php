@@ -72,9 +72,13 @@ class BorrowController extends Controller
                                         
                                         ") ;
 
+            $data = DB::connection('sqlsrv')
+            ->select("SELECT * FROM borrow where  partno = '{$partno}'  and  custpo = '{$custpo}'");
+
             return response()
                     ->json(['success'=>TRUE,
                             'message'=>'Create Data Successfully',
+                            'data'   => $data
                     ]);
 
         }
@@ -110,9 +114,14 @@ class BorrowController extends Controller
                                         ") ;
 
 
+
+                $data = DB::connection('sqlsrv')
+                ->select("SELECT * FROM borrow where  partno = '{$partno}'  and  custpo = '{$custpo}'");
+
                     return response()
                     ->json(['success'=>TRUE,
                             'message'=>'Create Data Successfully',
+                            'data'   =>$data
                     ]);
         }
 
@@ -180,9 +189,13 @@ class BorrowController extends Controller
                                     
                                     ") ;
         
+            $data = DB::connection('sqlsrv')
+                        ->select("SELECT * FROM borrow where  partno = '{$partno}'  and  custpo = '{$custpo}'");
+
             return response()
                             ->json(['success'=>TRUE,
-                            'message'=>'Borrow return Successfully',
+                                    'message'=>'Borrow return Successfully',
+                                    'data'   => $data
                             ]);
                 }
            

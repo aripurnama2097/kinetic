@@ -123,18 +123,40 @@
           </div>
           </div>
         </form>
+
+        <div class="card-body border-bottom d-flex justify-content-center ">
+          <div class="table-responsive  rounded-1 shadow-sm mt-3 mb-3 ml-0 mr-1">
+            <table style="width:100%"  class="table table-vcenter table-striped">
+                <thead >
+                    <tr>                   
+                      
+                        <th style="font-size: 14px;">Custpo</th>
+                        <th style="font-size: 14px;">Partno</th>
+                        <th style="font-size: 14px;">Qty</th>
+                        <th style="font-size: 14px;">Symptom</th>            
+                        <th style="font-size: 14px;">Borrower</th>
+                        <th style="font-size: 14px;">Lender</th>
+                        <th style="font-size: 14px;">Dateout</th>
+                        <th style="font-size: 14px;">Status</th>
+                        <th style="font-size: 14px;">Dept</th>
+                        <th style="font-size: 14px;">Reason</th>
+                        <th style="font-size: 14px;">Est return</th>
+                    </tr>
+                </thead>
+                <tbody  id="borrow-takeout">
+                </tbody>
+            </table>
+          </div>
+        </div>
     </div>
 
 
-    <div class="collapse mt-4" id="return" hide>
-      {{-- <form  action ="{{url('problem/create')}}" method="post" class="card" enctype="multipart/form-data">
-        @csrf --}}
+    <div class="collapse mt-4" id="return" >
+        <form class="card">
         <div class="card-header">
           <h3 style="font-size:25px"class="card-title text-primary">Borrow Return</h3>
         </div>
         <div class="card-body">
-      
-        
           <div class="mb-3 col-12">
             <label class="form-label required">SCAN DIC(Return)</label>
             <div>
@@ -160,7 +182,6 @@
             <div>
               <input type="text" class="form-control" name="remark" id="remark" placeholder="REMARK"  disabled>
               <small class="form-hint">    
-              </div>
             </div>
           </div>
 
@@ -171,67 +192,42 @@
             <small class="form-hint">    
             </div>
           </div>
-      {{-- </form> --}}
-  </div>
 
-      {{-- <div class="card mt-2 mb-2">
-        <div class="table-responsive  rounded-1 shadow-sm mt-3 mb-3 ml-0 mr-1">
-          <table style="width:100%" id="problem-data"  class="table table-vcenter table-striped">
-              <thead >
-                  <tr class="headings">                   
-                     
-                      <th style="font-size: 10px;">reason</th>
-                      <th style="font-size: 10px;">Model</th>
-                      <th style="font-size: 10px;">Prod No</th>
-                   
-                      <th style="font-size: 10px;">VanDate</th>
-                 
-                      <th style="font-size: 10px;">Cust PO</th>
-                      <th style="font-size: 10px;">Part Number</th>
-                      <th style="font-size: 10px;">Part Name</th>
-                      <th style="font-size: 10px;">Demand</th>
-                      <th style="font-size: 10px;">Skid No</th>
-                      <th style="font-size: 10px;">Symptom</th>
-
-                      <th style="font-size: 10px;">Foto</th>
-                      <th style="font-size: 10px;">Time Found</th>
-                      <th style="font-size: 10px;">Found By</th>
-                      <th style="font-size: 10px;">DIC</th>
-                      <th style="font-size: 10px;">Cause</th>
-                      <th style="font-size: 10px;">Action</th>
-                      <th style="font-size: 10px;">Last Updated</th>
-                  
-
-                  </tr>
-              </thead>
-
-              <tbody>
-                  @foreach ($data as $key => $value)             
-                  <td style="font-size: 12px;">{{ $value->dest }}</td>
-                  <td style="font-size: 12px;"> {{ $value->model }}</td>
-                  <td style="font-size: 12px;"> {{ $value->prodno }}</td> 
-               
-                  <td style="font-size: 12px;"> {{ $value->vandate }}</td>
-           
-                  <td style="font-size: 12px;">{{ $value->custpo }} </td>
-                  <td style="font-size: 12px;">{{ $value->partno }} </td>
-                  <td style="font-size: 12px;">{{ $value->partname }} </td>
-                  <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td> 
-                  <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->skid_no }}</td> 
-                  <td style="font-size: 12px;"> {{ $value->symptom }}</td>
-                  <td style="font-size: 12px;"><img width="30%" class="img-circle" src="{{ url('/public/img') }}"> </td>
-                  <td style="font-size: 12px;">{{$value->created_at}}</td>
-                  <td style="font-size: 12px;"></td>           
-                  <td style="font-size: 12px;"> </td>
-                  <td style="font-size: 12px;"> </td>
-                  <td class="text-primary text-center"   style="font-size: 14px; font-weight:bold"> </td>
-                  <td class="text-danger text-center" style="font-size: 14px;"> </td> 
-                  </tr>
-                  @endforeach
-              </tbody>
-          </table>
+          
+          </form>
+          </div>
+        <div class="card-body border-bottom d-flex justify-content-center ">
+          <div class="table-responsive  rounded-1 shadow-sm mt-3 mb-3 ml-0 mr-1">
+            <table style="width:100%"  class="table table-vcenter table-striped">
+                <thead >
+                    <tr>                   
+                      
+                        <th style="font-size: 14px;">Custpo</th>
+                        <th style="font-size: 14px;">Partno</th>
+                        <th style="font-size: 14px;">Qty</th>
+                        <th style="font-size: 14px;">Symptom</th>            
+                        <th style="font-size: 14px;">Borrower</th>
+                        <th style="font-size: 14px;">Lender</th>
+                        <th style="font-size: 14px;">Dateout</th>
+                        <th style="font-size: 14px;">Status</th>
+                        <th style="font-size: 14px;">Dept</th>
+                        <th style="font-size: 14px;">Reason</th>
+                        <th style="font-size: 14px;">Est return</th>
+                        <th style="font-size: 14px;">Act return</th>
+                        <th style="font-size: 14px;">Dic return</th>
+                        <th style="font-size: 14px;">Receiver</th>
+                        <th style="font-size: 14px;">Total return</th>
+                        <th style="font-size: 14px;">Diff</th>
+                    </tr>
+                </thead>
+                <tbody  id="borrow-return">
+                </tbody>
+            </table>
+          </div>
         </div>
-      </div> --}}
+  </div>
+{{-- END COLLAPSE BORROW RETURN --}}
+
      </div>
 </div>
 
@@ -239,17 +235,7 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
-      $('#problem-data').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-           
-            'excelHtml5',
-            'csvHtml5'
-        ]
-      });
-
-
-
+  
         // STEP 1. START BORROW TAKE OUT
         $('#borrower').on('keypress', function(e) {
                 if (e.which == 13) {
@@ -377,35 +363,26 @@
                             }
 
                             var data = ""
-                            $.each(response, function(key, value) {
+                            $.each(response.data, function(key, value) {
 
-                                // dataScan = dataScan + "<tr>"
-                                // if (value.tot_scan == 0 && value.balance_issue == 0) {
-                                //     dataScan = dataScan + "<tr class=table-light>";
-                                // }
-                                // if (value.tot_scan != 0 && value.balance_issue != 0) {
-                                //     dataScan = dataScan + "<tr class=table-warning>";
-                                // }
-                                // if (value.tot_scan == value.demand && value
-                                //     .balance_issue == 0) {
-                                //     dataScan = dataScan + "<tr class=table-success>";
-                                // }
-
-                                // dataScan = dataScan + "<td>" + value.id + "</td>"
-                                // dataScan = dataScan + "<td>" + value.custcode + "</td>"
-                                // dataScan = dataScan + "<td>" + value.prodno + "</td>"
-                                // dataScan = dataScan + "<td>" + value.partno + "</td>"
-                                // dataScan = dataScan + "<td>" + value.partname + "</td>"
-                                // dataScan = dataScan + "<td>" + value.demand + "</td>"
-                                // dataScan = dataScan + "<td>" + value.tot_scan + "</td>"
-                                // dataScan = dataScan + "<td>" + value.balance_issue +
-                                //     "</td>"
-
-                                // dataScan = dataScan + "</tr>"
-                            })
-                            // $('#data-scanin').html(dataScan);
-                            $('#scan_label').focus();
-                            $('#scan_label').val("");
+                              data = data + "<tr>"
+                                data = data + "<td style=font-size:14px>" + value.custpo + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.partno + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.qty + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.symptom + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.borrower + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.lender + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.dateout + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.status + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.dept + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.reason + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.est_return + "</td>"
+                               
+                                data = data + "</tr>"
+                              })
+                                $('#borrow-takeout').html(data);  
+                                $('#scan_label').focus();
+                                $('#scan_label').val("");
                         }
                     });
                 }
@@ -470,42 +447,65 @@
                               label_kit: label_kit                 
                             },
                         success: function(response) {
-                            console.log(response)
-                            if (response.success) {
-                                swal.fire({
-                                    icon: 'success',
-                                    title: response.message,
 
-                                    timer: 5000,
-                                    
+                          var data = ""
+                            $.each(response.data, function(key, value) {
 
-                                })
-                            } else {
-                                swal.fire({
-                                    icon: 'error',
-                                    title: response.message,
+                              data = data + "<tr>"
+                                if (value.tot_return == 0 && value.diff == 0) {
+                                    data = data + "<tr class=table-light>";
+                                }
+                                if (value.tot_return != 0 && value.diff != 0) {
+                                    data = data + "<tr class=table-warning>";
+                                }
+                                if (value.tot_return == value.qty && value.diff == 0) {
+                                    data = data + "<tr class=table-success>";
+                                }
 
-                                    timer: 5000,
-                                    
-
-                                })
-                            }
-
-                            var data = ""
-                            $.each(response, function(key, value) {
-
-                           
+                                data = data + "<td style=font-size:14px>" + value.custpo + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.partno + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.qty + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.symptom + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.borrower + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.lender + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.dateout + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.status + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.dept + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.reason + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.est_return + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.act_return + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.dic_return + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.receiver + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.tot_return + "</td>"
+                                data = data + "<td style=font-size:14px>" + value.diff + "</td>"
+                                data = data + "</tr>"
                             })
-                            // $('#data-scanin').html(dataScan);
-                            $('#scan_label').focus();
-                            $('#scan_label').val("");
-                        }
-                    });
-                    }
-                })
+                                $('#borrow-return').html(data);  
+                                $('#label_kit').val("");                 
+                                console.log(response)
+                                if (response.success) {
+                                    swal.fire({
+                                        icon: 'success',
+                                        title: response.message,
 
+                                        timer: 5000,
+                                        
 
-       
+                                    })
+                                } else {
+                                    swal.fire({
+                                        icon: 'error',
+                                        title: response.message,
+
+                                        timer: 5000,
+                                        
+
+                                    })
+                                }
+                          }      
+                        })
+                      }
+                    })  
 }); 
 
 
