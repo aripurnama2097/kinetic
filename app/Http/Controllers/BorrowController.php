@@ -118,23 +118,6 @@ class BorrowController extends Controller
 
 
 
-
-
-        // // STEP 2. UPDATE DATA DI FINISH GOOD MENU
-        //     $update =    DB::connection('sqlsrv')
-        //     ->update("UPDATE finishgood_list 
-        //                             SET act_running = (act_running - '{$qty}'), bal_running = (bal_running + '{$qty}')
-        //                                         where 
-        //                             partno = '{$partno}'  and  custpo = '{$custpo}'
-                                    
-        //                              ") ;
-        // // STEP 3. JIKA QTY RETURN PART TIDAK SAMA DENGAN QTY BORROW  => RESET DATA DARI PROSES MC - FG
-
-
-        //  return response()
-        //         ->json(['success'=>TRUE,
-        //         'message'=>'Create Data Successfully',
-        //         ]);
     }
 
     public function return(request $request){
@@ -147,35 +130,65 @@ class BorrowController extends Controller
         $actreturn_date = Carbon::now();    
 
         $datakit = $kitLabel;
-        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
+        list($partno, $partname, $qtyscan, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
 
 
-        // STEP 1. UPDATE DATA KE BORROW
+
+           // STEP 2. CEK LABEL/UNIQUE ID PART PADA BORROW DETAIL TABLE
+           $cek_label = DB::connection('sqlsrv')
+           ->select("SELECT label_return from borrow_detail where label_return ='{$kitLabel}'");
+   
+           if($cek_label){
+                   return response()
+                           ->json([
+                           'success' => false,
+                           'message' => 'DOUBLE SCAN, PART AFTER RETURN..',
+   
+           ]);
+           }
+
+        // STEP 1. UPDATE DATA KE BORROW DETAIL
+        DB::connection('sqlsrv')
+        ->update("UPDATE borrow_detail
+                    set
+                    label_return ='{$kitLabel}', dic_return = '{$dic_return}', receiver ='{$receiver}', remark = '{$remark}', act_return ='{$actreturn_date}',
+                    tot_return = '{$qtyscan}',
+                    diff = (qty - {$qtyscan})
+                    where label = '{$kitLabel}' and custpo ='{$custpo}'
+                ");
+
+        // STEP 2. UPDATE DATA KE BORROW
             DB::connection('sqlsrv')
                 ->update("UPDATE borrow 
                             set
-                            dic_return = '{$dic_return}', receiver ='{$receiver}', remark = '{$remark}', act_return ='{$actreturn_date}', tot_return ='{$qty}',
-                            diff = (qty - $qty)
+                            dic_return = '{$dic_return}', receiver ='{$receiver}', remark = '{$remark}', act_return ='{$actreturn_date}',
+                            tot_return =(
+                                SELECT sum(tot_return) FROM borrow_detail as b where
+                                b.partno = borrow.partno and b.custpo = borrow.custpo),
+                            diff = (qty -  (borrow.tot_return + {$qtyscan}))
                             where partno = '{$partno}' and custpo ='{$custpo}'
                         ");
 
 
 
-        // STEP 2. UPDATE DATA DI FINISH GOOD MENU
+            // STEP 3. UPDATE DATA DI FINISH GOOD MENU
             $update =    DB::connection('sqlsrv')
-                ->update("UPDATE finishgood_list 
-                                        SET act_running = (act_running + '{$qty}'), bal_running = (bal_running - '{$qty}')
-                                                    where 
-                                        partno = '{$partno}'  and  custpo = '{$custpo}'
-                                        
-                                        ") ;
+            ->update("UPDATE finishgood_list 
+                                    SET act_running = (act_running + '{$qtyscan}'), bal_running = (bal_running - '{$qtyscan}')
+                                                where 
+                                    partno = '{$partno}'  and  custpo = '{$custpo}'
+                                    
+                                    ") ;
+        
+            return response()
+                            ->json(['success'=>TRUE,
+                            'message'=>'Borrow return Successfully',
+                            ]);
+                }
+           
 
         // STEP 3. JIKA QTY RETURN PART TIDAK SAMA DENGAN QTY BORROW  => RESET DATA DARI PROSES MC - FG
 
 
-         return response()
-                ->json(['success'=>TRUE,
-                'message'=>'Create Data Successfully',
-                ]);
-    }
+         
 }

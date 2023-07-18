@@ -170,6 +170,7 @@ Route::post('problem/update/{id}',[ProblemFoundController::class,'responProblem'
 // =======================================BORROW  ROUTING===========================
 Route::get('borrow',[BorrowController::class,'index'])->middleware('checkRole:admin');
 Route::post('borrow/takeout',[BorrowController::class,'takeout'])->middleware('checkRole:admin');
+Route::post('borrow/return',[BorrowController::class,'return'])->middleware('checkRole:admin');
 
 
 // =======================================PROBLEM FOUND  ROUTING===========================
