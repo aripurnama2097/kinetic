@@ -205,7 +205,6 @@
 
         
 
-
             $('#scan_nik').on('keypress', function(e) {
                 if (e.which == 13) {
                     var val_nik = $('#scan_nik').val();
@@ -221,8 +220,6 @@
             $('#scan_label').on('keypress', function(e) {
                 // event.preventDefault();
                 if (e.which == 13) {
-
-             
                         const Toast = Swal.mixin({
                         toast: true,
                         position: 'top-end',
@@ -244,39 +241,29 @@
 
                     var scan_label = $('#scan_label').val();
 
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: "{{ url('/repacking/printlbl_kit/') }}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            scan_label: scan_label
-                        },
-                        success: function(response) {
-                            alert('succes print label')
-                            console.log(response)
 
-                            // if (response.success) {
-                            // swal.fire({
-                            //                 icon: 'success',
-                            //                 title: response.message,
+                   
+            
+            window.location.assign("{{ url('/repacking/printlbl_kit/') }}" + "?scan_label=" + scan_label  )
+        
 
-                            //                 timer: 5000,
-                            //                 showConfirmButton: true,
-
-                            //             })
-                            //             } 
-                            // else {
-                            //                 swal.fire({
-                            //                 icon: 'warning',
-                            //                 title: response.message
-                            //             })  
-                            // }
-                       
-                        }
-                    });
+                    // $.ajax({
+                    //     type: "POST",
+                    //     dataType: "json",
+                    //     url: "{{ url('/repacking/printlbl_kit/') }}",
+                    //     headers: {
+                    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    //     },
+                    //     data: {
+                    //         scan_label: scan_label
+                    //     },
+                    //     success: function(response) {
+                    //         alert('succes print label')
+                    //         console.log(response)
+                    //     }
+                    // });
+                    $('#scan_label').val("");
+                    $('#scan_label').focus();
                 }
             });
 

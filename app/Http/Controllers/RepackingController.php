@@ -43,49 +43,95 @@ class RepackingController extends Controller
         $qty = substr($scan_label, 24,5);
         $unique = substr($scan_label,28,49);
 
+        // STEP 1. CEK STATUS PRINT PADA PART
+
+        $cek_status = DB::connection('sqlsrv')
+                        ->select("SELECT * FROM  partscan 
+                                  where label = '{$scan_label}' and status_print = 'continue' ");
+
+        if(!$cek_status){
+            // STEP 2. AMBIL PARAMETER LABEL QR
+            $param = DB::connection('sqlsrv')
+            ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, 
+                        a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
+                            from partlist as a
+                    inner join partscan as b on a.partno = b.partno and a.demand = b.demand                              
+                    where 	b.label = '{$scan_label}' ");
+
+            // GET PARAM BASE SCAN LABEL
+            $partlist   =   $param[0]->partlist_no;           
+            $partno     =   $param[0]->partno;
+            $custpo     =   $param[0]->custpo ;
+
+
+            //SEND DATA UNTUK CONTENT PRINT LABEL
+            $param2 = DB::connection('sqlsrv')
+            ->select("SELECT distinct a.id,a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,
+                        a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, 
+                        a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
+                                from partlist as a
+                        inner join partscan as b on a.partno = b.partno and a.demand = b.demand                                  
+                        where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}' ");
 
 
 
-         // STEP 2. AMBIL PARAMETER LABEL QR
-        $param = DB::connection('sqlsrv')
-                      ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, 
-                                    a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
-                                        from partlist as a
-                                inner join partscan as b on a.partno = b.partno and a.demand = b.demand                              
-                                where 	b.label = '{$scan_label}' ");
-        
-        // GET PARAM BASE SCAN LABEL
-        $partlist   =   $param[0]->partlist_no;           
-        $partno     =   $param[0]->partno;
-        $custpo     =   $param[0]->custpo ;
-
-
-        //SEND DATA UNTUK CONTENT PRINT LABEL
-        $param2 = DB::connection('sqlsrv')
-                        ->select("SELECT distinct a.id,a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,
-                                  a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, 
-                                  a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
+            // STEP 1. INSERT TO PRINT LOG
+            $logPrint = DB::connection('sqlsrv')
+                ->insert(" INSERT 
+                                into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
+                                SELECT distinct 
+                                b.idnumber,a.partno,a.partname,  b.scan_issue,a.dest,a.custpo,a.mcshelfno, a.prodno
                                             from partlist as a
-                                  inner join partscan as b on a.partno = b.partno and a.demand = b.demand                                  
-                                  where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'");
+                                inner join partscan as b on a.partno = b.partno and a.demand = b.demand                                  
+                                where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'                      
+                            ");
+
+            return view('repacking.original', compact('param2'));
+        }
         
-
-
-        // STEP 1. INSERT TO PRINT LOG
-       $logPrint = DB::connection('sqlsrv')
-                            ->insert(" INSERT 
-                                            into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
-                                            SELECT distinct 
-                                            b.idnumber,a.partno,a.partname,  b.scan_issue,a.dest,a.custpo,a.mcshelfno, a.prodno
-                                                        from partlist as a
-                                            inner join partscan as b on a.partno = b.partno and a.demand = b.demand                                  
-                                            where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'                      
-                                        ");
-    //     return $logPrint;
     
-        return view('repacking.original', compact('param2'));
     
+      // PRINT SUMM QTY BOX
+        if($cek_status == TRUE){
+            // STEP 2. AMBIL PARAMETER LABEL QR
+            $content = DB::connection('sqlsrv')
+            ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue, 
+                        a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
+                            from partlist as a
+                    inner join partscan as b on a.partno = b.partno and a.demand = b.demand                              
+                    where 	b.label = '{$scan_label}' ");
 
+            // GET content BASE SCAN LABEL
+            $partlist   =   $content[0]->partlist_no;           
+            $partno     =   $content[0]->partno;
+            $custpo     =   $content[0]->custpo ;
+
+            $getid = DB::connection('sqlsrv')
+                            ->select("SELECT idnumber from partscan where label = '{$scan_label}'");
+
+            //SEND DATA UNTUK CONTENT PRINT LABEL
+            $content2 = DB::connection('sqlsrv')
+            ->select("SELECT  partno,partname,custpo, sum(scan_issue) as scan_issue,dest,prodno,shelfno,'{$getid[0]->idnumber}' as idnumber
+                        from 
+                        partscan                                 
+                        where 	 custpo ='{$custpo}' and partno ='{$partno}' and status_print ='continue'
+                        group by partno,partname,custpo,dest,prodno,shelfno
+            ");
+
+
+            // STEP 1. INSERT TO PRINT LOG
+            $logPrint = DB::connection('sqlsrv')
+                ->insert(" INSERT 
+                                into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
+                                SELECT distinct 
+                                b.idnumber,a.partno,a.partname,  b.scan_issue,a.dest,a.custpo,a.mcshelfno, a.prodno
+                                            from partlist as a
+                                inner join partscan as b on a.partno = b.partno and a.demand = b.demand                                  
+                                where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'                      
+                            ");
+
+            return view('repacking.originalsumm', compact('content2'));
+        }
     }
 
 

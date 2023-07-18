@@ -25,11 +25,11 @@ include('./phpqrcode/qrlib.php');
 
 
   // DECLARE PARAMETER
-  // $custpo          =$param2[0] ->custpo;
+  // $custpo          =$content2[0] ->custpo;
   // $partno          =$param2[0]->partno;
   // $partname        =$param2[0]->partname;
   // $dest            =$param2[0]->dest;
-  // $shelfno         =$param2[0]->mcshelfno;
+  // $shelfno         =$param2[0]->shelfno;
   // $prodno          = $param2[0]->prodno;
   // $balance_issue   =$param2[0]->balance_issue;
   // $stdpack         = $param2[0]->stdpack;
@@ -38,7 +38,7 @@ include('./phpqrcode/qrlib.php');
        
 
 
-  foreach ($param2 as $key => $value) {
+  foreach ($content2 as $key => $value) {
 
       $content  = 'BEGIN:VCARD' . "\n";
       $content .= 'VERSION:2.1' . "\n";
@@ -46,10 +46,10 @@ include('./phpqrcode/qrlib.php');
       $content .= 'ADR;TYPE=work;' .
         'LABEL="' . $value->partno . '":'
         . $value->partname . ';'
-        . $value->balance_issue . ' pcs;'
+        . $value->scan_issue . ' pcs;'
         . $value->dest . ';'
         . $value->custpo . ';'
-        . $value->mcshelfno . ';'
+        . $value->shelfno . ';'
         . $value->idnumber
         . "\n";
       $content   .= 'END:VCARD';
@@ -85,7 +85,7 @@ include('./phpqrcode/qrlib.php');
       echo '<td style="font-weight:bold;">PartNm</td>';
       echo '<td>: ' . substr($value->partname, 0, 15) . '</td>';
       echo '<td style="font-weight:bold;">ShelfNo</td>';
-      echo '<td>: ' . substr($value->mcshelfno, 0, 11) . '</td>';
+      echo '<td>: ' . substr($value->shelfno, 0, 11) . '</td>';
       echo '</tr>';
       echo '<tr>';
       echo '<td align="center" style="font-weight:bold;">QTY</td>';
@@ -105,7 +105,7 @@ include('./phpqrcode/qrlib.php');
 
 
  //	mencetak di sato small printer
- $barcode = $value->partno . ':' . $value->partname . ':' . $value->scan_issue . ':' . $value->dest . ':' . $value->custpo . ':' . $value->mcshelfno . ':' . $value->idnumber;
+ $barcode = $value->partno . ':' . $value->partname . ':' . $value->scan_issue . ':' . $value->dest . ':' . $value->custpo . ':' . $value->shelfno . ':' . $value->idnumber;
 
           if (strlen(strlen($barcode)) == 1) {
             $len = '000' . strlen($barcode);
@@ -130,7 +130,7 @@ include('./phpqrcode/qrlib.php');
           $data .= $esc . 'H0515' . $esc . 'V0135' . $esc . 'L0101' . $esc . 'M' . 'CustNm: ' . substr($value->dest, 0, 11);
 
           $data .= $esc . 'H0150' . $esc . 'V0185' . $esc . 'L0101' . $esc . 'M' . 'PartNm: ' . substr($value->partname, 0, 15);
-          $data .= $esc . 'H0515' . $esc . 'V0185' . $esc . 'L0101' . $esc . 'M' . 'ShelfNo: ' . substr($value->mcshelfno, 0, 11);
+          $data .= $esc . 'H0515' . $esc . 'V0185' . $esc . 'L0101' . $esc . 'M' . 'ShelfNo: ' . substr($value->shelfno, 0, 11);
 
           $data .= $esc . 'H0040' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . substr($value->scan_issue, 0, 15);
           $data .= $esc . 'H0270' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'CtnNo:';

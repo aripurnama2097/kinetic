@@ -106,6 +106,15 @@
                           <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
                                 <div class="dropend">
+                                    <a class="dropdown-item " href="{{ url('/partlist/view') }}">
+                                        MC Data
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                          <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <div class="dropend">
                                     <a class="dropdown-item " href="{{ url('/partlist') }}">
                                         In House Process
                                     </a>
