@@ -58,9 +58,10 @@
               <label class="form-label required">Reason</label>
               <select  class="form-control" name="reason"  id="reason" required disabled> 
                   <option>--Select Reason--</option>
-                  <option>QA</option>
-                  <option>IQC</option>
-                  <option>Planning</option>          
+                  <option>Claim</option>
+                  <option>Feedback</option>
+                  <option>Rework</option>    
+                  <option>Sampling</option>          
               </select>
             </div>
             
@@ -75,13 +76,11 @@
 
             <div class="mb-3 col-6">
               <label class="form-label required">Symptom</label>
-              <select  class="form-control" name="symptom"  id="symptom" required disabled> 
-                 <option>--Select Symptom--</option>
-                  <option>Shipment Hold</option>
-                  <option>WIP</option>
-                  <option>Conditional Acceptance</option>
-                  <option>Lot Out</option>
-              </select>
+              <div>
+                <input type="text" class="form-control" name="symptom" id="symptom" placeholder="SYMPTOM" required disabled>
+                <small class="form-hint">           
+                </small>
+              </div>
             </div>
 
             <div class="mb-3 col-6">
@@ -128,93 +127,51 @@
 
 
     <div class="collapse mt-4" id="return" hide>
-      <form  action ="{{url('problem/create')}}" method="post" class="card" enctype="multipart/form-data">
-        @csrf
+      {{-- <form  action ="{{url('problem/create')}}" method="post" class="card" enctype="multipart/form-data">
+        @csrf --}}
         <div class="card-header">
           <h3 style="font-size:25px"class="card-title text-primary">Borrow Return</h3>
         </div>
         <div class="card-body">
       
-          <div class="row">
-          <div class="mb-3 col-6">
-            <label class="form-label required">SCAN DIC(Borrower)</label>
+        
+          <div class="mb-3 col-12">
+            <label class="form-label required">SCAN DIC(Return)</label>
             <div>
-              <input type="text" class="form-control" name="borrower" id="borrower" placeholder="SCAN NIK" required autofocus minlength="5">
+              <input type="text" class="form-control" name="dic_return" id="dic_return" placeholder="SCAN NIK" required autofocus minlength="5">
               <small class="form-hint">          
               </small>
             </div>
           </div>
 
-          <div class="mb-3 col-6">
-            <label class="form-label required">Reason</label>
-            <select  class="form-control" name="reason"  id="reason" required disabled> 
-                <option>--Select Reason--</option>
-                <option>QA</option>
-                <option>IQC</option>
-                <option>Planning</option>          
-            </select>
-          </div>
           
-          <div class="mb-3 col-6">
-            <label class="form-label required">SCAN PIC (Lender)</label>
+          <div class="mb-3 col-12">
+            <label class="form-label required">SCAN PIC (Receiver)</label>
             <div>
-              <input type="text" class="form-control" name="lender" id="lender" placeholder="SCAN NIK" required disabled>
+              <input type="text" class="form-control" name="receiver" id="receiver" placeholder="SCAN NIK" required disabled>
               <small class="form-hint">           
               </small>
             </div>
           </div>
 
-          <div class="mb-3 col-6">
-            <label class="form-label required">Symptom</label>
-            <select  class="form-control" name="symptom"  id="symptom" required disabled> 
-               <option>--Select Symptom--</option>
-                <option>Shipment Hold</option>
-                <option>WIP</option>
-                <option>Conditional Acceptance</option>
-                <option>Lot Out</option>
-            </select>
-          </div>
-
-          <div class="mb-3 col-6">
-            <label class="form-label required">Status</label>
-            <select  class="form-control" name="status"  id="status" required disabled> 
-               <option>--Select Status--</option>
-                <option>Shipment Hold</option>
-                <option>WIP</option>
-                <option>Conditional Acceptance</option>
-                <option>Lot Out</option>
-            </select>
-          </div>
-
-
-          <div class="mb-3 col-6">
-            <label class="form-label required">Est Return</label>
+          
+          <div class="mb-3 col-12"> 
+            <label class="form-label ">REMARK</label>
             <div>
-              <input type="date" class="form-control" name="est_return" id="est_return" placeholder="EST RETURN" required disabled>
-              <small class="form-hint">           
-              </small>
+              <input type="text" class="form-control" name="remark" id="remark" placeholder="REMARK"  disabled>
+              <small class="form-hint">    
+              </div>
             </div>
           </div>
 
-          <div class="mb-3 col-6">
-            <label class="form-label required">Dept</label>
-            <select  class="form-control" name="dept"  id="dept" required disabled> 
-                <option>--Select Dept--</option>
-                <option>QA</option>
-                <option>IQC</option>
-                <option>Planning</option>
-              
-            </select>
-          </div>
-
-          <div class="mb-3 col-6"> 
+          <div class="mb-3 col-12"> 
             <label class="form-label required">SCAN LABEL</label>
-            <input type="text" class="form-control" name="scan_label" id="scan_label" placeholder="SCAN LABEL KIT" required disabled>
+            <div>
+            <input type="text" class="form-control" name="label_kit" id="label_kit" placeholder="SCAN LABEL KIT" required disabled>
             <small class="form-hint">    
+            </div>
           </div>
-        </div>
-        </div>
-      </form>
+      {{-- </form> --}}
   </div>
 
       {{-- <div class="card mt-2 mb-2">
@@ -293,7 +250,7 @@
 
 
 
-        // START PRINT SKID
+        // STEP 1. START BORROW TAKE OUT
         $('#borrower').on('keypress', function(e) {
                 if (e.which == 13) {
                     var val_borrower = $('#borrower').val();
@@ -365,7 +322,7 @@
              });
 
 
-               //STEP 2. SCAN LABEL MC 
+            
             $('#scan_label').on('keypress', function(e) {
                 // event.preventDefault();
                 if (e.which == 13) {
@@ -453,6 +410,100 @@
                     });
                 }
             });
+
+
+
+              //================================= STEP 2. START BORROW TAKE OUT==================================
+            $('#dic_return').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        var val_dic_return = $('#dic_return').val();
+                        if (val_dic_return != '') {
+                        
+                            $('#receiver').attr('disabled', false);
+                            $('#receiver').focus();
+                        }
+                    }
+                })
+
+
+                $('#receiver').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        var val_receiver = $('#receiver').val();
+                        if (val_receiver != '') {
+                        
+                            $('#remark').attr('disabled', false);
+                            $('#remark').focus();
+                        }
+                    }
+                })
+
+                $('#remark').on('keypress', function(e) {
+                    if (e.which == 13) {
+                        var val_remark = $('#remark').val();
+                        if (val_remark != '') {
+                        
+                            $('#label_kit').attr('disabled', false);
+                            $('#label_kit').focus();
+                        }
+                    }
+                })
+
+                $('#label_kit').on('keypress', function(e) {
+                    if (e.which == 13) {
+                         var dic_return = $('#dic_return').val();
+                         var receiver = $('#receiver').val();
+                         var remark = $('#remark').val();
+                         var label_kit = $('#label_kit').val();
+                       
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "{{ url('/borrow/return/') }}",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                              dic_return:dic_return,
+                              receiver:receiver,
+                              remark:remark,
+                              label_kit: label_kit                 
+                            },
+                        success: function(response) {
+                            console.log(response)
+                            if (response.success) {
+                                swal.fire({
+                                    icon: 'success',
+                                    title: response.message,
+
+                                    timer: 5000,
+                                    
+
+                                })
+                            } else {
+                                swal.fire({
+                                    icon: 'error',
+                                    title: response.message,
+
+                                    timer: 5000,
+                                    
+
+                                })
+                            }
+
+                            var data = ""
+                            $.each(response, function(key, value) {
+
+                           
+                            })
+                            // $('#data-scanin').html(dataScan);
+                            $('#scan_label').focus();
+                            $('#scan_label').val("");
+                        }
+                    });
+                    }
+                })
+
 
        
 }); 
