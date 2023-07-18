@@ -204,9 +204,9 @@ class PartlistController extends Controller
         if(!empty(@$status_print)){
             DB::connection('sqlsrv')
             ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
-                    ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik, status_print,idnumber)
+                    ,orderitem,custpo,partno,partname,shelfno,label,demand,unique_id,stdpack,scan_issue, scan_nik, status_print,idnumber)
                     select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
-                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}','{$idnumber}'
+                    orderitem,custpo,partno, partname,mcshelfno,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}','{$idnumber}'
                     from partlist
                     where partno = '{$label_scan}'
                     and  (coalesce(tot_scan,0)+{$qty}) <= demand
@@ -253,9 +253,9 @@ class PartlistController extends Controller
         else{
             DB::connection('sqlsrv')
             ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
-                    ,orderitem,custpo,partno,partname,label,demand,unique_id,stdpack,scan_issue, scan_nik,idnumber)
+                    ,orderitem,custpo,partno,partname,shelfno,label,demand,unique_id,stdpack,scan_issue, scan_nik,idnumber)
                     select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
-                    orderitem,custpo,partno, partname,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$idnumber}'
+                    orderitem,custpo,partno, partname,mcshelfno,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$idnumber}'
                     from partlist
                     where partno = '{$label_scan}'
                     and  (coalesce(tot_scan,0)+{$qty}) <= demand
@@ -508,6 +508,14 @@ class PartlistController extends Controller
 
         return view('partlist.showscan',compact('data'));
 
+    }
+
+
+    public function view(){
+
+       $data =  DB::connection('sqlsrv')
+            ->select("SELECT * FROM PARTLIST");
+        return view('partlist.view',compact('data'));
     }
 
 

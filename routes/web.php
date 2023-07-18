@@ -114,6 +114,7 @@ Route::post('schedule/email',[EmailController::class, 'index'])->middleware('che
 
 // ========================================MASTER SCHEDULE  RELEASE ROUTING===========================
 Route::get('partlist',[PartlistController::class,'index'])->middleware(['checkRole:user,admin']);
+Route::get('partlist/view',[PartlistController::class,'view'])->middleware(['checkRole:user,admin']);
 Route::post('partlist/filterProdno',[PartlistController::class,'filterProdno'])->middleware(['checkRole:user,admin']);
 Route::post('partlist/filter_scan',[PartlistController::class,'filter_scan'])->middleware(['checkRole:user,admin']);
 Route::post('partlist/scan_issue',[PartlistController::class,'scan_issue'])->middleware(['checkRole:user,admin']);
@@ -125,7 +126,7 @@ Route::get('partlist/showscan',[PartlistController::class,'showscan'])->middlewa
 Route::get('repacking',[RepackingController::class,'index'])->middleware('checkRole:admin');
 Route::get('repacking/kitdata',[RepackingController::class,'kitdata'])->middleware('checkRole:admin');
 // Route::post('repacking/printOriginal/{id}/',[RepackingController::class,'printOriginal'])->middleware('checkRole:admin');
-Route::post('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit'])->middleware('checkRole:admin');
+Route::get('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit'])->middleware('checkRole:admin');
 // Route::post('repacking/printkit',[RepackingController::class,'printkit'])->middleware('checkRole:admin');
 
 Route::get('repacking/logPrintOrg',[RepackingController::class,'logPrintOrg'])->middleware('checkRole:admin');

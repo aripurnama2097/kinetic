@@ -45,10 +45,8 @@
                 <div class="row row-deck row-cards ">
                     <div class="col-12 ">
                         <div class="card rounded-1 col-12 ">
-
                             <br>
                             <br>
-
                             <div class="btn-group" role="group">
                                 <a class="btn btn-primary" data-bs-toggle="collapse" href="#partlist" role="button"
                                     aria-expanded="false" aria-controls="partlist">
@@ -62,9 +60,7 @@
                                     </a>
                                 </div>
                             </div>
-
                             <br>
-
                             <div class="collapse mt-4" id="partlist" hide>
                                 <div class="card card-body col-12 mt-4">
                                     <h2>FILTER </h2>
