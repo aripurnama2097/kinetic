@@ -80,6 +80,102 @@
                     @if (Session::has('success'))
                         <p class="alert alert-success">{{ Session::get('success') }}</p>
                     @endif
+                    <div class="collapse mt-4" id="assy">
+                        <div class="col-12 ">
+                            <div class="card rounded-1 col-12 mb-2">
+                                <div class="justify-content-center mt-3 ml-3 mr-3 ">
+                                    <a class="btn btn-secondary mb-2" href="{{ url('repacking/logPrintOrg') }}"> Log Print
+                                        <i class="ti ti-printer"></i> </a>
+                                        <a class="btn btn-primary mb-2" href="{{ url('repacking/scan_assy') }}"> --Scan In Assy--  </a>
+                                        <a class="btn btn-danger mb-2" href="{{ url('repacking/cancel') }}"> --Cancelation-- 
+                                            <i class="ti ti-cancel"></i> </a>
+                                        <a class="btn btn-success mb-2" href="{{ url('repacking') }}"> Refresh <i
+                                                class="ti ti-refresh"></i> </a>
+                                        <h1 class="text-dark text-center"> Assy Category</h1>
+                                        <div class="table-responsive  rounded-1 shadow-sm">                                
+                                           <table style="width:100%" id="example" class="table table-striped border border-primary shadow-sm" >
+                                             <thead class="thead-dark">
+                                               <tr>                   
+                                             
+                                                {{-- <th style ="font-size: 10px;">ID Number</th> --}}
+                                                <th style ="font-size: 10px;">Model</th>
+                                                <th style ="font-size: 10px;">Lot No</th>
+                                                <th style ="font-size: 10px;">JKN PO</th>   
+                                                <th style ="font-size: 10px;">QTY</th>   
+                                                 {{-- <th style ="font-size: 10px;">Last Print</th>   --}}
+                                                 <th style ="font-size: 10px;">Print</th> 
+                                                      
+                                               </tr>
+                                              </thead>
+                                 
+                                             <tbody>
+                                               @foreach($assy as $key => $value)
+                                          
+                                                </td> 
+                                                 {{-- <td style ="font-size: 12px;"> {{$value->idnumber}}</td> --}}
+                                                 <td style ="font-size: 12px;">{{$value->model}} </td>
+                                                 <td style ="font-size: 12px;">{{$value->lotno}} </td>
+                                                 <td style ="font-size: 12px;">{{$value->jknpo}} </td> 
+                                                 <td style ="font-size: 12px;"> {{$value->qty_input}}</td>  
+{{--                                            
+                                                 <td style ="font-size: 12px;"> {{$value->last_print}} </td>                --}}
+                                                 </td>   
+                        
+                                                 <td style ="font-size: 12px;">
+                        
+                                                
+                                                  <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#printAssy_{{$value->id}}">Print KIT</a>
+                                                
+                                                  <div class="modal modal-blur fade" id="printAssy_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg" role="document">
+                                                      <div class="modal-content">
+                                                        <div class="modal-header">
+                                                          <h5 class="modal-title">Print Label KIT Assy</h5>
+                                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                       
+                                                            <div class="modal-body">
+                                                        
+                                                              <form action="{{ url('repacking/printassy/' . $value->id) }}" method="POST" >
+                                                              
+                                                                @csrf
+                                                                <div class="mb-3">
+                                                                    <label class="form-label">PIC</label>
+                                                                    <input type="text" name="pic_print"  id="pic_print" class="form-control" name="example-text-input"  placeholder="PIC">
+                                                                </div>                                       
+                                                            </div>  
+                                                
+                                                            <div class="modal-footer">
+                                                              <button type="button" class="btn btn-light link-warning" data-bs-dismiss="modal">
+                                                                Cancel
+                                                              </button>
+                                                              <button  type="submit"  class="btn btn-primary ms-auto" >
+                                                                Print
+                                                              </button>
+                                                          </div>
+                                                        </form>
+                                                    </div> 
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                        
+                        
+                        
+                                                </td>       
+                                           
+                                                
+                                                   
+                                               </tr>
+                                               @endforeach
+                                             </tbody>
+                                       
+                                           </table>
+                                           <a class="btn btn-primary mb-2" href="{{url('/repacking')}}"> Back <i class="ti ti-back"></i> </a>
+                                          </div>                      
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
 
                         <div class="collapse mt-4" id="original">
                             <div class="col-12 ">
