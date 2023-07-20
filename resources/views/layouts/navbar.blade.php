@@ -115,7 +115,7 @@
                           <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
                                 <div class="dropend">
-                                    <a class="dropdown-item " href="{{ url('/partlist') }}">
+                                    <a class="dropdown-item " href="{{ url('/partlist/inhouse') }}">
                                         In House Process
                                     </a>
                                 </div>

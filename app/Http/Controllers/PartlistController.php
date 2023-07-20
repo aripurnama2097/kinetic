@@ -142,18 +142,21 @@ class PartlistController extends Controller
         $label_scan = substr($scan_label,0,15);
         $qty = substr($scan_label, 24,5);
         $unique = substr($scan_label,28,49);
+ 
 
+       // STEP 1. CEK ISI PART NO DIPARTLIST
         $cek_part = DB::connection('sqlsrv')
                     ->select("SELECT * FROM partlist where partno ='{$label_scan}'");
 
-        // STEP  CEK PART
+       
         if (!$cek_part) {
             return response()->json(['success' => false,
             'message' => 'WRONG PART...']);
         }
+        //--------------END CEK-----------------
 
 
-        // =========STEP 1. CEK LABEL/UNIQUE ID PART PADA PARTSCAN TABLE
+        // STEP 2. CEK LABEL/UNIQUE ID PART PADA PARTSCAN TABLE
         $cek_label = DB::connection('sqlsrv')
                     ->select("SELECT unique_id from partscan where unique_id ='{$unique}'");
 
@@ -165,7 +168,29 @@ class PartlistController extends Controller
                     
                 ]);
         }
+            //--------------END CEK-----------------
 
+
+        // STEP 3. CEK TOTAL SCAN PART UNTUK DI UPDATE DATA
+        $cek_total = DB::connection('sqlsrv')
+           ->select("SELECT top 1 * from partlist
+                     where  partno = '{$label_scan}' order by custpo asc
+                     ");
+
+        $sum =array($cek_total[0]->tot_scan,$qty);
+        $act_qty = array_sum($sum);
+            if(($act_qty  > $cek_total[0]->demand )){
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'OVER QTY...',
+                        
+                    ]);
+            }
+                 //--------------END CEK-----------------
+
+
+        // STEP 4.PILIH PART UNTUK DI UPDATE DATA
         $selectPart = DB::connection('sqlsrv')
                         ->select("SELECT top 1 * from partlist
                                   where  partno = '{$label_scan}'
@@ -175,9 +200,10 @@ class PartlistController extends Controller
         $cek_continue = DB::connection('sqlsrv')
                         ->select("SELECT count(*) as continue_status from partscan where partno = '{$label_scan}' and status_print = 'continue'");
 
-        // return $cek_continue;
+           //--------------END STEP-----------------
 
-        // cek qty scan < stdpack || qty > stdpack
+
+        // STEP 5.cek qty scan < stdpack || qty > stdpack
         if(($qty < $selectPart[0]->stdpack && $status_print==null) or ($cek_continue == NULL && $status_print==null)){
             return response()
             ->json([
@@ -185,6 +211,7 @@ class PartlistController extends Controller
                 'message' => 'Loose Carton ?'
             ]);
         }
+             //--------------END CEK-----------------
 
 
         // GET ID PRINT
@@ -200,7 +227,7 @@ class PartlistController extends Controller
         $order = $get_id ? $get_id + 1 : 1;
         $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
-        // simpan data ke partscan + UPDATE STATUS PRINT
+        //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
         if(!empty(@$status_print)){
             DB::connection('sqlsrv')
             ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
@@ -250,6 +277,10 @@ class PartlistController extends Controller
                         ]);
                                
         }
+             //--------------END STEP-----------------
+
+
+          //STEP 7. SIMPAN DATA  ke partscan + TANPA UPDATE STATUS PRINT
         else{
             DB::connection('sqlsrv')
             ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
@@ -299,14 +330,9 @@ class PartlistController extends Controller
                         ]);
                                
         }
-
-       
-
-        // return response()->json($data);
-       
+        //--------------END STEP-----------------
 
 
-        //    SAMPLE :: K2K-0165-02     1708159 40     I10816 K2K-0165-02    202301250432102198000001
     }
 
 
@@ -516,6 +542,156 @@ class PartlistController extends Controller
        $data =  DB::connection('sqlsrv')
             ->select("SELECT * FROM PARTLIST");
         return view('partlist.view',compact('data'));
+    }
+
+    public function view_inhouse(){
+
+       $datapo =  DB::connection('sqlsrv')
+            ->select("SELECT distinct(jknpo) from masterinhouse");
+
+        return view('partlist.inhouse', compact('datapo'));
+    }
+
+
+    public function scan_inhouse(request $request){
+
+        // $datapo =  DB::connection('sqlsrv')
+        //      ->select("SELECT distinct(jknpo) from masterinhouse");
+        $assylabel = $request->assy_label;
+        $pic       = $request->pic;
+        $type       = 'scanin';
+
+        $partno = substr($assylabel,0,11);
+        $qty    = substr($assylabel,11,2);
+        $prodno    = substr($assylabel,16,4);
+
+
+        // STEP 1. CEK LABEL
+         $cek_label = DB::connection('sqlsrv')
+                 ->select("SELECT label from inhouse_scanin where label ='{$assylabel}'");
+
+        if($cek_label){
+                return response()
+                        ->json([
+                        'success' => false,
+                        'message' => 'DOUBLE SCAN...',
+
+        ]);
+        }
+
+       // STEP 2. INSERT DATA KE TABLE SCAN IN
+        DB::connection('sqlsrv')
+        ->insert("INSERT into inhouse_scanin(partno,lotno,qty_input,label,type,pic)
+                 SELECT '{$partno}','{$prodno}','{$qty}','{$assylabel}','{$type}','{$pic}'
+                 ");
+
+       // STEP 3. UPDATE DATA ASSY LIST
+       DB::connection('sqlsrv')
+         ->update("UPDATE inhouse_list
+                    set tot_input =  SELECT sum(qty_input) FROM inhouse_scanin as b where
+                                    b.lotno = inhouse_list.lotno and b.custpo = partlist.custpo
+                ");
+
+
+            return response()->json([
+                                'success'=>TRUE,
+                                'message'=>'Scan Sucessfully',
+        ]);
+
+        // STEP 2. UPDATE ASSY LIST
+
+      
+       
+    }
+
+    public function input_inhouse(request $request){
+
+        // return $request;
+        $currentDate = Carbon::now();     
+
+      
+        $dateAsNumber = $currentDate->format('Ymd');         
+        $date = substr($dateAsNumber,2,8);
+
+        
+        $get_id = DB::table('inhouse_scanin')
+                    ->whereDate('created_at',$currentDate)
+                    ->max('id');
+  
+
+
+
+        $order = $get_id ? $get_id + 1 : 1;
+        $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+
+        // return $idnumber;
+
+
+        $pic       = $request->pic;
+        $model       = $request->model;
+        $jknpo       = $request->jknpo;
+        $lotno       = $request->lotno;
+        $qty       = $request->qty;
+        $type       = 'input';
+
+
+        // STEP 3. CEK TOTAL SCAN PART UNTUK DI UPDATE DATA
+        $cek_total = DB::connection('sqlsrv')
+        ->select("SELECT top 1 * from inhouse_list
+                    where  model = '{$model}' and lotno='{$lotno}'and jknpo = '{$jknpo}'
+                    ");
+
+        $sum =array($cek_total[0]->tot_input,$qty);
+       
+        $act_qty = array_sum($sum);
+  
+            if(($act_qty  > $cek_total[0]->shipqty )){
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'OVER QTY...',
+                        
+                    ]);
+            }
+
+       // STEP 2. INSERT DATA KE TABLE SCAN IN
+        DB::connection('sqlsrv')
+        ->insert("INSERT into inhouse_scanin(model,jknpo,lotno,qty_input,type,pic,idnumber)
+                 SELECT '{$model}','{$jknpo}','{$lotno}','{$qty}','{$type}','{$pic}','{$idnumber}'
+                 ");
+
+        
+       // STEP 3. UPDATE DATA ASSY LIST
+       DB::connection('sqlsrv')
+         ->update("UPDATE inhouse_list
+                    set 
+                    tot_input =  (SELECT sum(qty_input) FROM inhouse_scanin as b where
+                                    inhouse_list.lotno = b.lotno and inhouse_list.jknpo = b.jknpo),
+                    balance = shipqty -  (tot_input + $qty) where
+                                    inhouse_list.lotno = '{$lotno}' and inhouse_list.jknpo = {$jknpo}
+             
+                ");
+
+
+            return response()
+            ->json([
+                'success' => true,
+                'message' => 'Input Data success...',
+                
+            ]);
+            // return redirect()->back()->with('success','Created data inhouse success!');
+
+
+
+        //     return response()->json([
+        //                         'success'=>TRUE,
+        //                         'message'=>'Scan Sucessfully',
+        // ]);
+
+        // STEP 2. UPDATE ASSY LIST
+
+      
+       
     }
 
 

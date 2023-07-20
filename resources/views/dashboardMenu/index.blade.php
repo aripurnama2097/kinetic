@@ -74,27 +74,35 @@
               </div>
             </div>
           </div>
+
           <div class="col-sm-6 col-lg-3">
-            <div class="card ">
+            <div class="card blink">
               <div class="card-body">
                 <div class="d-flex align-items-center">
                   <div style="font-size:15px" class="subheader text-dark">Borrow Data</div>
                   <div class="ms-auto lh-1">
-                   
+                              
                   </div>
                 </div>
-                <div class="d-flex align-items-baseline">
-                  <div class="h1 mb-0 me-2"></div>
-                  <div class="me-auto">
-                    <span class="text-green d-inline-flex align-items-center lh-1">
-                     
-                    </span>
+                <div class="h1 mb-3"></div>
+                <div class="d-flex mb-2">
+                  <div class="align-content-around text-primary">
+                    <p class="text-center text-dark align-center" style="font-weight:bold;font-size:20px">{{$borrow}} </p>
+                  </div>
+                
+                </div>
+                <div class="progress progress-sm">
+                  <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
+                    <span class="visually-hidden">75% Complete</span>
                   </div>
                 </div>
               </div>
-              <div id="chart-revenue-bg" class="chart-sm"></div>
             </div>
           </div>
+
+
+
+
           <div class="col-sm-6 col-lg-3">
             <div class="card">
               <div class="card-body">

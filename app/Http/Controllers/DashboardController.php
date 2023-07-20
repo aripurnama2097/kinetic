@@ -18,10 +18,13 @@ class DashboardController extends Controller
                     
          $problem = DB::table('problemfound')
                     ->where('status','=','waiting')->count('status');
+        
+         $borrow= DB::table('borrow')
+                    ->count('custpo');
 
                     // return $problem;
       
         
-        return view('dashboardMenu.index',compact('data','problem'));
+        return view('dashboardMenu.index',compact('data','problem','borrow'));
     }
 }

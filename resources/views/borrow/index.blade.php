@@ -21,20 +21,7 @@
             Borrow Return
           </a>
         </div>
-        {{-- <div class="btn-group" role="group">
-          <a class="btn btn-primary  "data-bs-toggle="collapse" href="#collapse2" role="button"
-              aria-expanded="false" aria-controls="collapse2">
-              <i class="ti ti-printer"></i>
-              PARTLIST SCHEDULE
-          </a>
-          <div class="col-6  ">
-              <a class="btn btn-light col-12" data-bs-toggle="collapse" href="#collapseExample"
-                  role="button" aria-expanded="false" aria-controls="collapseExample">
-                  ---SCAN IN---
-              </a>
-          </div>
-      </div> --}}
-   
+  
     </div>
     <div class="collapse mt-4" id="take_out" hide>
         <form  action ="{{url('problem/create')}}" method="post" class="card" enctype="multipart/form-data">
@@ -225,7 +212,7 @@
             </table>
           </div>
         </div>
-  </div>
+   </div>
 {{-- END COLLAPSE BORROW RETURN --}}
 
      </div>
