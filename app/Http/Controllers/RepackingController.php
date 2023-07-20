@@ -10,12 +10,15 @@ class RepackingController extends Controller
 {
     public function index(){
 
+            $assy = DB::table('inhouse_scanin')
+            ->get();
+
             $data = DB::table('partlist')
             ->get();
           
         //    -> latest()->paginate(10);
 
-        return view('repacking.index', compact('data'));
+        return view('repacking.index', compact('data','assy'));
     }
 
 
@@ -361,12 +364,7 @@ class RepackingController extends Controller
 
     // PRINT MASTER LABEL(COMBINE LABEL)
     public function printMaster(){
-       
-       
-      
-      
-        
-      
+
       $param= DB::connection('sqlsrv')
                      ->select("SELECT distinct custpo, prodno,partno,partname,shelfno, qty,carton_no,sequence_no FROM temp_print");
     
@@ -383,8 +381,7 @@ class RepackingController extends Controller
 
        
         $pic = $request->pic_print;
-        $id = $request->id;
-      
+        $id = $request->id; 
         $currentDate = Carbon::now();     
 
       
@@ -408,7 +405,6 @@ class RepackingController extends Controller
         ->select(" SELECT distinct	a.idnumber,a.partno, a.partname, a.qty_scan, a.dest, a.custpo, a.shelfno,  a.prodno,a.balance_issue
                         from	log_print_kit_original as a                                             
                         where a.id = '{$id}' ");
-
 
 
      // STEP 3. UPDATE STATUS PRINT
@@ -466,6 +462,41 @@ class RepackingController extends Controller
         return response()->json([
                                 'success'=> TRUE,
                                 'message'=>'CANCEL DATA SUCCESS']);
+    }
+
+
+      //  PRINT LOG KIT
+      public function printassy(Request $request, $id){
+
+       
+        $pic = $request->pic_print;
+        $id = $request->id; 
+       
+        //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
+        $param = DB::connection('sqlsrv')
+        ->select("SELECT a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.idnumber,b.qty_input from schedule as a
+                    inner join inhouse_scanin as b on a.partno = b.model and a.custpo= b.jknpo and a.prodno = b.lotno                                             
+                     where b.id = '{$id}' ");
+
+
+     // STEP 2. INSERT KE LOG PRINT
+                    DB::connection('sqlsrv')
+                            -> insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
+                                    select '{$param[0]->idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$param[0]->qty_input}',
+                                            '{$param[0]->dest}',
+                                           '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
+                                    
+                                    ");
+
+
+         return view('repacking.printassy', compact('param'));
+      
+    }
+
+
+    public function view_scanassy(){
+
+        return view('repacking.view_scanassy');
     }
 
 }
