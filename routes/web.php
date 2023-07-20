@@ -129,7 +129,6 @@ Route::post('partlist/inhouse/input_inhouse',[PartlistController::class,'input_i
 // =======================================REPACKING ROUTING===========================
 Route::get('repacking',[RepackingController::class,'index'])->middleware('checkRole:admin');
 Route::get('repacking/kitdata',[RepackingController::class,'kitdata'])->middleware('checkRole:admin');
-// Route::post('repacking/printOriginal/{id}/',[RepackingController::class,'printOriginal'])->middleware('checkRole:admin');
 Route::get('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit'])->middleware('checkRole:admin');
 Route::post('repacking/printassy/{id}',[RepackingController::class,'printassy'])->middleware('checkRole:admin');
 Route::get('repacking/logPrintOrg',[RepackingController::class,'logPrintOrg'])->middleware('checkRole:admin');
@@ -139,6 +138,7 @@ Route::get('repacking/scanIn',[RepackingController::class,'scanIn'])->middleware
 Route::post('repacking/scanIn/inputData',[RepackingController::class,'inputData'])->middleware('checkRole:admin');
 
 Route::get('repacking/scan_assy',[RepackingController::class,'view_scanassy'])->middleware('checkRole:admin');
+Route::post('repacking/scanassy/input_assy',[RepackingController::class,'input_assy'])->middleware('checkRole:admin');
 Route::get('repacking/cancel',[RepackingController::class,'view_cancel_scanin'])->middleware('checkRole:admin');
 Route::post('repacking/cancel_scanin',[RepackingController::class,'cancel_scanin'])->middleware('checkRole:admin');
 

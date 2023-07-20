@@ -187,16 +187,20 @@ class RepackingController extends Controller
         // ambil part dari list repacking
         $selectPart = DB::connection('sqlsrv')
         ->select("SELECT top 1 * from repacking_list
-                  where  partno = '{$label_scan}'
-                  and demand >= (coalesce(act_receive,0) + $qty)
-                  order by custpo asc");
+                where  partno = '{$partno}' and custpo ='{$custpo}'
+                and demand >= (coalesce(act_receive,0) + $qty)
+                order by custpo asc");
 
         // dd($selectPart);
 
         // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik) 
-                  SELECT  '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}'
+        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_kit,scan_nik) 
+                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}'
+                from repacking_list
+                    where partno = '{$partno}' and custpo ='{$custpo}'
+                    and  (coalesce(act_receive,0)+{$qty}) <= demand
+                    order by custpo asc
                 ");
 
 
@@ -211,17 +215,6 @@ class RepackingController extends Controller
                                     from scanin_repacking as b  where
                                 repacking_list.id = '{$selectPart[0]->id}' ") ;
 
-        // return $update;
-
-        // -- // UPDATE partlist
-        // -- //                 set tot_scan = (
-        // -- //                     SELECT sum(scan_issue) FROM partscan as b where
-        // -- //                     b.partno = partlist.partno and b.custpo = partlist.custpo
-        // -- //                 ),
-        // -- //                 status_scan ='1',
-        // -- //                 balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
-        // -- //             from partscan as b where
-        // -- //             partlist.id = '{$selectPart[0]->id}'
 
          return response()
                 ->json([
@@ -497,6 +490,83 @@ class RepackingController extends Controller
     public function view_scanassy(){
 
         return view('repacking.view_scanassy');
+    }
+
+    public function input_assy(Request $request){
+
+        $scan_nik = $request->scan_nik;
+        $kitLabel = $request->kit_label;
+        $data = $kitLabel;
+        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
+
+    
+    
+        // STEP 1.CEK LABEL SCAN PADA SCAN IN
+        $cek_label = DB::connection('sqlsrv')
+                    ->select("SELECT * FROM scanin_repacking where 
+                            label_kit ='{$kitLabel}'");
+
+      
+        if($cek_label){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'DOUBLE SCAN...'
+                ]);
+        }
+        // END CEK LABEL SCAN
+            // ambil part dari list repacking
+            $selectPart = DB::connection('sqlsrv')
+            ->select("SELECT top 1 * from repacking_list
+                    where  partno = '{$partno}' and custpo ='{$custpo}'
+                    and demand >= (coalesce(act_receive,0) + $qty)
+                    order by custpo asc");
+
+        // STEP 2.INSERT INTO REPACKING SCAN IN
+        // DB::connection('sqlsrv')
+        // ->insert("INSERT into scanin_repacking(custpo,partno, partname, qty_receive,dest,label_kit,scan_nik) 
+        //           SELECT  '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}'
+        //         ");
+
+        DB::connection('sqlsrv')
+        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_kit,scan_nik) 
+                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}'
+                from repacking_list
+                    where partno = '{$partno}' and custpo ='{$custpo}'
+                    and  (coalesce(act_receive,0)+{$qty}) <= demand
+                    order by custpo asc
+                ");
+
+
+
+         // STEP 3.UPDATE IN REPACKING LIST     
+     $update =    DB::connection('sqlsrv')
+        ->update("UPDATE repacking_list 
+                                SET act_receive = ( select sum(qty_receive )
+                                    from scanin_repacking  as b where 
+                                b.partno = repacking_list.partno  and b.custpo = repacking_list.custpo),
+                                    bal_receive = repacking_list.demand - (repacking_list.act_receive + {$qty})
+                                    from scanin_repacking as b  where
+                                repacking_list.id = '{$selectPart[0]->id}' ") ;
+
+        // return $update;
+
+        // -- // UPDATE partlist
+        // -- //                 set tot_scan = (
+        // -- //                     SELECT sum(scan_issue) FROM partscan as b where
+        // -- //                     b.partno = partlist.partno and b.custpo = partlist.custpo
+        // -- //                 ),
+        // -- //                 status_scan ='1',
+        // -- //                 balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
+        // -- //             from partscan as b where
+        // -- //             partlist.id = '{$selectPart[0]->id}'
+
+         return response()
+                ->json([
+                    'success' => true,
+                    'message' => 'Scan success...'
+                ]);  
+    
     }
 
 }
