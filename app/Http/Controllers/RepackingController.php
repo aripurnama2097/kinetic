@@ -11,6 +11,7 @@ class RepackingController extends Controller
     public function index(){
 
             $assy = DB::table('inhouse_scanin')
+                        ->where('model',"!=",NULL)
             ->get();
 
             $data = DB::table('partlist')
@@ -458,35 +459,6 @@ class RepackingController extends Controller
     }
 
 
-      //  PRINT LOG KIT
-      public function printassy(Request $request, $id){
-
-       
-        $pic = $request->pic_print;
-        $id = $request->id; 
-       
-        //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
-        $param = DB::connection('sqlsrv')
-        ->select("SELECT a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.idnumber,b.qty_input from schedule as a
-                    inner join inhouse_scanin as b on a.partno = b.model and a.custpo= b.jknpo and a.prodno = b.lotno                                             
-                     where b.id = '{$id}' ");
-
-
-     // STEP 2. INSERT KE LOG PRINT
-                    DB::connection('sqlsrv')
-                            -> insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
-                                    select '{$param[0]->idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$param[0]->qty_input}',
-                                            '{$param[0]->dest}',
-                                           '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
-                                    
-                                    ");
-
-
-         return view('repacking.printassy', compact('param'));
-      
-    }
-
-
     public function view_scanassy(){
 
         return view('repacking.view_scanassy');
@@ -568,5 +540,75 @@ class RepackingController extends Controller
                 ]);  
     
     }
+
+   
+      //  PRINT ASSY KIT
+      public function printassy(Request $request, $id){
+
+       
+        $pic = $request->pic_print;
+        $id = $request->id; 
+       
+        //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
+        $param = DB::connection('sqlsrv')
+        ->select("SELECT a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.idnumber,b.qty_input from schedule as a
+                    inner join inhouse_scanin as b on a.partno = b.model and a.custpo= b.jknpo and a.prodno = b.lotno                                             
+                     where b.id = '{$id}' ");
+
+
+     // STEP 2. INSERT KE LOG PRINT
+     DB::connection('sqlsrv')
+         ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
+             select '{$param[0]->idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$param[0]->qty_input}',
+                     '{$param[0]->dest}',
+                    '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
+             
+             ");                 
+
+
+         return view('repacking.printassy', compact('param'));
+      
+    }
+
+
+     // PROCESS PRINT LABEL KIT
+     public function printlbl_assy(Request $request){
+
+
+        $pic = $request ->pic;
+        $assylabel = $request->assy_label;
+
+        //PARAM LABEL
+        $partno = substr($assylabel,0,11);
+        $qty    = substr($assylabel,11,3);
+        $prodno    = substr($assylabel,16,4);
+
+
+
+            //SEND DATA UNTUK CONTENT PRINT LABEL
+            $param = DB::connection('sqlsrv')
+            ->select(" SELECT  *  from inhouse_scanin 
+                        where partno ='{$partno}' 
+                        and lotno='{$prodno}' 
+                        and type ='scanin' ");
+
+
+
+            // // STEP 1. INSERT TO PRINT LOG
+            // $logPrint = DB::connection('sqlsrv')
+            //     ->insert(" INSERT 
+            //                     into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
+            //                     SELECT distinct 
+            //                     b.idnumber,a.partno,a.partname,  b.scan_issue,a.dest,a.custpo,a.mcshelfno, a.prodno
+            //                                 from partlist as a
+            //                     inner join partscan as b on a.partno = b.partno and a.demand = b.demand                                  
+            //                     where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'                      
+            //                 ");
+
+            return view('repacking.printassy_scan', compact('param'));
+      
+        
+    }
+
 
 }
