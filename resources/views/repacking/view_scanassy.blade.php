@@ -144,6 +144,7 @@
             $('#kit_label').on('keypress', function(e) {
                 // event.preventDefault();
                 if (e.which == 13) {
+                    // $('#kit_label').val("");
                     let scan_nik        = $('#scan_nik').val();
                     let val_kitLabel    = $('#kit_label').val();
                     let scan_kitLabel   = val_kitLabel.substr(0, 11); //get PARTNO KIT
@@ -180,8 +181,8 @@
                                             icon: 'success',
                                             title: response.message,
 
-                                            timer: 5000,
-                                            showConfirmButton: true,
+                                            timer: 2000,
+                                          
 
                                         })
                                         } 
@@ -191,7 +192,8 @@
                                             title: response.message
                                         })  
                                         }
-
+                                 
+                                          $('#kit_label').val("");
                             }
                         })
                     // }

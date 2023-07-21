@@ -130,6 +130,8 @@ Route::post('partlist/inhouse/input_inhouse',[PartlistController::class,'input_i
 Route::get('repacking',[RepackingController::class,'index'])->middleware('checkRole:admin');
 Route::get('repacking/kitdata',[RepackingController::class,'kitdata'])->middleware('checkRole:admin');
 Route::get('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit'])->middleware('checkRole:admin');
+Route::get('repacking/printlbl_assy',[RepackingController::class,'printlbl_assy'])->middleware('checkRole:admin');
+
 Route::post('repacking/printassy/{id}',[RepackingController::class,'printassy'])->middleware('checkRole:admin');
 Route::get('repacking/logPrintOrg',[RepackingController::class,'logPrintOrg'])->middleware('checkRole:admin');
 Route::post('repacking/logPrintOrg/{id}',[RepackingController::class,'get_Print'])->middleware('checkRole:admin');
@@ -176,7 +178,7 @@ Route::post('problem/update/{id}',[ProblemFoundController::class,'responProblem'
 Route::get('borrow',[BorrowController::class,'index'])->middleware('checkRole:admin');
 Route::post('borrow/takeout',[BorrowController::class,'takeout'])->middleware('checkRole:admin');
 Route::post('borrow/return',[BorrowController::class,'return'])->middleware('checkRole:admin');
-
+Route::get('borrow/cancelation',[BorrowController::class,'view_cancelation'])->middleware('checkRole:admin');
 
 // =======================================PROBLEM FOUND  ROUTING===========================
 Route::get('kitmonitoring',[KitmonitorController::class,'index'])->middleware('checkRole:admin');

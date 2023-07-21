@@ -159,6 +159,9 @@
                                         <button class="btn btn-warning mr-2" onclick ="showData()" ><i class="ti ti-theater"></i> Show Data</button>
                                        
                                     </div>
+                                    <audio id="audio">
+                                        <source id="audioSource" src="{{asset('')}}storage/sound/OK.mp3" type="audio">
+                                    </audio>
                                 </div>
 
 
@@ -181,16 +184,6 @@
                                             </thead>
 
                                             <tbody id="data-scanin">
-                                                @foreach ($data as $u)
-                                                    <tr>
-                                                        <?php if ($u->tot_scan == null) {
-                                                            echo '<tr style="background-color: rgb(144, 144, 144);">';
-                                                        } else {
-                                                            echo '<tr style="background-color:#82d489;">';
-                                                            // echo '<tr style="background-color:#00c292;">';
-                                                        } ?>
-                                                    </tr>
-                                                @endforeach
                                             </tbody>
                                         </table>
                                     </div>
@@ -441,7 +434,7 @@
             });
 
 
-            //STEP 2. SCAN LABEL MC
+            //STEP 2. SCAN IN MC PROCESS
             $('#scan_label').on('keypress', function(e) {
                 // event.preventDefault();
                 if (e.which == 13) {
@@ -464,6 +457,12 @@
                             var data = ""
                             console.log(response.data);
                             $.each(response.data, function(key, value) {
+
+                                var audio = document.getElementById('audio');
+                                var source = document.getElementById('audioSource');
+                                var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                audio.load()
+                                audio.play();
                                 // console.log('key=>'+key+'|value=>'+value)
 
                                 data = data + "<tr>"
@@ -496,6 +495,12 @@
 
                             //ALERT SUCCESS/LOOSE CARTON
                             if (response.success) {
+                                var audio = document.getElementById('audio');
+                                var source = document.getElementById('audioSource');
+                                var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                audio.load()
+                                audio.play();
+
                                 swal.fire({
                                     icon: 'success',
                                     title: response.message,
@@ -539,6 +544,12 @@
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
+                                                var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                                audio.load()
+                                                audio.play();
+
                                                 console.log(response.data);
                                                 var data = ""
                                                 $.each(response.data, function(key, value) {
@@ -589,6 +600,11 @@
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
+                                                var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                                audio.load()
+                                                audio.play();
                                
                                                 console.log(response)
 

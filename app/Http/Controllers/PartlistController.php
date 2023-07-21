@@ -554,19 +554,31 @@ class PartlistController extends Controller
 
 
     public function scan_inhouse(request $request){
+        $currentDate = Carbon::now();     
 
-        // $datapo =  DB::connection('sqlsrv')
-        //      ->select("SELECT distinct(jknpo) from masterinhouse");
+      
+        $dateAsNumber = $currentDate->format('Ymd');         
+        $date = substr($dateAsNumber,2,8);
+
+        
+        $get_id = DB::table('inhouse_scanin')
+                    ->whereDate('created_at',$currentDate)
+                    ->max('id');
+        $order = $get_id ? $get_id + 1 : 1;
+        $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+
         $assylabel = $request->assy_label;
         $pic       = $request->pic;
         $type       = 'scanin';
 
         $partno = substr($assylabel,0,11);
-        $qty    = substr($assylabel,11,2);
+        $qty    = substr($assylabel,11,3);
         $prodno    = substr($assylabel,16,4);
 
 
-        // STEP 1. CEK LABEL
+
+
+         // STEP 1. CEK LABEL
          $cek_label = DB::connection('sqlsrv')
                  ->select("SELECT label from inhouse_scanin where label ='{$assylabel}'");
 
@@ -579,23 +591,66 @@ class PartlistController extends Controller
         ]);
         }
 
+
+         // STEP 2. CEK TOTAL SCAN PART UNTUK DI UPDATE DATA
+         $cek_total = DB::connection('sqlsrv')
+         ->select("SELECT top 1 * from inhouse_list
+                     where  model = '{$partno}' and lotno='{$prodno}'
+                     ");
+
+ 
+         $sum =array($cek_total[0]->tot_input,$qty);
+        
+         $act_qty = array_sum($sum);
+   
+             if(($act_qty  > $cek_total[0]->shipqty )){
+                 return response()
+                     ->json([
+                         'success' => false,
+                         'message' => 'OVER QTY...',
+                         
+                     ]);
+             }
+
+
+         //GET CONTENT FROM SCHEDULE    
+        $param = DB::connection('sqlsrv')
+             ->select("SELECT * from schedule where partno ='{$partno}' 
+                      and prodno ='{$prodno}' ");
+
+                       // GET PARAM BASE SCAN LABEL
+         $dest      =   $param[0]->dest;           
+         $custpo    =   $param[0]->custpo;
+         $partname  =   $param[0]->partname;
+         $shelfno   =   $param[0]->shelfno;
+         
+       
+
        // STEP 2. INSERT DATA KE TABLE SCAN IN
         DB::connection('sqlsrv')
-        ->insert("INSERT into inhouse_scanin(partno,lotno,qty_input,label,type,pic)
-                 SELECT '{$partno}','{$prodno}','{$qty}','{$assylabel}','{$type}','{$pic}'
+        ->insert("INSERT into inhouse_scanin(partno,lotno,qty_input,label,type,pic,idnumber,jknpo,partname,dest,shelfno)
+                 SELECT '{$partno}','{$prodno}','{$qty}','{$assylabel}','{$type}','{$pic}','{$idnumber}','{$custpo}','{$partname}','{$dest}','{$shelfno}'
                  ");
 
        // STEP 3. UPDATE DATA ASSY LIST
        DB::connection('sqlsrv')
          ->update("UPDATE inhouse_list
-                    set tot_input =  SELECT sum(qty_input) FROM inhouse_scanin as b where
-                                    b.lotno = inhouse_list.lotno and b.custpo = partlist.custpo
+                    set 
+                    tot_input =  (SELECT sum(qty_input) FROM inhouse_scanin as b where
+                                    inhouse_list.lotno = b.lotno ),
+                    balance = shipqty -  (tot_input + $qty) where
+                                    inhouse_list.lotno = '{$prodno}'
+             
                 ");
 
+
+             $data = DB::connection('sqlsrv')
+                        ->select("SELECT * from inhouse_list where lotno ='{$prodno}'");
 
             return response()->json([
                                 'success'=>TRUE,
                                 'message'=>'Scan Sucessfully',
+                                'data'     =>$data
         ]);
 
         // STEP 2. UPDATE ASSY LIST
@@ -672,11 +727,14 @@ class PartlistController extends Controller
              
                 ");
 
-
+  $data = DB::connection('sqlsrv')
+                        ->select("SELECT * from inhouse_list where lotno ='{$lotno}'");
             return response()
+
             ->json([
                 'success' => true,
                 'message' => 'Input Data success...',
+                'data'    =>$data
                 
             ]);
             // return redirect()->back()->with('success','Created data inhouse success!');

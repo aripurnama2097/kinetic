@@ -31,8 +31,9 @@
     </div>
    
     <div class="collapse mt-4" id="scan_qr" hide>
-        <form  action ="{{url('partlist/inhouse/scanin')}}" method="post" class="card" enctype="multipart/form-data">
-          @csrf
+        {{-- <form  action ="{{url('partlist/inhouse/scanin')}}" method="post" class="card" enctype="multipart/form-data">
+          @csrf --}}
+          <div class="card">
           <div class="card-header">
             <h3 style="font-size:25px"class="card-title text-primary">INPUT DATA INHOUSE</h3>
           </div>
@@ -53,7 +54,33 @@
               </div>
             </div>
           </div>
-        </form>
+        </div>
+        {{-- </form> --}}
+        <div class="card-body border-bottom d-flex justify-content-center ">
+          <div class="table-responsive  rounded-1 shadow-sm col-12 ">
+
+              <table style="width:100%"
+                  class="text-nowrap  table border-bordered border border-primary shadow-sm">
+                  <thead class="thead-dark">
+                      <tr>
+                          {{-- <th style="font-size: 10px;">No</th> --}}
+                          <th style="font-size: 10px;">Model</th>
+                          <th style="font-size: 10px;">Prod No</th>
+                          <th style="font-size: 10px;">Demand</th>
+                          <th style="font-size: 10px;">JKN PO</th>
+                        
+                          <th style="font-size: 10px;">Total Scan</th>
+                          <th style="font-size: 10px;">Balance Scan</th>
+                      </tr>
+                  </thead>
+
+                  <tbody id="scan-assy">
+                  </tbody>
+              </table>
+          </div>
+          <br>
+          <br>
+      </div>
     </div>
 
     <div class="collapse mt-4" id="input_data" hide>
@@ -121,7 +148,31 @@
           <div class="card-footer text-end">
             <button onclick="input_inhouse()" type = "submit"  class="btn btn-primary">Submit</button>
           </div>
-        {{-- </form> --}}
+          <div class="card-body border-bottom d-flex justify-content-center ">
+            <div class="table-responsive  rounded-1 shadow-sm col-12 ">
+  
+                <table style="width:100%"
+                    class="text-nowrap  table border-bordered border border-primary shadow-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            {{-- <th style="font-size: 10px;">No</th> --}}
+                            <th style="font-size: 10px;">Model</th>
+                            <th style="font-size: 10px;">Prod No</th>
+                            <th style="font-size: 10px;">Demand</th>
+                            <th style="font-size: 10px;">JKN PO</th>
+                          
+                            <th style="font-size: 10px;">Total Scan</th>
+                            <th style="font-size: 10px;">Balance Scan</th>
+                        </tr>
+                    </thead>
+  
+                    <tbody id="scan-assyInput">
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <br>
+          </div>
         </div>
     </div>
 </div>
@@ -153,7 +204,7 @@
 
         
         $('#assy_label').on('keypress', function(e) {
-
+          if (e.which == 13) {
                     var pic = $('#pic').val();
                     var assy_label = $('#assy_label').val();
                     $.ajax({
@@ -166,7 +217,35 @@
                                 _token: '{{ csrf_token() }}'
                             },
                        
-                            success: function(response) {                  
+                            success: function(response) {     
+                              var data = ""
+                              $.each(response.data, function(key, value) {
+                              data = data + "<tr>"
+                                if (value.tot_input == 0 && value.balance == 0) {
+                                    data = data + "<tr class=table-light>";
+                                }
+                                if (value.tot_input != 0 && value.balance != 0) {
+                                    data = data + "<tr class=table-warning>";
+                                }
+                                if (value.tot_input == value.shipqty && value
+                                    .balance == 0) {
+                                    data = data + "<tr class=table-success>";
+                                }
+
+                                // data = data + "<td>" + value.id + "</td>"
+                                data = data + "<td>" + value.model + "</td>"
+                                data = data + "<td>" + value.lotno + "</td>"
+                                data = data + "<td>" + value.shipqty + "</td>"
+                                data = data + "<td>" + value.jknpo + "</td>"
+                                data = data + "<td>" + value.tot_input + "</td>"
+                                data = data + "<td>" + value.balance + "</td>"
+                              
+
+                                data = data + "</tr>"
+                                $('#scan-assy').html(data);
+
+                              })
+
                               if (response.success) {
                                             var audio   = document.getElementById('audio');
                                             var source  = document.getElementById('audioSource');
@@ -175,22 +254,23 @@
                                         swal.fire({
                                             icon: 'success',
                                             title: response.message,
-
-                                            timer: 5000,
-                                            showConfirmButton: true,
+                                            showConfirmButton :false                       
 
                                         })
                                         } 
                                         else {
                                             swal.fire({
                                             icon: 'warning',
-                                            title: response.message
+                                            title: response.message,
+                                            showConfirmButton :false  
                                         })  
                                         }                      
                                         $('#assy_label').val("");
                             }
                         })    
-            })   
+                      } 
+                     }) 
+           
 }); 
 
 
@@ -214,6 +294,33 @@
                                     },
                               
                                     success: function(response) {                  
+                                      var data = ""
+                                      $.each(response.data, function(key, value) {
+                                      data = data + "<tr>"
+                                        if (value.tot_input == 0 && value.balance == 0) {
+                                            data = data + "<tr class=table-light>";
+                                        }
+                                        if (value.tot_input != 0 && value.balance != 0) {
+                                            data = data + "<tr class=table-warning>";
+                                        }
+                                        if (value.tot_input == value.shipqty && value
+                                            .balance == 0) {
+                                            data = data + "<tr class=table-success>";
+                                        }
+
+                                        // data = data + "<td>" + value.id + "</td>"
+                                        data = data + "<td>" + value.model + "</td>"
+                                        data = data + "<td>" + value.lotno + "</td>"
+                                        data = data + "<td>" + value.shipqty + "</td>"
+                                        data = data + "<td>" + value.jknpo + "</td>"
+                                        data = data + "<td>" + value.tot_input + "</td>"
+                                        data = data + "<td>" + value.balance + "</td>"
+                                      
+
+                                        data = data + "</tr>"
+                                        $('#scan-assyInput').html(data);
+
+                                      })
                                       if (response.success) {
                                                     var audio   = document.getElementById('audio');
                                                     var source  = document.getElementById('audioSource');
@@ -225,7 +332,6 @@
 
                                                     timer: 5000,
                                                    
-
                                                 })
                                                 } 
                                                 else {
