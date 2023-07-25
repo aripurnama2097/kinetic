@@ -203,5 +203,90 @@ class BorrowController extends Controller
         // STEP 3. JIKA QTY RETURN PART TIDAK SAMA DENGAN QTY BORROW  => RESET DATA DARI PROSES MC - FG
 
 
+        public function view_cancelation(){
+
+                return view('borrow.view_cancelation');
+        }
+
+        public function cancelationAll(request $request){
+
+           
+        $dic = $request->dic;
+        $kitLabel = $request->label_kit;
+        $qty = $request->qty;   
+        $lastdate = Carbon::now();    
+        $remark ='cancelation';
+
+        $datakit = $kitLabel;
+        list($partno, $partname, $qtylabel, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
+
+       $prodno = DB::connection('sqlsrv')
+           ->select("SELECT distinct(prodno) from schedule where custpo ='{$custpo}'");
+
+        // dd($prodno);
+        // ADD HISTORY BORROW
+        $qtynew = $qtylabel - $qty;
+        // STEP 1. INSERT DATA KE TABLE HISTORY CANCEL
+
+        DB::connection('sqlsrv')
+            ->insert("INSERT into tblhistory_cancelation(custpo,prodno,partno,partname,qty_label,qty,dest,shelfno,dic,split_qty,idnumber)
+                        select '{$custpo}', '{$prodno[0]->prodno}','{$partno}','{$partname}','{$qtylabel}','{$qty}','{$dest}','{$shelfno}','{$dic}','{$qtynew}','{$idnumber}'
+                        ");
+     
+        // // STEP 2. UPDATE DATA PADA MC BERDASARKAN CUSTPO DAN QTY 
+        //         // 2.1 UPDATE PARTSCAN
+                DB::connection('sqlsrv')
+                ->update("UPDATE partscan
+                                set  remark ='{$remark}',
+                                last_update ='{$lastdate}',
+                                scan_issue = (scan_issue - '{$qty}')
+                                where  idnumber ='{$idnumber}'                
+                        ");
+
+
+                // 2.2 UPDATE PARTLIST
+                DB::connection('sqlsrv')
+                ->update("UPDATE partlist
+                                set
+                                balance_issue = (balance_issue + '{$qty}'),
+                                tot_scan = (tot_scan - '{$qty}')
+                                where  custpo ='{$custpo}'                 
+                        ");
+
+
+
+
+        // STEP 3. RESET DATA PADA REPACKING BERDASARKAN CUSTPO DAN QTY 
+     
+                DB::connection('sqlsrv')
+                                ->update("UPDATE scanin_repacking
+                                                set  remark ='{$remark}',
+                                                last_update ='{$lastdate}',
+                                                qty_receive = ( qty_receive - '{$qty}')
+                                                where  label_kit ='{$kitLabel}'                
+                                        ");
+
+
+                DB::connection('sqlsrv')
+                        ->update("UPDATE repacking_list
+                                                set
+                                                bal_receive = (bal_receive + '{$qty}'),
+                                                act_receive= (act_receive - '{$qty}')
+                                                where  custpo ='{$custpo}'                
+                                ");
+
+   
+        $data = DB::connection("sqlsrv")
+                        ->select("SELECT * FROM tblhistory_cancelation where custpo ='{$custpo}'");
+
+        return response()->json([
+                'success'=>TRUE,
+                'message'=>'created data successfully',
+                'data'=>$data
+                
+                  ]);
+
+        }
+
          
 }

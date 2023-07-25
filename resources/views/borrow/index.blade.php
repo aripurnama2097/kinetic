@@ -137,8 +137,15 @@
         </div>
     </div>
 
-
     <div class="collapse mt-4" id="return" >
+      <div class="btn-group mb-2">
+        <a class="btn btn-dark text-light ">
+          Show Data<i class="ti ti-caret-down"></i>
+        </a>
+        <a href="{{url('borrow/cancelation')}}"class="btn btn-danger text-light"><i class="ti ti-circle-letter-x"></i></i>
+          Cancelation
+        </a>
+      </div>
         <form class="card">
         <div class="card-header">
           <h3 style="font-size:25px"class="card-title text-primary">Borrow Return</h3>

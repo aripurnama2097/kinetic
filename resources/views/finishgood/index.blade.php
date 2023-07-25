@@ -203,7 +203,7 @@
                      $('#print-box').attr('disabled', false);
                     
                     }
-                    var val_kitlabel = $('#kit_label').value = ''
+                  
 
                     let scan_nik        = $('#scan_nik').val();
                     let packing_no        = $('#packing_no').val();
@@ -251,6 +251,8 @@
                                             title: response.message
                                         })  
                                  }
+
+                                 $('#kit_label').val("");
 
                             }
                         })
