@@ -154,6 +154,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <div class="dropend">
+                                    <a class="dropdown-item " href="{{ url('/repacking/cancelation') }}">
+                                        Cancelation
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                       </div>
                   </li>
 

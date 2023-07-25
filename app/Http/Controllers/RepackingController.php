@@ -196,8 +196,8 @@ class RepackingController extends Controller
 
         // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_kit,scan_nik) 
-                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}'
+        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik) 
+                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}'
                 from repacking_list
                     where partno = '{$partno}' and custpo ='{$custpo}'
                     and  (coalesce(act_receive,0)+{$qty}) <= demand
@@ -217,10 +217,14 @@ class RepackingController extends Controller
                                 repacking_list.id = '{$selectPart[0]->id}' ") ;
 
 
+        $viewdata = DB::connection('sqlsrv')
+                        ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
+
          return response()
                 ->json([
                     'success' => true,
-                    'message' => 'Scan success...'
+                    'message' => 'Scan success...',
+                    'data'    => $viewdata
                 ]);  
     
     }
@@ -532,13 +536,17 @@ class RepackingController extends Controller
         // -- //                 balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
         // -- //             from partscan as b where
         // -- //             partlist.id = '{$selectPart[0]->id}'
+        
+        $viewdata = DB::connection('sqlsrv')
+                                ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
+                                
+                return response()
+                        ->json([
+                            'success' => true,
+                            'message' => 'Scan success...',
+                            'data'    => $viewdata
+                        ]);  
 
-         return response()
-                ->json([
-                    'success' => true,
-                    'message' => 'Scan success...'
-                ]);  
-    
     }
 
    
@@ -608,6 +616,41 @@ class RepackingController extends Controller
             return view('repacking.printassy_scan', compact('param'));
       
         
+    }
+
+
+    public function view_borrow_cancelation(){
+
+       $data= DB::connection('sqlsrv')
+            ->select("SELECT * FROM tblhistory_cancelation");
+
+        return view('repacking.canceloutput',
+                    compact('data'));
+    }
+
+
+    public function printNewlabel(request $request){
+
+        
+        $pic = $request->pic_print;
+        $id = $request->id; 
+       
+        //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
+        $param = DB::connection('sqlsrv')
+        ->select("SELECT * from tblhistory_cancelation                                         
+                     where id = '{$id}' ");
+
+
+        // STEP 2. INSERT KE LOG PRINT
+        DB::connection('sqlsrv')
+            ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
+                select  '{$param[0]->idnumber}','{$param[0]->partno}', '{$param[0]->partname}', '{$param[0]->qty}', '{$param[0]->dest}','{$param[0]->custpo}',
+                        '{$param[0]->shelfno}',  '{$param[0]->prodno}'
+                ");                 
+
+
+         return view('repacking.printNew', compact('param'));
+
     }
 
 
