@@ -54,15 +54,20 @@
                   @if(Session::has('success'))
                   <p class="alert alert-success">{{Session::get('success')}}</p>
                   @endif
-                 <div class="row-2">
-                    <button type="button" class="btn btn-primary dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
+                 <div class="row-2 ml-4">
+                    {{-- <button type="button" class="btn btn-primary dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="ti ti-note"></i>
                      Schedule Category   
-                    </button>
+                    </button> --}}
        
                     <button  id="generate-sch" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
                       <i class="ti ti-file-export"></i>
                       Generate Schedule
+                    </button>
+
+                    <button  id="reset-all-master" class="btn btn-danger d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
+                      <i class="ti ti-circle-letter-x"></i>
+                      Reset All Master
                     </button>
                 
                  
@@ -73,7 +78,7 @@
                     </ul>
                   </div>
 
-                  <a href="{{url('/schedule_tentative')}} " class="btn btn-success float-end" >Refresh </a>
+                  <a href="{{url('/schedule_tentative')}} " class="btn btn-success float-end mr-4" >Refresh </a>
                    
                   <br>
                   <br>
@@ -404,16 +409,41 @@ $(document).ready(function () {
     });
 
 
-
-    table = $('#datatable').DataTable( {
-    paging: false
-} );
- 
-      table.destroy();
+      //GENERATE SCHEDULE 
+    $('#reset-all-master').on('click', function() {
       
-      table = $('#datatable').DataTable( {
-          searching: false
-      } );
+      $('#example .check:checked').each(function() {
+        selected.push($(this).val());
+      });
+
+      Swal.fire({
+        icon: 'warning',
+          title: ' Reset Master Upload?',
+          // input :text,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+        
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $.ajax({
+            type: 'get',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{url('schedule_tentative/reset_allmaster')}}",    
+            success: function(result) {
+                    swal.fire(
+                  'SUCCESS!',
+                  'Reset Master upload',
+                  'success'
+                    )
+              }
+          });
+        }
+      });
+    });
 
 
 // const filterDropdown = document.getElementById("filter");

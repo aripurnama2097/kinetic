@@ -57,11 +57,32 @@
                                 <div class="justify-content-center mt-3 ml-3 mr-3 mb-3">
 
                                     <div class="row row-cards col-12">
-                                        <div class="mb-3 col-sm-7 col-7">
+                                        <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end">
+                                    
                                             <input style="font-size:20px"
                                                 class="form-control form-control-xs mb-2 text-center border border-secondary "
                                                 type="text" name="scan_nik" value="" id="scan_nik" maxlength="8"
                                                 placeholder="SCAN NIK HERE" autofocus>
+                                                <input
+                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
+                                                type="text" name="lenght" value="" id="lenght"
+                                                placeholder="Lenght" disabled>
+                                             
+                                                <input
+                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
+                                                type="text" name="widht" value="" id="widht"
+                                                placeholder="Widht" disabled>
+                                             
+                                                <input
+                                                class="form-control form-control-lg  mb-2 text-center border border-secondary "
+                                                type="text" name="height" value="" id="height"
+                                                placeholder="Height" disabled>
+                                                <input
+                                                    class="form-control form-control-lg mb-2 text-center border border-secondary  "
+                                                    type="text" name="gw" value="" id="gw"
+                                                    placeholder="GW" disabled>
+                                       </div>
+                                       <div class="mb-3 col-sm-7 col-7">
                                             <input
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary "
                                                 type="text" name="mc_label" value="" id="mc_label"
@@ -70,33 +91,15 @@
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary "
                                                 type="text" name="kit_label" value="" id="kit_label"
                                                 placeholder="SCAN KIT LABEL" disabled>
-                                        </div>
+                                        </div> 
 
-                                        <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end">
-                                            {{-- <label style="font-size:20px"  class="text-bold;"> Gross Weight</label>                                      --}}
-                                            {{-- <label style="font-size:20px"  class="text-bold;"> Lenght</label>           --}}
-                                            <input
-                                            class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                            type="text" name="lenght" value="" id="lenght"
-                                            placeholder="Lenght">
-                                            {{-- <label style="font-size:20px"  class="text-bold;"> Widht</label>     --}}
-                                            <input
-                                            class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                            type="text" name="widht" value="" id="widht"
-                                            placeholder="Widht">
-                                            {{-- <label style="font-size:20px"  class="text-bold;"> Height</label>     --}}
-                                            <input
-                                            class="form-control form-control-lg  mb-2 text-center border border-secondary "
-                                            type="text" name="height" value="" id="height"
-                                            placeholder="Height">
-                                            <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                                type="text" name="gw" value="" id="gw"
-                                                placeholder="GW">
-                                        </div>
+                                      
+                                           
+                                           
+                                       
                                     </div>
 
-                                    <div class="table-responsive">
+                                    <div class="table-responsive ml-2 mr-2">
                                         <table style="width:100%"
                                         class="text-nowrap  table border-bordered border border-primary shadow-sm">
                                         <thead class="thead-dark">
@@ -114,9 +117,15 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <a  id="print-master" href="{{url('repacking/scanCombine/printMaster')}}"class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
-                                        Print Master Label
-                                    </a>
+                                    <div class="btn-group col-12">
+
+                                        <a id="print-master" href="{{url('repacking/scanCombine/printMaster')}}"class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
+                                            Print Master Label
+                                        </a>
+                                        <button  id="delete-tbltemp" class="btn btn-danger text-white  col-12 mb-3" disabled><i class="ti ti-delete"></i>
+                                            Reset Data
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="col-2">
                                     <a  href="{{url('repacking/')}}"class="btn btn-warning text-white  mb-3"><i class="ti ti-back"></i>Back
@@ -180,7 +189,9 @@
             $('#mc_label').on('keypress', function(e){
                 if(e.which == 13) {
                     let val_mcLabel      = $('#mc_label').val()
+                    if (val_mcLabel != '') {
                     $('#kit_label').focus();
+                    }
                 }
             });
 
@@ -198,15 +209,15 @@
                     let scan_kitLabel   = val_kitLabel.substr(0, 11); //get PARTNO KIT
                     let getPO           = val_kitLabel.split(":");
       	            let qty_kit         = getPO[2];// GET PO KIT
-                    if (val_kitLabel != '') {                  
-                     $('#print-master').attr('disabled', false);
-                    
-                    }
+
+                        if (val_kitLabel != '') {                  
+                        $('#print-master').attr('disabled', false);
+                        $('#delete-tbltemp').attr('disabled', false);
+                        
+                        }
                     if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
                         console.log(qty_kit)
-                      
-                        // alert('Result Oke')
-
+        
                         $.ajax({
                             type: "POST",
                             dataType: "json",
@@ -230,10 +241,7 @@
 
                                         swal.fire({
                                             icon: 'success',
-                                            title: response.message,
-
-                                            // timer: 5000,
-                                            // showConfirmButton: true,
+                                            title: response.message
 
                                         })
                                         } 
@@ -260,6 +268,7 @@
                                         
 
                             }
+                                     
                         })
                     }
 
@@ -283,14 +292,65 @@
                      })
 
                     }
+                    $('#kit_label').val("");
+                    $('#mc_label').val("");
+                    $('#kit_label').focus();
+                    $('#mc_label').focus();
                 }
             })
-
             // END SCAN IN KIT LABEL
-
-
         });
 
       
+
+        $('#delete-tbltemp').click(function() {
+        
+                    const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                    
+            
+                    confirmButton: 'btn btn-primary',
+                    cancelButton: 'btn btn-danger'
+                },
+                buttonsStyling: false
+                })
+
+                    swalWithBootstrapButtons.fire({
+                    title: 'Reset Master Label ?',        
+                    // text: "Reset SB98!",
+                
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Reset Data',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+            }).then((result) => {
+            if (result.isConfirmed) {
+
+                $.ajax({
+                            url: "{{url('repacking/scanCombine/delete')}}",
+                            type: 'get',
+                            success: function(result) {
+                            swalWithBootstrapButtons.fire(
+                            'SUCCESS!',
+                            'Your file has been reset.',
+                            'success'
+                            )
+                            }
+
+                        });
+                
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                'Cancelled',
+                ' file is safe :)',
+                'error'
+                )
+            }
+            });
+            });
     </script>
 @endsection

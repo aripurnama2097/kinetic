@@ -11,12 +11,12 @@
      <div class="col-md-12">
       <div class="col-md-12 mt-3 ml-0">
         <div class="btn-group col-12 mt-5" role="group">
-          <a class="btn btn-primary col-6" data-bs-toggle="collapse" href="#take_out" role="button"
+          <a class="btn btn-primary col-6 text-white" data-bs-toggle="collapse" id="btn-takeout" role="button"
           aria-expanded="false" aria-controls="take_out">
             Borrow Takeout <i class="ti ti-arrow-bar-right"></i>
           </a>
     
-          <a class="btn btn-success col-6" data-bs-toggle="collapse" href="#return" role="button"
+          <a class="btn btn-success col-6 text-white" data-bs-toggle="collapse"  id="btn-return" role="button"
           aria-expanded="false" aria-controls="return" ><i class="ti ti-arrow-bar-left"></i>
             Borrow Return
           </a>
@@ -229,6 +229,17 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+
+      $('#btn-takeout').on('click', function(){         
+          $('#return').hide();
+          $('#take_out').show();
+      })
+
+      $('#btn-return').on('click', function(){         
+          $('#take_out').hide();
+          $('#return').show();
+      })
+
   
         // STEP 1. START BORROW TAKE OUT
         $('#borrower').on('keypress', function(e) {

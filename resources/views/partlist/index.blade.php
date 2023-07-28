@@ -48,13 +48,13 @@
                             <br>
                             <br>
                             <div class="btn-group" role="group">
-                                <a class="btn btn-primary" data-bs-toggle="collapse" href="#partlist" role="button"
+                                <a class="btn btn-primary text-white" data-bs-toggle="collapse" id="btn-print"  role="button"
                                     aria-expanded="false" aria-controls="partlist">
                                     <i class="ti ti-printer"></i>
                                     PARTLIST SCHEDULE
                                 </a>
                                 <div class="col-6  ">
-                                    <a class="btn btn-light col-12" data-bs-toggle="collapse" href="#scanin"
+                                    <a class="btn btn-light col-12" data-bs-toggle="collapse"  id="btn-scanin" 
                                         role="button" aria-expanded="false" aria-controls="scanin">
                                         ---SCAN IN---
                                     </a>
@@ -111,14 +111,14 @@
                                                         <th style="font-size: 10px;">Prod No</th>
                                                         <th style="font-size: 10px;">JKEI Po date</th>
                                                         <th style="font-size: 10px;">van Date</th> --}}
-                                                        <th style="font-size: 15px;text-center">Cust PO</th>
-                                                        <th style="font-size: 15px;text-center">Vandate</th>
-                                                        <th style="font-size: 15px;text-center">Part Number</th>
-                                                        <th style="font-size: 15px;text-center">Part Name</th>
-                                                        <th style="font-size: 15px;text-center">Demand</th>
-                                                        <th style="font-size: 15px;text-center">Std Pack</th>
+                                                        <th class="text-center"style="font-size: 15px;text-center">Cust PO</th>
+                                                        <th class="text-center"style="font-size: 15px;text-center">Vandate</th>
+                                                        <th class="text-center"style="font-size: 15px;text-center">Part Number</th>
+                                                        <th class="text-center"style="font-size: 15px;text-center">Part Name</th>
+                                                        <th class="text-center"style="font-size: 15px;text-center">Demand</th>
+                                                        <th class="text-center"style="font-size: 15px;text-center">Std Pack</th>
                                                         {{-- <th style ="font-size: 15px;">MC Shelf No</th> --}}
-                                                        <th style="font-size: 15px;text-center">Vendor</th>
+                                                        <th class="text-center"style="font-size: 15px;text-center">Vendor</th>
                                                     </tr>
                                                 </thead>
     
@@ -224,10 +224,15 @@
 
         $(document).ready(function() {
 
-            // $('#table-print').dataTable({
-            //      paging: true,
-            //     serverside:true
-            // });
+            $('#btn-print').on('click', function(){
+                $('#scanin').hide();
+                $('#partlist').show();
+            })
+
+            $('#btn-scanin').on('click', function(){
+                $('#partlist').hide();
+                $('#scanin').show();
+            })
 
 
             // ==============PRINT PARTLIST==========================
@@ -301,13 +306,13 @@
                             // data = data + "<td>" + value.custcode + "</td>"
                             // data = data + "<td>" + value.prodno + "</td>"
                             // data = data + "<td>" + value.jkeipodate + "</td>"
-                            data = data + "<td class=text-center>" + value.custpo + "</td>"
-                            data = data + "<td class=text-center>" + value.vandate + "</td>"
-                            data = data + "<td class=text-center>" + value.partno + "</td>"
-                            data = data + "<td class=text-center>" + value.partname + "</td>"
-                            data = data + "<td class=text-center>" + value.demand + "</td>"
-                            data = data + "<td class=text-center>" + value.stdpack + "</td>"
-                            data = data + "<td class=text-center>" + value.vendor + "</td>"
+                            data = data + "<td style=font-size:12px;align-middle>" + value.custpo + "</td>"
+                            data = data + "<td style=font-size:12px;align-middle>" + value.vandate + "</td>"
+                            data = data + "<td style=font-size:12px;align-middle>" + value.partno + "</td>"
+                            data = data + "<td style=font-size:12px;align-middle>" + value.partname + "</td>"
+                            data = data + "<td style=font-size:12px;align-middle>" + value.demand + "</td>"
+                            data = data + "<td style=font-size:12px;align-middle>" + value.stdpack + "</td>"
+                            data = data + "<td style=font-size:12px;align-middle>" + value.vendor + "</td>"
                             data = data + "</tr>"
                         })
                         $('#data-print').html(data);

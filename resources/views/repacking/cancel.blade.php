@@ -78,36 +78,13 @@
                                                         <label class="text-center font-weight-bold text-danger" id="result_NG" style="font-size:50px;"> 
                                                         </label>  
                                                   </div>
+                                                <div class="col-2">
+                                                    <a  href="{{url('repacking/')}}"class="btn btn-warning text-white  mb-3"><i class="ti ti-back"></i>Back
+                                                    </a>
+                                                </div>
 
                                         </div>
 
-                                        {{-- <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end"> --}}
-                                                                      
-                                            {{-- <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                                type="text" name="scan_label" value="" id="scan_label"
-                                                placeholder="GW">
-                                       
-                                            <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                                type="text" name="scan_label" value="" id="scan_label"
-                                                placeholder="Lenght">
-                                           
-                                            <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                                type="text" name="scan_label" value="" id="scan_label"
-                                                placeholder="Widht">
-                                           
-                                            <input
-                                                class="form-control form-control-lg  mb-2 text-center border border-secondary "
-                                                type="text" name="scan_label" value="" id="scan_label"
-                                                placeholder="Height"> --}}
-                                        {{-- </div> --}}
-                                    </div>
-
-                                    <div class="col-12 d-flex justify-content-end mb-3 mr-6">
-                                        <button class="btn btn-info"
-                                            onclick="document.getElementById('kit_label').value = ''">clear</button>
                                     </div>
                                 </div>
                             </div>
@@ -189,6 +166,7 @@
             });
             // =========
 
+            $('#scan_nik').focus();
 
             $('#scan_nik').on('keypress', function(e) {
                 if (e.which == 13) {
@@ -250,6 +228,8 @@
 
                             }
                         })
+                                 $('#kit_label').val("");
+                                 $('#kit_label').focus();
                 }
             })
 

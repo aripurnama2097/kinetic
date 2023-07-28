@@ -53,14 +53,14 @@
 
                             <div class="btn-group mb-3" role="group">
                                 <div class="col-6  ">
-                                    <a class="btn btn-primary   col-12" data-bs-toggle="collapse" href="#skid-packing"
+                                    <a class="btn btn-primary   col-12 text-white" data-bs-toggle="collapse"id="btn-print"
                                         role="button" aria-expanded="false" aria-controls="skid-packing">
                                         <i class="ti ti-box"></i>
                                         Print Skid
                                     </a>
                                 </div>
                                 <div class="col-6  ">
-                                    <a class="btn btn-success col-12" data-bs-toggle="collapse" href="#scan-out"
+                                    <a class="btn btn-success col-12 text-white" data-bs-toggle="collapse" id="btn-scanout"
                                     role="button" aria-expanded="false" aria-controls="scan-out">
                                         <i class="ti ti-box"></i>
                                         Scan Out
@@ -86,7 +86,7 @@
 
 
                     {{-- FORM PRINT SKID --}}
-                    <div class="collapse mt-4"id="skid-packing">
+                    <div class="collapse mt-4"id="print-skid">
                         <div class="col-12 ">
                             <div class="card rounded-1 col-12 mb-2">
                                 <div class="justify-content-center mt-3 ml-3 mr-3 ">
@@ -195,9 +195,9 @@
                                         <tbody id="view-scanout">
                                         </tbody>
                                     </table>
-                                    <a  id="print-master" onclick="printMaster()" class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
-                                        Print Master Label
-                                    </a>
+                                    <button  id="print-masterlist" onclick="printMaster()" class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
+                                        Print Master List
+                                    </button>
                                     </div>
                             </div>
                         </div>
@@ -211,6 +211,19 @@
     <script type="text/javascript">
     
         $(document).ready(function() {
+
+            $('#btn-print').on('click', function(){
+          
+                $('#scan-out').hide();
+                $('#print-skid').show();
+            })
+
+            $('#btn-scanout').on('click', function(){
+          
+                $('#print-skid').hide();
+                $('#scan-out').show();
+            })
+
             const spinner = document.querySelector('#spinner');
 
             // START PRINT SKID
@@ -317,6 +330,11 @@
                     let skid_height     = $('#skid_height').val();
                     let kit_label       = $('#kit_label').val();
 
+                    if (kit_label != '') {                  
+                        $('#print-masterlist').attr('disabled', false);
+                      
+                        
+                        }
 
                     $.ajax({
                             type: "POST",

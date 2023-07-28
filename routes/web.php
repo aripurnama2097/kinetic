@@ -150,6 +150,7 @@ Route::post('repacking/scanCombine/inputCombine',[RepackingController::class,'in
 Route::get('repacking/scanCombine/printMaster',[RepackingController::class,'printMaster'])->middleware('checkRole:admin');
 Route::get('repacking/cancelation',[RepackingController::class,'view_borrow_cancelation'])->middleware('checkRole:admin');
 Route::post('repacking/printNew/{id}',[RepackingController::class,'printNewlabel'])->middleware('checkRole:admin');
+Route::get('repacking/scanCombine/delete',[RepackingController::class,'reset_tbltmp'])->middleware('checkRole:admin');
 
 
 // =======================================FINISH GOOD ROUTING===========================
@@ -185,4 +186,5 @@ Route::post('borrow/cancelation/return',[BorrowController::class,'cancelationAll
 
 // =======================================PROBLEM FOUND  ROUTING===========================
 Route::get('kitmonitoring',[KitmonitorController::class,'index'])->middleware('checkRole:admin');
+Route::post('kitmonitoring/update/{id}',[KitmonitorController::class,'update_invoice'])->middleware('checkRole:admin');
 // Route::post('borrow/takeout',[BorrowController::class,'takeout'])->middleware('checkRole:admin');

@@ -53,26 +53,33 @@
 
                         <div class="btn-group mb-3" role="group">
                             <div class="col-4  ">
-                                <a class="btn btn-primary   col-12" data-bs-toggle="collapse" href="#assy" role="button"
+                                <a class="btn btn-primary   col-12 text-white" data-bs-toggle="collapse" id="btn-assy" role="button"
                                     aria-expanded="false" aria-controls="assy">
                                     <i class="ti ti-printer"></i>
                                     ASSY PRINT
                                 </a>
                             </div>
                             <div class="col-4  ">
-                                <a class="btn btn-primary col-12" data-bs-toggle="collapse" href="#original" role="button"
+                                <a class="btn btn-primary col-12 text-white" data-bs-toggle="collapse" id="btn-ori" role="button"
                                     aria-expanded="false" aria-controls="original">
                                     <i class="ti ti-printer"></i>
                                     ORIGINAL PRINT
                                 </a>
                             </div>
                             <div class="col-4  ">
-                                <a class="btn btn-success col-12 text-white" data-bs-toggle="collapse" href="#combine"
+                                <a class="btn btn-success col-12 text-white" data-bs-toggle="collapse" id="btn-combine"
                                     role="button" aria-expanded="false" aria-controls="combine">
                                     <i class="ti ti-printer"></i>COMBINE PRINT
                                 </a>
                             </div>
                         </div>
+                        {{-- <div class="col-4  mb-3 d-flex justify-content-center">
+                            <a class="btn btn-danger  col-12 float-mid" data-bs-toggle="collapse" href="#assy" role="button"
+                                aria-expanded="false" aria-controls="assy">
+                                <i class="ti ti-circle-letter-x"></i>
+                                CANCELATION SCAN
+                            </a>
+                        </div> --}}
                     </div>
                 </div>
 
@@ -81,16 +88,17 @@
                     <p class="alert alert-success">{{ Session::get('success') }}</p>
                 @endif
 
-                <div class="collapse mt-4" id="assy">
+            {{-- ASSY PROCESS --}}
+            <div class="collapse mt-4" id="assy">
                     <div class="col-12 ">
                         <div class="card rounded-1 col-12 mb-2">
                             <div class="justify-content-center mt-3 ml-3 mr-3 ">
                             <div class="btn-group">
-                                <a class="btn btn-success  text-white mb-3" data-bs-toggle="collapse" href="#print-assyInput"
+                                <a class="btn btn-success  text-white mb-3" data-bs-toggle="collapse" id="btn-print-input"
                                     role="button" aria-expanded="false" aria-controls="print-assyInput">
                                     <i class="ti ti-printer"></i>PRINT ASSY INPUT
                                 </a>
-                                <a class="btn btn-light  text-dark mb-3" data-bs-toggle="collapse" href="#print-assyScan"
+                                <a class="btn btn-light  text-dark mb-3" data-bs-toggle="collapse" id="btn-print-scan"
                                 role="button" aria-expanded="false" aria-controls="print-assyScan">
                                 <i class="ti ti-printer"></i>PRINT ASSY SCAN
                                </a>
@@ -209,6 +217,7 @@
                 </div>              
             </div>
 
+              {{-- ORIGINAL SINGLE PROCESS --}}
             <div class="collapse mt-4" id="original">
                     <div class="col-12 ">
                         <div class="card rounded-1 col-12 mb-2">
@@ -237,7 +246,8 @@
                     </div>
                 </div>
             </div>
-            {{-- COMBINE SCAN IN --}}
+
+            {{-- COMBINE PROCESS --}}
             <div class="collapse mt-4" id="combine">
                 <div class="col-12 ">
                     <div class="card rounded-1 col-12 mb-2">
@@ -247,7 +257,7 @@
                                 <i class="ti ti-printer"></i> </a>
                             <a class="btn btn-light mb-2" href="{{ url('repacking/scanCombine') }}"> --Scan Combine--
                             </a>
-                            <a class="btn btn-danger mb-2" href="{{ url('repacking/scanCombine') }}"> --Cancelation--
+                            <a class="btn btn-danger mb-2" href="{{ url('repacking/cancel') }}"> --Cancelation--
                                 <i class="ti ti-cancel"></i> </a>
                             <a class="btn btn-success mb-2" href="{{ url('repacking') }}"> Refresh <i
                                     class="ti ti-refresh"></i> </a>
@@ -268,10 +278,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
     </div>
     </div>
@@ -281,6 +287,39 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+
+            
+            $('#btn-assy').on('click', function(){
+                $('#original').hide();
+                $('#combine').hide();
+                $('#assy').show();
+            })
+
+            $('#btn-ori').on('click', function(){
+                $('#assy').hide();
+                $('#combine').hide();
+                $('#original').show();
+            })
+
+            $('#btn-combine').on('click', function(){
+                $('#assy').hide();
+                $('#original').hide();
+                $('#combine').show();
+            })
+
+            $('#btn-print-input').on('click', function(){
+                $('#print-assyScan').hide();
+                $('#print-assyInput').show();
+            })
+
+            $('#btn-print-scan').on('click', function(){
+                $('#print-assyInput').hide();
+                $('#print-assyScan').show();
+            })
+
+          
+
+
             const spinner = document.querySelector('#spinner');
 
             $('#repacking-org').DataTable({
