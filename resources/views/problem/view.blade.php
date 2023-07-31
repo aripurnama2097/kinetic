@@ -34,37 +34,18 @@
                         </button>
                       </form>
                     </div>
-{{-- 
-                    <div class="col-2 ml-6">
-                      <form id="filter-Data" class="form-inline  float-left">
-                        <input type="date" class="form-control mr-2" name="start_date" id="release-date"
-                          value="{{ date('Y-m-d') }}">
-                        <input type="date" class="form-control mr-2" name="end_date" id="release-date"
-                          value="{{ date('Y-m-d') }}">
-                        
-                        <button type="submit" class="btn btn-primary d-none d-sm-inline-block  ">
-                          <i class="ti ti-filter"></i>
-                          Search
-                        </button>
-                      </form>
-                    </div> --}}
+                  </div>        
+                 </div>
+              </div>
+            </div>
+        </div>
 
-                  </div>
-                 
-                </div>
-            </div>
-            </div>
             <div class="container-fluid mt-1">
-
                     @if (Session::has('success'))
                         <p class="alert alert-success">{{ Session::get('success') }}</p>
                     @endif
-
-
-                    <div class="col-12 ">
-                     
+                          <div class="col-12 ">                   
                                 <div class="table-responsive  rounded-1 shadow-sm">
-                                    {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
                                     <table style="width:100%" id="problem-data"  class="table table-vcenter table-striped">
                                         <thead >
                                             <tr class="headings">                   
@@ -131,7 +112,9 @@
                                             </td>                                    
                                             <td class="text-primary text-center"   style="font-size: 12px; font-weight:bold">{{$value->updated_at}} </td>
                                             <td  style="font-size: 14px;">                                         
-                                            <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#updateModal_{{$value->id}}"><i class="ti ti-arrow-big-right-filled"></i>Response</a>
+                                                <?php if ($value->status != 'Done'){?>
+                                                    <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#updateModal_{{$value->id}}"><i class="ti ti-arrow-big-right-filled"></i>Response</a>
+                                                <?php }?>
 
                                             <div class="modal modal-blur fade" id="updateModal_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
@@ -141,7 +124,7 @@
                                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                    
-                                                        <div class="modal-body">
+                                                    <div class="modal-body">
                                                           <form  action="{{ url('problem/update/' . $value->id) }}"  method="POST" >
                                                             @csrf
                                                         <div class="mb-3">
@@ -186,21 +169,16 @@
                                                                                    
                                                         </div>  
                                                     </div>
-                                            
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-link link-warning" data-bs-dismiss="modal">
-                                                                Cancel
-                                                              </button>
-                                                          <button type="submit" id="update" class="btn btn-primary ms-auto" >
-                                                            Submit
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-link link-warning" data-bs-dismiss="modal">
+                                                            Cancel
                                                           </button>
-                                                      </div>
+                                                      <button type="submit" id="update" class="btn btn-primary ms-auto" >
+                                                        Submit
+                                                      </button>
+                                                   </div>                                       
                                                     </form>
-                                                        </div>
-                                            
-                                                   
-                                                  
-                                                  
+                                                   </div>      
                                                   </div>
                                                 </div>
                                               </div>
@@ -210,16 +188,11 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <a  class="btn btn-secondary btn-sm text-light mt-2" href="{{url('/problem')}}" ><i class="ti ti-arrow-narrow-left"></i>BACK</a>
-                       
+                                <a  class="btn btn-secondary btn-sm text-light mt-2" href="{{url('/problem')}}" ><i class="ti ti-arrow-narrow-left"></i>BACK</a>                     
                         </div>
                     </div>
                 {{-- </div> --}}
             </div>
-
-
-
-
         </div>
     </div>
 
@@ -227,12 +200,6 @@
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">
 
-
-
-
-
-    
-    
         $(document).ready(function() {
 
 

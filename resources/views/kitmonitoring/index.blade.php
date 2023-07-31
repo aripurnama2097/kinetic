@@ -6,17 +6,16 @@
         <div class="page-header d-print-none">
           <div class="container-xl ml-2">
               Overview
-              <h2 class="page-title text-light"> KIT & Service Part Monitor </h2>
+              <h2 class="page-title text-light"> KIT Monitor </h2>
           </div>
         </div>
 
         <!-- Page body MENU -->
-        <div class="bg-light mt-3">
+        {{-- <div class="bg-light mt-3">
             <div class="container-fluid">
-              {{-- <div class="card ml-3 mr-3 mt-3"> --}}
-                {{-- <div class="card-header"> --}}
-                  {{-- </div> --}}
-                <div class="card-body">
+              <div class="card ml-3 mr-3 mt-3">
+                
+                  <div class="card-body">
                   <h2>FILTER </h2>
                   <div class="row">
                     <div class="col-5">
@@ -24,7 +23,7 @@
             
                         <select style="font-size:15px" class="form-control col-3 btn btn-light btn-sm" id="prod-no" name="prodno">
                           <option value="-">-- PROD NO --</option>
-                      
+                        
                         </select>
                         <button type="submit" class="btn btn-primary d-none d-sm-inline-block  ">
                           <i class="ti ti-filter"></i>
@@ -32,101 +31,126 @@
                         </button>
                       </form>
                     </div>
-                  </div> 
-                </div>
-                
-            {{-- </div> --}}
+                  </div>        
+                 </div>
+              </div>
             </div>
-            <div class="container-fluid mt-1">
-
+        </div> --}}
+              <div class="card mt-4">
+                <div class="container-fluid mt-4">
                     @if (Session::has('success'))
                         <p class="alert alert-success">{{ Session::get('success') }}</p>
                     @endif
-
-
-                    <div class="col-12 ">
-                     
+                    <div class="col-12 ">             
                                 <div class="table-responsive  rounded-1 shadow-sm">
-                                    {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
-                                    <table style="width:100%" id="problem-data"  class="table table-vcenter table-striped">
-                                        <thead >
+                                    <table style="width:100%" id="kit-monitor"  class="table table-vcenter">
+                                        <thead class="thead-primary">
                                             <tr class="headings">                   
-                                                <th class="text-center" style="font-size: 10px;">Cust No</th>
-                                                <th class="text-center" style="font-size: 10px;">Dest</th>
-                                                <th class="text-center" style="font-size: 10px;">Model</th>
-                                                <th class="text-center" style="font-size: 10px;">Prod No</th>
-                                                <th class="text-center" style="font-size: 10px;">Lot Qty</th>
-                                                <th class="text-center" style="font-size: 10px;">JKEI Po Date</th>
-
-                                                <th class="text-center" style="font-size: 10px;">VanDate</th>
-                                                <th class="text-center" style="font-size: 10px;">ETD</th>
-                                                <th class="text-center" style="font-size: 10px;">ETA</th>
-                                                <th class="text-center" style="font-size: 10px;">Shipvia</th>
-                                                <th class="text-center" style="font-size: 10px;">Order Item</th>
-                                                <th class="text-center" style="font-size: 10px;">Today target</th>
-                                                <th class="text-center" style="font-size: 10px;">MC Issue</th>
-                                                <th class="text-center" style="font-size: 10px;">Diff</th>
-
-                                                <th class="text-center" style="font-size: 10px;">KIT Output</th>
-                                                <th class="text-center" style="font-size: 10px;">Balance</th>
-                                                <th class="text-center" style="font-size: 10px;">Total Skid</th>
-                                                <th class="text-center" style="font-size: 10px;">Total Box</th>
-                                                <th class="text-center" style="font-size: 10px;">Part No</th>
-                                                <th class="text-center" style="font-size: 10px;">Problem</th>
-
-                                                <th class="text-center" style="font-size: 10px;">Status</th>
-                                                <th class="text-center" style="font-size: 10px;">Invoice No</th>
-                                                <th class="text-center" style="font-size: 10px;">Last Updated</th>
-                                                <th class="text-center" style="font-size: 10px;">Response</th>
-                                            
-                          
+                                                <th class="text-center" style="font-size: 13px;">Cust No</th>
+                                                <th class="text-center" style="font-size: 13px;">Dest</th>
+                                                <th class="text-center" style="font-size: 13px;">Model</th>
+                                                <th class="text-center" style="font-size: 13px;">Prod No</th>
+                                                <th class="text-center" style="font-size: 13px;">Lot Qty</th>
+                                                <th class="text-center" style="font-size: 13px;">JKEI Po Date</th>
+                                                <th class="text-center" style="font-size: 13px;">VanDate</th>
+                                                <th class="text-center" style="font-size: 13px;">ETD</th>
+                                                <th class="text-center" style="font-size: 13px;">ETA</th>
+                                                <th class="text-center" style="font-size: 13px;">Shipvia</th>
+                                                <th class="text-center" style="font-size: 13px;">Order Item</th>
+                                                {{-- <th class="text-center" style="font-size: 13px;">Today target</th> --}}
+                                                <th class="table-success text-dark" style="font-size: 13px;">MC Issue</th>
+                                                <th class="text-center" style="font-size: 13px;">Diff MC</th>
+                                                <th class="text-center" style="font-size: 13px;">In House</th>
+                                                <th class="text-center" style="font-size: 13px;">Bal Inhouse</th>
+                                                <th class="text-center" style="font-size: 13px;">KIT Output</th>
+                                                <th class="text-center" style="font-size: 13px;">Balance</th>
+                                                <th class="text-center" style="font-size: 13px;">Total Skid</th>
+                                                <th class="text-center" style="font-size: 13px;">Total Box</th>
+                                                <th class="text-center" style="font-size: 13px;">Part No</th>
+                                                <th class="text-center" style="font-size: 13px;">Problem</th>
+                                                <th class="text-center" style="font-size: 13px;">Status</th>
+                                                <th class="text-center" style="font-size: 13px;">Invoice No</th>
+                                                <th class="text-center" style="font-size: 13px;">Last Updated</th>
+                                                <th class="text-center" style="font-size: 13px;">Response</th>                       
                                             </tr>
                                         </thead>
                           
                                         <tbody>
                                             @foreach ($data as $key => $value)             
-                                            <td style="font-size: 12px;">{{ $value->dest }}</td>
-                                            <td style="font-size: 12px;">{{ $value->dest }}</td>
-                                            <td style="font-size: 12px;"> {{ $value->model }}</td>
-                                            <td style="font-size: 12px;"> {{ $value->prodno }}</td>                                         
-                                            <td style="font-size: 12px;"> {{ $value->vandate }}</td>             
-                                            <td style="font-size: 12px;">{{ $value->custpo }} </td>
-                                            <td style="font-size: 12px;">{{ $value->partno }} </td>
-                                            <td style="font-size: 12px;">{{ $value->partname }} </td>
-                                            <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td> 
-                                            <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->skid_no }}</td> 
-                                            <td style="font-size: 12px;"> {{ $value->symptom }}</td>
-                                            <td style="font-size: 12px;"><img width="30%" class="img-circle" src="{{ url('/public/img') }}"> </td>
-                                            <td style="font-size: 12px;">{{$value->created_at}}</td>
-                                            <td style="font-size: 12px;">{{$value->found_by}}</td>           
-                                            <td style="font-size: 12px;">{{$value->dic}} </td>
-                                            <td style="font-size: 12px;">{{$value->cause}} </td>
-                                            <td style="font-size: 12px;"> {{$value->action}}</td>
-                                            <td style="font-size: 12px;">{{$value->cause}} </td>
-                                            <td style="font-size: 12px;"> {{$value->action}}</td>
-                                            <td style="font-size: 12px;">{{$value->cause}} </td>
-                                            <td style="font-size: 12px;"> {{$value->action}}</td>
-                                             <td style="font-size: 12px;">{{$value->cause}} </td>
-                                           
-                                            <td class="text-primary text-center"   style="font-size: 12px; font-weight:bold">{{$value->updated_at}} </td>
-                                            <td  style="font-size: 14px;" disabled>                                         
-                                            <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#updateModal_{{$value->id}}"><i class="ti ti-rotate-rectangle" disabled></i>Update Invoice</a>
-
-                                            <div class="modal modal-blur fade" id="updateModal_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <td class="text-center" style="font-size: 12px;">{{ $value->custcode }}</td>
+                                            <td class="text-center" style="font-size: 12px;">{{ $value->dest }}</td>
+                                            <td class="text-center" style="font-size: 12px;"> {{ $value->model }}</td>
+                                            <td class="text-center" style="font-size: 12px;"> {{ $value->prodno }}</td>                                         
+                                            <td class="text-center text-dark" style="font-size: 13px;font-weight:bold">{{ $value->lot_qty}}</td>             
+                                            <td class="text-center" style="font-size: 12px;">{{ $value->jkeipodate }} </td>
+                                            <td class="text-center" style="font-size: 12px;">{{ $value->vandate}} </td>
+                                            <td class="text-center" style="font-size: 12px;">{{ $value->etd}}  </td>
+                                            <td class="text-center" style="font-size: 12px;"> {{ $value->eta}} </td>
+                                            <td class="text-center" style="font-size: 12px;"> {{ $value->shipvia}} </td>
+                                            <td class="text-center text-dark" style="font-size: 13px;font-weight:bold">{{ $value->orderitem}}  </td>
+                                            {{-- <td class="text-center" style="font-size: 13px;">today target </td> --}}
+                                            <td class="text-center text-success" style="font-size: 13px;font-weight:bold" >{{ $value->mc_issue}} </td>
+                                            <td class="text-center text-danger" style="font-size: 13px;font-weight:bold" >{{ $value->bal_mc}} </td>
+                                            <td class="text-center text-success" style="font-size: 13px;font-weight:bold" >{{ $value->inhouse_output}} </td>
+                                            <td class="text-center text-danger" style="font-size: 13px;font-weight:bold" >{{ $value->bal_inhouse}} </td>
+                                            <td class="text-center text-success" style="font-size: 13px;font-weight:bold" >{{ $value->kit_output}}</td>
+                                            <td class="text-center text-danger" style="font-size: 13px;font-weight:bold" > {{ $value->bal_kit}}</td>                                  
+                                            <td class="text-center" style="font-size: 12px;">{{ $value->skid_no}}</td>
+                                            <td class="text-center" style="font-size: 12px;"> {{ $value->total_box}}</td>
+                                            <td class="text-center" style="font-size: 12px;"> {{ $value->partno}}</td>                                       
+                                            <td class="text-center" style="font-size: 12px;">{{$value->symptom}}</td>
+                                            <td class="text-center" style="font-size: 12px;">                                              
+                                                <?php if ($value->bal_mc != 0 && $value->symptom != NULL) {
+                                                    echo '<span class= "badge bg-danger">HOLD</span>';
+                                                  }
+                                                  if ($value->bal_mc == 0 && $value->symptom != NULL) {
+                                                      echo '<span class= "badge bg-warning">RELEASE</span>';
+                                                  }
+                    
+                                                   if ($value->mc_issue != 0 && $value->bal_mc == 0 && $value->symptom == NULL) {
+                                                    echo '<span class= "badge bg-success">READY</span>';
+                                                  }
+                    
+                                                //   if ($value->running_date =='' && $value->start_date !='') {
+                                                //     echo '<span class= "badge badge-light">NEW SCHEDULE</span>';
+                                                //   }    
+                    
+                                                //  if ($value->running_date =='' && $value->start_date ='') {
+                                                //     echo '<span class= "badge badge-secondary">NO SCHEDULE</span>';
+                                                //   }                 
+                                                  ?> 
+                                            
+                                            </td>
+                                            <td class="text-center text-primary" style="font-size: 13px;font-weight:bold">{{$value->invoice_no}} </td>                                          
+                                            <td class="text-dark text-center"   style="font-size: 13px; font-weight:bold"> </td>
+                                            <td  style="font-size: 14px;" disabled>       
+                                                {{-- updateModal_{{$value->id}}
+    
+                                            --}}<div class="dialog-pro dialog">
+                                                <?php if ($value->bal_mc ==0 && $value->bal_kit == 0 ){?>
+                                                    <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#updateModal_{{$value->prodno}}"><i class="ti ti-rotate-rectangle"></i>Update Invoice</a>
+                                                <?php }?>
+                                            </div>
+                                          
+                                            <div class="modal modal-blur fade" id="updateModal_{{$value->prodno}}" tabindex="-1" role="dialog" aria-hidden="true">
                                                 <div class="modal-dialog modal-lg" role="document">
                                                   <div class="modal-content">
                                                     <div class="modal-header">
                                                       <h5 class="modal-title">Update Invoice</h5>
                                                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                    </div>
-                                                   
+                                                    </div>                                            
                                                         <div class="modal-body">
-                                                          <form  action="{{ url('problem/update/' . $value->id) }}"  method="POST" >
+                                                            {{-- action="{{ url('problem/update/' . $value->id) }}" --}}
+                                                          <form action="{{ url('kitmonitoring/update/' . $value->prodno) }} "  method="POST" >
                                                             @csrf
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Invoice No</label>
-                                                            <input type="text" name="invoice" class="form-control" placeholder="INVOICE">
-                                                        </div>                                               
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Input NIK</label>
+                                                                <input type="text" id="pic" name="pic" class="form-control" placeholder="INPUT NIK">
+                                                            </div>    
+                                                            <div class="mb-3">
+                                                                <label class="form-label">Invoice No</label>
+                                                                <input type="text" id="invoice" name="invoice" class="form-control" placeholder="INVOICE">
+                                                            </div>                                               
                                                         </div>  
                                                     </div>
                                               
@@ -139,34 +163,26 @@
                                                           </button>
                                                        </div>
                                                     </form>
-                                                  </div>
                                                 </div>
-                                                        </div>
-                                            
-                                                   
-                                                  
-                                                  
-                                                  </div>
-                                                </div>
-                                              </div>
+                                            </div>                                     
                                             </td> 
                                             </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
-                                <a  class="btn btn-secondary btn-sm text-light mt-2" href="{{url('/problem')}}" ><i class="ti ti-arrow-narrow-left"></i>BACK</a>
-                       
-                        </div>
+                                <a  class="btn btn-secondary btn-sm text-light mt-2" href="{{url('/problem')}}" ><i class="ti ti-arrow-narrow-left"></i>BACK</a>               
                     </div>
-                {{-- </div> --}}
             </div>
-
-
-
-
+                </div>    
+        
+                </div>
+            </div>
         </div>
     </div>
+
+
+             
 
 
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
@@ -181,14 +197,14 @@
         $(document).ready(function() {
 
 
-    //         $('#problem-data').DataTable( {
-    //     dom: 'Bfrtip',
-    //     buttons: [
+            $('#kit-monitor').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
            
-    //         'excelHtml5',
-    //         'csvHtml5'
-    //     ]
-    // } );
+            'excelHtml5',
+            'csvHtml5'
+        ]
+    } );
 
 
 
