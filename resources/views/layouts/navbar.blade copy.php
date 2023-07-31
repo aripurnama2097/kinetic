@@ -45,23 +45,25 @@
                           </span>
                       </a>
                   </li>
-
-
-                  <?php if (Auth::user()->role === 'admin') { ?>
-                 <li class="nav-item dropdown">
-                     <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                          <span style="font-size:18px" >  <i class="ti ti-book-upload"></i>
+                  <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+              
+                <span style="font-size:18px" >  <i class="ti ti-calendar-minus mr-2"></i>
                               Master Schedule
                           </span>
                       </a>
                       <div class="dropdown-menu">
                           <div class="dropdown-menu-columns ">
                               <div class="dropdown-menu-column">
+
                                   <div class="dropend">
-                                      <a class="dropdown-item " href="{{url('/stdpack')}}" >
-                                          Setup Standard Pack                  
-                                      </a>                  
+                      <a class="dropdown-item " href="{{url('/stdpack')}}" >
+                                          Setup Standard Pack
+                      
+                                      </a>
+                    
                                   </div>
+
                               </div>
                               <div class="dropdown-menu-column ">
                                   <a href="{{ url('/schedule_tentative') }}" class="dropdown-item dropdown-toggle ">
@@ -70,75 +72,79 @@
                               </div>
                               <div class="dropdown-menu-column">
                                   <a href="{{ url('/schedule') }}" class="dropdown-item dropdown-toggle">
-                                      Schedule Release
+                                      Schedule
                                   </a>
                               </div>
                           </div>
                       </div>
-                    </li>
-                    <li class="nav-item dropdown ml-3">
-                        <a class="text-white"href="{{ url('/schedule/release_schedule') }}" >
-                             <span style="font-size:18px" >  <i class="ti ti-calendar-minus mr-2"></i>
-                                 Schedule Release
-                             </span>
-                         </a>
-                      
-                       </li>
-                  {{-- MC ISSUE --}}
+                  </li>
+
+
+
+
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                        data-bs-auto-close="outside" role="button" aria-expanded="false">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
-                         
-                          
-                        </span>
-                        <span style="font-size:18px" class="nav-link-title">  <i class="ti ti-package"></i>
-                            MC Menu
-                        </span>
-                    </a>
-                    <div class="dropdown-menu">
-                        <div class="dropdown-menu-columns">
+                      <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                          data-bs-auto-close="outside" role="button" aria-expanded="false">
+                          <span class="nav-link-icon d-md-none d-lg-inline-block">
+                           
+                            
+                          </span>
+                          <span style="font-size:18px" class="nav-link-title">  <i class="ti ti-package"></i>
+                              MC Menu
+                          </span>
+                      </a>
+                      <div class="dropdown-menu">
+                          <div class="dropdown-menu-columns">
+                              <div class="dropdown-menu-column">
+                                  <div class="dropend">
+                                      <a class="dropdown-item " href="{{ url('/partlist') }}">
+                                          MC Issue
+                                      </a>
+                                  </div>
+                              </div>
+                          </div>
+                          <?php if (Auth::user()->role === 'user') { ?>
                             <div class="dropdown-menu-column">
                                 <div class="dropend">
-                                    <a class="dropdown-item " href="{{ url('/partlist') }}">
-                                        MC Issue
+                                    <a class="dropdown-item " href="{{ url('/partlist/view') }}">
+                                        MC Data
                                     </a>
                                 </div>
                             </div>
                         </div>
+                            <?php } ?>
+                          {{-- @php
+                                if(Auth::user()->role === 'admin') {
+                                  
+                                } elseif (Auth::user()->role === 'admin') {
+                                    $layoutDirectory = 'layouts.menuadmin';
+                                } else {
+                                    $layoutDirectory = 'layouts.menucustomer';
+                                }
+                         @endphp --}}
+                          <div class="dropdown-menu-columns">
                        
-                        
+                          <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <div class="dropend">
+                                    <a class="dropdown-item " href="{{ url('/partlist/inhouse') }}">
+                                        In House Process
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="dropdown-menu-columns">
-                          <div class="dropdown-menu-column">
-                              <div class="dropend">
-                                  <a class="dropdown-item " href="{{ url('/partlist/view') }}">
-                                      MC Data
-                                  </a>
-                              </div>
-                          </div>
+                            <div class="dropdown-menu-column">
+                                <div class="dropend">
+                                    <a class="dropdown-item " href="{{ url('/partlist/inhouse_data') }}">
+                                        In House Data
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                       </div>
-                        <div class="dropdown-menu-columns">
-                          <div class="dropdown-menu-column">
-                              <div class="dropend">
-                                  <a class="dropdown-item " href="{{ url('/partlist/inhouse') }}">
-                                      In House Process
-                                  </a>
-                              </div>
-                          </div>
-                      </div>
-                      <div class="dropdown-menu-columns">
-                          <div class="dropdown-menu-column">
-                              <div class="dropend">
-                                  <a class="dropdown-item " href="{{ url('/partlist/inhouse_data') }}">
-                                      In House Data
-                                  </a>
-                              </div>
-                          </div>
-                      </div>
-                    </div>
-                 </li>
+                  </li>
 
-           
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -181,6 +187,10 @@
                       </div>
                   </li>
 
+
+
+
+
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -210,6 +220,7 @@
                       </div>
                   </li>
 
+
                   <li class="nav-item active dropdown">
                       <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -237,20 +248,17 @@
                       </div>
                   </li>
 
-                  {{-- KSM --}}
                   <li class="nav-item dropdown">
                       <a  href ="{{url('/kitmonitoring')}}" class="text-light">
                        
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
                           </span>
                           <span style="font-size:16px" class="nav-link-title">   <i class="ti ti-device-desktop"></i>
-                              KIT Monitor
+                              KIT Service Monitor
                           </span>
                       </a>
 
                   </li>
-                  
-                  {{-- KIT SSO --}}
                   <li class="nav-item">
                       <a class="nav-link" href="./icons.html">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -260,130 +268,18 @@
                           </span>
                       </a>
                   </li>
-
-                  {{-- USER SETTING --}}
                   <li class="nav-item">
-                    <a class="nav-link" href="{{url('/user_setting')}}">
+                    <a class="nav-link" href="./icons.html">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            <!-- Download SVG icon from http://tabler-icons.io/i/ghost -->
+
                         </span>
                         <span style="font-size:16px" class="nav-link-title"><i class="ti ti-user-plus"></i>
                             User Setting
                         </span>
                     </a>
-                 </li>
-                 <?php } ?>
-
-                 <?php if (Auth::user()->role === 'user' || Auth::user()->role === 'Admin MC') { ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside" role="button" aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                             
-                              
-                            </span>
-                            <span style="font-size:18px" class="nav-link-title">  <i class="ti ti-package"></i>
-                                MC Menu
-                            </span>
-                        </a>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    <div class="dropend">
-                                        <a class="dropdown-item " href="{{ url('/partlist') }}">
-                                            MC Issue
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                           
-                            
-                            <div class="dropdown-menu-columns">
-                              <div class="dropdown-menu-column">
-                                  <div class="dropend">
-                                      <a class="dropdown-item " href="{{ url('/partlist/view') }}">
-                                          MC Data
-                                      </a>
-                                  </div>
-                              </div>
-                          </div>
-                            <div class="dropdown-menu-columns">
-                              <div class="dropdown-menu-column">
-                                  <div class="dropend">
-                                      <a class="dropdown-item " href="{{ url('/partlist/inhouse') }}">
-                                          In House Process
-                                      </a>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="dropdown-menu-columns">
-                              <div class="dropdown-menu-column">
-                                  <div class="dropend">
-                                      <a class="dropdown-item " href="{{ url('/partlist/inhouse_data') }}">
-                                          In House Data
-                                      </a>
-                                  </div>
-                              </div>
-                          </div>
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a  href ="{{url('/kitmonitoring')}}" class="text-light">
-                         
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            </span>
-                            <span style="font-size:16px" class="nav-link-title">   <i class="ti ti-device-desktop"></i>
-                                KIT Service Monitor
-                            </span>
-                        </a>
-  
-                    </li>
-                <?php } ?>
-
-                <?php if (Auth::user()->role === 'user' || Auth::user()->role === 'Admin QA') { ?>
-                   {{-- GENERAL MENU --}}                 
-                   <li class="nav-item active dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside" role="button" aria-expanded="false">
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                               
-                            </span>
-                            <span style="font-size:18px" class="nav-link-title"><i class="ti ti-chalkboard"></i>
-                                General
-                            </span>
-                        </a>
-                        <div class="dropdown-menu">
-                            <div class="dropdown-menu-columns">
-                                <div class="dropdown-menu-column">
-                                    <a class="dropdown-item" href="{{url('/problem')}}">
-                                        Problem Found
-                                    </a>
-                                    <a class="dropdown-item" href="{{url('/borrow')}}">
-                                        Borrow Menu
-                                        <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
-                                    </a>
-  
-                                </div>
-  
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a  href ="{{url('/kitmonitoring')}}" class="text-light">
-                         
-                            <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            </span>
-                            <span style="font-size:16px" class="nav-link-title">   <i class="ti ti-device-desktop"></i>
-                                KIT Service Monitor
-                            </span>
-                        </a>
-  
-                    </li>
-                <?php } ?>
+                </li>
               </ul>
           </div>
       </div>
 </header>
-
-
