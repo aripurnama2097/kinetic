@@ -752,5 +752,14 @@ class PartlistController extends Controller
        
     }
 
+    public function inhouse_data(){
+
+
+        $data = DB::connection('sqlsrv')
+                    ->select("SELECT * FROM inhouse_list");
+
+        return view('partlist.inhouse_data',compact('data'));
+    }
+
 
 }

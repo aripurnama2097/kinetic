@@ -12,7 +12,7 @@ class ScheduleController extends Controller
 
         $data = DB::connection('sqlsrv')
                 ->select ("SELECT a.* , b.stdpack, b.vendor, b.jknshelf from schedule as a
-                inner  join std_pack as b 
+                left join std_pack as b 
                 ON  a.partno = b.partnumber
                 order by a.vandate asc");
 
@@ -77,6 +77,23 @@ class ScheduleController extends Controller
                   return redirect()->back()->with('success', 'Generate partlist success ');
 
 
+    }
+
+    public function view_schrelease(){
+
+        $data = DB::connection('sqlsrv')
+                ->select ("SELECT a.* , b.stdpack, b.vendor, b.jknshelf from schedule as a
+                left join std_pack as b 
+                ON  a.partno = b.partnumber
+                order by a.vandate asc");
+
+        $data2=DB::connection('sqlsrv')
+        ->select("SELECT distinct (prodno) from schedule ");
+
+        $data3=DB::connection('sqlsrv')
+        ->select("SELECT distinct (prodno) from schedule where dest !='PAKISTAN' ");
+
+        return view('schedule.release_schedule', compact('data','data2','data3'));
     }
 
 }

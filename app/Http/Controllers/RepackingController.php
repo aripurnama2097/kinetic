@@ -336,6 +336,10 @@ class RepackingController extends Controller
             }
 
             else{
+                return response()->json(['success'=>TRUE,
+                            'message'=>'scan successfully',
+                            'data'=>$data ]);
+                            
                echo"failed";
             }
                         
@@ -439,7 +443,7 @@ class RepackingController extends Controller
 
         // $update = DB::table('repacking_list')
         //               ->where('partno', '=', $partno)
-        //               ->orWhere('custpo', '=', $custpo)
+    //               ->orWhere('custpo', '=', $custpo)
         //               ->update(['actual_receive' => 'actual_receive' - $qty]);                    
                                                            
     
@@ -536,7 +540,7 @@ class RepackingController extends Controller
         // -- //                 balance_issue = partlist.demand - (partlist.tot_scan + {$qty})
         // -- //             from partscan as b where
         // -- //             partlist.id = '{$selectPart[0]->id}'
-        
+
         $viewdata = DB::connection('sqlsrv')
                                 ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
                                 
@@ -651,6 +655,13 @@ class RepackingController extends Controller
 
          return view('repacking.printNew', compact('param'));
 
+    }
+
+
+    function reset_tbltmp(){
+
+        DB::table('temp_print')->truncate();
+        return redirect()->back()->with('delete', 'All records have been deleted.');
     }
 
 
