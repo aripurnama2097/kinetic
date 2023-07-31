@@ -22,7 +22,7 @@ use App\Http\Controllers\SA90Controller;
 use App\Http\Controllers\RepackingController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\KitmonitorController;
-
+use App\Http\Controllers\UserSettingController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -109,6 +109,7 @@ Route::get('schedule', [ScheduleController::class,'index'])->middleware(['checkR
 Route::post('/schedule/filter',[ScheduleController::class, 'filter'])->middleware(['checkRole:admin,user']);
 Route::post('schedule/partlist',[ScheduleController::class, 'partlist'])->middleware('checkRole:admin');
 Route::post('schedule/email',[EmailController::class, 'index'])->middleware('checkRole:admin');
+Route::get('schedule/release_schedule',[ScheduleController::class, 'view_schrelease'])->middleware('auth');
 
 
 
@@ -124,7 +125,7 @@ Route::get('partlist/showscan',[PartlistController::class,'showscan'])->middlewa
 Route::get('partlist/inhouse',[PartlistController::class,'view_inhouse'])->middleware(['checkRole:user,admin']);
 Route::post('partlist/inhouse/scanin',[PartlistController::class,'scan_inhouse'])->middleware(['checkRole:user,admin']);
 Route::post('partlist/inhouse/input_inhouse',[PartlistController::class,'input_inhouse'])->middleware(['checkRole:user,admin']);
-
+Route::get('partlist/inhouse_data',[PartlistController::class,'inhouse_data'])->middleware(['checkRole:user,admin']);
 
 // =======================================REPACKING ROUTING===========================
 Route::get('repacking',[RepackingController::class,'index'])->middleware('checkRole:admin');
@@ -185,6 +186,9 @@ Route::post('borrow/cancelation/return',[BorrowController::class,'cancelationAll
 
 
 // =======================================PROBLEM FOUND  ROUTING===========================
-Route::get('kitmonitoring',[KitmonitorController::class,'index'])->middleware('checkRole:admin');
-Route::post('kitmonitoring/update/{id}',[KitmonitorController::class,'update_invoice'])->middleware('checkRole:admin');
+Route::get('kitmonitoring',[KitmonitorController::class,'index'])->middleware('checkRole:user,admin');
+Route::get('/user_setting',[UserSettingController::class,'index'])->middleware('checkRole:admin');
+Route::post('/user_setting/add',[UserSettingController::class,'create'])->middleware('checkRole:admin');
+Route::post('/user_setting/update/{id}',[UserSettingController::class,'update'])->middleware('checkRole:admin');
+
 // Route::post('borrow/takeout',[BorrowController::class,'takeout'])->middleware('checkRole:admin');
