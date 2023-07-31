@@ -32,6 +32,10 @@ class BorrowController extends Controller
         $cekpart = DB::connection('sqlsrv')
                     ->select("SELECT * from borrow where partno ='{$partno}'
                                 and custpo ='{$custpo}'");
+        
+          // STEP 1. CEK DATA PARTNO DI TABLE BORROW
+        $getprodno = DB::connection('sqlsrv')
+          ->select("SELECT distinct(prodno) from schedule where custpo ='{$custpo}'");
 
 
         // STEP 2. CEK LABEL/UNIQUE ID PART PADA BORROW DETAIL TABLE
@@ -51,12 +55,12 @@ class BorrowController extends Controller
         if(!$cekpart){
                 // STEP 1.A INSERT DATA KE TABEL BORROW
                 DB::connection('sqlsrv')
-                ->insert("INSERT into borrow(custpo,partno,qty,symptom,borrower,lender,dateout,status,dept,reason,est_return)
-                        SELECT '{$custpo}','{$partno}','{$qty}','{$symptom}','{$borrower}','{$lender}','{$outdate}','{$status}','{$dept}',
+                ->insert("INSERT into borrow(custpo,prodno,partno,qty,symptom,borrower,lender,dateout,status,dept,reason,est_return)
+                        SELECT '{$custpo}','{$getprodno[0]->prodno}','{$partno}','{$qty}','{$symptom}','{$borrower}','{$lender}','{$outdate}','{$status}','{$dept}',
                         '{$reason}','{$est_return}'
                         ");
  
-                // STEP 1.B INSERT DATA KE TABEL BORROW
+                // STEP 1.B INSERT DATA KE TABEL BORROW DETAIL
                 DB::connection('sqlsrv')
                 ->insert("INSERT into borrow_detail(custpo,partno,qty,label,symptom,borrower,lender,dateout,status,dept,reason,est_return)
                         SELECT '{$custpo}','{$partno}','{$qty}','{$kitLabel}','{$symptom}','{$borrower}','{$lender}','{$outdate}','{$status}','{$dept}',
