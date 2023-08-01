@@ -162,6 +162,7 @@ Route::get('/finishgood/scanoutData',[FinishGoodController::class,'scanout_data'
 
 Route::get('finishgood/viewSkid',[FinishGoodController::class,'viewSkid'])->middleware('checkRole:admin');
 Route::get('finishgood/viewSkid/printSkid',[FinishGoodController::class,'printSkid'])->middleware('checkRole:admin');
+Route::get('/finishgood/viewSkid/{id}/destroy',[FinishGoodController::class,'destroy'])->middleware('checkRole:admin');
 Route::post('finishgood/viewSkid/scanout_skid',[FinishGoodController::class,'scanout_skid'])->middleware('checkRole:admin');
 Route::get('finishgood/viewSkid/printMaster',[FinishGoodController::class,'printMasterlist'])->middleware('checkRole:admin');
 Route::get('/finishgood/viewDummy',[FinishGoodController::class,'view_dummy'])->middleware('checkRole:admin');
@@ -187,6 +188,7 @@ Route::post('borrow/cancelation/return',[BorrowController::class,'cancelationAll
 
 // =======================================PROBLEM FOUND  ROUTING===========================
 Route::get('kitmonitoring',[KitmonitorController::class,'index'])->middleware('checkRole:user,admin');
+Route::get('kitmonitoring/shippout',[KitmonitorController::class,'view_shippedout'])->middleware('checkRole:user,admin');
 Route::get('/user_setting',[UserSettingController::class,'index'])->middleware('checkRole:admin');
 Route::post('/user_setting/add',[UserSettingController::class,'create'])->middleware('checkRole:admin');
 Route::post('/user_setting/update/{id}',[UserSettingController::class,'update'])->middleware('checkRole:admin');

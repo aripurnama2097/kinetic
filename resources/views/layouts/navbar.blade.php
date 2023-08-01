@@ -64,13 +64,13 @@
                                   </div>
                               </div>
                               <div class="dropdown-menu-column ">
-                                  <a href="{{ url('/schedule_tentative') }}" class="dropdown-item dropdown-toggle ">
+                                  <a href="{{ url('/schedule_tentative') }}" class="dropdown-item  ">
                                       Schedule Tentative
                                   </a>
                               </div>
                               <div class="dropdown-menu-column">
-                                  <a href="{{ url('/schedule') }}" class="dropdown-item dropdown-toggle">
-                                      Schedule Release
+                                  <a href="{{ url('/schedule') }}" class="dropdown-item ">
+                                      Schedule Generate
                                   </a>
                               </div>
                           </div>
@@ -252,7 +252,7 @@
                   
                   {{-- KIT SSO --}}
                   <li class="nav-item">
-                      <a class="nav-link" href="./icons.html">
+                      <a class="nav-link" href="{{url('kitmonitoring/shippout')}}">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
                           </span>
                           <span style="font-size:18px" class="nav-link-title">   <i class="ti ti-package-export"></i>

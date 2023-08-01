@@ -125,9 +125,24 @@
                                                 </div>                                      
                                             </div>
                                         </div>
-                                            <div class="col-12 d-flex justify-content-end mb-2 mr-6">
-                                              
-                                            </div>
+                                        <div class="table-responsive ml-2 mr-2">
+                                            <table style="width:100%"
+                                            class="text-nowrap  table border-bordered border border-primary shadow-sm">
+                                            <thead class="thead-dark">
+                                                  <tr>
+                                                    {{-- <th class="text-center mb-1" style="font-size: 15px;">QR code</th> --}}
+                                                    <th class="text-center mb-1"style="font-size: 15px;">Cust PO</th>
+                                                    <th class="text-center mb-1"style="font-size: 15px;">Item No</th>
+                                                    <th class="text-center mb-1"style="font-size: 15px;">Item Description</th>
+                                                    <th class="text-center mb-1"style="font-size: 15px;">Demand</th>
+                                                    <th class="text-center mb-1"style="font-size: 15px;">Qty</th>
+                                                    <th class="text-center mb-1"style="font-size: 15px;">Balance</th>                                   
+                                                  </tr>
+                                                </thead>
+                                                <tbody id="scanout-box">
+                                                </tbody>
+                                            </table>
+                                        </div>
                                         </div>
                                 </div>
                             </div>
@@ -226,22 +241,20 @@
                             success: function(response) {                  
                                 console.log(response)
                                  if (response.success) {
-                                        //     var audio   = document.getElementById('audio');
-                                        //     var source  = document.getElementById('audioSource');
-                                        //     var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
-                                        //     // document.getElementById("result_OK").innerHTML = "OKE";
-                                        //     // document.getElementById("result_OK").style.display = "block";
-                                        //     // document.getElementById("result_NG").style.display = "none";           
-                                        //     // audio.load();
-                                        //     // audio.play();
+                                            var audio   = document.getElementById('audio');
+                                            var source  = document.getElementById('audioSource');
+                                            var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                              
+                                            audio.load();
+                                            audio.play();
 
 
                                         swal.fire({
                                             icon: 'success',
                                             title: response.message,
 
-                                            timer: 5000,
-                                            showConfirmButton: true,
+                                            showConfirmButton :false,
+                                            timer:2000
 
                                         })
                                     } 
@@ -250,13 +263,66 @@
                                             icon: 'warning',
                                             title: response.message
                                         })  
+
+                                        let warningMessage = response.message;
+                                            console.log("warning",response.message);
+                                            console.log("message",warningMessage.indexOf('DOUBLE'))
+                                            if(warningMessage.indexOf('DOUBLE') == 0){
+                                                Swal.fire({
+                                                
+                                                    icon: 'warning',
+                                                    title: response.message,
+                                                    showConfirmButton :false,
+                                                    timer:2000
+                                                
+
+                                                })
+                                            
+                                            
+                                            var audio = document.getElementById('audio');
+                                                        var source = document.getElementById('audioSource');
+                                                        var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                        audio.load()
+                                                        audio.play();
+                                                        return;
+                                                    
+                                        
+                                        }
                                  }
 
-                                 $('#kit_label').val("");
+                                 
+                                 var data=""
+                                        $.each(response.data, function(key, value) {
+
+                                            data = data + "<tr>"
+                                            if (value.act_running == 0 && value.bal_running == 0) {
+                                                data = data + "<tr class=table-light>";
+                                            }
+                                            if (value.act_running!= 0 && value.bal_running != 0) {
+                                                data = data + "<tr class=table-warning>";
+                                            }
+                                            if (value.act_running== value.demand && value
+                                                .bal_running == 0) {
+                                                data = data + "<tr class=table-success>";
+                                            }
+
+                                                data = data + "<tr>"                               
+                                                data = data + "<td class=text-center>" + value.custpo + "</td>"
+                                                data = data + "<td class=text-center>" + value.partno + "</td>"
+                                                data = data + "<td class=text-center>" + value.partname + "</td>"
+                                                data = data + "<td class=text-center>" + value.demand + "</td>"
+                                                data = data + "<td class=text-center>" + value.act_running + "</td>"
+                                                data = data + "<td class=text-center>" + value.bal_running + "</td>"
+                                            
+                                                data = data + "</tr>"
+                                        })
+                                        $('#scanout-box').html(data);
+
+                                
 
                             }
                         })
-                                
+                        $('#kit_label').val("");        
                 }
             })
 
@@ -272,42 +338,7 @@
                     let prodno        = $('#prodno').val();
                     let kit_label    = $('#kit_label').val();
                     window.location.assign(       "{{ url('/finishgood/printID') }}" + "?scan_nik=" + scan_nik + "&packing_no=" + packing_no + "&box_no=" + box_no +"&prodno=" + prodno + "&kit_label=" + kit_label  )
-                        // $.ajax({
-                        //     type: "get",
-                        //     dataType: "json",
-                        //     url: "{{ url('/finishgood/printID') }}",
-                        //     data: {
-                        //         scan_nik : scan_nik,
-                        //         packing_no : packing_no,
-                        //         box_no: box_no,
-                        //         prodno: prodno,
-                        //         kit_label:kit_label,
-                        //         _token: '{{ csrf_token() }}'
-                        //     },          
-                        //     success: function(response) {                  
-                        //         console.log(response)
-                        //         //  if (response.success) {
-                                      
-                        //         //         swal.fire({
-                        //         //             icon: 'success',
-                        //         //             title: response.message,
-
-                        //         //             timer: 5000,
-                        //         //             showConfirmButton: true,
-
-                        //         //         })
-                        //         //     } 
-                        //         //     else {
-                        //         //             swal.fire({
-                        //         //             icon: 'warning',
-                        //         //             title: response.message
-                        //         //         })  
-                        //         //  }
-
-                        //     }
-                        // })
-
-
+                       
         }
     </script>
 @endsection

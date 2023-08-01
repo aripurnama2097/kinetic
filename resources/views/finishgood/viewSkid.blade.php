@@ -94,8 +94,10 @@
                                         <i class="ti ti-printer"></i> </a>
                                     <a class="btn btn-success mb-2" href="{{ url('finishgood/viewSkid') }}"> Refresh <i
                                             class="ti ti-refresh"></i> </a>
-                                    <a class="btn btn-warning mb-2" href="{{ url('finishgood') }}"> Back <i
-                                            class="ti ti-back"></i> </a>
+                                   
+                                    <a class="btn btn-danger mb-2 text-white" data-bs-toggle="collapse" id="btn-cancelskid"
+                                    role="button" aria-expanded="false" aria-controls="scan-out"> Cancel Skid <i
+                                                class="ti ti-back"></i> </a>
                                   
                                     <h1 class="text-dark text-center"> --SKID PRINT--</h1>                
                                     <div class="d-flex justify-content-center">
@@ -134,13 +136,13 @@
                                                     placeholder="TYPE SKID" disabled>    
                                                     <div class="d-flex justify-content-center">
                                                         <button class="btn btn-primary col-4 text-center"
-                                                        id="print-skid" onclick="printskid()" disabled>Print SKID</button>                                   
+                                                        id="print-skid" onclick="printskid()" >Print SKID</button>                                   
                                                     </div>   
                                             </div>                                      
                                         </div>
-                                    </div>
-                                        
-                                    </div>
+                                    </div>                                  
+                                </div>
+                               
                             </div>
                         </div>
                     </div>               
@@ -180,7 +182,7 @@
                                         class="text-nowrap  table border-bordered  shadow-sm">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th style="font-size: 10px;">No</th>
+                                                {{-- <th style="font-size: 10px;">No</th> --}}
                                                 <th style="font-size: 10px;">Cust Code</th>
                                                 <th style="font-size: 10px;">Skid No</th>
                                                 <th style="font-size: 10px;">Prod No</th>
@@ -202,6 +204,48 @@
                             </div>
                         </div>
                     </div> 
+
+                    {{-- --FORM CANCEL SKID-- --}}
+                    <div class="collapse mt-4"id="cancel-skid">
+                        <div class="col-12 ">
+                            <div class="table-responsive ml-2 mr-2">
+                                <table style="width:100%"
+                                class="text-nowrap  table border-bordered border border-primary shadow-sm">
+                                <thead class="thead-dark">
+                                      <tr>
+                                   
+                                        <th class="text-center mb-1"style="font-size: 15px;">Skid Code</th>
+                                        <th class="text-center mb-1"style="font-size: 15px;">Packing No</th>
+                                        <th class="text-center mb-1"style="font-size: 15px;">Skid No</th>
+                                        <th class="text-center mb-1"style="font-size: 15px;">Cust PO</th>
+                                        <th class="text-center mb-1"style="font-size: 15px;">Vandate</th>
+                                        <th class="text-center mb-1"style="font-size: 15px;">Type Skid</th> 
+                                        <th class="text-center mb-1"style="font-size: 15px;">Cancel SKID</th>                                  
+                                      </tr>
+                                    </thead>
+                                    <tbody >
+                                        @foreach($headerskid as $key => $value)
+                                        <td style="font-size: 12px;"> {{ $value->skidcode }}</td>
+                                        <td style="font-size: 12px;"> {{ $value->packing_no }}</td>
+                                        <td style="font-size: 12px;"> {{ $value->skid_no }}</td>
+                                        <td style="font-size: 12px;"> {{ $value->custpo }}</td>
+                                        <td style="font-size: 12px;"> {{ $value->vandate }}</td>
+                                        <td style="font-size: 12px;"> {{ $value->type_skid }}</td>
+                                        <td class="text-center"style="font-size: 12px;">
+                                            <form  action="{{url('/finishgood/viewSkid/'.$value->id. '/destroy')}}" onclick="return confirm('Delete This data?')" method="GET" >
+                                                @method('delete')
+                                                @csrf							
+                                                <input type="hidden" name="s_method" value="DELETE">
+                                                <button type="submit" class="btn btn-danger  btn-sm" ></i>Cancel Skid</button> 
+                                              </form>	
+                                        </td>
+                                            
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>         
             </div>
          </div>
@@ -223,6 +267,14 @@
                 $('#print-skid').hide();
                 $('#scan-out').show();
             })
+
+
+            $('#btn-cancelskid').on('click', function(){
+          
+                $('#print-skid').hide();
+                $('#scan-out').hide();
+                $('#cancel-skid').show();
+             })
 
             const spinner = document.querySelector('#spinner');
 
@@ -279,6 +331,7 @@
                     var val_typeskid = $('#type_skid').val();
                     if (val_typeskid != '') {                  
                      $('#print-skid').attr('disabled', false);
+                     $('#print-skid').focus();
                     
                     }
                    
@@ -355,13 +408,16 @@
                                             var audio   = document.getElementById('audio');
                                             var source  = document.getElementById('audioSource');
                                             var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                              
+                                            audio.load();
+                                            audio.play();
 
                                         swal.fire({
                                             icon: 'success',
                                             title: response.message,
 
-                                            timer: 5000,
-                                            showConfirmButton: true,
+                                            timer: 2000,
+                                            showConfirmButton: false,
 
                                         })
                                         } 
@@ -370,36 +426,88 @@
                                             icon: 'warning',
                                             title: response.message
                                         })  
-                                        }
+
+
+                                                    let warningMessage = response.message;
+                                                    console.log("warning",response.message);
+                                                    console.log("message",warningMessage.indexOf('DOUBLE'))
+                                                    console.log("message",warningMessage.indexOf('OVER'))
+                                                    if(warningMessage.indexOf('DOUBLE') == 0){
+                                                        Swal.fire({
+                                                        
+                                                            icon: 'warning',
+                                                            title: response.message,
+                                                            showConfirmButton :false,
+                                                            timer:2000
+                                                        
+
+                                                        })
+                                                    
+                                                    
+                                                    var audio = document.getElementById('audio');
+                                                                var source = document.getElementById('audioSource');
+                                                                var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                                audio.load()
+                                                                audio.play();
+                                                                return;
+                                                            
+                                                
+                                                }
+
+                                                    if(warningMessage.indexOf('OVER') == 0){
+                                                            Swal.fire({
+                                                            
+                                                                icon: 'warning',
+                                                                title: response.message,
+                                                                showConfirmButton :false,
+                                                                timer:2000
+                                                            
+
+                                                            })
+                                                        
+                                                            
+                                                                        var audio = document.getElementById('audio');
+                                                                        var source = document.getElementById('audioSource');
+                                                                        var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                                        audio.load()
+                                                                        audio.play();
+                                                                        return;
+                                                                    
+                                                 
+                                                        }
+                                            }
 
                               var data = ""                          
                               $.each(response.data, function(key, value) {
 
                                   data = data + "<tr>"
-                                    //   if (value.tot_scan == 0 && value.balance_issue == 0) {
-                                    //       data = data + "<tr class=table-light>";
-                                    //   }
-                                    //   if (value.tot_scan != 0 && value.balance_issue != 0) {
-                                    //       data = data + "<tr class=table-warning>";
-                                    //   }
-                                    //   if (value.tot_scan == value.demand && value.balance_issue == 0) {
-                                    //       data = data + "<tr class=table-success>";
-                                    //   }
+                                      if (value.act_running == 0 && value.bal_running == 0) {
+                                          data = data + "<tr class=table-light>";
+                                      }
+                                      if (value.act_running != 0 && value.bal_running != 0) {
+                                          data = data + "<tr class=table-warning>";
+                                      }
+                                      if (value.act_running == value.demand && value.bal_running == 0) {
+                                          data = data + "<tr class=table-success>";
+                                      }
 
-                                      data = data + "<td>" + value.id + "</td>"
-                                      data = data + "<td>" + value.custcode + "</td>"
-                                      data = data + "<td>" + value.skid_no + "</td>"
-                                      data = data + "<td>" + value.prodno + "</td>"
-                                      data = data + "<td>" + value.partno + "</td>"
-                                      data = data + "<td>" + value.partname + "</td>"
-                                      data = data + "<td>" + value.demand + "</td>"
-                                      data = data + "<td>" + value.act_running + "</td>"
-                                      data = data + "<td>" + value.bal_running + "</td>"
+                                        // data = data + "<td>" + value.id + "</td>"
+                                        data = data + "<td>" + value.custcode + "</td>"
+                                        data = data + "<td>" + value.skid_no + "</td>"
+                                        data = data + "<td>" + value.prodno + "</td>"
+                                        data = data + "<td>" + value.partno + "</td>"
+                                        data = data + "<td>" + value.partname + "</td>"
+                                        data = data + "<td>" + value.demand + "</td>"
+                                        data = data + "<td>" + value.act_running + "</td>"
+                                        data = data + "<td>" + value.bal_running + "</td>"
                                   data = data + "</tr>"
                               })
                               $('#view-scanout').html(data);
                             }
                         })
+
+                        $('#kit_label').val("");
+                        $('#kit_label').focus();
                 }
             })
 

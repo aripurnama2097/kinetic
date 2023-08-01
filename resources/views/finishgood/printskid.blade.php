@@ -12,39 +12,39 @@
 
     {{-- <h3 colspan="6" class="text-center mt-3"> PT JVC Kenwood Electronics Indonesia</h3> --}}
     <div class="d-flex justify-content-center">
-      <div class="table" widht="80%">
-          <table class="border border-dark border-3 col-12 mt-2">
+      <div class="table" widht="100%">
+          <table style="border-color:black" class="border border-dark border-3 col-12  mt-2">
             <tbody>
               <?php $barcode =   $skidcode . ':' . $skid_no . ':' . $dest .  ':' . $packing_no . ':' . $type_skid . ':' . $vandate; ?>
               <tr >
-                <td  class="border border-dark border-2 col-12" align="center" colspan="6" style="font-weight:bold;">PT JVCKenwood Electronics Indonesia</td>
+                <td  style="font-color:black;font-weight:bold;font-size:25px;border-color:black" align="center" colspan="6" >PT JVCKenwood Electronics Indonesia</td>
               </tr>
               <tr >
-                <td  class="border border-dark border-2 col-12" align="center" colspan="6" style="font-weight:bold;">IDENTIFICATION GOODS</td>
+                <td  style="font-color:black;font-weight:bold;border-color:black" align="center" colspan="6" >IDENTIFICATION GOODS</td>
               </tr>
-              <tr>
-                <td style="font-weight:bold;font-size: 30px;vertical-align:middle"rowspan ="5">{{ $via[0]->shipvia }}</td>                    
-                <td>SKID NO</td>
-                <td>: {{ $skid_no }}</td>
-                <td>TYPE SKID</td>
-                <td>: {{$type_skid}}</td>
-                <td  rowspan="5" width="70px" align="center" style="font-weight:bold;font-size: 30px;vertical-align:middle"> {!! QrCode::size(80)->generate($barcode) !!} </td>
+              <tr style="border-color:black">
+                <td style="font-weight:bold;font-size: 30px;vertical-align:middle;border-color:black"rowspan ="5">{{ $via[0]->shipvia }}</td>                    
+                <td style="border-color:black">SKID NO</td>
+                <td style="border-color:black">: {{ $skid_no }}</td>
+                <td style="border-color:black">TYPE SKID</td>
+                <td style="border-color:black">: {{$type_skid}}</td>
+                <td  rowspan="5" width="70px" align="center" style="font-weight:bold;font-size: 30px;vertical-align:middle;border-color:black"> {!! QrCode::size(80)->generate($barcode) !!} </td>
               </tr>
-              <tr>     
-                <td>DESTINATION</td>
-                <td>: {{ $dest }}</td>
+              <tr style="border-color:black">     
+                <td >DESTINATION</td>
+                <td > : {{ $dest }}</td>
                 <td>PACK.LIST NO</td>
                 <td>: {{$packing_no}}</td>
               </tr>
-              <tr>
+              <tr style="border-color:black">
                 {{-- <td rowspan ="1">SHIPMENT</td> --}}
                 <td>CUST NO</td>
                 <td>: {{ $custpo }}</td>
                 <td>VANNING DATE</td>
                 <td>:{{ $vandate }}</td>
               </tr>
-              <tr>
-              </tr>
+              {{-- <tr>
+              </tr> --}}
             </tbody>
           </table>
           {{-- @endforeach --}}

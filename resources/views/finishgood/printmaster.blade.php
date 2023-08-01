@@ -9,28 +9,33 @@
 
   <div class="col-12">
 
-
+{{-- {{dd($qty)}} --}}
     {{-- <h3 colspan="6" class="text-center mt-3"> PT JVC Kenwood Electronics Indonesia</h3> --}}
     <div class="d-flex justify-content-center">
       <div class="table" widht="80%">
           <table class="border border-dark border-3 col-12 mt-2">
             <thead>
               <tr>
-                <th >CUSTPO</td>
-                <th >ITEM NO</td>
-                <th >ITEM DESC</td>
-                <th >PACKING DETAIL</td>
-                <th >TOTAL QTY</td>
+                <th class="text-center" >CUSTPO</td>
+                <th class="text-center">ITEM NO</td>
+                <th class="text-center">ITEM DESC</td>
+                <th class="text-center" colspan="2">PACKING DETAIL</td>
+                <th class="text-center">TOTAL QTY</td>
               </tr>
             </thead>
             <tbody>
               @foreach ($data as $value )               
              <tr>     
-                <td>{{$value->custpo}}</td>
-                <td>{{$value->partno}}</td>
-                <td>{{$value->partname}}</td>
-                <td>{{$value->act_running}}</td>
-                <td>{{$value->demand}}</td>
+              {{-- @foreach($qty_running as $key) 
+                 @foreach($qty as $keyval)  --}}
+                <td class="text-center">{{$value->custpo}}</td>
+                <td class="text-center">{{$value->partno}}</td>
+                <td class="text-center">{{$value->partname}}</td>
+                <td class="text-center"></td>
+                <td class="text-center"></td>
+                <td class="text-center">{{$value->demand}}</td>
+                 {{-- @endforeach
+                @endforeach --}}
               </tr>
               @endforeach
              

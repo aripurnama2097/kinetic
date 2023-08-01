@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\TblHeaderSkid;
 class FinishGoodController extends Controller
 {
     public function index()
@@ -80,10 +81,15 @@ class FinishGoodController extends Controller
                                 set box_no = '{$boxno}',
                                 packing_no = '{$packing_no}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
 
+            $viewscan = DB::connection("sqlsrv")
+                            ->select("SELECT * FROM finishgood_list where custpo ='{$custpo}' ");
+
             return response()
                 ->json([
                     'success' => true,
-                    'message' => 'Scan success...'
+                    'message' => 'Scan Success',
+                    'data'    => $viewscan
+
                 ]);
         } else {
             return response()
@@ -142,7 +148,11 @@ class FinishGoodController extends Controller
         $vandate = DB::connection('sqlsrv')
             ->select("SELECT distinct vandate from schedule");
 
-        return view('finishgood.viewSkid',compact('prodno','dest','vandate','skidno'));
+
+        $headerskid = DB::connection('sqlsrv')
+            ->select("SELECT * from tblheaderskid") ;
+
+        return view('finishgood.viewSkid',compact('prodno','dest','vandate','skidno','headerskid'));
     }
 
     public function printSkid(Request $request)
@@ -266,11 +276,14 @@ class FinishGoodController extends Controller
                     'message' => 'Scan success...',
                     'data'    => $view_scan
                 ]);
-        } else {
+        } 
+        
+        
+        else {
             return response()
                 ->json([
                     'success' => false,
-                    'message' => 'Part Not Match...'
+                    'message' => 'OVER DEMAND...'
                 ]);
         }
     }
@@ -286,7 +299,24 @@ class FinishGoodController extends Controller
        $data =  DB::connection ('sqlsrv')
                 ->select("SELECT * FROM finishgood_list where skid_no ='{$skidno}'");
 
-       return view('finishgood.printmaster',compact('data'));
+       $getpo =DB::connection ('sqlsrv')
+                  ->select("SELECT custpo FROM finishgood_list where skid_no ='{$skidno}'");
+
+
+       $qty =DB::connection ('sqlsrv')
+                    ->select("SELECT count(qty_running) as qty_detail from scanout where custpo ='{$getpo[0]->custpo}' ");
+        
+       $qty_running =DB::connection ('sqlsrv')
+                    ->select("SELECT distinct(qty_running) from scanout where custpo ='{$getpo[0]->custpo}' ");
+                    
+                    // dd($qty);
+    //   $param =[$data,$qty,$qty_running];
+
+    //   dd($data2);
+
+       return view('finishgood.printmaster',compact('data','qty','qty_running'));
+    //    return view('finishgood.printmaster',compact('param'));
+
 
     }
 
@@ -330,6 +360,24 @@ class FinishGoodController extends Controller
                                     'data'  => $data
              ]);
     }
+
+
+    public function destroy($id)
+    {
+        $model=DB::table('tblheaderskid')
+                    ->where('id',$id)
+                    ->delete();
+        // $model->delete();// METHOD DELETE
+        return redirect('/finishgood/viewSkid')->with('success', 'Success! Cancel Skid');
+    }
+
+
+    // public function destroy($id)
+    // {
+    //     $model=TblHeaderSkid::find($id);
+    //     $model->delete();// METHOD DELETE
+    //     return redirect('/stdpack')->with('success', 'Success! Data Berhasil Dihapus');
+    // }
 
 
  

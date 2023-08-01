@@ -236,6 +236,7 @@ class RepackingController extends Controller
 
     public function inputCombine(Request $request){
 
+        // return $request;
         $scan_nik = $request->scan_nik;
         $mcLabel = $request->mc_label;
         $kitLabel = $request->kit_label;
@@ -248,7 +249,10 @@ class RepackingController extends Controller
         $datakit = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
 
-    
+        $lenght = $request->lenght;
+        $widht = $request->widht;
+        $height = $request->height;
+        $gw = $request->gw;
     
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
@@ -286,15 +290,35 @@ class RepackingController extends Controller
              // STEP 3.UPDATE IN REPACKING LIST     
             DB::connection('sqlsrv')
                                 ->update("UPDATE repacking_list 
-                                            SET act_receive = ( select sum(qty_receive )
+                                            SET 
+                                            
+                                                act_receive = ( select sum(qty_receive )
                                                 from scanin_repacking  as b where 
                                             b.partno = repacking_list.partno  and b.custpo = repacking_list.custpo),
                                                 status_print = 'combine',
                                                 bal_receive = repacking_list.demand - (repacking_list.act_receive + {$qty})
                                                 from scanin_repacking as b  where
                                             repacking_list.id = '{$selectPart[0]->id}'
+                                              
                                             ") ;
+            DB::connection('sqlsrv')
+            ->update("UPDATE repacking_list 
+                         set
+                        gw = '{$gw}' where custpo = '{$custpo}'                                    
+                        -- lenght = '{$lenght}' where custpo = '{$custpo}',
+                        -- widht = '{$widht}' where custpo = '{$custpo}',
+                        -- height = '{$height}' where custpo = '{$custpo}'                               
+                          
+                            
+                ") ;
 
+
+            // DB::table('repacking_list')
+            //      ->where('custpo','=',$custpo)
+            //         ->update(['gw'=>$gw])
+            //         ->update('lenght','=',$lenght)
+            //         ->update('widht','=',$widht)
+            //         ->update('height','=',$height);
 
             //GET DEMAND
             $get_demand = DB::connection('sqlsrv')
