@@ -107,4 +107,29 @@ class KitmonitorController extends Controller
             ->insert("INSERT into test_scan(prodno,invoice_no,created_by)
                     select '{$prodno}','{$inv}', '{$pic}'");
     }
+
+
+    public function view_shippedout(){
+
+        $data = DB::connection('sqlsrv')
+                ->select ("	SELECT  
+                a.custcode,a.dest,a.model,a.prodno
+                ,sum(a.demand) as lot_qty
+                ,a.jkeipodate,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem
+            
+             
+                    ,e.partno,e.symptom,f.invoice_no
+                from schedule as a
+                    left join partlist as b on a.prodno = b.prodno and b.demand = a.demand
+                    left join finishgood_list as c on a.prodno = c.prodno  and c.demand = a.demand
+                    left join inhouse_list as d on a.prodno = d.lotno and d.shipqty = a.demand
+                    left join borrow as e on a.prodno = e.prodno
+                    inner join test_scan as f on a.prodno = f.prodno
+                    --where f.invoice_no = null and a.prodno = f.prodno
+                group by
+                    a.custcode,a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem,c.skid_no
+                    ,e.symptom,e.prodno,e.partno,f.invoice_no,b.prodno
+                  order by max(a.vandate)");
+        return view('kitmonitoring.shippout',compact('data'));
+    }
 }
