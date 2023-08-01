@@ -108,8 +108,9 @@
                                                 <th class="text-center mb-1"style="font-size: 15px;">Cust PO</th>
                                                 <th class="text-center mb-1"style="font-size: 15px;">Item No</th>
                                                 <th class="text-center mb-1"style="font-size: 15px;">Item Description</th>
-                                                <th class="text-center mb-1"style="font-size: 15px;">Shelf No</th>
-                                                <th class="text-center mb-1"style="font-size: 15px;">Qty</th>
+                                                <th class="text-center mb-1"style="font-size: 15px;">Demand</th>
+                                                <th class="text-center mb-1"style="font-size: 15px;">Total Scan</th>
+                                                <th class="text-center mb-1"style="font-size: 15px;">Balance Qty</th>
                                       
                                               </tr>
                                             </thead>
@@ -119,9 +120,9 @@
                                     </div>
                                     <div class="btn-group col-12">
 
-                                        <a id="print-master" href="{{url('repacking/scanCombine/printMaster')}}"class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
+                                        <button id="print-master" onclick="printCombine()" class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
                                             Print Master Label
-                                        </a>
+                                        </button>
                                         <button  id="delete-tbltemp" class="btn btn-danger text-white  col-12 mb-3" disabled><i class="ti ti-delete"></i>
                                             Reset Data
                                         </button>
@@ -190,13 +191,17 @@
                 if(e.which == 13) {
                     let val_mcLabel      = $('#mc_label').val()
                     if (val_mcLabel != '') {
+                        $('#lenght').attr('disabled', false);
+                        $('#widht').attr('disabled', false);
+                        $('#height').attr('disabled', false);
+                        $('#gw').attr('disabled', false);
                     $('#kit_label').focus();
                     }
                 }
             });
 
 
-            //STEP 2. SCAN LABEL MC 
+            //STEP 2. SCAN LABEL KIT
             $('#kit_label').on('keypress', function(e) {
                 // event.preventDefault();
                 if (e.which == 13) {
@@ -209,6 +214,13 @@
                     let scan_kitLabel   = val_kitLabel.substr(0, 11); //get PARTNO KIT
                     let getPO           = val_kitLabel.split(":");
       	            let qty_kit         = getPO[2];// GET PO KIT
+
+
+
+                     let lenght = $('#lenght').val();
+                     let widht = $('#widht').val();
+                     let height = $('#height').val();
+                     let gw = $('#gw').val();
 
                         if (val_kitLabel != '') {                  
                         $('#print-master').attr('disabled', false);
@@ -225,11 +237,16 @@
                             data: {
                                 scan_nik : scan_nik,
                                 mc_label : val_mcLabel,
+                                lenght : lenght,
+                                widht: widht,
+                                height : height,
+                                gw : gw,                         
                                 kit_label: val_kitLabel,
                             
                                 _token: '{{ csrf_token() }}'
                             },
                        
+                            
                             success: function(response) {                  
                                 console.log(response)
                                        
@@ -238,28 +255,69 @@
                                             var audio   = document.getElementById('audio');
                                             var source  = document.getElementById('audioSource');
                                             var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                            audio.load()
+                                            audio.play();
 
-                                        swal.fire({
-                                            icon: 'success',
-                                            title: response.message
+                                            swal.fire({
+                                                icon: 'success',
+                                                title: response.message,
+                                                showConfirmButton :false,
+                                                timer:2000
 
-                                        })
+                                            })
                                         } 
                                         else {
                                             swal.fire({
                                             icon: 'warning',
                                             title: response.message
                                         })  
+
+                                            let warningMessage = response.message;
+                                            console.log("warning",response.message);
+                                            console.log("message",warningMessage.indexOf('DOUBLE'))
+                                            if(warningMessage.indexOf('DOUBLE') == 0){
+                                                Swal.fire({
+                                                
+                                                    icon: 'warning',
+                                                    title: response.message,
+                                                    showConfirmButton :false,
+                                                    timer:2000
+                                                
+
+                                                })
+                                            
+                                            
+                                            var audio = document.getElementById('audio');
+                                                        var source = document.getElementById('audioSource');
+                                                        var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                        audio.load()
+                                                        audio.play();
+                                                        return;
+                                                    
+                                           
+                                        }
+
                                         }
 
                                         var data=""
                                         $.each(response.data, function(key, value) {
-                                        data = data + "<tr>"                               
+                                        data = data + "<tr>"      
+                                            if (value.act_receive == 0 && value.bal_receive == 0) {
+                                                   data =data + "<tr class=table-light>";
+                                                }
+                                                if (value.act_receive != 0 && value.bal_receive != 0) {
+                                                   data =data + "<tr class=table-warning>";
+                                                }
+                                                if (value.act_receive == value.demand && value
+                                                    .bal_receive == 0) {
+                                                   data =data + "<tr class=table-success>";
+                                                }                         
                                         data = data + "<td class=text-center>" + value.custpo + "</td>"
                                         data = data + "<td class=text-center>" + value.partno + "</td>"
                                         data = data + "<td class=text-center>" + value.partname + "</td>"
-                                        data = data + "<td class=text-center>" + value.shelfno + "</td>"
+                                        data = data + "<td class=text-center>" + value.demand + "</td>"
                                         data = data + "<td class=text-center>" + value.act_receive + "</td>"
+                                        data = data + "<td class=text-center>" + value.bal_receive + "</td>"
                                        
                                         data = data + "</tr>"
                                         })
@@ -276,15 +334,22 @@
 
                     else{
 
-                        alert('part not same')
+                        Swal.fire({
+                                                
+                                                icon: 'warning',
+                                                title: "Part Not Match",
+                                                showConfirmButton :false,
+                                                timer:2000
+                                            
+
+                                            })
+                                        
                         $.ajax({
                             success : function(data){
                                 var audio = document.getElementById('audio');
                                 var source = document.getElementById('audioSource');
-                                var audio = new Audio("{{asset('')}}storage/sound/WRONG.mp3");
-                                document.getElementById("result_NG").innerHTML = "NG";
-                                document.getElementById("result_NG").style.display = "block";
-                                document.getElementById("result_OK").style.display = "none";
+                                var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
+                             
                                 audio.load()
                                 audio.play();  
                         }
@@ -296,6 +361,8 @@
                     $('#mc_label').val("");
                     $('#kit_label').focus();
                     $('#mc_label').focus();
+                    // $('#print-master').attr('disabled', true);
+                    // $('#delete-tbltemp').attr('disabled', true);
                 }
             })
             // END SCAN IN KIT LABEL
@@ -352,5 +419,25 @@
             }
             });
             });
+
+
+            function printCombine(){
+
+
+                window.location.assign("{{url('repacking/scanCombine/printMaster')}}" )
+
+                // $.ajax({
+                //             url: "{{url('repacking/scanCombine/printMaster')}}",
+                //             type: 'get',
+                //             success: function(result) {
+                //             swalWithBootstrapButtons.fire(
+                //             'SUCCESS!',
+                //             'Your file has been reset.',
+                //             'success'
+                //             )
+                //             }
+
+                //         });
+            }
     </script>
 @endsection

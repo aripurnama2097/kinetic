@@ -239,7 +239,7 @@
             });
 
 
-            //STEP 2. SCAN LABEL MC 
+            //STEP 2. SCAN LABEL KIT 
             $('#kit_label').on('keypress', function(e) {
                 // event.preventDefault();
                 if (e.which == 13) {
@@ -274,12 +274,7 @@
                                 var data = ""
                                 $.each(response.data, function(key, value) {
 
-                                    // var audio = document.getElementById('audio');
-                                    // var source = document.getElementById('audioSource');
-                                    // var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
-                                    // audio.load()
-                                    // audio.play();
-                                    // console.log('key=>'+key+'|value=>'+value)
+                                 
 
                                     data = data + "<tr>"
                                     if (value.act_receive == 0 && value.bal_receive == 0) {
@@ -310,24 +305,51 @@
 
 
                                         if (response.success) {
-                                            var audio   = document.getElementById('audio');
-                                            var source  = document.getElementById('audioSource');
-                                            var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                            var audio = document.getElementById('audio');
+                                            var source = document.getElementById('audioSource');
+                                            var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                            audio.load()
+                                            audio.play();
                                         
-                                        swal.fire({
-                                            icon: 'success',
-                                            title: response.message,
+                                                swal.fire({
+                                                    icon: 'success',
+                                                    title: response.message,
+                                                    showConfirmButton :false,
+                                                    timer: 2000,
+                                                
 
-                                            timer: 5000,
-                                        
-
-                                        })
+                                                })
                                         } 
                                         else {
                                             swal.fire({
                                             icon: 'warning',
-                                            title: response.message
+                                            title: response.message,
+                                            showConfirmButton :false,
                                         })  
+                                            let warningMessage = response.message;
+                                            console.log("warning",response.message);
+                                            console.log("message",warningMessage.indexOf('DOUBLE'))
+                                                if(warningMessage.indexOf('DOUBLE') == 0){
+                                                    Swal.fire({
+                                                    
+                                                        icon: 'warning',
+                                                        title: response.message,
+                                                        showConfirmButton :false,
+                                                        timer:2000
+                                                    
+
+                                                    })
+                                                
+                                                    
+                                                    var audio = document.getElementById('audio');
+                                                                var source = document.getElementById('audioSource');
+                                                                var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                                audio.load()
+                                                                audio.play();
+                                                                return;
+                                                            
+                                                    return;
+                                                }
                                         }
 
                             }
@@ -336,24 +358,6 @@
 
 
 
-                    else{
-
-                        alert('part not same')
-                        $.ajax({
-                            success : function(data){
-                                var audio = document.getElementById('audio');
-                                var source = document.getElementById('audioSource');
-                                var audio = new Audio("{{asset('')}}storage/sound/WRONG.mp3");
-                                document.getElementById("result_NG").innerHTML = "NG";
-                                document.getElementById("result_NG").style.display = "block";
-                                document.getElementById("result_OK").style.display = "none";
-                                audio.load()
-                                audio.play();  
-                        }
-
-                     })
-
-                    }
                     $('#mc_label').val("");
                     $('#kit_label').val("");
                     $('#mc_label').focus();
