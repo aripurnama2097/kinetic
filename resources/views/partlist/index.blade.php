@@ -54,7 +54,7 @@
                                     PARTLIST SCHEDULE
                                 </a>
                                 <div class="col-6  ">
-                                    <a class="btn btn-light col-12" data-bs-toggle="collapse"  id="btn-scanin" 
+                                    <a class="btn btn-light col-12" data-bs-toggle="collapse"  id="btn-scanin"
                                         role="button" aria-expanded="false" aria-controls="scanin">
                                         ---SCAN IN---
                                     </a>
@@ -85,45 +85,48 @@
                                     </div>
 
                                     <br>
-                                    
-                                    <div class="table-responsive  rounded-1 shadow-sm  col-12 shadow-lg  mt-5">
+
+                                    <div class="table-responsive  rounded-1 shadow-sm  col-12 shadow-lg  mt-5 col-12">
                                         {{-- <iframe id='print-iframe' name='print-frame-name'> --}}
                                         <table style="width:100%" id="table-print"
                                         class="table table-bordered print">
-                                                <div class="row">
+                                                {{-- <div class="row"> --}}
                                                     <div class="col-12  mt-3 p-2 ">
-                                                        <h2 id="judul" style="font-size:30px"class="text-dark text-center">
+                                                        <h2 id="judul" style="font-size:30px;text-align:center">
                                                             PART LIST MC
                                                         </h2>
                                                     </div>
-                                                    <div class="card mt-3 p-2 col-3">
-                                                        <div class="col-4" id="contentQR"></div>
-                                                        <div class="col-8" id="QRText"></div>
+                                                    <div class="row">
+                                                        {{-- <div class="card mt-3 p-2 col-12 row"> --}}
+                                                            <div class="col-1" id="contentQR"></div>                                                            
+                                                            <div class="col-4 text-dark" style="position:right;font-color:black;font-size:16px" id="QRText"></div>
+                                                        {{-- </div> --}}
                                                     </div>
-                                                </div>
-    
+                                                    
+                                                {{-- </div> --}}
+
                                                 <br>
                                                 <thead class="thead-dark">
-                                                    <tr>
+                                                    <tr id="tr-id">
                                                         {{-- <th style="font-size: 10px;">No</th> --}}
                                                         {{-- <th style="font-size: 10px;">Part list No</th> --}}
                                                         {{-- <th style="font-size: 10px;">Cust Code</th>
                                                         <th style="font-size: 10px;">Prod No</th>
                                                         <th style="font-size: 10px;">JKEI Po date</th>
                                                         <th style="font-size: 10px;">van Date</th> --}}
-                                                        <th class="text-center"style="font-size: 15px;text-center">Cust PO</th>
-                                                        <th class="text-center"style="font-size: 15px;text-center">Vandate</th>
-                                                        <th class="text-center"style="font-size: 15px;text-center">Part Number</th>
-                                                        <th class="text-center"style="font-size: 15px;text-center">Part Name</th>
-                                                        <th class="text-center"style="font-size: 15px;text-center">Demand</th>
-                                                        <th class="text-center"style="font-size: 15px;text-center">Std Pack</th>
-                                                        {{-- <th style ="font-size: 15px;">MC Shelf No</th> --}}
-                                                        <th class="text-center"style="font-size: 15px;text-center">Vendor</th>
+                                                        <th class="text-center"style="font-size: 17px;text-center;border-color:black">Cust PO</th>
+                                                        <th class="text-center"style="font-size: 17px;text-center;border-color:black">Vandate</th>
+                                                        <th class="text-center"style="font-size: 17px;text-center;border-color:black">Part Number</th>
+                                                        <th class="text-center"style="font-size: 17px;text-center;border-color:black">Part Name</th>
+                                                        <th class="text-center"style="font-size: 17px;text-center;border-color:black">Demand</th>
+                                                        <th class="text-center"style="font-size: 17px;text-center;border-color:black">Std Pack</th>
+                                                        {{-- <th style ="font-size: 17px;">MC Shelf No</th> --}}
+                                                        <th class="text-center"style="font-size: 17px;text-center;border-color:black">Vendor</th>
                                                     </tr>
                                                 </thead>
-    
+
                                                 <tbody id="data-print">
-    
+
                                                 </tbody>
                                             </table>
                                         {{-- </iframe> --}}
@@ -157,7 +160,7 @@
                                         placeholder="SCAN LABEL MC" disabled>
                                     <div class="col-12 d-flex justify-content-end">
                                         <button class="btn btn-warning mr-2" onclick ="showData()" ><i class="ti ti-theater"></i> Show Data</button>
-                                       
+
                                     </div>
                                     <audio id="audio">
                                         <source id="audioSource" src="{{asset('')}}storage/sound/OK.mp3" type="audio">
@@ -241,14 +244,16 @@
                 iframe.style.display = 'oke';
                 document.body.appendChild(iframe);
 
-                var content = '<html><head class="text-center"><title style="text-center">Partlist MC</title></head><body>' + 
-                                     $('#judul').clone().wrap('<div>').parent().html() + 
-                                     $('#contentQR').clone().wrap('<div>').parent().html() +'<br>' +
-                                     '<table id="table-print" style="border:1px solid black"> <thead style="text-center"> <th>' +
-                                     $('#table-print').clone().wrap('<div>').parent().html() +'</th></thead>'+                
-                                     '<tbody style="border:1px solid black"> </tbody> </table>'                             
+                var content = '<html><body>' +
+                                    //  $('#judul').clone().wrap('<div>').parent().html() +
+                                     $('#contentQR').clone().wrap('<div>').parent().html()  +
+                                     $('#QRText').clone().wrap('<div>').parent().html() + '<br>'+
+                                    //  '<table id="table-print style="border:1px solid black"> <thead style="text-center"> <th>' +
+                                     $('#table-print').clone().wrap('<div>').parent().html() +
+                                    //     +
+                                    //  '<tbody id="data-print" style="border:1px solid black"> </tbody> </table>'
                                     '</body></html>';
-                  
+
 
                 var doc = iframe.contentWindow.document;
                 doc.open();
@@ -257,14 +262,14 @@
 
                 iframe.contentWindow.focus();
                 iframe.contentWindow.print();
-       
+
             });
 
-         
 
 
 
-         
+
+
 
             // ========================FIlter PRINT PARTLIST=================================
             $('#print-Partlist').submit(function(event) {
@@ -296,9 +301,11 @@
                             height: 65, // The height of the QR code
                         });
 
+                        console.log(response.qr, "QR Text")
+                        $('#QRText').html(response.qr);
                         $.each(response.data, function(key, value) {
 
-                       
+
 
                             data = data + "<tr>"
                             // data = data + "<td>" + value.id + "</td>"
@@ -306,13 +313,13 @@
                             // data = data + "<td>" + value.custcode + "</td>"
                             // data = data + "<td>" + value.prodno + "</td>"
                             // data = data + "<td>" + value.jkeipodate + "</td>"
-                            data = data + "<td style=font-size:12px;align-middle>" + value.custpo + "</td>"
-                            data = data + "<td style=font-size:12px;align-middle>" + value.vandate + "</td>"
-                            data = data + "<td style=font-size:12px;align-middle>" + value.partno + "</td>"
-                            data = data + "<td style=font-size:12px;align-middle>" + value.partname + "</td>"
-                            data = data + "<td style=font-size:12px;align-middle>" + value.demand + "</td>"
-                            data = data + "<td style=font-size:12px;align-middle>" + value.stdpack + "</td>"
-                            data = data + "<td style=font-size:12px;align-middle>" + value.vendor + "</td>"
+                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.custpo + "</td>"
+                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.vandate + "</td>"
+                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.partno + "</td>"
+                            data = data + "<td style=font-size:12px;text-align:center;border-color:black>" + value.partname + "</td>"
+                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.demand + "</td>"
+                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.stdpack + "</td>"
+                            data = data + "<td style=font-size:12px;text-align:center;border-color:black>" + value.vendor + "</td>"
                             data = data + "</tr>"
                         })
                         $('#data-print').html(data);
@@ -347,7 +354,7 @@
 
             //STEP 1.  DAPATKAN DATA PARTLIST NUMBER
             $('#partlist_no').on('keypress', function(e) {
-               
+
                 // var counter = 0;
 
                 // //menambahkan nomor urut pada tabel
@@ -380,7 +387,7 @@
                             },
                             success: function(response) {
                                 var dataScan = ""
-                              
+
                               $.each(response.data, function(key, value) {
 
                                   dataScan = dataScan + "<tr>"
@@ -407,14 +414,14 @@
                               })
                               $('#data-scanin').html(dataScan);
                               $('#scan_label').focus();
-                              $('#scan_label').clear();
+
 
                                 if (response.success) {
                                 swal.fire({
                                     icon: 'success',
                                     title: response.message,
 
-                                  
+
 
                                 })
                             }
@@ -424,11 +431,11 @@
                                     icon: 'error',
                                     title: response.message,
 
-                                
+
                                 })
                             }
 
-                               
+
                             }
 
 
@@ -509,31 +516,133 @@
                                 swal.fire({
                                     icon: 'success',
                                     title: response.message,
+                                    showConfirmButton :false,
+                                    timer:1000
 
-                                    timer: 5000,
-                                 
+                                    // timer: 5000
+
                                 })
-                            } else {
+                            }
+
+                            else {
+
                                 console.log("warning",response.message);
                                 let warningMessage = response.message;
+                                let warMessage = response.message;
                                 console.log("message",warningMessage.indexOf('Loose'))
-                                if(warningMessage.indexOf('Loose') == -1){
+                                console.log("message",warMessage.indexOf('WRONG'))
+                                console.log("message",warMessage.indexOf('DOUBLE'))
+                                console.log("message",warMessage.indexOf('OVER'))
+
+
+
+                                if(warningMessage.indexOf('WRONG') == 0){
                                     Swal.fire({
+
                                         icon: 'warning',
-                                        title: response.message
+                                        title: response.message,
+                                        showConfirmButton :false,
+                                        timer:1000
+
 
                                     })
+
+
+                                    var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
+                                                audio.load()
+                                                audio.play();
+                                                return;
+
                                     return;
                                 }
 
+
+                                if(warningMessage.indexOf('DOUBLE') == 0){
+                                    Swal.fire({
+
+                                        icon: 'warning',
+                                        title: response.message,
+                                        showConfirmButton :false,
+                                        timer:1000
+
+
+                                    })
+
+
+                                    var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                audio.load()
+                                                audio.play();
+                                                return;
+
+                                    return;
+                                }
+
+                                if(warningMessage.indexOf('OVER') == 0){
+                                    Swal.fire({
+
+                                        icon: 'warning',
+                                        title: response.message,
+                                        showConfirmButton :false,
+                                        timer:1000
+
+
+                                    })
+
+
+                                    var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                audio.load()
+                                                audio.play();
+                                                return;
+
+                                    return;
+                                }
+
+                                // if(warnMessage.search('WRONG')>= 0 ){
+                                //     alert('SALAH PART');
+                                // }
+                                // if(warMessage.indexOf('WRONG PART') == -1){
+                                //    alert('wrong PART');
+
+                                //                 var audio = document.getElementById('audio');
+                                //                 var source = document.getElementById('audioSource');
+                                //                 var audio = new Audio("{{asset('')}}storage/sound/WRONG_notuse.wav");
+                                //                 audio.load()
+                                //                 audio.play();
+                                //                 return;
+                                // }
+
+
+                                // if(warMessage.indexOf('WRONG PART') == 0){
+                                //    alert('SALAH PART');
+
+                                //                 var audio = document.getElementById('audio');
+                                //                 var source = document.getElementById('audioSource');
+                                //                 var audio = new Audio("{{asset('')}}storage/sound/WRONG.mp3");
+                                //                 audio.load()
+                                //                 audio.play();
+                                //                 return;
+                                // }
+
+
+
+
                                 Swal.fire({
+
                                     icon: 'warning',
                                     title: response.message,
                                     showDenyButton: true,
                                     confirmButtonText: 'Loose Control',
                                     denyButtonText: `Continue`,
+
+
                                 }).then((result) => {
-                                 
+
                                     if (result.isConfirmed) {
                                         // Swal.fire('Oke Loose Carton')
                                         $.ajax({
@@ -587,7 +696,7 @@
                                             $('#data-scanin').html(data);
                                             $('#scan_label').focus();
                                             $('#scan_label').val("");
-                                                
+
                                             }
                                         })
                                     } else if (result.isDenied) {
@@ -610,7 +719,7 @@
                                                 var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
                                                 audio.load()
                                                 audio.play();
-                               
+
                                                 console.log(response)
 
                                                 var data = ""
@@ -648,11 +757,16 @@
                                         })
                                     }
                                 })
+                                var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/loose_carton.mp3");
+                                                audio.load()
+                                                audio.play();
                                 return;
 
                             }
 
-                      
+
                         }
                     });
                 }
