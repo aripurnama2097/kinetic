@@ -11,11 +11,18 @@ class FinishGoodController extends Controller
     public function index()
     {
 
+        $lastOrder = DB::table('tblidbox')
+        ->max('box_no');
+        
+  
+        $boxno = $lastOrder ? $lastOrder + 1 : 1;
+
+        // dd($boxno);
 
         $prodno = DB::connection('sqlsrv')
             ->select("SELECT distinct prodno from schedule");
 
-        return view('finishgood.index', compact('prodno'));
+        return view('finishgood.index', compact('prodno','boxno'));
     }
 
 
@@ -108,14 +115,21 @@ class FinishGoodController extends Controller
         $prodno     = $request->prodno;
         
 
-        // GET PARAM CONTENT
+       
+        // STEP 1. GET PARAM CONTENT
         $param = DB::connection('sqlsrv')
             ->select("SELECT distinct dest,shipvia,vandate from schedule where prodno ='{$prodno}'");
 
         $param['boxno'] = $boxno;
         $param['packing_no'] = $packing_no;
 
-        // return view('finishgood.printid', compact('packing_no', 'boxno', 'param'));
+        // STEP 2. INSERT INTO TBLIDBOX
+        DB::connection('sqlsrv')
+          ->insert("INSERT into tblidbox(packing_no,box_no,prodno,print_by)
+                    select '{$packing_no}','{$boxno}','{$prodno}','{$nik}'
+                    ");
+
+      
         return view('finishgood.printid',compact('param'));
 
 
@@ -132,7 +146,7 @@ class FinishGoodController extends Controller
   
         $lastOrder = DB::table('tblheaderskid')
         // ->where('box_no')
-        ->max('id');
+        ->max('skid_no');
   
         $skidno = $lastOrder ? $lastOrder + 1 : 1;
 

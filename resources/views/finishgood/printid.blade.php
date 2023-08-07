@@ -18,15 +18,15 @@
         {{-- {{dd($param)}} --}}
         {{-- @foreach($param as $key => $value)  --}}
         {{-- {{dd($boxno)}} --}}
-          <table class="border-1">
+          <table style="border-color:black" class="border border-dark border-3 col-12  mt-2">
             <tbody>
               <tr >
-                <td align="center" colspan="3" style="font-weight:bold;">PT JVCKenwood Electronics Indonesia</td>
+                <td align="center" colspan="3" style="font-weight:bold;border-color:black">PT JVCKenwood Electronics Indonesia</td>
               </tr>
               <tr>
-                <td  rowspan="3" width="70px" align="center" style="font-weight:bold;font-size: 30px;vertical-align:middle">{{$param[0]->shipvia}} </td> 
-                <td>BOX NO</td>
-                <td>: {{ $param['boxno'] }}</td>
+                <td  rowspan="3" width="70px" align="center" style="font-weight:bold;font-size: 30px;vertical-align:middle;border-color:black">{{$param[0]->shipvia}} </td> 
+                <td  style="border-color:black">BOX NO</td>
+                <td  style="border-color:black">: {{ $param['boxno'] }}</td>
               </tr>
               <tr>
                 <td>DESTINATION</td>
@@ -37,7 +37,7 @@
                 <td>: {{$param['packing_no']}}</td>
               </tr>
               <tr>
-                <td>SHIPMENT</td>
+                <td  style="border-color:black">SHIPMENT</td>
                 <td>VANNING DATE</td>
                 <td>: {{$param[0]->vandate}}</td>
               </tr>
