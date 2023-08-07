@@ -63,7 +63,7 @@
                                     </table>
                                 </div>
                                 <a  class="btn btn-info  btn-sm text-light mt-2" href="{{url('/partlist')}}" ><i class="ti ti-arrow-narrow-left"></i>BACK</a>               
-                        </div>
+                   </div>
                     </div>
             </div>
         </div>

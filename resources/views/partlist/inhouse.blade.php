@@ -125,12 +125,7 @@
                 </div>
               </div>
 
-              <div class="mb-3">
-                <label class="form-label required">PO</label>
-                <div>
-                  <input type="text" class="form-control" name="jknpo" id="jknpo" placeholder="QTY" required>
-                </div>
-              </div>
+             
 
               {{-- <div class="mb-3">
                 <div>
@@ -250,11 +245,14 @@
                                     var audio   = document.getElementById('audio');
                                     var source  = document.getElementById('audioSource');
                                     var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                    audio.load()
+                                    audio.play();
 
                                 swal.fire({
                                     icon: 'success',
                                     title: response.message,
-                                    showConfirmButton :false
+                                    showConfirmButton :false,
+                                    timer:2000
 
                                 })
                                 }
@@ -264,6 +262,32 @@
                                     title: response.message,
                                     showConfirmButton :false
                                 })
+
+                                let warningMessage = response.message;
+                             
+                             console.log("message",warningMessage.indexOf('OVER'))
+
+                             if(warningMessage.indexOf('OVER') == 0){
+                                    Swal.fire({
+
+                                        icon: 'warning',
+                                        title: response.message,
+                                        showConfirmButton :false,
+                                        timer:1000
+
+
+                                    })
+
+
+                                    var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                audio.load()
+                                                audio.play();
+                                                
+
+                                    return;
+                                }
                                 }
                                 $('#assy_label').val("");
                     }
@@ -288,7 +312,7 @@
                             var model = $('#model').val();
                             var lotno = $('#lotno').val();
                             var qty = $('#qty').val();
-                            var jknpo = $('#jknpo').val();
+                      
                             $.ajax({
                                     type: "POST",
                                     dataType: "json",
@@ -298,7 +322,7 @@
                                       model : model,
                                       lotno : lotno,
                                       qty : qty,
-                                      jknpo : jknpo,
+                                           
                                         _token: '{{ csrf_token() }}'
                                     },
 
@@ -334,21 +358,49 @@
                                                     var audio   = document.getElementById('audio');
                                                     var source  = document.getElementById('audioSource');
                                                     var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
-
+                                                    audio.load()
+                                                    audio.play();
                                                 swal.fire({
                                                     icon: 'success',
                                                     title: response.message,
 
-                                                    timer: 5000,
+                                                    showConfirmButton :false,
+                                                    timer:2000
 
                                                 })
                                                 }
-                                                else {
+                                      else {
                                                     swal.fire({
                                                     icon: 'warning',
                                                     title: response.message
                                                 })
-                                                }
+
+                                                let warningMessage = response.message;
+                             
+                                                 console.log("message",warningMessage.indexOf('OVER'))
+
+                                                 if(warningMessage.indexOf('OVER') == 0){
+                                                        Swal.fire({
+
+                                                            icon: 'warning',
+                                                            title: response.message,
+                                                            showConfirmButton :false,
+                                                            timer:1000
+
+
+                                                        })
+
+
+                                                        var audio = document.getElementById('audio');
+                                                                    var source = document.getElementById('audioSource');
+                                                                    var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                                    audio.load()
+                                                                    audio.play();
+                                                                    
+
+                                                        return;
+                                                    }
+                                       }
 
                                     }
                             })

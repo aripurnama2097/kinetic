@@ -62,8 +62,49 @@
                             </div>
                             <br>
                             <div class="collapse mt-4" id="partlist" hide>
+                                <div class="div ml-3">
+
+                                    <h2 class="text-dark">SCHEDULE PARTLIST</h2>
+                                </div>
+                             <div class="card card-body col-12 mt-4">
+                                <div class="table-responsive  rounded-1  col-12">
+                                    <table style="width:100%" id="sch-mc"
+                                    class="table table-striped shadow" >
+                                            <thead class="thead-primary" >
+                                                <tr>
+                                                    <th class="text-center"style="font-size:14px;text-center;border-color:black">Partlist No</th>
+                                                    <th class="text-center"style="font-size:14px;text-center;border-color:black">Cust Code</th>
+                                                    <th class="text-center"style="font-size:14px;text-center;border-color:black">Prod No</th>
+                                                    <th class="text-center"style="font-size:14px;text-center;border-color:black">Order Item</th>
+                                                    <th class="text-center"style="font-size:14px;text-center;border-color:black">Vandate</th>
+                                                    <th class="text-center"style="font-size:14px;text-center;border-color:black">Release Date</th>
+                                                    {{-- <th class="text-center"style="font-size:14px;text-center;border-color:black">Status</th> --}}
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+                                                @foreach($sch_mc as $key => $value)
+                                                <tr>
+                                                <td class="text-center">{{$value->partlist_no}} </td>
+                                                <td class="text-center">{{$value->custcode}} </td>
+                                                <td class="text-center">{{$value->prodno}} </td>
+                                                <td class="text-center">{{$value->orderitem}} </td>
+                                                <td class="text-center">{{$value->vandate}} </td>
+                                                <td class="text-center">{{$value->release_date}} </td>
+                                                </tr>
+
+
+                                                @endforeach
+
+                                            </tbody>
+                                        </table>
+                                    {{-- </iframe> --}}
+                                </div>
+                            </div>
                                 <div class="card card-body col-12 mt-4">
-                                    <h2>FILTER </h2>
+                                    <h2>FILTER PRINT</h2>
 
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         {{-- FILTER PROD NO --}}
@@ -98,11 +139,11 @@
                                                     </div>
                                                     <div class="row">
                                                         {{-- <div class="card mt-3 p-2 col-12 row"> --}}
-                                                            <div class="col-1" id="contentQR"></div>                                                            
+                                                            <div class="col-1" id="contentQR"></div>
                                                             <div class="col-4 text-dark" style="position:right;font-color:black;font-size:16px" id="QRText"></div>
                                                         {{-- </div> --}}
                                                     </div>
-                                                    
+
                                                 {{-- </div> --}}
 
                                                 <br>
@@ -130,10 +171,10 @@
                                                 </tbody>
                                             </table>
                                         {{-- </iframe> --}}
-                                        </div>
+                                    </div>
 
                                     {{-- </iframe> --}}
-                                </div>
+                                   </div>
                                 <button id="print-btn" class="print-button float-right btn btn-primary">
                                     Print
                                     <i class="ti ti-printer"></i>
@@ -159,6 +200,8 @@
                                         type="text" name="scan_label" value="" id="scan_label"
                                         placeholder="SCAN LABEL MC" disabled>
                                     <div class="col-12 d-flex justify-content-end">
+                                        {{-- <button class="btn btn-primary text-white" data-bs-toggle="collapse" id="btn-show"  role="button"
+                                        aria-expanded="false" aria-controls="partlist"></i> Show Data Collapse</button> --}}
                                         <button class="btn btn-warning mr-2" onclick ="showData()" ><i class="ti ti-theater"></i> Show Data</button>
 
                                     </div>
@@ -167,8 +210,56 @@
                                     </audio>
                                 </div>
 
+                                {{-- SHOW SCAN --}}
+                                <div class="collapse mt-4" id="show-scan" hide>
+                                    <div class="col-12 ">
+                                        <div class="table-responsive  rounded-1 shadow-sm">
+                                            <table style="width:100%" id="show-scan" class="table  table-bordered">
+                                                <thead class="thead-dark">
+                                                    <tr class="headings">
+                                                        <th style="font-size: 10px;">No</th>
+                                                        <th style="font-size: 10px;">Custcode</th>
 
-                                <div class="card-body border-bottom d-flex justify-content-center ">
+                                                        <th style="font-size: 10px;">Prod No</th>
+
+                                                        <th style="font-size: 10px;">Cust PO</th>
+                                                        <th style="font-size: 10px;">Part Number</th>
+                                                        <th style="font-size: 10px;">Part Name</th>
+                                                        <th style="font-size: 10px;">Demand</th>
+                                                        <th style="font-size: 10px;">Total Scan</th>
+                                                        <th style="font-size: 10px;">Balance Scan</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+
+
+                                                    <?php
+                                                    $no = 1
+                                                    ?>
+                                                    @foreach ($data as $key => $value)
+                                                    <tr>
+
+                                                    <td style="font-size: 12px;">{{ $no}}</td>
+                                                    <td style="font-size: 12px;">{{ $value->custcode }}</td>
+                                                    <td style="font-size: 12px;"> {{ $value->prodno }}</td>
+                                                    <td style="font-size: 12px;">{{ $value->custpo }} </td>
+                                                    <td style="font-size: 12px;">{{ $value->partno }} </td>
+                                                    <td style="font-size: 12px;">{{ $value->partname }} </td>
+                                                    <td  style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td>
+                                                    <td  style="font-size: 14px; font-weight:bold"> {{ $value->tot_scan }}</td>
+                                                    <td  class="text-danger"style="font-size: 14px;"> {{ $value->balance_issue }}</td>
+                                                    </tr>
+                                                    <?php $no++ ;?>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <a  class="btn btn-info  btn-sm text-light mt-2" href="{{url('/partlist')}}" ><i class="ti ti-arrow-narrow-left"></i>BACK</a>
+                           </div>
+                                </div>
+
+                                <div class="card-body border-bottom d-flex justify-content-center">
                                     <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">
 
                                         <table style="width:100%"
@@ -177,10 +268,12 @@
                                                 <tr>
                                                     {{-- <th style="font-size: 10px;">No</th> --}}
                                                     <th style="font-size: 10px;">Cust Code</th>
+                                                    <th style="font-size: 10px;">Cust PO</th>
                                                     <th style="font-size: 10px;">Prod No</th>
                                                     <th style="font-size: 10px;">Part Number</th>
                                                     <th style="font-size: 10px;">Part Name</th>
                                                     <th style="font-size: 10px;">Demand</th>
+                                                    <th style="font-size: 10px;">Std Pack</th>
                                                     <th style="font-size: 10px;">Total Scan</th>
                                                     <th style="font-size: 10px;">Balance Scan</th>
                                                 </tr>
@@ -216,8 +309,6 @@
 
 @section('script') --}}
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
-    {{-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> --}}
-
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -225,7 +316,18 @@
             }
         });
 
+
+
         $(document).ready(function() {
+
+            // $('#sch-mc').DataTable( {
+            //     dom: 'Bfrtip',
+            //     buttons: [
+
+            //         'excelHtml5',
+            //         'csvHtml5'
+            //     ]
+            // } );
 
             $('#btn-print').on('click', function(){
                 $('#scanin').hide();
@@ -237,6 +339,11 @@
                 $('#scanin').show();
             })
 
+            $('#btn-show').on('click', function(){
+                $('#partlist').hide();
+                $('#scanin').show();
+                $('#show-scan').show();
+            })
 
             // ==============PRINT PARTLIST==========================
             $('#print-btn').click(function() {
@@ -403,11 +510,12 @@
 
                                     //   dataScan = dataScan + "<td>" + value.id + "</td>"
                                       dataScan = dataScan + "<td>" + value.custcode + "</td>"
-                                    //   dataScan = dataScan + "<td>" + value.vandate + "</td>"
+                                      dataScan = dataScan + "<td>" + value.custpo + "</td>"
                                       dataScan = dataScan + "<td>" + value.prodno + "</td>"
                                       dataScan = dataScan + "<td>" + value.partno + "</td>"
                                       dataScan = dataScan + "<td>" + value.partname + "</td>"
                                       dataScan = dataScan + "<td>" + value.demand + "</td>"
+                                      dataScan = dataScan + "<td>" + value.stdpack+ "</td>"
                                       dataScan = dataScan + "<td>" + value.tot_scan + "</td>"
                                       dataScan = dataScan + "<td>" + value.balance_issue + "</td>"
                                   dataScan = dataScan + "</tr>"
@@ -420,19 +528,53 @@
                                 swal.fire({
                                     icon: 'success',
                                     title: response.message,
+                                    showConfirmButton :false,
+                                    timer:100
 
 
 
                                 })
+                                    var audio = document.getElementById('audio');
+                                    var source = document.getElementById('audioSource');
+                                    var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                    audio.load()
+                                    audio.play();
                             }
 
                             else{
                                 swal.fire({
                                     icon: 'error',
                                     title: response.message,
+                                    showConfirmButton :false,
+                                    timer:2000
 
 
                                 })
+                                let warningMessage = response.message;
+
+                                console.log("message",warningMessage.indexOf('Part'))
+                                if(warningMessage.indexOf('Part') == 0){
+                                    Swal.fire({
+
+                                        icon: 'warning',
+                                        title: response.message,
+                                        showConfirmButton :false,
+                                        timer:1000
+
+
+                                    })
+
+
+                                    var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/partlist_not.mp3");
+                                                audio.load()
+                                                audio.play();
+
+
+                                    return;
+                                }
+
                             }
 
 
@@ -448,12 +590,12 @@
 
             //STEP 2. SCAN IN MC PROCESS
             $('#scan_label').on('keypress', function(e) {
-                // event.preventDefault();
+                // e.preventDefault();
                 if (e.which == 13) {
 
                     // var parlistno = $('#partlist_no').val();
                     var scan_label = $('#scan_label').val();
-
+                    console.log("1. Label Scan: ",scan_label);
                     $.ajax({
                         type: "POST",
                         dataType: "json",
@@ -465,16 +607,16 @@
                             scan_label: scan_label
                         },
                         success: function(response) {
-                            console.log(response)
+                            console.log("2.scan Issue: ",response)
                             var data = ""
-                            console.log(response.data);
+                            // console.log("SCAN PART ",response.data);
                             $.each(response.data, function(key, value) {
 
-                                var audio = document.getElementById('audio');
-                                var source = document.getElementById('audioSource');
-                                var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
-                                audio.load()
-                                audio.play();
+                                // var audio = document.getElementById('audio');
+                                // var source = document.getElementById('audioSource');
+                                // var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                // audio.load()
+                                // audio.play();
                                 // console.log('key=>'+key+'|value=>'+value)
 
                                 data = data + "<tr>"
@@ -491,10 +633,12 @@
 
                                 // data = data + "<td>" + value.id + "</td>"
                                 data = data + "<td>" + value.custcode + "</td>"
+                                data = data + "<td>" + value.custpo + "</td>"
                                 data = data + "<td>" + value.prodno + "</td>"
                                 data = data + "<td>" + value.partno + "</td>"
                                 data = data + "<td>" + value.partname + "</td>"
                                 data = data + "<td>" + value.demand + "</td>"
+                                data = data + "<td>" + value.stdpack+ "</td>"
                                 data = data + "<td>" + value.tot_scan + "</td>"
                                 data = data + "<td>" + value.balance_issue +
                                     "</td>"
@@ -517,7 +661,7 @@
                                     icon: 'success',
                                     title: response.message,
                                     showConfirmButton :false,
-                                    timer:1000
+                                    timer:200
 
                                     // timer: 5000
 
@@ -526,112 +670,126 @@
 
                             else {
 
-                                console.log("warning",response.message);
+                                // console.log("warning",response.message);
                                 let warningMessage = response.message;
-                                let warMessage = response.message;
+                               
                                 console.log("message",warningMessage.indexOf('Loose'))
-                                console.log("message",warMessage.indexOf('WRONG'))
-                                console.log("message",warMessage.indexOf('DOUBLE'))
-                                console.log("message",warMessage.indexOf('OVER'))
+                                console.log("message",warningMessage.indexOf('WRONG'))
+                                console.log("message",warningMessage.indexOf('DOUBLE'))
+                                console.log("message",warningMessage.indexOf('OVER'))
+                                console.log("message",warningMessage.indexOf('PART'))
+                                console.log("message",warningMessage.indexOf('DEMAND'))
+                                    if(warningMessage.indexOf('WRONG') == 0){
+                                        Swal.fire({
+
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:1000
 
 
-
-                                if(warningMessage.indexOf('WRONG') == 0){
-                                    Swal.fire({
-
-                                        icon: 'warning',
-                                        title: response.message,
-                                        showConfirmButton :false,
-                                        timer:1000
+                                        })
 
 
-                                    })
+                                        var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
+                                                    audio.load()
+                                                    audio.play();
+                                                    return;
+
+                                        return;
+                                    }
+
+                                    if(warningMessage.indexOf('DOUBLE') == 0){
+                                        Swal.fire({
+
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:1000
 
 
-                                    var audio = document.getElementById('audio');
-                                                var source = document.getElementById('audioSource');
-                                                var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
-                                                audio.load()
-                                                audio.play();
-                                                return;
-
-                                    return;
-                                }
+                                        })
 
 
-                                if(warningMessage.indexOf('DOUBLE') == 0){
-                                    Swal.fire({
+                                        var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                    audio.load()
+                                                    audio.play();
+                                                    return;
 
-                                        icon: 'warning',
-                                        title: response.message,
-                                        showConfirmButton :false,
-                                        timer:1000
+                                        return;
+                                    }
 
+                                    if(warningMessage.indexOf('OVER') == 0){
+                                        Swal.fire({
 
-                                    })
-
-
-                                    var audio = document.getElementById('audio');
-                                                var source = document.getElementById('audioSource');
-                                                var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
-                                                audio.load()
-                                                audio.play();
-                                                return;
-
-                                    return;
-                                }
-
-                                if(warningMessage.indexOf('OVER') == 0){
-                                    Swal.fire({
-
-                                        icon: 'warning',
-                                        title: response.message,
-                                        showConfirmButton :false,
-                                        timer:1000
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:1000
 
 
-                                    })
+                                        })
 
 
-                                    var audio = document.getElementById('audio');
-                                                var source = document.getElementById('audioSource');
-                                                var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
-                                                audio.load()
-                                                audio.play();
-                                                return;
-
-                                    return;
-                                }
-
-                                // if(warnMessage.search('WRONG')>= 0 ){
-                                //     alert('SALAH PART');
-                                // }
-                                // if(warMessage.indexOf('WRONG PART') == -1){
-                                //    alert('wrong PART');
-
-                                //                 var audio = document.getElementById('audio');
-                                //                 var source = document.getElementById('audioSource');
-                                //                 var audio = new Audio("{{asset('')}}storage/sound/WRONG_notuse.wav");
-                                //                 audio.load()
-                                //                 audio.play();
-                                //                 return;
-                                // }
+                                        var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                    audio.load()
+                                                    audio.play();
 
 
-                                // if(warMessage.indexOf('WRONG PART') == 0){
-                                //    alert('SALAH PART');
+                                        return;
+                                    }
 
-                                //                 var audio = document.getElementById('audio');
-                                //                 var source = document.getElementById('audioSource');
-                                //                 var audio = new Audio("{{asset('')}}storage/sound/WRONG.mp3");
-                                //                 audio.load()
-                                //                 audio.play();
-                                //                 return;
-                                // }
+                                    if(warningMessage.indexOf('PART') == 0){
+                                        Swal.fire({
 
-
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:1500
 
 
+                                        })
+
+
+                                        var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/part_stdpack.mp3");
+                                                    audio.load()
+                                                    audio.play();
+
+
+                                        return;
+                                    }
+
+                                    if(warningMessage.indexOf('DEMAND') == 0){
+                                        Swal.fire({
+
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:1500
+
+
+                                        })
+
+
+                                                    var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
+                                                    audio.load()
+                                                    audio.play();
+
+
+                                        return;
+                                    }
+
+                               
                                 Swal.fire({
 
                                     icon: 'warning',
@@ -642,6 +800,7 @@
 
 
                                 }).then((result) => {
+                                    console.log("3. Loose Carton Swal: ", result)
 
                                     if (result.isConfirmed) {
                                         // Swal.fire('Oke Loose Carton')
@@ -658,16 +817,18 @@
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
+                                                console.log("4. looseCarton Check: ", response);
+
                                                 var audio = document.getElementById('audio');
                                                 var source = document.getElementById('audioSource');
                                                 var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
                                                 audio.load()
                                                 audio.play();
 
-                                                console.log(response.data);
+                                                // console.log(response.data);
                                                 var data = ""
                                                 $.each(response.data, function(key, value) {
-                                // console.log('key=>'+key+'|value=>'+value)
+                                                    // console.log('key=>'+key+'|value=>'+value)
 
                                                data =data + "<tr>"
                                                 if (value.tot_scan == 0 && value.balance_issue == 0) {
@@ -683,10 +844,12 @@
 
                                             //    data =data + "<td>" + value.id + "</td>"
                                                data =data + "<td>" + value.custcode + "</td>"
+                                               data = data + "<td>" + value.custpo + "</td>"
                                                data =data + "<td>" + value.prodno + "</td>"
                                                data =data + "<td>" + value.partno + "</td>"
                                                data =data + "<td>" + value.partname + "</td>"
                                                data =data + "<td>" + value.demand + "</td>"
+                                               data = data + "<td>" + value.stdpack + "</td>"
                                                data =data + "<td>" + value.tot_scan + "</td>"
                                                data =data + "<td>" + value.balance_issue +
                                                     "</td>"
@@ -714,6 +877,8 @@
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
+                                                console.log("4. Continue Check: ", response);
+
                                                 var audio = document.getElementById('audio');
                                                 var source = document.getElementById('audioSource');
                                                 var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
@@ -740,10 +905,12 @@
 
                                             //    data =data + "<td>" + value.id + "</td>"
                                                data =data + "<td>" + value.custcode + "</td>"
+                                               data = data + "<td>" + value.custpo + "</td>"
                                                data =data + "<td>" + value.prodno + "</td>"
                                                data =data + "<td>" + value.partno + "</td>"
                                                data =data + "<td>" + value.partname + "</td>"
                                                data =data + "<td>" + value.demand + "</td>"
+                                               data = data + "<td>" + value.stdpack + "</td>"
                                                data =data + "<td>" + value.tot_scan + "</td>"
                                                data =data + "<td>" + value.balance_issue +
                                                     "</td>"
