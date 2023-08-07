@@ -65,7 +65,7 @@
                 <br>
                 <br>
                 <div class="table-responsive  rounded-1">
-                  <table id="schedule-release" class="table table-bordered yajra-datatable">
+                  <table id="stdpack" class="table table-bordered ">
                     <thead class="thead-dark">
                       <tr>
                       
@@ -79,16 +79,19 @@
                         <th>Pack</th>
                         <th>Vendor</th>
                         <th>JKN Shelf No</th>         
-                        {{-- <th>Action</th>  --}}
+                        <th>Action</th> 
 
                         
                       
                       </tr>
                     </thead>
                     <tbody>
-                      {{-- @foreach($data as $key => $value)
+                      <?php
+                      $no = 1
+                      ?>
+                      @foreach($data as $key => $value)
                       <tr>
-                        <td><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select invoice"></td>
+                        <td style="font-size: 12px;">{{ $no}}</td>
                         <td> {{$value->partnumber}}</td>
                         <td > {{$value->partname}}</td>
                         <td> {{$value->lenght}}</td>
@@ -211,28 +214,35 @@
                         </td>
                        
                        
-                      </tr> --}}
-                      {{-- @endforeach --}}
+                      </tr>
+                      <?php $no++ ;?>
+                      @endforeach
                      
                   
                     </tbody>
                   </table>
+
+                
+          
                 </div>
-                {{-- <div class="d-flex justify-content-center">
-                            {{ $data->links() }}
-                </div> --}}
               </div>
-           
+              
               <div class="card-footer d-flex align-items-center">
+                <div class="d-flex justify-content-center col-12 btn-sm">
+                  {{ $data->links('vendor.pagination.custom') }}
+                </div>
               </div>
             </div>
           </div>
-       
+        
     </div>
   
   </div>
+  <div class="col-12">
 
 
+  </div>
+  
   {{-- ====================,modal stdpack upload ========================================= --}}
 <div class="modal modal-blur fade" id="stdpack-upload" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -365,7 +375,7 @@
       
       </div>
     </div>
-  </div>
+</div>
 
 
 
@@ -375,184 +385,72 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
-    // $('#schedule-release').DataTable( {
-    //     // dom: 'Bfrtip',
-    //     buttons: [
-           
-    //         'excelHtml5',
-    //         'csvHtml5'
-    //     ]
-    // } );
-
-    // <th> No </th>
-    //                     <th>Part Number</th>
-    //                     <th>Part Name</th>
-    //                     <th>Lenght</th>
-    //                     <th>Widht</th>
-    //                     <th>Height</th>
-    //                     <th>Weight</th>
-    //                     <th>Pack</th>
-    //                     <th>Vendor</th>
-    //                     <th>JKN Shelf No</th>
-    //                     <th>MC Shelf No</th>
-    //                     <th>Action</th>
-
-
-    // $('#tbl_data').DataTable({
-    //     processing: true,
-    //     serverSide: true,
-    //     url: "{{url('/stdpack')}}",
-        
-    //     columns: [
-    //         { data: 'id', name: 'id' },
-    //         { data: 'partnumber', name: 'partnumber' },
-    //         { data: 'partname', name: 'partname' },
-
-    //     ]
-    // });
-
-    // $("#example").TableCheckAll();
+   
+    $('#stdpack').DataTable( {
+                // dom: 'Bfrtip',
+                bInfo: false, 
+                paginate:false,
+                buttons: [
+                
+                    'excelHtml5',
+                    'csvHtml5'
+                ]
+            } );
 
     $('#delete-all-data').click(function() {
         
         const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-          
-  
-        confirmButton: 'btn btn-primary',
-        cancelButton: 'btn btn-danger'
-    },
-    buttonsStyling: false
-    })
+              customClass: {
+              confirmButton: 'btn btn-primary',
+              cancelButton: 'btn btn-danger'
+              },
+              buttonsStyling: false
+        })
 
         swalWithBootstrapButtons.fire({
-        title: 'Are you sure ?',        
-        text: "Reset STDPACK!",
+        // title: 'Are you sure ?',        
+        text: "Reset Std Pack!",
        
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Reset Data',
         cancelButtonText: 'No, cancel!',
         reverseButtons: true
-  }).then((result) => {
-  if (result.isConfirmed) {
+        }).then((result) => {
+            if (result.isConfirmed) {
+                    $.ajax({
+                              url: "{{url('stdpack/delete_all')}}",
+                              type: 'get',
+                              success: function(result) {
+                                swalWithBootstrapButtons.fire(
+                              'SUCCESS!',
+                              'Your file has been reset.',
+                              'success'
+                                )
+                              }
 
-    $.ajax({
-                url: "{{url('stdpack/delete_all')}}",
-                type: 'get',
-                success: function(result) {
-                  swalWithBootstrapButtons.fire(
-                'SUCCESS!',
-                'Your file has been reset.',
-                'success'
-                  )
-                }
-
-            });
-    
-  } else if (
-    /* Read more about handling dismissals below */
-    result.dismiss === Swal.DismissReason.cancel
-  ) {
-    swalWithBootstrapButtons.fire(
-      'Cancelled',
-      'Your imaginary file is safe :)',
-      'error'
-    )
-  }
-  });
-});
-
-    // $('.delete-form').on('submit', function(e) {
-    //   e.preventDefault();
-    //   var button = $(this);
-
-    //   Swal.fire({
-    //     icon: 'warning',
-    //       title: 'Are you sure you want to delete this record?',
-    //       showDenyButton: false,
-    //       showCancelButton: true,
-    //       confirmButtonText: 'Yes'
-    //   }).then((result) => {
-    //     /* Read more about isConfirmed, isDenied below */
-    //     if (result.isConfirmed) {
-    //       $.ajax({
-    //         type: 'get',
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         url: "{{url('stdpack/delete')}}",
-    //         data: {
-    //           '_method': 'delete'
-    //         },
-    //         success: function (response, textStatus, xhr) {
-    //           Swal.fire({
-    //             icon: 'success',
-    //               title: response,
-    //               showDenyButton: false,
-    //               showCancelButton: false,
-    //               confirmButtonText: 'Yes'
-    //           }).then((result) => {
-    //             window.location='/stdpack'
-    //           });
-    //         }
-    //       });
-    //     }
-    //   });
-      
-    // })
-  });
- 
-  
- 
-
-
-
-  $(function () {
-    $.fn.dataTable.ext.errMode = 'throw';
-
-    var table = $('.yajra-datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{{ url('stdpack') }}",
-        columns: [
-          {data: 'id', name: 'id'},
-            {data: 'partnumber', name: 'partnumber'},
-            {data: 'partname', name: 'partname'},
-            {data: 'lenght', name: 'lenght'},
-            {data: 'widht', name: 'widht'},
-            {data: 'height', name: 'height'},
-            {data: 'weight', name: 'weight'},
-            {data: 'stdpack', name: 'stdpack'},
-            {data: 'vendor', name: 'vendor'},
-            {data: 'jknshelf', name: 'jknshelf'},
-
-            
-           
-    //         // {
-    //         //     data: 'action', 
-    //         //     name: 'action', 
-    //         //     orderable: true, 
-    //         //     searchable: true
-    //         // },
-        ],
-        // ,
-        // button: [
-        //   $.extend(true, {}, buttonCommon, {
-        //             extend: 'copy',
-        //             exportOptions: { columns: ':visible' }
-        //         }),
-        //         $.extend(true, {}, buttonCommon, {
-        //             extend: 'csv',
-        //             exportOptions: { columns: ':visible' }
-        //         }),
-        //         $.extend(true, {}, buttonCommon, {
-        //             extend: 'print',
-        //             exportOptions: { columns: ':visible' }
-        //         }),  
-        //     ]
+                          });
+              
+            }
+        
+        
+            else if (
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'Your imaginary file is safe :)',
+                'error'
+              )
+            }
+        });
     });
-    
   });
+ 
+ 
+
+
+
+ 
 </script>
 @endsection

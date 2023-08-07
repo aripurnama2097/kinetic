@@ -21,7 +21,7 @@ class ResetPasswordController extends Controller
 
     public function resetPassword(Request $request){
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('nik', $request->nik)->first();
         if($user) {
             // Update password baru
             $user->update([
@@ -29,7 +29,7 @@ class ResetPasswordController extends Controller
             ]);
             return redirect()->back()->with('success', 'Password berhasil diubah');
         } else {
-            return redirect()->back()->with('error', 'Username atau email tidak ditemukan');
+            return redirect()->back()->with('error', 'Username atau ID tidak ditemukan');
         }
 
     }

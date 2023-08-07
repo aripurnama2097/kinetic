@@ -61,8 +61,8 @@
           Login
         </button>
       </form>
-      <small style="color:aliceblue" class="d-block text-center mt-4">Not registered? <a href="{{url('/register')}}">Register Now!</a></small>
-       <br>
+      {{-- <small style="color:aliceblue" class="d-block text-center mt-4">Not registered? <a href="{{url('/register')}}">Register Now!</a></small>
+       <br> --}}
        <div class="d-flex justify-content-center">
         <a class="text-center" href="{{url('/login/reset_password')}}">Reset Password!</a>
       </div>

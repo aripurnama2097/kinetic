@@ -23,7 +23,7 @@ class UserSettingController extends Controller
     public function create(request $request){
 
         $validateData = $request->validate([
-            'name'=>['required', 'min:3', 'max:255','unique:users'],
+            'name'=>['required', 'min:3', 'max:255'],
             'nik'=>['required', 'max:5'],    
             'role'=>['required'],          
             'password' =>'required|min:5|max:255',  
