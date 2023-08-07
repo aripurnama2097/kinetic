@@ -9,32 +9,36 @@
 
   <div class="col-12">
 
-{{-- {{dd($qty)}} --}}
+{{-- {{dd($qty,$seq)}} --}}
     {{-- <h3 colspan="6" class="text-center mt-3"> PT JVC Kenwood Electronics Indonesia</h3> --}}
     <div class="d-flex justify-content-center">
       <div class="table" widht="80%">
           <table class="border border-dark border-3 col-12 mt-2">
             <thead>
               <tr>
-                <th class="text-center" >CUSTPO</td>
-                <th class="text-center">ITEM NO</td>
-                <th class="text-center">ITEM DESC</td>
-                <th class="text-center" colspan="2">PACKING DETAIL</td>
-                <th class="text-center">TOTAL QTY</td>
+                <th style="border-color:black"class="text-center" >CUSTPO</td>
+                <th style="border-color:black"class="text-center">ITEM NO</td>
+                <th style="border-color:black"class="text-center">ITEM DESC</td>
+                <th style="border-color:black"class="text-center" colspan="2">PACKING DETAIL</td>
+                <th style="border-color:black"class="text-center">TOTAL QTY</td>
               </tr>
             </thead>
             <tbody>
               @foreach ($data as $value )               
-             <tr>     
-              {{-- @foreach($qty_running as $key) 
-                 @foreach($qty as $keyval)  --}}
-                <td class="text-center">{{$value->custpo}}</td>
-                <td class="text-center">{{$value->partno}}</td>
-                <td class="text-center">{{$value->partname}}</td>
-                <td class="text-center"></td>
-                <td class="text-center"></td>
-                <td class="text-center">{{$value->demand}}</td>
-                 {{-- @endforeach
+             <tr style="border-color:black">     
+              {{-- @foreach($seq as $key) 
+              <tr>   
+                 @foreach($qty as $keyval) 
+                 <tr>    --}}
+                <td style="border-color:black"class="text-center">{{$value->custpo}}</td>
+                <td style="border-color:black" class="text-center">{{$value->partno}}</td>
+                <td style="border-color:black"class="text-center">{{$value->partname}}</td>
+                <td style="border-color:black"class="text-center">{{$value->tot_scan}}</td>
+                <td style="border-color:black"class="text-center">{{$value->qty_running}}</td>
+                <td style="border-color:black"class="text-center">{{$value->sum_total}}</td>
+                 {{-- </tr>   
+                 @endforeach
+                </tr>   
                 @endforeach --}}
               </tr>
               @endforeach

@@ -20,18 +20,16 @@
             </div>
           </div>
          
-          <div class="table-responsive  rounded-1 shadow-lg ">
+          <div class="table-responsive  rounded-1 shadow-lg mt-2 ">
             {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
-            <table style="width:100%" id="schedule-release" class="table table-vcenter table-striped">
+            <table style="width:100%" id="schedule-release" class="table table-vcenter table-border mt-4">
                
                 <thead class="thead-dark" >
                     <tr class="headings">
                        
                         <th style="font-size: 12px;">Customer Code</th>                                          
-                        <th style="font-size: 12px;">Actual Running</th>
-                        <th style="font-size: 12px;">Balance Running</th>
-                        <th style="font-size: 12px;">Box No</th>
-                        <th style="font-size: 12px;">SKID No</th>
+                      
+                       
                         <th style="font-size: 12px;">Dest</th>
                         <th style="font-size: 12px;">Attent</th>
                         <th style="font-size: 12px;">Model</th>
@@ -45,6 +43,10 @@
                         <th style="font-size: 12px;">Part Number</th>
                         <th style="font-size: 12px;">Part Name</th>
                         <th style="font-size: 12px;">Demand</th>
+                        <th style="font-size: 12px;">Box No</th>
+                        <th style="font-size: 12px;">SKID No</th>
+                        <th style="font-size: 12px;">Actual Running</th>
+                        <th style="font-size: 12px;">Balance Running</th>
     
                     </tr>
                 </thead>
@@ -52,27 +54,28 @@
                 <tbody>
                     @foreach ($data as $key => $value)
                      
-                    <td style="font-size: 12px;font-weight:bold"> {{ $value->custcode }}</td>
+                    <td class="text-center" style="font-size: 12px;font-weight:bold"> {{ $value->custcode }}</td>
                     {{-- <td class="text-dark text-center" style="font-size: 14px; font-weight:bold">{{ $value->qty_running }} </td> --}}
-                    <td class="text-primary text-center"   style="font-size: 14px; font-weight:bold"> {{ $value->act_running }}</td>
-                    <td class="text-danger text-center" style="font-size: 14px;font-weight:bold">{{ $value->bal_running }} </td> 
-                    <td style="font-size: 12px;"> {{ $value->box_no}}</td>
-                    <td style="font-size: 12px;"> {{ $value->skid_no}}</td>
+                   
                  
-                        <td style="font-size: 12px;"> {{ $value->dest }}</td>
-                        <td style="font-size: 12px;"> </td>
-                        <td style="font-size: 12px;"> {{ $value->model }}</td>
-                        <td style="font-size: 12px;"> {{ $value->prodno }}</td>
-                        <td style="font-size: 12px;"> </td>
-                        <td style="font-size: 12px;"> </td>
-                        <td style="font-size: 12px;">{{$value->jkeipodate}}</td>
-                        <td style="font-size: 12px;"> {{ $value->vandate }}</td>                      
-                        <td style="font-size: 12px;"> {{ $value->orderitem }}</td>
-                        <td style="font-size: 12px;">{{ $value->custpo }} </td>
-                        <td style="font-size: 12px;">{{ $value->partno }} </td>
-                        <td style="font-size: 12px;">{{ $value->partname }} </td>
-                        {{-- <td style="font-size: 12px;"> </td> --}}
+                 
+                        <td class="text-center"style="font-size: 13px;"> {{ $value->dest }}</td>
+                        <td class="text-center" style="font-size: 13px;"> </td>
+                        <td class="text-center" style="font-size: 13px;"> {{ $value->model }}</td>
+                        <td class="text-center" style="font-size: 13px;"> {{ $value->prodno }}</td>
+                        <td class="text-center" style="font-size: 13px;"> </td>
+                        <td class="text-center" style="font-size: 13px;"> </td>
+                        <td class="text-center" style="font-size: 13px;">{{$value->jkeipodate}}</td>
+                        <td class="text-center" style="font-size: 13px;"> {{ $value->vandate }}</td>                      
+                        <td class="text-center" style="font-size: 13px;"> {{ $value->orderitem }}</td>
+                        <td class="text-center" style="font-size: 13px;">{{ $value->custpo }} </td>
+                        <td class="text-center" style="font-size: 13px;">{{ $value->partno }} </td>
+                        <td class="text-center" style="font-size: 13px;">{{ $value->partname }} </td>    {{-- <td class="text-center" style="font-size: 13px;"> </td> --}}
                         <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td> 
+                        <td class="text-center" style="font-size: 14px;"> {{ $value->box_no}}</td>
+                        <td class="text-center" style="font-size: 14px;"> {{ $value->skid_no}}</td>
+                        <td class="text-primary text-center"   style="font-size: 14px; font-weight:bold"> {{ $value->act_running }}</td>
+                        <td class="text-danger text-center" style="font-size: 14px;font-weight:bold">{{ $value->bal_running }} </td> 
                         </tr>
                     @endforeach
                 </tbody>

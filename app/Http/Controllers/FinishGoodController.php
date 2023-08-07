@@ -250,10 +250,12 @@ class FinishGoodController extends Controller
                     SELECT  '{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}'
                     ");
 
+            $seq = '1';
+            // $order = $lastOrder ? $lastOrder + 1 : 1;
             // STEP 3.UPDATE IN FINISH GOOD LIST     // ADD boxno dan packing no
             $update =    DB::connection('sqlsrv')
                 ->update("UPDATE finishgood_list 
-                                 SET 
+                                  SET 
                                      act_running = ( select sum(qty_running )
                                      from scanout as b where 
                                  b.partno = finishgood_list.partno  and b.custpo = finishgood_list.custpo),
@@ -262,6 +264,10 @@ class FinishGoodController extends Controller
                                  finishgood_list.id = '{$selectPart[0]->id}' ");
 
 
+               $seq1 =  DB::connection('sqlsrv')
+                ->update("UPDATE finishgood_list 
+                                set tot_sequence = (tot_sequence + 1) where custpo ='{$custpo}' ");
+// return $seq1;
               // STEP 3.UPDATE IN FINISH GOOD LIST     
                DB::connection('sqlsrv')
               ->update("UPDATE finishgood_list 
@@ -297,25 +303,18 @@ class FinishGoodController extends Controller
          list($skidcode, $skidno, $destSkid, $packing_no, $type_skid, $vandate) = explode(":", $qrdata);
 
        $data =  DB::connection ('sqlsrv')
-                ->select("SELECT * FROM finishgood_list where skid_no ='{$skidno}'");
+                ->select("SELECT  custpo,partno,partname,skid_no,qty_running
+                                    ,(select count(qty_running) where skid_no ='{$skidno}') as tot_scan 
+                                    ,(select sum(qty_running) where skid_no ='{$skidno}') as sum_total 
+                            from scanout
+                                    where skid_no ='{$skidno}'
+                            group by
+                                    custpo,partno,partname,skid_no,qty_running
+                            ");
 
-       $getpo =DB::connection ('sqlsrv')
-                  ->select("SELECT custpo FROM finishgood_list where skid_no ='{$skidno}'");
+      
 
-
-       $qty =DB::connection ('sqlsrv')
-                    ->select("SELECT count(qty_running) as qty_detail from scanout where custpo ='{$getpo[0]->custpo}' ");
-        
-       $qty_running =DB::connection ('sqlsrv')
-                    ->select("SELECT distinct(qty_running) from scanout where custpo ='{$getpo[0]->custpo}' ");
-                    
-                    // dd($qty);
-    //   $param =[$data,$qty,$qty_running];
-
-    //   dd($data2);
-
-       return view('finishgood.printmaster',compact('data','qty','qty_running'));
-    //    return view('finishgood.printmaster',compact('param'));
+       return view('finishgood.printmaster',compact('data'));
 
 
     }
