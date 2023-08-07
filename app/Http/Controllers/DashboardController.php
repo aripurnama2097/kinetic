@@ -18,13 +18,24 @@ class DashboardController extends Controller
                     
          $problem = DB::table('problemfound')
                     ->where('status','=','waiting')->count('status');
+
+         $dataproblem = DB::connection('sqlsrv')
+                    ->select("SELECT a.*, b.* from problemfound as b
+                                inner join finishgood_list as a on a.partno = b.part_no and a.custpo = b.cust_po");
+
+
+        $databorrow = DB::connection('sqlsrv')
+        ->select("SELECT * from  borrow");
         
-         $borrow= DB::table('borrow')
+         $borrow = DB::table('borrow')
                     ->count('custpo');
+                
+                    
 
                     // return $problem;
       
         
-        return view('dashboardMenu.index',compact('data','problem','borrow'));
+        return view('dashboardMenu.index',
+                    compact('data','problem','borrow','dataproblem','databorrow'));
     }
 }

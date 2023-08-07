@@ -50,7 +50,8 @@
       <div class="container-xl">
         <div class="row row-deck row-cards">
   
-          <div class="col-sm-6 col-lg-3">
+          <div class="col-sm-6 col-lg-3" data-bs-toggle="collapse" id="btn-problem"  role="button"
+          aria-expanded="false" aria-controls="partlist">
             <div class="card blink">
               <div class="card-body">
                 <div class="d-flex align-items-center">
@@ -75,7 +76,8 @@
             </div>
           </div>
 
-          <div class="col-sm-6 col-lg-3">
+          <div class="col-sm-6 col-lg-3 "  data-bs-toggle="collapse" id="btn-borrow"  role="button"
+          aria-expanded="false" aria-controls="partlist">
             <div class="card blink">
               <div class="card-body">
                 <div class="d-flex align-items-center">
@@ -89,7 +91,7 @@
                   <div class="align-content-around text-primary">
                     <p class="text-center text-dark align-center" style="font-weight:bold;font-size:20px">{{$borrow}} </p>
                   </div>
-                
+                 
                 </div>
                 <div class="progress progress-sm">
                   <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" aria-label="75% Complete">
@@ -160,70 +162,114 @@
   
         </div>
 
-        <div class="card bg-light">
-  
-          <div class="table-responsive  rounded-1 shadow-sm mt-3">
-            <table style="width:100%" id="kit-monitor"  class="table table-vcenter table-striped">
-                <thead >
-                    <tr class="headings">                   
-                        <th style="font-size: 10px;">Customer Code</th>
-                        {{-- <th style="font-size: 10px;">Qty Receive</th> --}}
-                        <th style="font-size: 10px;">Dest</th>
-                        <th style="font-size: 10px;">Attent</th>
-                        <th style="font-size: 10px;">Model</th>
-                        <th style="font-size: 10px;">Prod No</th>
-                        <th style="font-size: 10px;">Lot Qty</th>
-                        <th style="font-size: 10px;">shpvia</th>
-                        <th style="font-size: 10px;">JKEI-Po</th>
-                        <th style="font-size: 10px;">VanDate</th>
-                        {{-- <th style="font-size: 10px;">ETD</th>
-                        <th style="font-size: 10px;">ETA</th>
-                        <th style="font-size: 10px;">Ship Via</th> --}}
-                        <th style="font-size: 10px;">Order-Item</th>
-                        <th style="font-size: 10px;">Cust PO</th>
-                        <th style="font-size: 10px;">Part Number</th>
-                        <th style="font-size: 10px;">Part Name</th>
-                        <th style="font-size: 10px;">JKN Shelf No</th>
-                        <th style="font-size: 10px;">Demand</th>
-                        <th style="font-size: 10px;">Actual Receive</th>
-                        <th style="font-size: 10px;">Balance Receive</th>
-
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($data as $key => $value)
+        {{-- DATA PROBLEM --}}
+        <div class="collapse mt-4" id="data-problem" hide>
+          <div class="card bg-light">
+            <div class="table-responsive  rounded-1 shadow-sm">
+              <table style="width:100%" id="problem-data"  class="table table-vcenter table-striped">
+                  <thead >
+                      <tr class="headings">                   
+                         
+                          <th class="text-center" style="font-size: 10px;">Dest</th>
+                          <th class="text-center" style="font-size: 10px;">Model</th>
+                          <th class="text-center" style="font-size: 10px;">Prod No</th>
+                          {{-- <th class="text-center" style="font-size: 10px;">Lot Qty</th> --}}
+                          <th class="text-center" style="font-size: 10px;">VanDate</th>
+                          {{-- <th class="text-center" style="font-size: 10px;">Via</th> --}}
+                          <th class="text-center" style="font-size: 10px;">Cust PO</th>
+                          <th class="text-center" style="font-size: 10px;">Part Number</th>
+                          <th class="text-center" style="font-size: 10px;">Part Name</th>
+                          <th class="text-center" style="font-size: 10px;">Demand</th>
+                          <th class="text-center" style="font-size: 10px;">Skid No</th>
+                          <th class="text-center" style="font-size: 10px;">Symptom</th>
+    
+                          <th class="text-center" style="font-size: 10px;">Foto</th>
+                          <th class="text-center" style="font-size: 10px;">Time Found</th>
+                          <th class="text-center" style="font-size: 10px;">Found By</th>
+                          <th class="text-center" style="font-size: 10px;">DIC</th>
+                          <th class="text-center" style="font-size: 10px;">Cause</th>
+                         
+                      
+    
+                      </tr>
+                  </thead>
+    
+                  <tbody>
+                      @foreach ($dataproblem as $key => $value)             
+                      <td style="font-size: 12px;">{{ $value->dest }}</td>
+                      <td style="font-size: 12px;"> {{ $value->model }}</td>
+                      <td style="font-size: 12px;"> {{ $value->prodno }}</td> 
+                      {{-- <td style="font-size: 12px;">{{ $value->lotqty }} </td> --}}
+                      <td style="font-size: 12px;"> {{ $value->vandate }}</td>
+                      {{-- <td style="font-size: 12px;"> {{ $value->shipvia }}</td> --}}
+                      <td style="font-size: 12px;">{{ $value->custpo }} </td>
+                      <td style="font-size: 12px;">{{ $value->partno }} </td>
+                      <td style="font-size: 12px;">{{ $value->partname }} </td>
+                      <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td> 
+                      <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->skid_no }}</td> 
+                      <td style="font-size: 12px;"> {{ $value->symptom }}</td>
+                      <td style="font-size: 12px;"><img width="30%" class="img-circle" src="{{ url('/public/img') }}"> </td>
+                      <td style="font-size: 12px;">{{$value->created_at}}</td>
+                      <td style="font-size: 12px;">{{$value->found_by}}</td>           
+                      <td style="font-size: 12px;">{{$value->dic}} </td>
+                      <td style="font-size: 12px;">{{$value->cause}} </td>
+                 
                      
-                    <td style="font-size: 12px;"> {{ $value->custcode }}</td>
-                
-                    <td style="font-size: 12px;"> {{ $value->dest }}</td>
-                    <td style="font-size: 12px;"> </td>
-                        <td style="font-size: 12px;"> {{ $value->model }}</td>
-                        <td style="font-size: 12px;"> {{ $value->prodno }}</td>
-                        <td style="font-size: 12px;"> </td>
-                        <td style="font-size: 12px;"> </td>
-                        <td style="font-size: 12px;">
-                            {{$value->jkeipodate}}
-                        </td>
-                        <td style="font-size: 12px;"> {{ $value->vandate }}</td>
-                       
-                        <td style="font-size: 12px;"> {{ $value->orderitem }}</td>
-                        <td style="font-size: 12px;">{{ $value->custpo }} </td>
-                        <td style="font-size: 12px;">{{ $value->partno }} </td>
-                        <td style="font-size: 12px;">{{ $value->partname }} </td>
-                        <td style="font-size: 12px;"> </td>
-                        <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td> 
-                        <td class="text-primary text-center"   style="font-size: 14px; font-weight:bold"> {{ $value->act_receive }}</td>
-                        <td class="text-danger text-center" style="font-size: 14px;">{{ $value->bal_receive }} </td> 
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                      </tr>
+                      @endforeach
+                  </tbody>
+              </table>
+          </div>
+          </div>
         </div>
-          <div class="col-12">
-            <div class="row row-cards">          
+
+
+        {{-- DATA BORROW--}}
+        <div class="collapse mt-4" id="data-borrow" hide>
+           <div class="card bg-light">
+            <div class="table-responsive  rounded-1 shadow-sm mt-3"hide>
+              <table style="width:100%" id="kit-monitor"  class="table table-vcenter table-striped">
+                  <thead >
+                      <tr class="headings">                   
+                         
+                        <th style="font-size: 14px;">Custpo</th>
+                        <th style="font-size: 14px;">Partno</th>
+                        <th style="font-size: 14px;">Qty</th>
+                        <th style="font-size: 14px;">Symptom</th>            
+                        <th style="font-size: 14px;">Borrower</th>
+                        <th style="font-size: 14px;">Lender</th>
+                        <th style="font-size: 14px;">Dateout</th>
+                        <th style="font-size: 14px;">Status</th>
+                        <th style="font-size: 14px;">Dept</th>
+                        <th style="font-size: 14px;">Reason</th>
+                        <th style="font-size: 14px;">Est return</th>
+
+                      </tr>
+                  </thead>
+
+                  <tbody>
+                      @foreach ($databorrow as $key => $value)
+                      <tr>
+                    <td style=font-size:14px>{{$value->custpo }}</td>
+                    <td style=font-size:14px>{{$value->partno }}</td>
+                    <td style=font-size:14px>{{$value->qty}}</td>
+                    <td style=font-size:14px>{{$value->symptom }}</td>
+                    <td style=font-size:14px>{{$value->borrower }}</td>
+                    <td style=font-size:14px>{{$value->lender }}</td>
+                    <td style=font-size:14px>{{$value->dateout }}</td>
+                    <td style=font-size:14px>{{$value->status }}</td>
+                    <td style=font-size:14px>{{$value->dept }}</td>
+                    <td style=font-size:14px>{{$value->reason }}</td>
+                    <td style=font-size:14px>{{$value->est_return }}</td>
+                      </tr>
+                      @endforeach
+                  </tbody>
+              </table>
             </div>
           </div>
+        </div>
+
+     
   
           <div class="col-12">
             <div class="card card-md">
@@ -254,6 +300,18 @@
             //     'csvHtml5'
             // ]
         } );
+
+        $('#btn-problem').on('click', function(){
+                $('#data-borrow').hide();
+                $('#data-problem').show();
+            })
+
+        $('#btn-borrow').on('click', function(){
+               $('#data-problem').hide();
+                $('#data-borrow').show();
+            })
+
+
       });
 </script>
 @endsection
