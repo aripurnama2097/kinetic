@@ -244,7 +244,7 @@
                                             icon: 'success',
                                             title: response.message,
                                             showConfirmButton :false,
-                                            timer: 2000,
+                                            timer: 300,
                                           
 
                                         })
@@ -258,13 +258,15 @@
                                         let warningMessage = response.message;
                                         console.log("warning",response.message);
                                         console.log("message",warningMessage.indexOf('DOUBLE'))
+                                        console.log("message",warningMessage.indexOf('FINISH'))
+
                                         if(warningMessage.indexOf('DOUBLE') == 0){
                                             Swal.fire({
                                             
                                                 icon: 'warning',
                                                 title: response.message,
                                                 showConfirmButton :false,
-                                                timer:1000
+                                                timer:300
                                             
 
                                             })
@@ -279,6 +281,29 @@
                                                     
                                             return;
                                         }
+
+                                        if(warningMessage.indexOf('FINISH') == 0){
+                                            Swal.fire({
+                                            
+                                                icon: 'warning',
+                                                title: response.message,
+                                                showConfirmButton :false,
+                                                timer:300
+                                            
+
+                                            })
+                                        
+                                            
+                                            var audio = document.getElementById('audio');
+                                                        var source = document.getElementById('audioSource');
+                                                        var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
+                                                        audio.load()
+                                                        audio.play();
+                                                        return;
+                                                    
+                                            return;
+                                        }
+
                                         }
                                         
                                        

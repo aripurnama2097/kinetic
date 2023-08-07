@@ -88,7 +88,32 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="card-body border-bottom d-flex justify-content-center ">
+                                <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">
 
+                                    <table style="width:100%"
+                                        class="text-nowrap  table border-bordered border border-primary shadow-sm">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                {{-- <th style="font-size: 10px;">No</th> --}}
+                                                <th style="font-size: 10px;">Cust Code</th>
+                                                <th style="font-size: 10px;">Cust Po</th>
+                                                <th style="font-size: 10px;">Prod No</th>
+                                                <th style="font-size: 10px;">Part Number</th>
+                                                <th style="font-size: 10px;">Part Name</th>
+                                                <th style="font-size: 10px;">Demand</th>
+                                                <th style="font-size: 10px;">Total Scan</th>
+                                                <th style="font-size: 10px;">Balance Scan</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="scanin-cancel">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <br>
+                            </div>
 
                             {{-- <div class="col-md-12 col-lg-12">
                                 <div class="card">
@@ -138,7 +163,7 @@
 
 @section('script') --}}
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> --}}
 
     <script type="text/javascript">
         $.ajaxSetup({
@@ -205,17 +230,51 @@
                             },
                        
                             success: function(response) {                  
-                                console.log(response)
+                                var data = ""
+                                $.each(response.data, function(key, value) {
+
+                                 
+
+                                    data = data + "<tr>"
+                                    if (value.act_receive == 0 && value.bal_receive == 0) {
+                                        data = data + "<tr class=table-light>";
+                                    }
+                                    if (value.act_receive != 0 && value.bal_receive != 0) {
+                                        data = data + "<tr class=table-warning>";
+                                    }
+                                    if (value.act_receive == value.demand && value
+                                        .bal_receive == 0) {
+                                        data = data + "<tr class=table-success>";
+                                    }
+
+                                    // data = data + "<td>" + value.id + "</td>"
+                                    data = data + "<td>" + value.custcode + "</td>"
+                                    data = data + "<td>" + value.custpo + "</td>"
+                                    data = data + "<td>" + value.prodno + "</td>"
+                                    data = data + "<td>" + value.partno + "</td>"
+                                    data = data + "<td>" + value.partname + "</td>"
+                                    data = data + "<td>" + value.demand + "</td>"
+                                    data = data + "<td>" + value.act_receive+ "</td>"
+                                    data = data + "<td>" + value.bal_receive +
+                                        "</td>"
+
+                                    data = data + "</tr>"
+                                    })
+                                    $('#scanin-cancel').html(data);
+
                                         if (response.success) {
                                             var audio   = document.getElementById('audio');
                                             var source  = document.getElementById('audioSource');
-                                            var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                            var audio   = new Audio("{{asset('')}}storage/sound/cancel_part.mp3");
+                                            audio.load();
+                                            audio.play();
+                                        
                                         swal.fire({
                                             icon: 'success',
                                             title: response.message,
 
-                                            timer: 5000,
-                                            showConfirmButton: true,
+                                            timer: 300,
+                                            showConfirmButton: false,
 
                                         })
                                         } 

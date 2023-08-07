@@ -122,6 +122,7 @@
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th style="font-size: 10px;">Model</th>
+                                                    <th style="font-size: 10px;">IdNumber</th>
                                                     <th style="font-size: 10px;">Lot No</th>
                                                     <th style="font-size: 10px;">JKN PO</th>
                                                     <th style="font-size: 10px;">QTY</th>
@@ -134,6 +135,7 @@
                                                 @foreach ($assy as $key => $value)
                                                     <tr>
                                                     <td style="font-size: 12px;">{{ $value->model }} </td>
+                                                    <td style="font-size: 12px;">{{ $value->idnumber}} </td>
                                                     <td style="font-size: 12px;">{{ $value->lotno }} </td>
                                                     <td style="font-size: 12px;">{{ $value->jknpo }} </td>
                                                     <td style="font-size: 12px;"> {{ $value->qty_input }}</td> 

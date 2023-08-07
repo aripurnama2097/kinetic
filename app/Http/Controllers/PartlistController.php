@@ -537,6 +537,8 @@ class PartlistController extends Controller
                                 where  model = '{$partno}' and lotno='{$prodno}'
                                 ");
 
+                                // dd($cek_total);
+
         if ($cek_total == false) {
             return response()->json([
                 'success' => false,
@@ -562,14 +564,24 @@ class PartlistController extends Controller
             $param = DB::connection('sqlsrv')
                 ->select("SELECT * from schedule where partno ='{$partno}'
                                 and prodno ='{$prodno}' ");
+            
+            // dd($param);
 
-            // GET PARAM BASE SCAN LABEL
+            if ($param == false ) {
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'MODEL NOT EXIST IN SCHEDULE...',
+
+                    ]);
+            }
+                        // GET PARAM BASE SCAN LABEL
             $dest      =   $param[0]->dest;
             $custpo    =   $param[0]->custpo;
             $partname  =   $param[0]->partname;
             $shelfno   =   $param[0]->shelfno;
 
-
+           
 
             // STEP 2. INSERT DATA KE TABLE SCAN IN
             DB::connection('sqlsrv')
@@ -592,19 +604,26 @@ class PartlistController extends Controller
             $data = DB::connection('sqlsrv')
                 ->select("SELECT * from inhouse_list where lotno ='{$prodno}'");
 
+                $sum = array($cek_total[0]->tot_input, $qty);
+                $act_qty = array_sum($sum);
+    
+                // TAMPILKAN DATA HASIL SCANIN
+                    if (($act_qty  == $cek_total[0]->shipqty)) {
+                        return response()
+                            ->json([
+                                'success' => false,
+                                'message' => 'DEMAND COMPLETE...',
+                                'data'    => $data
+            
+                            ]);
+                    }             
+
             return response()->json([
                 'success' => TRUE,
                 'message' => 'Scan Sucessfully',
                 'data'     => $data
             ]);
         }
-
-
-
-        // STEP 2. UPDATE ASSY LIST
-
-
-
     }
 
     public function input_inhouse(request $request)

@@ -312,10 +312,12 @@ class RepackingController extends Controller
         // ambil part dari list repacking
         if(empty($cek_label)){ 
             $selectPart = DB::connection('sqlsrv')
-            ->select("SELECT top 1 * from repacking_list
-                      where  partno = '{$label_scan}'
-                      and demand >= (coalesce(act_receive,0) + $qty)
-                      order by custpo asc");
+                        ->select("SELECT top 1 * from repacking_list
+                                where  partno = '{$label_scan}'
+                                and demand >= (coalesce(act_receive,0) + $qty)
+                                order by custpo asc");
+
+                                // dd($selectPart);
     
             // return $selectPart;
             // STEP 2.INSERT INTO REPACKING SCAN IN
@@ -340,50 +342,25 @@ class RepackingController extends Controller
                                             repacking_list.id = '{$selectPart[0]->id}'
                                               
                                             ") ;
+
+                                              
+         
+           
             DB::connection('sqlsrv')
             ->update("UPDATE repacking_list 
                          set
                         gw = '{$gw}' where custpo = '{$custpo}'                                    
-                        -- lenght = '{$lenght}' where custpo = '{$custpo}',
-                        -- widht = '{$widht}' where custpo = '{$custpo}',
-                        -- height = '{$height}' where custpo = '{$custpo}'                               
-                          
-                            
+                                                  
+                                            
                 ") ;
 
-
-
-
-            $sum = array($selectPart[0]->act_receive, $qty);
-            $act_qty = array_sum($sum);
-
-            // TAMPILKAN DATA HASIL SCANIN
-            $data       = DB::connection('sqlsrv')
-                             ->select("SELECT * FROM repacking_list where partno ='{$partno}' and custpo ='{$custpo}' ");
-
-                            if (($act_qty  == $selectPart[0]->demand)) {
-                                return response()
-                                    ->json([
-                                        'success' => false,
-                                        'message' => 'FINISH SCAN...',
-                                        'data'    => $data
-                    
-                                    ]);
-                            }
-
-           
-
-                 //VIEW RESULT SCAN
-          
-            
-
-            //STEP  MASUKAN DATA KE TEMP PRINT
-                    // 1. GET CONTENT UNTUK TEMP PRINT COMBINE LABEL
+            // STEP  MASUKAN DATA KE TEMP PRINT
+            //         1. GET CONTENT UNTUK TEMP PRINT COMBINE LABEL
             $get_demand = DB::connection('sqlsrv')
-            ->select("SELECT demand from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
+                            ->select("SELECT demand from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
 
             $get_prodno = DB::connection('sqlsrv')
-            ->select("SELECT prodno from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
+                            ->select("SELECT prodno from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
             $carton_no = '1';
             // GET SEQUENCE NO
             $currentDate = Carbon::now();     
@@ -402,52 +379,100 @@ class RepackingController extends Controller
                             ->select("SELECT  count(custpo) as custpo from temp_print where custpo ='{$custpo}'");
 
 
-                        // 2. MASUKAN DATA KE TEMP PRINT JIKA PO MASIH BELUM ADA PADA TABLE
-            if($cek_po[0]->custpo == 0  ){
-                 // INSERT DATA TO TEMP PRINT TABLE
-                 DB::connection('sqlsrv')
-                 ->insert("INSERT INTO temp_print(custpo,prodno,partno,partname,shelfno,qty,carton_no,sequence_no)
-                         select '{$custpo}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$get_demand[0]->demand}','{$carton_no}','{$seq}' 
-                         ");
 
-                       
+                                    
+                    // 2. MASUKAN DATA KE TEMP PRINT JIKA PO MASIH BELUM ADA PADA TABLE
+                        if($cek_po[0]->custpo == 0  ){
+                            // INSERT DATA TO TEMP PRINT TABLE
+                            DB::connection('sqlsrv')
+                                    ->insert("INSERT INTO temp_print(custpo,prodno,partno,partname,shelfno,qty,carton_no,sequence_no)
+                                            select '{$custpo}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$get_demand[0]->demand}','{$carton_no}','{$seq}' 
+                                            ");
+                                               $sum = array($selectPart[0]->act_receive, $qty);
+                                               $act_qty = array_sum($sum);
+                           
+                                               // dd($act_qty);
+                           
+                                           
+                                               $viewdata = DB::connection('sqlsrv')
+                                                               ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
+                           
+                                                               if (($act_qty  == $selectPart[0]->demand)) {
+                                                                   return response()
+                                                                       ->json([
+                                                                           'success' => false,
+                                                                           'message' => 'FINISH SCAN...',
+                                                                           'data'    => $viewdata
+                                                       
+                                                                       ]);
+                                                               }
+                           
+                                               return response()
+                                                       ->json([
+                                                           'success' => true,
+                                                           'message' => 'Scan success...',
+                                                           'data'    => $viewdata
+                                                       ]);  
+                                               }
 
-                        //   DB::connection('sqlsrv')
-                        //   ->insert("INSERT INTO tblheadercombine(prodno,carton_no)
-                        //                 select '{$get_prodno[0]->prodno}','{$carton_no}'
-                        //           ");
-
-                                  return response()->json(['success'=>TRUE,
-                                                            'message'=>'scan successfully',
-                                                            'data'=>$data 
-                                                        ]);
-            }
-
-            else{
-                return response()->json(['success'=>TRUE,
-                            'message'=>'scan successfully',
-                            'data'=>$data ]);
-                            
-               echo"failed";
-            }
                         
-                       
 
-                             
-            return response()->json([   'success'=>TRUE,
-                                        'message'=>'scan successfully',
-                                        'data'   =>$data 
-                                    ]);
-    
-         }
+                        else{               
+                            $sum = array($selectPart[0]->act_receive, $qty);
+                            $act_qty = array_sum($sum);
+                            $viewdata = DB::connection('sqlsrv')
+                                            ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
+        
+                                            if (($act_qty  == $selectPart[0]->demand)) {
+                                                return response()
+                                                    ->json([
+                                                        'success' => false,
+                                                        'message' => 'FINISH SCAN...',
+                                                        'data'    => $viewdata
+                                    
+                                                    ]);
+                                            }
+        
+                            return response()
+                                    ->json([
+                                        'success' => true,
+                                        'message' => 'Scan success...',
+                                        'data'    => $viewdata
+                                    ]);  
+                                    echo"failed";
+                            }
+                   
+                        
+                      
+                        
+                    // $sum = array($selectPart[0]->act_receive, $qty);
+                    // $act_qty = array_sum($sum);
 
-         else {
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'OVER DEMAND...'
-                ]);
-        }
+                    // // dd($act_qty);
+
+                
+                    // $viewdata = DB::connection('sqlsrv')
+                    //                 ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
+
+                    //                 if (($act_qty  == $selectPart[0]->demand)) {
+                    //                     return response()
+                    //                         ->json([
+                    //                             'success' => false,
+                    //                             'message' => 'FINISH SCAN...',
+                    //                             'data'    => $viewdata
+                            
+                    //                         ]);
+                    //                 }
+
+                    // return response()
+                    //         ->json([
+                    //             'success' => true,
+                    //             'message' => 'Scan success...',
+                    //             'data'    => $viewdata
+                    //         ]);  
+                    // }
+                    }
+      
     }
 
 
@@ -558,9 +583,13 @@ class RepackingController extends Controller
                                           ->orWhere('custpo', '=', $custpo)
                                           ->delete();
 
+        $viewdata = DB::connection('sqlsrv')
+                                          ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
         return response()->json([
                                 'success'=> TRUE,
-                                'message'=>'CANCEL DATA SUCCESS']);
+                                'message'=>'CANCEL DATA SUCCESS',
+                                'data'   => $viewdata
+                            ]);
     }
 
 
@@ -635,17 +664,17 @@ class RepackingController extends Controller
                                 $act_qty = array_sum($sum);
                     
                                 // TAMPILKAN DATA HASIL SCANIN
-                             
+                                if (($act_qty  == $selectPart[0]->demand)) {
+                                    return response()
+                                        ->json([
+                                            'success' => false,
+                                            'message' => 'FINISH SCAN...',
+                                            'data'    => $viewdata
+                        
+                                        ]);
+                                }
                     
-                                                if (($act_qty  == $selectPart[0]->demand)) {
-                                                    return response()
-                                                        ->json([
-                                                            'success' => false,
-                                                            'message' => 'FINISH SCAN...',
-                                                            'data'    => $viewdata
-                                        
-                                                        ]);
-                                                }
+                                                
                                 
                 return response()
                         ->json([
@@ -658,7 +687,7 @@ class RepackingController extends Controller
 
    
       //  PRINT ASSY KIT
-      public function printassy(Request $request, $id){
+    public function printassy(Request $request, $id){
 
        
         $pic = $request->pic_print;
@@ -666,11 +695,19 @@ class RepackingController extends Controller
        
         //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
         $param = DB::connection('sqlsrv')
-        ->select("SELECT a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.idnumber,b.qty_input from schedule as a
-                    inner join inhouse_scanin as b on a.partno = b.model and a.custpo= b.jknpo and a.prodno = b.lotno                                             
-                     where b.id = '{$id}' ");
+                    ->select("SELECT a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.idnumber,b.qty_input from schedule as a
+                                inner join inhouse_scanin as b on a.partno = b.model and a.custpo= b.jknpo and a.prodno = b.lotno                                             
+                                where b.id = '{$id}' ");
 
 
+            if ($param == false) {
+                echo('Part Not Exist In Schedule');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Part Not Exist In Schedule',
+
+                ]);
+            }
      // STEP 2. INSERT KE LOG PRINT
      DB::connection('sqlsrv')
          ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)

@@ -104,7 +104,7 @@
                                         class="text-nowrap  table border-bordered border border-primary shadow-sm">
                                         <thead class="thead-dark">
                                               <tr>
-                                                {{-- <th class="text-center mb-1" style="font-size: 15px;">QR code</th> --}}
+                                                <th class="text-center mb-1" style="font-size: 15px;">Cust Code</th>
                                                 <th class="text-center mb-1"style="font-size: 15px;">Cust PO</th>
                                                 <th class="text-center mb-1"style="font-size: 15px;">Item No</th>
                                                 <th class="text-center mb-1"style="font-size: 15px;">Item Description</th>
@@ -114,7 +114,7 @@
                                       
                                               </tr>
                                             </thead>
-                                            <tbody id="scan-in">
+                                            <tbody id="scanin-combine">
                                             </tbody>
                                         </table>
                                     </div>
@@ -195,7 +195,7 @@
                         $('#widht').attr('disabled', false);
                         $('#height').attr('disabled', false);
                         $('#gw').attr('disabled', false);
-                    $('#kit_label').focus();
+                        $('#kit_label').focus();
                     }
                 }
             });
@@ -223,8 +223,8 @@
                      let gw = $('#gw').val();
 
                         if (val_kitLabel != '') {                  
-                        $('#print-master').attr('disabled', false);
-                        $('#delete-tbltemp').attr('disabled', false);
+                            $('#print-master').attr('disabled', false);
+                            $('#delete-tbltemp').attr('disabled', false);
                         
                         }
                     if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
@@ -249,81 +249,136 @@
                             
                             success: function(response) {                  
                                 console.log(response)
-                                       
-                                
+                                var data = ""
+                                $.each(response.data, function(key, value) {
+
+                                 
+
+                                    data = data + "<tr>"
+                                    if (value.act_receive == 0 && value.bal_receive == 0) {
+                                        data = data + "<tr class=table-light>";
+                                    }
+                                    if (value.act_receive != 0 && value.bal_receive != 0) {
+                                        data = data + "<tr class=table-warning>";
+                                    }
+                                    if (value.act_receive == value.demand && value
+                                        .bal_receive == 0) {
+                                        data = data + "<tr class=table-success>";
+                                    }
+
+                                    // data = data + "<td>" + value.id + "</td>"
+                                    data = data + "<td>" + value.custcode + "</td>"
+                                    data = data + "<td>" + value.custpo + "</td>"
+                                    data = data + "<td>" + value.prodno + "</td>"
+                                    data = data + "<td>" + value.partno + "</td>"
+                              
+                                    data = data + "<td>" + value.demand + "</td>"
+                                    data = data + "<td>" + value.act_receive+ "</td>"
+                                    data = data + "<td>" + value.bal_receive +
+                                        "</td>"
+
+                                    data = data + "</tr>"
+                                    })
+                                    $('#scanin-combine').html(data);
+
+
                                         if (response.success) {
-                                            var audio   = document.getElementById('audio');
-                                            var source  = document.getElementById('audioSource');
-                                            var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                            var audio = document.getElementById('audio');
+                                            var source = document.getElementById('audioSource');
+                                            var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
                                             audio.load()
                                             audio.play();
+                                        
+                                                swal.fire({
+                                                    icon: 'success',
+                                                    title: response.message,
+                                                    showConfirmButton :false,
+                                                    timer: 200,
+                                                
 
-                                            swal.fire({
-                                                icon: 'success',
-                                                title: response.message,
-                                                showConfirmButton :false,
-                                                timer:2000
-
-                                            })
+                                                })
                                         } 
                                         else {
                                             swal.fire({
                                             icon: 'warning',
-                                            title: response.message
+                                            title: response.message,
+                                            showConfirmButton :false,
                                         })  
-
                                             let warningMessage = response.message;
                                             console.log("warning",response.message);
                                             console.log("message",warningMessage.indexOf('DOUBLE'))
-                                            if(warningMessage.indexOf('DOUBLE') == 0){
-                                                Swal.fire({
-                                                
-                                                    icon: 'warning',
-                                                    title: response.message,
-                                                    showConfirmButton :false,
-                                                    timer:2000
-                                                
-
-                                                })
-                                            
-                                            
-                                            var audio = document.getElementById('audio');
-                                                        var source = document.getElementById('audioSource');
-                                                        var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
-                                                        audio.load()
-                                                        audio.play();
-                                                        return;
+                                            console.log("message",warningMessage.indexOf('OVER'))
+                                            console.log("message",warningMessage.indexOf('FINISH'))
+                                                if(warningMessage.indexOf('DOUBLE') == 0){
+                                                    Swal.fire({
                                                     
-                                           
-                                        }
+                                                        icon: 'warning',
+                                                        title: response.message,
+                                                        showConfirmButton :false,
+                                                        timer:200
+                                                    
 
-                                        }
-
-                                        var data=""
-                                        $.each(response.data, function(key, value) {
-                                        data = data + "<tr>"      
-                                            if (value.act_receive == 0 && value.bal_receive == 0) {
-                                                   data =data + "<tr class=table-light>";
+                                                    })
+                                                
+                                                    
+                                                    var audio = document.getElementById('audio');
+                                                                var source = document.getElementById('audioSource');
+                                                                var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                                audio.load();
+                                                                audio.play();
+                                                                return;
+                                                            
+                                            
                                                 }
-                                                if (value.act_receive != 0 && value.bal_receive != 0) {
-                                                   data =data + "<tr class=table-warning>";
-                                                }
-                                                if (value.act_receive == value.demand && value
-                                                    .bal_receive == 0) {
-                                                   data =data + "<tr class=table-success>";
-                                                }                         
-                                        data = data + "<td class=text-center>" + value.custpo + "</td>"
-                                        data = data + "<td class=text-center>" + value.partno + "</td>"
-                                        data = data + "<td class=text-center>" + value.partname + "</td>"
-                                        data = data + "<td class=text-center>" + value.demand + "</td>"
-                                        data = data + "<td class=text-center>" + value.act_receive + "</td>"
-                                        data = data + "<td class=text-center>" + value.bal_receive + "</td>"
-                                       
-                                        data = data + "</tr>"
-                                        })
-                                        $('#scan-in').html(data);
 
-                                        
+                                                if(warningMessage.indexOf('OVER') == 0){
+                                                        Swal.fire({
+
+                                                            icon: 'warning',
+                                                            title: response.message,
+                                                            showConfirmButton :false,
+                                                            timer:300
+
+
+                                                        })
+
+
+                                                                    var audio = document.getElementById('audio');
+                                                                    var source = document.getElementById('audioSource');
+                                                                    var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                                    audio.load();
+                                                                    audio.play();
+
+
+                                                        return;
+                                                }
+
+
+                                                if(warningMessage.indexOf('FINISH') == 0){
+                                                        Swal.fire({
+
+                                                            icon: 'warning',
+                                                            title: response.message,
+                                                            showConfirmButton :false,
+                                                            timer:300
+
+
+                                                        })
+
+
+                                                                    var audio = document.getElementById('audio');
+                                                                    var source = document.getElementById('audioSource');
+                                                                    var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
+                                                                    audio.load();
+                                                                    audio.play();
+
+
+                                                        return;
+                                                }
+
+
+
+                                        }
 
                             }
                                      
@@ -339,7 +394,7 @@
                                                 icon: 'warning',
                                                 title: "Part Not Match",
                                                 showConfirmButton :false,
-                                                timer:2000
+                                                timer:300
                                             
 
                                             })
