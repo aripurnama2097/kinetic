@@ -34,7 +34,7 @@
                                 </a>
                                 <div class="table-responsive  rounded-1 shadow-sm">
                                     {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
-                                    <table style="width:100%" id="schedule-release"  class="table table-vcenter table-striped">
+                                    <table style="width:100%" id="kit-data"  class="table table-vcenter table-border">
                                        
                                         <thead class="thead-dark">
                                             <tr class="headings">
@@ -60,6 +60,7 @@
                                                 <th style="font-size: 10px;">Demand</th>
                                                 <th style="font-size: 10px;">Actual Receive</th>
                                                 <th style="font-size: 10px;">Balance Receive</th>
+                                                {{-- <th class="text-center"colspan ="3" style="font-size: 10px;">Detail Receive</th> --}}
 
                                             </tr>
                                         </thead>
@@ -90,6 +91,9 @@
                                                 <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td> 
                                                 <td class="text-primary text-center"   style="font-size: 14px; font-weight:bold"> {{ $value->act_receive }}</td>
                                                 <td class="text-danger text-center" style="font-size: 14px;">{{ $value->bal_receive }} </td> 
+                                                {{-- <td class="text-center"  style="font-size: 14px;">{{ $value->bal_receive }} </td> 
+                                                <td  class="text-center" style="font-size: 14px;">x</td> 
+                                                <td class="text-center"  style="font-size: 14px;">{{ $value->bal_receive }} </td>  --}}
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -105,7 +109,7 @@
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">   
         $(document).ready(function() {
-            $('#schedule-release').DataTable( {
+            $('#kit-data').DataTable( {
                 dom: 'Bfrtip',
                 buttons: [
                 

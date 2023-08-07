@@ -315,7 +315,7 @@
                                                     icon: 'success',
                                                     title: response.message,
                                                     showConfirmButton :false,
-                                                    timer: 2000,
+                                                    timer: 200,
                                                 
 
                                                 })
@@ -329,13 +329,15 @@
                                             let warningMessage = response.message;
                                             console.log("warning",response.message);
                                             console.log("message",warningMessage.indexOf('DOUBLE'))
+                                            console.log("message",warningMessage.indexOf('OVER'))
+                                            console.log("message",warningMessage.indexOf('FINISH'))
                                                 if(warningMessage.indexOf('DOUBLE') == 0){
                                                     Swal.fire({
                                                     
                                                         icon: 'warning',
                                                         title: response.message,
                                                         showConfirmButton :false,
-                                                        timer:2000
+                                                        timer:200
                                                     
 
                                                     })
@@ -344,12 +346,60 @@
                                                     var audio = document.getElementById('audio');
                                                                 var source = document.getElementById('audioSource');
                                                                 var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
-                                                                audio.load()
+                                                                audio.load();
                                                                 audio.play();
                                                                 return;
                                                             
-                                                    return;
+                                            
                                                 }
+
+                                                if(warningMessage.indexOf('OVER') == 0){
+                                                        Swal.fire({
+
+                                                            icon: 'warning',
+                                                            title: response.message,
+                                                            showConfirmButton :false,
+                                                            timer:300
+
+
+                                                        })
+
+
+                                                                    var audio = document.getElementById('audio');
+                                                                    var source = document.getElementById('audioSource');
+                                                                    var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                                    audio.load();
+                                                                    audio.play();
+
+
+                                                        return;
+                                                }
+
+
+                                                if(warningMessage.indexOf('FINISH') == 0){
+                                                        Swal.fire({
+
+                                                            icon: 'warning',
+                                                            title: response.message,
+                                                            showConfirmButton :false,
+                                                            timer:300
+
+
+                                                        })
+
+
+                                                                    var audio = document.getElementById('audio');
+                                                                    var source = document.getElementById('audioSource');
+                                                                    var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
+                                                                    audio.load();
+                                                                    audio.play();
+
+
+                                                        return;
+                                                }
+
+
+
                                         }
 
                             }

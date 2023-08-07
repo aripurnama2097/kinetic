@@ -9,20 +9,25 @@
 
 
   <div class="d-flex justify-content-center">
-    <div class="table" widht="100%">
-        <table  class="border border-dark border-3 col-10  mt-2">
+    <div class="table border-4" widht="100%">
+        <table   class="border border-dark border-3 col-10  mt-2">
       <thead>
         <tr>
-          <td align="center" colspan="6" style="border-color:black;font-size:20px;font-weight:bold" > PT JVC Kenwood Electronics Indonesia</td>
+          <td align="center" colspan="6" style="border-color:black;font-size:20px;" > PT JVC Kenwood Electronics Indonesia</td>
+        </tr>
+        <tr>     
+            <td  align="center"  rowspan="1" colspan="6"  style="font-weight:bold;font-size: 20px;vertical-align:middle;border-color:black">PART LIST </td>
+        
+        <tr>
+          <td  align="center"  cellspacing ="2" class="text-center " style="font-size:14px;border-color:black;" colspan="6" > PROD NO : {{$param[0]->prodno}}</td>  
         </tr>
         <tr>
-        <td text-align="center"class="text-center " style="font-size:14px;" colspan="6" > PROD NO : {{$param[0]->prodno}}</td>  
+          <td  align="center"  class="text-center "  style="font-size:14px;" colspan="6" > CARTON NO :{{$param[0]->carton_no}}</td>
         </tr>
         <tr>
-        <td  text-align="center"class="text-center "  style="font-size:14px;" colspan="6" > CARTON NO :{{$param[0]->carton_no}}</td>
-      </tr>
-      <tr>
-        <td  text-align="center" class="text-center"    style="font-size:14px;" colspan="6" > TOTAL ITEM:{{ $totalItem}}</td>
+          <td  align="center"  class="text-center"    style="font-size:14px;" colspan="6" > TOTAL ITEM:{{ $totalItem}}</td>
+        </tr>
+
       </tr>
         <tr>
           <th class="text-center mb-1" style="font-size: 14px;border-color:black;">QR code</th>

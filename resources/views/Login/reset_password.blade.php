@@ -21,9 +21,9 @@
    </div>
    @endif
 
-   @if(session()->has('loginError'))
+   @if(session()->has('error'))
     <div class="alert alert-danger alert-dismi ssible fade show" role="alert">
-      {{session('loginError')}}
+      {{session('error')}}
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
    </div>
    @endif
@@ -34,9 +34,9 @@
     <form action="{{url('/login/reset_password')}}" method="post">
       @csrf
         <div class="form-floating">
-        <input type="email"  name="email" class="form-control @error('email')is-invalid @enderror" placeholder="Email" width="40% mb-lg-5" autofocus required>
-         <label for="email">Email Address</label>
-          @error('email')
+        <input type="nik"  name="nik" class="form-control @error('nik')is-invalid @enderror" placeholder="nik" width="40% mb-lg-5" autofocus required>
+         <label for="nik">ID Number</label>
+          @error('nik')
          <div class="invalid-feedback" style="color:aliceblue">
           {{$message}}
          </div>

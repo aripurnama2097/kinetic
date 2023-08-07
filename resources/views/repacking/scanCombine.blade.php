@@ -60,9 +60,9 @@
                                         <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end">
                                     
                                             <input style="font-size:20px"
-                                                class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                class="form-control form-control-lg mb-2 text-center border border-secondary"
                                                 type="text" name="scan_nik" value="" id="scan_nik" maxlength="8"
-                                                placeholder="SCAN NIK HERE" autofocus>
+                                                placeholder="NIK" autofocus>
                                                 <input
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary  "
                                                 type="text" name="lenght" value="" id="lenght"
