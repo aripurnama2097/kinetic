@@ -73,33 +73,48 @@ class SchTentativeController extends Controller
 
 
   public function importSB98(Request $request){
-    $pic = $request->uploadby;
 
+      $pic = $request->uploadby;
       $data =  Excel::import(new ImportSB98, request()->file('file'));
 
-        return redirect()->back()->with('success', 'Upload Excell Schedule Success');
-
-  }
-
-  public function sumSB98(){
-    
-
-    $param1 = auth()->user()->name;
-
-    try {
-      $result = DB::select("EXEC insSb98sum $param1 ");
-     
-      if ($result) {
-          return redirect()->back()->with('success', 'Stored procedure oke');
-      } else {
-          return redirect()->back()->with('error', 'failed store procedure.');
+      try {
+        $result = DB::select("EXEC insSb98sum $pic ");
+       
+        if ($result) {
+            return redirect()->back()->with('success', 'Stored procedure oke');
+        } else {
+            return redirect()->back()->with('error', 'failed store procedure.');
+        }
+      } 
+      
+      catch (\Exception $e) {
+          return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
       }
-    } 
-    
-    catch (\Exception $e) {
-        return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
-    }
+        
+      
+  return redirect()->back()->with('success', 'Upload SB98 Schedule Success');
+
   }
+
+  // public function sumSB98(){
+    
+
+  //   $param1 = auth()->user()->name;
+
+  //   try {
+  //     $result = DB::select("EXEC insSb98sum $param1 ");
+     
+  //     if ($result) {
+  //         return redirect()->back()->with('success', 'Stored procedure oke');
+  //     } else {
+  //         return redirect()->back()->with('error', 'failed store procedure.');
+  //     }
+  //   } 
+    
+  //   catch (\Exception $e) {
+  //       return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
+  //   }
+  // }
 
   public function reset_sb98(){
 
@@ -148,42 +163,14 @@ class SchTentativeController extends Controller
      return redirect()->back()->with('oke', 'Upload file Success');
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   public function filter(Request $request)
-    {
+  {
         $filter = $request->input('filter');
 
         $data2 = ScheduleTemp::where('filter', $filter)->get();
 
         return view('schedule.table', compact('data2'));
-    }
-
-
-
-
-
-
-
-
-
-
-
-
+  }
 
 
   public function SKDall(){  //SKD -OK
@@ -223,11 +210,11 @@ class SchTentativeController extends Controller
 
       return view('schedule_tentative.serviceNG', compact('data'));
   
-    }
+  }
 
 
 
-    public function serviceOK(){ //SERVICE OK
+  public function serviceOK(){ //SERVICE OK
 
       $data = DB::connection("sqlsrv")
       ->select("SELECT c.*, a.* from schedule_temp as a
@@ -238,14 +225,16 @@ class SchTentativeController extends Controller
             //  echo "Schedule Service Oke";
    
        return view('schedule_tentative.index', compact('data'));
-    }
+  }
 
   
 
     // GENERATE SCHEDULE RELEASE/ INSERT INTO REPACKING LIST OR FG LIST
-    public function generate(){
+  public function generate(Request $request){
 
-      $user = auth()->user()->name;
+      // return $request;
+      $pic = $request->nik;
+      // $user = auth()->user()->name;
 
       $currentDate = Carbon::now();     
       // Mendapatkan format tanggal sebagai angka
@@ -266,16 +255,17 @@ class SchTentativeController extends Controller
       // Generate unique number berdasarkan tanggal dan urutan
       $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
       
+            // STEP 1. INSERT INTO SCHEDULE
             DB::connection('sqlsrv')
                 ->insert("INSERT into schedule(schcode,custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
                           partname,shelfno,demand,input_user) 
                           select	'{$uniqueNumber}', a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                          a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,'{$user}' from schedule_temp as a
+                                          a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,'{$pic}' from schedule_temp as a
                                           inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
                           where a.dest != 'PAKISTAN'
                           UNION ALL
                           select	 '{$uniqueNumber}',a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                          a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand, '{$user}' from schedule_temp as a 
+                                          a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand, '{$pic}' from schedule_temp as a 
                                           inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                           where a.dest ='PAKISTAN'
                           order by vandate asc ");
@@ -283,7 +273,7 @@ class SchTentativeController extends Controller
 
 
 
-            // INSERT INTO REPACKING LIST
+            // STEP 2.INSERT INTO REPACKING LIST
             DB::connection('sqlsrv')
             ->insert("INSERT into repacking_list(custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
                                            partname,shelfno,demand) 
@@ -299,7 +289,7 @@ class SchTentativeController extends Controller
                       order by vandate asc ");
 
                       
-          //  INSERT INTO FG LIST
+          //  STEP 3.INSERT INTO FG LIST
           DB::connection('sqlsrv')
             ->insert("INSERT into finishgood_list(custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
                                           partname,shelfno,demand) 
@@ -314,16 +304,23 @@ class SchTentativeController extends Controller
                       where a.dest ='PAKISTAN'
                       order by vandate asc ");
 
+
+          //  STEP 4.RESET ALL MASTER
+          DB::table('schedule_temp')->truncate();
+          DB::table('tblSB98temp')->truncate();
+          DB::table('tblSB98')->truncate();
+          DB::table('tblSA90')->truncate();
+
         return redirect()->back()->with('success', 'Generate schedule success');
 
-    }
+  }
 
-    public function headersch(){
+  public function headersch(){
           $date = Carbon::now()->format('Y-m-d');
           $filename = 'Format_Headersch' . $date . '.csv';
      
       return Excel::download(new FormatHeaderSchExport, $filename, \Maatwebsite\Excel\Excel::CSV);
-    }
+  }
 
 
   

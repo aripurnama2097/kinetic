@@ -13,14 +13,7 @@
           <br>
           <div class="btn-group mt-3 mb-3">               
             <br>                  
-            <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sb98"> <i class="ti ti-arrow-big-down-filled"></i>
-              Upload SB98
-            </a>
-            <button id="confirm-sb98" class="btn btn-secondary btn btn-sm" >
-              <i class="ti ti-merge"></i>
-              Summary SB98
-            </button>
-            <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
+           
    
           </div>
         
@@ -45,12 +38,25 @@
                   @if(Session::has('success'))
                   <p class="alert alert-success">{{Session::get('success')}}</p>
                   @endif
+                  @if(Session::has('oke'))
+                  <p class="alert alert-success">{{Session::get('oke')}}</p>
+                  @endif
                   @if(Session::has('delete'))
                   <p class="alert alert-info">{{Session::get('delete')}}</p>
                   @endif
+
                   <h2 style="font-size:30px" class="text-dark text-center"> SB98 TENTATIVE </h2>
-                 
-                  <a href="{{url('/schedule_tentative/SB98')}} " class="btn btn-warning  float-right" >Refresh </a>
+                  <div class="btn-group mb-2">
+                  <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sb98"> <i class="ti ti-arrow-big-down-filled"></i>
+                    Upload SB98
+                  </a>
+                  {{-- <button id="confirm-sb98" class="btn btn-secondary btn btn-sm" >
+                    <i class="ti ti-merge"></i>
+                    Summary SB98
+                  </button> --}}
+                  <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
+                  <a href="{{url('/schedule_tentative/SB98')}} " class="btn btn-success  float-right" >Refresh </a>
+                </div>
                   <br>
                   <br>
                   <br>
@@ -269,8 +275,8 @@ $('#delete-all-data').click(function() {
     })
 
         swalWithBootstrapButtons.fire({
-        title: 'Are you sure ?',        
-        text: "Reset SB98!",
+        title: 'Reset SB98 ?',        
+        // text: "Reset SB98!",
        
         icon: 'warning',
         showCancelButton: true,
