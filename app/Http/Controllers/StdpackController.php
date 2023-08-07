@@ -16,25 +16,31 @@ class StdpackController extends Controller
        
         // $data = DB::table('std_pack')
         //         ->orderBy('created_at', 'desc')
-        //         ->get();
-        //         // ->paginate(100);
+        //         // ->get()
+        //         ->paginate(100);
+        $data = StdPack::latest()->paginate(8);
 
-        //         return view('/stdpack.index',compact('data'));
-                if (request()->ajax()) {
-                    $data = StdPack::query();
-                    return DataTables::of($data)
-                    ->addIndexColumn()
-                        // ->addColumn('action', function($row){
-                        //     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-                        //     return $actionBtn;
-                        // })d
+                // $data = DB::table('std_pack')->orderBy('id', 'desc')->get();
+
+                return view('/stdpack.index',compact('data'));
+                
+                // USE DataTables
+                
+                // if (request()->ajax()) {
+                //     $data = StdPack::query();
+                //     return DataTables::of($data)
+                //     ->addIndexColumn()
+                //         // ->addColumn('action', function($row){
+                //         //     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                //         //     return $actionBtn;
+                //         // })d
                       
-                        // ->rawColumns(['action'])
+                //         // ->rawColumns(['action'])
                        
         
-                        ->make(true);
-                }
-                return view('/stdpack.index');
+                //         ->make(true);
+                // }
+                // return view('/stdpack.index');
 
             }
 

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Carbon\Carbon;
 
 class ScheduleController extends Controller
 {
@@ -20,7 +20,8 @@ class ScheduleController extends Controller
         ->select("SELECT distinct (prodno) from schedule ");
 
         $data3=DB::connection('sqlsrv')
-        ->select("SELECT distinct (prodno) from schedule where dest !='PAKISTAN' ");
+        ->select("SELECT distinct (prodno) from schedule where dest !='PAKISTAN' 
+                     and status is null");
 
         return view('schedule.index', compact('data','data2','data3'));
     }
@@ -38,6 +39,7 @@ class ScheduleController extends Controller
     }
 
 
+    // GENERATE PARTLIST
     public function partlist(Request $request){
 
 
@@ -47,7 +49,9 @@ class ScheduleController extends Controller
         ->select("SELECT distinct custcode  from schedule where prodno ='{$prodNo}' ");
 
         $partlistno = $prodNo . $custcode[0]->custcode;
+        $status ='success_generate';
 
+        // STEP 1. GENERATE PARTLIST
          DB::connection('sqlsrv')
         ->insert("INSERT into partlist(custcode, dest,model,prodno,jkeipodate,vandate,partlist_no,orderitem,
                   custpo,partno,partname, demand, stdpack,balance_issue,mcshelfno,vendor,input_user)
@@ -58,21 +62,14 @@ class ScheduleController extends Controller
                   where a.prodno ='{$prodNo}'
                   order by a.vandate desc");
 
+        // STEP 2. UPDATE STATUS SCHEDULE
+        DB::table('schedule')
+            ->where('prodno','=',$prodNo)
+            ->update(['status' => $status]);
+            // ->update('status','=',$status);
 
+            
 
-        // DB::connection('sqlsrv')
-        // ->select("INSERT into repacking_list(custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
-        //                             partname,shelfno,demand) 
-        //             select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-        //                             a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand from schedule_temp as a
-        //                             inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
-        //             where a.dest != 'PAKISTAN'
-        //             UNION ALL
-        //             select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-        //                             a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand, from schedule_temp as a 
-        //                             inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
-        //             where a.dest ='PAKISTAN'
-        //             order by vandate asc ");
 
                   return redirect()->back()->with('success', 'Generate partlist success ');
 
@@ -94,6 +91,34 @@ class ScheduleController extends Controller
         ->select("SELECT distinct (prodno) from schedule where dest !='PAKISTAN' ");
 
         return view('schedule.release_schedule', compact('data','data2','data3'));
+    }
+
+
+    public function cancel_partlist(request $request){
+
+        // return $request;
+
+        $nik    = $request->input('input_user');
+        $prodno = $request->input('prodno');
+        $status = NULL;
+        $date = Carbon::now();
+
+        // STEP 1. DELETE DATA PARTLIST BASE ON PRODNO
+        DB::table('partlist')
+            ->where('prodno','=',$prodno)
+            ->delete();
+
+       // STEP 2. UPDATE STATUS SCHEDULE AGAR BISA DI GENERATE ULANG
+        DB::table('schedule')
+            ->where('prodno','=',$prodno)
+            ->update(['status' => $status,
+                     'pic_cancelpartlist' => $nik,
+                     'updated_at'=> $date
+                    ]);
+            // ->update(['created_at' => $date]);
+
+            return redirect()->back()->with('success', 'Cancel partlist success ');
+
     }
 
 }

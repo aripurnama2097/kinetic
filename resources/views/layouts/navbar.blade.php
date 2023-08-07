@@ -46,10 +46,10 @@
                       </a>
                   </li>
 
-
-                  <?php if (Auth::user()->role === 'admin') { ?>
-                 <li class="nav-item dropdown">
-                     <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                   {{-- ====ADMIN || ADMIN PLANNING==== --}}
+                  <?php if (Auth::user()->role === 'admin'||Auth::user()->role === 'Admin Planning') { ?>
+                   <li class="nav-item dropdown">
+                     <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                           <span style="font-size:18px" >  <i class="ti ti-book-upload"></i>
                               Master Schedule
                           </span>
@@ -76,17 +76,19 @@
                           </div>
                       </div>
                     </li>
-                    <li class="nav-item dropdown ml-3">
+
+                    
+                 <li class="nav-item dropdown ml-3">
                         <a class="text-white"href="{{ url('/schedule/release_schedule') }}" >
                              <span style="font-size:18px" >  <i class="ti ti-calendar-minus mr-2"></i>
                                  Schedule Release
                              </span>
                          </a>
                       
-                       </li>
+                  </li>
                   {{-- MC ISSUE --}}
                   <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                    <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown"
                         data-bs-auto-close="outside" role="button" aria-expanded="false">
                         <span class="nav-link-icon d-md-none d-lg-inline-block">
                          
@@ -140,7 +142,7 @@
 
            
                   <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                      <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
                      
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -182,7 +184,7 @@
                   </li>
 
                   <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                      <a class="nav-link " href="#navbar-extra" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
                       
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -211,7 +213,7 @@
                   </li>
 
                   <li class="nav-item active dropdown">
-                      <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                      <a class="nav-link " href="#navbar-layout" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
                              
@@ -273,9 +275,19 @@
                  </li>
                  <?php } ?>
 
+                {{-- ==== ADMIN MC=========== --}}
                  <?php if (Auth::user()->role === 'user' || Auth::user()->role === 'Admin MC') { ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
+                    <li class="nav-item dropdown ml-3">
+                        <a class="text-white"href="{{ url('/schedule/release_schedule') }}" >
+                             <span style="font-size:18px" >  <i class="ti ti-calendar-minus mr-2"></i>
+                                 Schedule Release
+                             </span>
+                         </a>
+                      
+                  </li>
+                  
+                  <li class="nav-item dropdown">
+                        <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown"
                             data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                              
@@ -340,10 +352,19 @@
                     </li>
                 <?php } ?>
 
-                <?php if (Auth::user()->role === 'user' || Auth::user()->role === 'Admin QA') { ?>
+                {{-- ====ADMIN QA==== --}}
+                <?php if (Auth::user()->role === 'user' || Auth::user()->role === 'Admin QA' ||Auth::user()->role === 'Admin QC') { ?>
                    {{-- GENERAL MENU --}}                 
-                   <li class="nav-item active dropdown">
-                        <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
+                   <li class="nav-item dropdown ml-3">
+                    <a class="text-white"href="{{ url('/schedule/release_schedule') }}" >
+                         <span style="font-size:18px" >  <i class="ti ti-calendar-minus mr-2"></i>
+                             Schedule Release
+                         </span>
+                     </a>
+                  
+              </li>
+              <li class="nav-item active dropdown">
+                        <a class="nav-link " href="#navbar-layout" data-bs-toggle="dropdown"
                             data-bs-auto-close="outside" role="button" aria-expanded="false">
                             <span class="nav-link-icon d-md-none d-lg-inline-block">
                                

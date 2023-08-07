@@ -35,7 +35,7 @@
                       </form>
                     </div>
 
-                    <div class="col-7 ml-6">
+                    {{-- <div class="col-7 ml-6">
                       <form id="filter-Data" class="form-inline  float-left">
                         <input type="date" class="form-control mr-2" name="start_date" id="release-date"
                           value="{{ date('Y-m-d') }}">
@@ -47,7 +47,7 @@
                           Search
                         </button>
                       </form>
-                    </div>
+                    </div> --}}
 
                   </div>
                  
@@ -65,22 +65,22 @@
                         <div class="card  col-12 ">
 
                             <div class="card-header ml-3 ">
-                                <a data-bs-toggle="modal" data-bs-target="#modal-partlist"
-                                    class="btn btn-secondary   text-light">
-                                    <i class="ti ti-file-export"></i>
-                                    Generate Partlist
-                                </a>
-
-
-                                <button id="share-schedule" class="btn btn-info  ml-2">
+                                <button id="share-schedule" class="btn btn-info  ">
                                     <i class="ti ti-share"></i>
                                     Share Schedule
                                 </button>
-
-
-                                <a href="{{ url('/schedule') }}" class="btn btn-warning ml-2">
+                                <a data-bs-toggle="modal" data-bs-target="#modal-partlist"
+                                    class="btn btn-secondary   text-light ml-2">
+                                    <i class="ti ti-file-export"></i>
+                                    Generate Partlist
+                                </a>
+                                {{-- <a href="{{ url('/schedule') }}" class="btn btn-warning ml-2">
                                     <i class="ti ti-360"></i>
                                     Refresh
+                                </a> --}}
+                                <a data-bs-toggle="modal" data-bs-target="#cancel-partlist"
+                                   class="btn btn-danger   text-light ml-2"><i class="ti ti-circle-letter-x"></i>
+                                    Cancel Partlist
                                 </a>
                             </div>
 
@@ -89,8 +89,7 @@
                             <div class="card-body border-bottom ">
                                 <div class="table-responsive  rounded-1 shadow-sm">
                                     {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
-                                    <table style="width:100%" id="schedule-release"  class="table  table-bordered border-dark shadow-sm">
-                                       
+                                    <table style="width:100%" id="schedule-release"  class="table  table-bordered border-dark shadow-sm">                                   
                                         <thead class="thead-dark">
                                             <tr class="headings">
                                                 <th style="font-size: 10px;">Schedule Number</th>
@@ -166,7 +165,7 @@
         </div>
     </div>
 
-    {{-- ====================,modal stdpack upload ========================================= --}}
+    {{-- ====================GENERATE PARTLIST========================================= --}}
     <div class="modal modal-blur fade" id="modal-partlist" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -180,7 +179,7 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div>
-                                    <label>PIC </label>
+                                    <label class="form-label required">PIC </label>
                                     <input class="form-control" name="input_user" id="input_user" placeholder="PIC"
                                         required>
                                     <br>
@@ -212,28 +211,70 @@
         </div>
     </div>
 {{-- @endsection
+{{-- ====================GENERATE PARTLIST========================================= --}}
+    <div class="modal modal-blur fade" id="cancel-partlist" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">CANCEL PARTLIST</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url('schedule/cancel_partlist') }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div>
+                                    <label class="form-label required">PIC </label>
+                                    <input class="form-control" name="input_user" id="input_user" placeholder="PIC"
+                                        required>
+                                    <br>
 
-@section('script') --}}
+                                    <input class="form-control" name="prodno" id="prodno" placeholder="INPUT PRODNO"
+                                    required>
+                                     <br>
+                                    {{-- <select style="font-size:15px" class="form-control col-8 btn btn-light btn-sm"
+                                        id="prodno" name="prodno">
+
+                                        @foreach ($data3 as $dd)
+                                            <option value="{{ $dd->prodno }}">{{ $dd->prodno }}</option>
+                                        @endforeach
+                                    </select> --}}
+
+
+                                    <button type="submit" class="btn btn-primary d-none d-sm-inline-block">
+                                        <i class="ti ti-file-export"></i>
+                                        Submit
+                                    </button>
+                                    <br>
+                                    <br>
+                                    <p style="font-wight:bold" class="text-danger"> * Pastikan Prod No yang di input sudah
+                                        sesuai </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">
 
-
-
-
-
-    
-    
         $(document).ready(function() {
 
 
             $('#schedule-release').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-           
-            'excelHtml5',
-            'csvHtml5'
-        ]
-    } );
+                    dom: 'Bfrtip',
+                    buttons: [
+                    
+                        'excelHtml5',
+                        'csvHtml5'
+                    ]
+                } );
 
 
 
@@ -284,9 +325,6 @@
                 });
             });
 
-
-
-
             //SHARE SCHEDULE DIC//
             $('#share-schedule').on('click', function() {
 
@@ -296,11 +334,11 @@
   
                 Swal.fire({
                     html:
-                        '<input id="name1" name="name1" class=" col-8  type="text">' +'<br>'  +
-                        '<input id="name2" name="name2" class=" col-8" type="text">' +'<br>'  +
-                        '<input id="name3" name="name3" class=" col-8" type="text">' +'<br>'  +
-                        '<input id="name4" name="name4" class=" col-8" type="text">' +'<br>'  +
-                        '<input id="name5" name="name5" class=" col-8" type="text">',
+                        '<input placeholder="INPUT EMAIL"id="name1" name="name1" class=" col-8"  type="text">' +'<br>'  +
+                        '<input placeholder="INPUT EMAIL"id="name2" name="name2" class=" col-8" type="text">' +'<br>'  +
+                        '<input placeholder="INPUT EMAIL"id="name3" name="name3" class=" col-8" type="text">' +'<br>'  +
+                        '<input placeholder="INPUT EMAIL"id="name4" name="name4" class=" col-8" type="text">' +'<br>'  +
+                        '<input placeholder="INPUT EMAIL"id="name5" name="name5" class=" col-8" type="text">',
                     icon: 'warning',
                     title: ' Share Update Schedule?',
                     showDenyButton: false,
@@ -354,7 +392,6 @@
                     }
                 });
             });
-
 
             //  =====================GENERATE PARLIST============================
 

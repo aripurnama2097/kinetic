@@ -14,11 +14,7 @@
           <!-- Page title actions -->
        
             <div class="btn-group col-8 ">
-              {{-- <span class="d-none d-sm-inline"> --}}
-                {{-- <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-master"> <i class="ti ti-arrow-big-down-filled"></i>
-                  Upload Master
-                </a> --}}
-
+             
                 <a  href="{{url('/schedule_tentative/master_scheduleTemp')}}" class="btn btn-light" >
                   Excell Schedule           
                  </a>
@@ -54,7 +50,7 @@
                   @if(Session::has('success'))
                   <p class="alert alert-success">{{Session::get('success')}}</p>
                   @endif
-                 <div class="row-2 ml-4">
+                 <div class="row-2 ml-4 mb-2">
                     {{-- <button type="button" class="btn btn-primary dropdown-toggle " data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="ti ti-note"></i>
                      Schedule Category   
@@ -64,10 +60,7 @@
                       <i class="ti ti-file-export"></i>
                       Generate Schedule
                     </button>
-
-                    <button  id="reset-all-master" class="btn btn-danger d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
-                      <i class="ti ti-circle-letter-x"></i>
-                      Reset All Master
+                    <a href="{{url('/schedule_tentative')}} " class="btn btn-success " ><i class="ti ti-360"></i>Refresh </a>
                     </button>
                 
                  
@@ -78,10 +71,7 @@
                     </ul>
                   </div>
 
-                  <a href="{{url('/schedule_tentative')}} " class="btn btn-success float-end mr-4" >Refresh </a>
-                   
-                  <br>
-                  <br>
+                  
                
 
                   <div class="col-12">
@@ -380,8 +370,10 @@ $(document).ready(function () {
       });
 
       Swal.fire({
-        icon: 'warning',
-          title: ' Generate schedule?',
+          html:
+          '<input id="nik" name="nik" class=" col-8" type="text" placeholder="INPUT NIK" maxlenght="5">',
+          icon: 'warning',
+          title: ' Generate Schedule?',
           // input :text,
           showDenyButton: false,
           showCancelButton: true,
@@ -390,8 +382,13 @@ $(document).ready(function () {
       }).then((result) => {
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
+          nik= $('#nik').val();
           $.ajax({
             type: 'get',
+            data:{
+                    nik:nik
+
+            },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
