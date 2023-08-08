@@ -120,12 +120,12 @@
                                     </div>
                                     <div class="btn-group col-12">
 
-                                        <button id="print-master" onclick="printCombine()" class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
-                                            Print Master Label
+                                        <button id="print-master" onclick="printCombine()" class="btn btn-success text-white  col-12 mb-3" disabled ><i class="ti ti-printer"></i>
+                                            PRINT MASTER LABEL
                                         </button>
-                                        <button  id="delete-tbltemp" class="btn btn-danger text-white  col-12 mb-3" disabled><i class="ti ti-delete"></i>
+                                        {{-- <button  id="delete-tbltemp" class="btn btn-danger text-white  col-12 mb-3" disabled><i class="ti ti-delete"></i>
                                             Reset Data
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </div>
                                 <div class="col-2">
@@ -481,18 +481,7 @@
 
                 window.location.assign("{{url('repacking/scanCombine/printMaster')}}" )
 
-                // $.ajax({
-                //             url: "{{url('repacking/scanCombine/printMaster')}}",
-                //             type: 'get',
-                //             success: function(result) {
-                //             swalWithBootstrapButtons.fire(
-                //             'SUCCESS!',
-                //             'Your file has been reset.',
-                //             'success'
-                //             )
-                //             }
-
-                //         });
+            
             }
     </script>
 @endsection

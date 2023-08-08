@@ -334,11 +334,12 @@
   
                 Swal.fire({
                     html:
-                        '<input placeholder="INPUT EMAIL"id="name1" name="name1" class=" col-8"  type="text">' +'<br>'  +
-                        '<input placeholder="INPUT EMAIL"id="name2" name="name2" class=" col-8" type="text">' +'<br>'  +
-                        '<input placeholder="INPUT EMAIL"id="name3" name="name3" class=" col-8" type="text">' +'<br>'  +
-                        '<input placeholder="INPUT EMAIL"id="name4" name="name4" class=" col-8" type="text">' +'<br>'  +
-                        '<input placeholder="INPUT EMAIL"id="name5" name="name5" class=" col-8" type="text">',
+                        '<input  placeholder="INPUT EMAIL"id="name1" name="name1" cols="5" class="col-12 row-cols-5"  type="textarea">',
+                        //  +'<br>'  +
+                        // '<input placeholder="INPUT EMAIL"id="name2" name="name2" class=" col-8" type="text">' +'<br>'  +
+                        // '<input placeholder="INPUT EMAIL"id="name3" name="name3" class=" col-8" type="text">' +'<br>'  +
+                        // '<input placeholder="INPUT EMAIL"id="name4" name="name4" class=" col-8" type="text">' +'<br>'  +
+                        // '<input placeholder="INPUT EMAIL"id="name5" name="name5" class=" col-8" type="text">',
                     icon: 'warning',
                     title: ' Share Update Schedule?',
                     showDenyButton: false,
@@ -349,19 +350,19 @@
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
                         name_1= $('#name1').val();
-                        name_2= $('#name2').val();
-                        name_3= $('#name3').val();
-                        name_4= $('#name4').val();
-                        name_5= $('#name5').val();
+                        // name_2= $('#name2').val();
+                        // name_3= $('#name3').val();
+                        // name_4= $('#name4').val();
+                        // name_5= $('#name5').val();
 
                         $.ajax({
                             type: 'POST',
                             data: {
                                     name1: name_1,
-                                    name2: name_2,
-                                    name3: name_3,
-                                    name4: name_4,
-                                    name5: name_5,
+                                    // name2: name_2,
+                                    // name3: name_3,
+                                    // name4: name_4,
+                                    // name5: name_5,
                                     _token: '{{ csrf_token() }}'
                                 },
                             headers: {

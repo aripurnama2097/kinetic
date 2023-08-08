@@ -9,7 +9,10 @@ class BorrowController extends Controller
 {
     public function index(){
 
-        return  view('borrow.index');
+        $data = DB::table('borrow')
+                 ->paginate(10);
+
+        return  view('borrow.index',compact('data'));
     }
 
     public function takeout(request $request){
