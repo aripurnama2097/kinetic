@@ -232,6 +232,9 @@
                                       Borrow Menu
                                       <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                                   </a>
+                                  <a href="{{url('borrow/cancelation')}}" class="dropdown-item text-dark"><i class="ti ti-circle-letter-x"></i>
+                                     Cancelation Part
+                                </a>
 
                               </div>
 
@@ -383,6 +386,7 @@
                                         Borrow Menu
                                         <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
                                     </a>
+                                   
   
                                 </div>
   

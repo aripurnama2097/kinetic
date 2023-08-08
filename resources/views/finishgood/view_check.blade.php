@@ -94,7 +94,7 @@
                                         </div>
                                         
                                     </div>
-                                        
+                                    <div class="col-12 text-dark ml-0 " style="position:left;font-color:black;font-size:18px;font-weight:bol" id="QRText"></div>
 
                                         <table style="width:100%"
                                         class="text-nowrap  table border-bordered  shadow-sm">
@@ -151,13 +151,16 @@
                                             var audio   = document.getElementById('audio');
                                             var source  = document.getElementById('audioSource');
                                             var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                            audio.load();
+                                            audio.play();
+
 
                                         swal.fire({
                                             icon: 'success',
                                             title: response.message,
 
-                                            timer: 5000,
-                                            showConfirmButton: true,
+                                            timer: 400,
+                                            showConfirmButton: false,
 
                                         })
                                 } 
@@ -167,10 +170,20 @@
                                             title: response.message
                                         })  
                                 }
-
+                                $('#QRText').html(response.qr);
                               var data = ""                          
                               $.each(response.data, function(key, value) {
                                 data = data + "<tr>"
+                                    if (value.act_running == 0 && value.bal_running == 0) {
+                                                data = data + "<tr class=table-light>";
+                                            }
+                                            if (value.act_running!= 0 && value.bal_running != 0) {
+                                                data = data + "<tr class=table-warning>";
+                                            }
+                                            if (value.act_running == value.demand && value
+                                                .bal_running == 0) {
+                                                data = data + "<tr class=table-success>";
+                                            }
                                     //   data = data + "<td>" + value.id + "</td>"
                                       data = data + "<td>" + value.custcode + "</td>"
                                       data = data + "<td>" + value.skid_no + "</td>"
@@ -185,6 +198,8 @@
                               $('#view-check').html(data);
                             }
                         })
+                        $('#qr_skid').val("");
+                        $('#qr_skid').focus();
 
                 }
             })

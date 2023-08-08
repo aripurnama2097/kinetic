@@ -367,10 +367,15 @@ class FinishGoodController extends Controller
                ->select("SELECT * FROM finishgood_list where skid_no ='{$skidno}'");
     
             // return $data;
+            // return response()->json([
 
+            //     "data" => $data,
+            //     "qr" => $qr
+            // ]);
             return response()->json(['success'=>TRUE,
                                     'message'=>'Success',
-                                    'data'  => $data
+                                    'data'  => $data,
+                                    'qr'    =>$qrskid
              ]);
     }
 
