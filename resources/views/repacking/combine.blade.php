@@ -5,7 +5,7 @@
 </head>
 
 
-<div class="col-12">
+<div class="col-6">
 
 
   <div class="d-flex justify-content-center">
@@ -30,12 +30,12 @@
 
       </tr>
         <tr>
-          <th class="text-center mb-1" style="font-size: 14px;border-color:black;">QR code</th>
-          <th class="text-center mb-1"style="font-size: 14px;border-color:black;">Cust PO</th>
-          <th class="text-center mb-1"style="font-size: 14px;border-color:black;">Item No</th>
-          <th class="text-center mb-1"style="font-size: 14px;border-color:black;">Item Description</th>
-          <th class="text-center mb-1"style="font-size: 14px;border-color:black;">Shelf No</th>
-          <th class="text-center mb-1"style="font-size: 14px;border-color:black;">Qty</th>
+          <th class="text-center mb-1" style="font-size:12px;border-color:black;">QR code</th>
+          <th class="text-center mb-1"style="font-size:12px;border-color:black;">Cust PO</th>
+          <th class="text-center mb-1"style="font-size:12px;border-color:black;">Item No</th>
+          <th class="text-center mb-1"style="font-size:12px;border-color:black;">Item Description</th>
+          <th class="text-center mb-1"style="font-size:12px;border-color:black;">Shelf No</th>
+          <th class="text-center mb-1"style="font-size:12px;border-color:black;">Qty</th>
 
         </tr>
       </thead>
@@ -43,14 +43,16 @@
         @foreach($param as $key => $value)   
         <tr>   
           {{-- @if (is_array($label) || is_object($label))
-          @foreach ($label as $lbl )            --}}
-          <?php $barcode =   $value->partno . ':' . $value->partname . ':' . $value->partname . ':' . $value->custpo . ':' . $value->custpo . ':' . $value->shelfno . ':' . $value->qty; ?>
-          <td class="text-center mb-1" style="font-size: 13px;border-color:black;"> {!! QrCode::size(50)->generate($barcode) !!}</td>
-          <td class="text-center mb-1"style="font-size: 13px;border-color:black;">{{$value->custpo}}</td>
-          <td class="text-center mb-1"style="font-size: 13px;border-color:black;">{{$value->partno}}</td>
-          <td class="text-center mb-1"style="font-size: 13px;border-color:black;">{{$value->partname}}</td>
-          <td class="text-center mb-1"style="font-size: 13px;border-color:black;">{{$value->shelfno}}</td>
-          <td class="text-center mb-1"style="font-size: 13px;border-color:black;">{{$value->qty}}</td>
+          @foreach ($label as $lbl )      
+                --}}
+
+          <?php $barcode =   $value->partno . ':' . $value->partname . ':' . $value->qty. ':' . $value->dest . ':' . $value->custpo . ':' . $value->shelfno . ':' . $value->sequence_no ?>
+          <td class="text-center mb-1" style="font-size: 12px;border-color:black;"> {!! QrCode::size(50)->generate($barcode) !!}</td>
+          <td class="text-center mb-1"style="font-size: 12px;border-color:black;">{{$value->custpo}}</td>
+          <td class="text-center mb-1"style="font-size: 12px;border-color:black;">{{$value->partno}}</td>
+          <td class="text-center mb-1"style="font-size: 12px;border-color:black;">{{$value->partname}}</td>
+          <td class="text-center mb-1"style="font-size: 12px;border-color:black;">{{$value->shelfno}}</td>
+          <td class="text-center mb-1"style="font-size: 12px;border-color:black;">{{$value->qty}}</td>
          
          
         </tr>

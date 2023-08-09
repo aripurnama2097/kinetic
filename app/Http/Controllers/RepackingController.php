@@ -354,14 +354,26 @@ class RepackingController extends Controller
                                             
                 ") ;
 
+
+
+
             // STEP  MASUKAN DATA KE TEMP PRINT
             //         1. GET CONTENT UNTUK TEMP PRINT COMBINE LABEL
             $get_demand = DB::connection('sqlsrv')
-                            ->select("SELECT demand from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
+                            ->select("SELECT demand from repacking_list where partno ='{$partno}' 
+                                        and custpo ='{$custpo}'");
 
             $get_prodno = DB::connection('sqlsrv')
-                            ->select("SELECT prodno from repacking_list where partno ='{$partno}' and custpo ='{$custpo}'");
-            $carton_no = '1';
+                            ->select("SELECT prodno from repacking_list where partno ='{$partno}'
+                                         and custpo ='{$custpo}'");
+
+            $lastOrder = DB::table('tblheadercombine')
+            // ->where('box_no')
+            ->max('carton_no');
+
+            $carton_no = $lastOrder ? $lastOrder + 1 : 1;
+
+            // $carton_no = '1';
             // GET SEQUENCE NO
             $currentDate = Carbon::now();     
             $dateAsNumber = $currentDate->format('Ymd');    
@@ -385,8 +397,8 @@ class RepackingController extends Controller
                         if($cek_po[0]->custpo == 0  ){
                             // INSERT DATA TO TEMP PRINT TABLE
                             DB::connection('sqlsrv')
-                                    ->insert("INSERT INTO temp_print(custpo,prodno,partno,partname,shelfno,qty,carton_no,sequence_no)
-                                            select '{$custpo}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$get_demand[0]->demand}','{$carton_no}','{$seq}' 
+                                    ->insert("INSERT INTO temp_print(custpo,dest,prodno,partno,partname,shelfno,qty,carton_no,sequence_no)
+                                            select '{$custpo}','{$dest}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$get_demand[0]->demand}','{$carton_no}','{$seq}' 
                                             ");
                                                $sum = array($selectPart[0]->act_receive, $qty);
                                                $act_qty = array_sum($sum);
@@ -490,9 +502,19 @@ class RepackingController extends Controller
     public function printMaster(){
 
       $param= DB::connection('sqlsrv')
-                     ->select("SELECT distinct custpo, prodno,partno,partname,shelfno, qty,carton_no,sequence_no FROM temp_print");
+                     ->select("SELECT distinct custpo, prodno,partno,partname,dest,shelfno, qty,carton_no,sequence_no FROM temp_print");
     
       $totalItem = DB::table('temp_print')->distinct('custpo')->count('custpo');
+
+       // STEP 2. INSERT INTO TBLIDBOX
+       DB::connection('sqlsrv')
+            ->insert("INSERT into tblheadercombine(prodno,carton_no)
+                        select prodno,carton_no from temp_print
+                        ");
+
+    //    DB::table('temp_print')
+    //         ->truncate();
+
 
 
         return view('repacking.combine', compact('param','totalItem'));
