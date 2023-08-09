@@ -797,8 +797,8 @@
                                     showDenyButton: true,
                                     showCancelButton: true,
                                     confirmButtonText: 'Loose Control',
-                                    denyButtonText: `Continue`,
-                                    cancelButtonText: 'End Continue'
+                                    denyButtonText: `Start Combine`,
+                                    cancelButtonText: 'Continue Combine'
                                 }).then((result) => {
                                     console.log("3. Loose Carton Swal: ", result)
 
