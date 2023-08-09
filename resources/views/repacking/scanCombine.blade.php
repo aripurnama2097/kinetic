@@ -267,14 +267,14 @@
                                     }
 
                                     // data = data + "<td>" + value.id + "</td>"
-                                    data = data + "<td>" + value.custcode + "</td>"
-                                    data = data + "<td>" + value.custpo + "</td>"
-                                    data = data + "<td>" + value.prodno + "</td>"
-                                    data = data + "<td>" + value.partno + "</td>"
+                                    data = data + "<td class=text-center>" + value.custcode + "</td>"
+                                    data = data + "<td class=text-center>" + value.custpo + "</td>"
+                                    data = data + "<td class=text-center>" + value.prodno + "</td>"
+                                    data = data + "<td class=text-center>" + value.partno + "</td>"
                               
-                                    data = data + "<td>" + value.demand + "</td>"
-                                    data = data + "<td>" + value.act_receive+ "</td>"
-                                    data = data + "<td>" + value.bal_receive +
+                                    data = data + "<td class=text-center>" + value.demand + "</td>"
+                                    data = data + "<td class=text-center>" + value.act_receive+ "</td>"
+                                    data = data + "<td class=text-center>" + value.bal_receive +
                                         "</td>"
 
                                     data = data + "</tr>"

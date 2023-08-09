@@ -125,6 +125,7 @@ Route::post('partlist/filter_scan',[PartlistController::class,'filter_scan']);
 Route::post('partlist/scan_issue',[PartlistController::class,'scan_issue']);
 Route::post('partlist/looseCarton',[PartlistController::class,'looseCarton']);
 Route::post('partlist/scan_continue',[PartlistController::class,'scan_continue']);
+Route::post('partlist/scan_end_continue',[PartlistController::class,'scan_end_continue']);
 Route::get('partlist/showscan',[PartlistController::class,'showscan']);
 Route::get('partlist/inhouse',[PartlistController::class,'view_inhouse']);
 Route::post('partlist/inhouse/scanin',[PartlistController::class,'scan_inhouse']);

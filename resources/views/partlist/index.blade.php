@@ -672,7 +672,7 @@
 
                                 // console.log("warning",response.message);
                                 let warningMessage = response.message;
-                               
+
                                 console.log("message",warningMessage.indexOf('Loose'))
                                 console.log("message",warningMessage.indexOf('WRONG'))
                                 console.log("message",warningMessage.indexOf('DOUBLE'))
@@ -789,16 +789,16 @@
                                         return;
                                     }
 
-                               
+
                                 Swal.fire({
 
                                     icon: 'warning',
                                     title: response.message,
                                     showDenyButton: true,
+                                    showCancelButton: true,
                                     confirmButtonText: 'Loose Control',
                                     denyButtonText: `Continue`,
-
-
+                                    cancelButtonText: 'End Continue'
                                 }).then((result) => {
                                     console.log("3. Loose Carton Swal: ", result)
 
@@ -877,7 +877,7 @@
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
-                                                console.log("4. Continue Check: ", response);
+                                                console.log("5. Continue Check: ", response);
 
                                                 var audio = document.getElementById('audio');
                                                 var source = document.getElementById('audioSource');
@@ -889,7 +889,67 @@
 
                                                 var data = ""
                                                 $.each(response.data, function(key, value) {
-                                // console.log('key=>'+key+'|value=>'+value)
+                                                    // console.log('key=>'+key+'|value=>'+value)
+
+                                               data =data + "<tr>"
+                                                if (value.tot_scan == 0 && value.balance_issue == 0) {
+                                                   data =data + "<tr class=table-light>";
+                                                }
+                                                if (value.tot_scan != 0 && value.balance_issue != 0) {
+                                                   data =data + "<tr class=table-warning>";
+                                                }
+                                                if (value.tot_scan == value.demand && value
+                                                    .balance_issue == 0) {
+                                                   data =data + "<tr class=table-success>";
+                                                }
+
+                                            //    data =data + "<td>" + value.id + "</td>"
+                                               data =data + "<td>" + value.custcode + "</td>"
+                                               data = data + "<td>" + value.custpo + "</td>"
+                                               data =data + "<td>" + value.prodno + "</td>"
+                                               data =data + "<td>" + value.partno + "</td>"
+                                               data =data + "<td>" + value.partname + "</td>"
+                                               data =data + "<td>" + value.demand + "</td>"
+                                               data = data + "<td>" + value.stdpack + "</td>"
+                                               data =data + "<td>" + value.tot_scan + "</td>"
+                                               data =data + "<td>" + value.balance_issue +
+                                                    "</td>"
+
+                                               data = data + "</tr>"
+                                            })
+                                            $('#data-scanin').html(data);
+                                            $('#scan_label').focus();
+                                            $('#scan_label').val("");
+                                            }
+                                        })
+                                    } else if(result.isDismissed){
+                                        // Swal.fire('Oke Continue END !')
+                                        $.ajax({
+                                            type: "POST",
+                                           dataType: "json",
+                                            url: "{{ url('/partlist/scan_end_continue/') }}",
+                                            headers: {
+                                                'X-CSRF-TOKEN': $(
+                                                    'meta[name="csrf-token"]'
+                                                    ).attr('content')
+                                            },
+                                            data: {
+                                                scan_label: scan_label
+                                            },
+                                            success: function(response) {
+                                                console.log("6. End Continue Check: ", response);
+
+                                                var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                                audio.load()
+                                                audio.play();
+
+                                                console.log(response)
+
+                                                var data = ""
+                                                $.each(response.data, function(key, value) {
+                                                    // console.log('key=>'+key+'|value=>'+value)
 
                                                data =data + "<tr>"
                                                 if (value.tot_scan == 0 && value.balance_issue == 0) {

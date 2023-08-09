@@ -192,7 +192,7 @@ class PartlistController extends Controller
         $cek_total = DB::connection('sqlsrv')
             ->select("SELECT  * from partlist
                         where  partno = '{$label_scan}' and tot_scan != demand
-                        order by custpo asc 
+                        order by custpo asc
                         ");
 
         // dd($cek_total);
@@ -213,7 +213,7 @@ class PartlistController extends Controller
          // ENDSTEP 3
 
 
-       
+
         // STEP 4.PILIH PART UNTUK DI UPDATE DATA
         $selectPart = DB::connection('sqlsrv')
             ->select("SELECT top 1 * from partlist
@@ -226,62 +226,73 @@ class PartlistController extends Controller
         // dd($qty,$selectPart[0]->stdpack );
 
         // $cek_continue = DB::connection('sqlsrv')
-        //                 ->select("SELECT count(*) as continue_status from partscan where partno = '{$label_scan}' and status_print = 'continue'");
+        //                 ->select("SELECT count(*) as continue_status from partscan where partno = '{$label_scan}'
+                            // and status_print = 'continue'");
 
 
-        if ($qty < $selectPart[0]->stdpack && $status_print == null) {
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'Loose Carton ?'
-                ]);
-        }
+                if ($qty < $selectPart[0]->stdpack && $status_print == null) {
+                    return response()
+                        ->json([
+                            'success' => false,
+                            'message' => 'Loose Carton ?'
+                        ]);
+                }
 
-        else if($qty > $selectPart[0]->stdpack  && $status_print == null)
-            {
-                return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'Loose Carton ?'
-                ]);
-            }
+                else if($qty > $selectPart[0]->stdpack  && $status_print == null)
+                    {
+                        return response()
+                        ->json([
+                            'success' => false,
+                            'message' => 'OVER QTY...',
+
+                        ]);
+                    }
 
 
-        else if ($selectPart[0]->stdpack == null && $status_print == null) {
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'Loose Carton ?'
-                ]);
-        }
+                else if ($selectPart[0]->stdpack == null && $status_print == null) {
+                    return response()
+                        ->json([
+                            'success' => false,
+                            'message' => 'Loose Carton ?'
+                        ]);
+                }
         //--------------END CEK-----------------
 
 
-        // GET ID PRINT
+        // GET ID NUMBER PRINT LABEL KIT
         $currentDate = Carbon::now();
         $dateAsNumber = $currentDate->format('Ymd');
         $date = substr($dateAsNumber, 2, 8);
-
-
         $get_id = DB::table('partscan')
-            ->whereDate('scan_date', $currentDate)
-            ->max('id');
+                    ->whereDate('scan_date', $currentDate)
+                    ->max('id');
 
         $order = $get_id ? $get_id + 1 : 1;
         $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+
+
+
+        // STEP SCAN ISSUE
+        $get_lastuniq = DB::table('partscan')
+                        ->max('unique_continue');
+        $uniq_cont = $get_lastuniq;
+        if($status_print != 'end_continue'){
+            $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
+        }
 
         //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
         if (!empty(@$status_print)) {
 
             DB::connection('sqlsrv')
                 ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
-                    ,orderitem,custpo,partno,partname,shelfno,label,demand,unique_id,stdpack,scan_issue, scan_nik, status_print,idnumber)
-                    select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
-                    orderitem,custpo,partno, partname,mcshelfno,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}','{$idnumber}'
-                    from partlist
-                    where partno = '{$label_scan}'
-                    and  (coalesce(tot_scan,0)+{$qty}) <= demand
-                    order by custpo asc ");
+                                     ,orderitem,custpo,partno,partname,shelfno,label,demand,unique_id,stdpack,scan_issue, scan_nik,
+                                      status_print,idnumber,unique_continue)
+                          select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
+                                    orderitem,custpo,partno, partname,mcshelfno,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}','{$idnumber}','{$uniq_cont}'
+                                    from partlist
+                                    where partno = '{$label_scan}'
+                                    and  (coalesce(tot_scan,0)+{$qty}) <= demand
+                                    order by custpo asc ");
 
             // update partlist
             DB::connection('sqlsrv')
@@ -322,9 +333,9 @@ class PartlistController extends Controller
                             'success' => false,
                             'message' => 'DEMAND COMPLETE...',
                             'data'    => $data
-        
+
                         ]);
-                }             
+                }
 
             return response()
                 ->json([
@@ -387,11 +398,11 @@ class PartlistController extends Controller
                             'success' => false,
                             'message' => 'DEMAND COMPLETE...',
                             'data'    => $data
-        
+
                         ]);
                 }
 
-                           
+
 
             return response()
                 ->json([
@@ -426,7 +437,7 @@ class PartlistController extends Controller
 
         // return $data;
 
-        
+
         return response()
             ->json([
                 'success' => true,
@@ -439,6 +450,27 @@ class PartlistController extends Controller
     public function scan_continue(Request $request)
     {
         $this->scan_issue($request, "continue");
+
+        $scan_label = $request->scan_label;
+
+        //PARAM LABEL
+        $label_scan = substr($scan_label, 0, 15);
+        $data = DB::connection('sqlsrv')
+            ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+
+        // return $data;
+
+        return response()
+            ->json([
+                'success' => true,
+                'message' => 'Scan Succesfully',
+                'data'     => $data
+
+            ]);
+    }
+    public function scan_end_continue(Request $request)
+    {
+        $this->scan_issue($request, "end_continue");
 
         $scan_label = $request->scan_label;
 
@@ -564,7 +596,7 @@ class PartlistController extends Controller
             $param = DB::connection('sqlsrv')
                 ->select("SELECT * from schedule where partno ='{$partno}'
                                 and prodno ='{$prodno}' ");
-            
+
             // dd($param);
 
             if ($param == false ) {
@@ -581,7 +613,7 @@ class PartlistController extends Controller
             $partname  =   $param[0]->partname;
             $shelfno   =   $param[0]->shelfno;
 
-           
+
 
             // STEP 2. INSERT DATA KE TABLE SCAN IN
             DB::connection('sqlsrv')
@@ -606,7 +638,7 @@ class PartlistController extends Controller
 
                 $sum = array($cek_total[0]->tot_input, $qty);
                 $act_qty = array_sum($sum);
-    
+
                 // TAMPILKAN DATA HASIL SCANIN
                     if (($act_qty  == $cek_total[0]->shipqty)) {
                         return response()
@@ -614,9 +646,9 @@ class PartlistController extends Controller
                                 'success' => false,
                                 'message' => 'DEMAND COMPLETE...',
                                 'data'    => $data
-            
+
                             ]);
-                    }             
+                    }
 
             return response()->json([
                 'success' => TRUE,

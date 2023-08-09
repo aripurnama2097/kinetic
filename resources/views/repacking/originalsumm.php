@@ -35,7 +35,7 @@ include('./phpqrcode/qrlib.php');
   // $stdpack         = $param2[0]->stdpack;
 
   // $scan_issue      =$param2[0]->scan_issue;
-       
+
 
 
   foreach ($content2 as $key => $value) {
@@ -148,11 +148,11 @@ include('./phpqrcode/qrlib.php');
           // ================= //
 
           $host		= getenv("REMOTE_ADDR");
-        
-          $myfile 	= fopen("\\\\$host\\PrintSato\\print_". substr($value->idnumber, -6) .".txt", "w") or die("Unable to open file!");
-          $txt 		= $print;
-          fwrite($myfile, $txt);
-          fclose($myfile);
+
+          // $myfile 	= fopen("\\\\$host\\PrintSato\\print_". substr($value->idnumber, -6) .".txt", "w") or die("Unable to open file!");
+          // $txt 		= $print;
+          // fwrite($myfile, $txt);
+          // fclose($myfile);
  echo '--------------- --------------- --------------- --------------- --------------- --------------- --------------- ---------------';
 
 
@@ -166,3 +166,4 @@ include('./phpqrcode/qrlib.php');
 
 
 <!-- @endsection -->
+
