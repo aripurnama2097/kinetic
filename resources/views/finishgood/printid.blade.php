@@ -5,14 +5,14 @@
 </head>
 
 
-<div class="container">
+{{-- <div class="container"> --}}
 
-  <div class="col-12">
+  <div class="col-6">
 
 
     {{-- <h3 colspan="6" class="text-center mt-3"> PT JVC Kenwood Electronics Indonesia</h3> --}}
     <div class="d-flex justify-content-center">
-      <div class="table" widht="100%">
+      <div class="table" widht="80%">
         
         {{-- {{dd($packing_no)}} --}}
         {{-- {{dd($param)}} --}}
@@ -28,16 +28,16 @@
                 <td  style="border-color:black">BOX NO</td>
                 <td  style="border-color:black">: {{ $param['boxno'] }}</td>
               </tr>
-              <tr>
+              <tr style="width:70%" style="height:5px">
                 <td>DESTINATION</td>
                 <td>: {{$param[0]->dest}}</td>
               </tr>
-              <tr>
+              <tr style="height:5px">
                 <td>PACK.LIST NO</td>
                 <td>: {{$param['packing_no']}}</td>
               </tr>
-              <tr>
-                <td  style="border-color:black">SHIPMENT</td>
+              <tr style="height:5px">
+                <td>SHIPMENT</td>
                 <td>VANNING DATE</td>
                 <td>: {{$param[0]->vandate}}</td>
               </tr>
@@ -92,6 +92,6 @@
       </div>
     </div>
   </div>
-</div>
+{{-- </div> --}}
    
 

@@ -256,6 +256,7 @@ class FinishGoodController extends Controller
                    order by custpo asc");
         // return $selectPart;
 
+        // ++TAMBAH PARAM KONTENT QR SKID KE SCAN OUT TABLE
 
         if ($selectPart == true) {
             // STEP 2.INSERT INTO SCAN OUT

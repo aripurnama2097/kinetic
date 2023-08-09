@@ -405,6 +405,29 @@
                             }
                         })
                     }
+                    else{
+
+                        Swal.fire({
+
+                            icon: 'error',
+                            title: "WRONG PART",
+                            showConfirmButton :false,
+                            timer:400
+
+
+                            })
+
+                        var audio = document.getElementById('audio');
+                            var source = document.getElementById('audioSource');
+                            var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
+                            // document.getElementById("result_NG").innerHTML = "NG";
+                            // document.getElementById("result_NG").style.display = "block";
+                            // document.getElementById("result_OK").style.display = "none";
+                            audio.load()
+                            audio.play();
+
+                    }
+               
 
 
 

@@ -391,25 +391,24 @@
 
                         Swal.fire({
                                                 
-                                                icon: 'warning',
-                                                title: "Part Not Match",
+                                                icon: 'error',
+                                                title: "WRONG PART",
                                                 showConfirmButton :false,
-                                                timer:300
+                                                timer:400
                                             
-
                                             })
                                         
-                        $.ajax({
-                            success : function(data){
+                        // $.ajax({
+                        //     success : function(data){
                                 var audio = document.getElementById('audio');
                                 var source = document.getElementById('audioSource');
                                 var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
                              
                                 audio.load()
                                 audio.play();  
-                        }
+                       
 
-                     })
+                   
 
                     }
                     $('#kit_label').val("");
