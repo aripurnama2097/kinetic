@@ -130,13 +130,21 @@
                                                 @endforeach
                                                  </select>
                                                
-                                                <input
-                                                    class="form-control form-control-lg mb-2 text-center border border-secondary "
-                                                    type="text" name="type_skid" value="" id="type_skid"
-                                                    placeholder="TYPE SKID" disabled>    
+
+                                                 {{-- <div class="mb-3 col-12"> --}}
+                                                    {{-- <label class="form-label required">Reason</label> --}}
+                                                    <select class="form-control col-12 mb-3" name="type_skid" value="" id="type_skid" required disabled>
+                                                        <option class="text-center">--Type SKID--</option>
+                                                        <option class="text-center">SKID 03</option>
+                                                        <option class="text-center">SKID 04</option>
+                                                     
+                                                    </select>
+                                                {{-- </div> --}}
+
+                                           
                                                     <div class="d-flex justify-content-center">
                                                         <button class="btn btn-primary col-4 text-center"
-                                                        id="print-skid" onclick="printskid()" >Print SKID</button>                                   
+                                                        id="print-skid" onclick="printskid()">Print SKID</button>                                   
                                                     </div>   
                                             </div>                                      
                                         </div>
@@ -225,6 +233,7 @@
                                     </thead>
                                     <tbody >
                                         @foreach($headerskid as $key => $value)
+                                        <tr>
                                         <td style="font-size: 12px;"> {{ $value->skidcode }}</td>
                                         <td style="font-size: 12px;"> {{ $value->packing_no }}</td>
                                         <td style="font-size: 12px;"> {{ $value->skid_no }}</td>
@@ -239,6 +248,7 @@
                                                 <button type="submit" class="btn btn-danger  btn-sm" ></i>Cancel Skid</button> 
                                               </form>	
                                         </td>
+                                    </tr>
                                             
                                         @endforeach
                                     </tbody>

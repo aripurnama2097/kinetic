@@ -43,8 +43,8 @@
                     @endif
                     <div class="col-12 ">             
                                 <div class="table-responsive  rounded-1 shadow-sm">
-                                    <table style="width:100%" id="kit-monitor"  class="table table-vcenter">
-                                        <thead class="thead-primary">
+                                    <table style="width:100%" id="kit-monitor"  class="table table-vcenter table-bordered">
+                                        <thead class="thead-dark">
                                             <tr class="headings">                   
                                                 <th class="text-center" style="font-size: 13px;">Cust No</th>
                                                 <th class="text-center" style="font-size: 13px;">Dest</th>
@@ -199,6 +199,7 @@
 
             $('#kit-monitor').DataTable( {
         dom: 'Bfrtip',
+        // dom: '<"top"i>rt<"topflp><"clear">',
         buttons: [
            
             'excelHtml5',

@@ -20,7 +20,7 @@
                             Overview
                         </div>
                         <h2 class="page-title">
-                            Page Print
+                            Page Scan
                         </h2>
                     </div>
                     <!-- Page title actions -->
@@ -74,21 +74,7 @@
                             </div>
                         </div>
 
-                        <div class="btn-group mb-3 col-12 ml-1 mr-2" role="group">
-                            {{-- <div class="col-6  "> --}}
-                                <a class="btn btn-secondary col-12  text-white" data-bs-toggle="collapse" id="btn-print-label" role="button"
-                                    aria-expanded="false" aria-controls="assy">
-                                    <i class="ti ti-printer"></i>
-                                    PRINT LABEL KIT
-                                </a>
-                            {{-- </div> --}}
-                            {{-- <div class="col-6  "> --}}
-                                
-                                <a class="btn btn-light col-12 text-dark" href="{{ url('repacking/logPrintOrg') }}"> Log Print
-                                    <i class="ti ti-printer"></i> </a>
-                            {{-- </div> --}}
-                           
-                        </div>
+                     
 
                         
                         
@@ -287,38 +273,6 @@
             </div>
 
 
-            {{-- PRINT LABEL KIT PROCESS --}}
-            <div class="collapse mt-4" id="print_label">
-                <div class="col-12 ">
-                    <div class="card rounded-1 col-12 mb-2">
-                        <h1 class="text-dark text-center"> Print Label KIT</h1>
-                        <div class="row row-cards col-12 mb-4">
-                            <div class="mb-3 col-sm-12 col-12">
-                                <input style="font-size:20px"
-                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
-                                    type="text" name="pic" value="" id="scan_nik" maxlength="8"
-                                    placeholder="SCAN NIK HERE">
-                                <input class="form-control form-control-lg mb-2 text-center border border-secondary "
-                                    type="text" name="scan_label" value="" id="scan_label"
-                                    placeholder="SCAN MC LABEL" disabled>
-                            </div>
-                        </div>
-
-                        <div class="row row-cards col-12 mb-4">
-                            <h1 class="text-dark text-center"> Print Label KIT - Combine Qty Label</h1>
-                            <div class="mb-3 col-sm-12 col-12">
-                                <input style="font-size:20px"
-                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
-                                    type="text" name="scan_pic" value="" id="scan_pic" maxlength="8"
-                                    placeholder="SCAN NIK HERE">
-                                <input class="form-control form-control-lg mb-2 text-center border border-secondary "
-                                    type="text" name="scan_label_mc" value="" id="scan_label_mc"
-                                    placeholder="SCAN MC LABEL" disabled>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     </div>

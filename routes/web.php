@@ -134,8 +134,10 @@ Route::get('partlist/inhouse_data',[PartlistController::class,'inhouse_data']);
 
 // =======================================REPACKING ROUTING===========================
 Route::get('repacking',[RepackingController::class,'index']);
+Route::get('repacking/viewscan',[RepackingController::class,'view']);
 Route::get('repacking/kitdata',[RepackingController::class,'kitdata']);
 Route::get('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit']);
+Route::get('repacking/printlbl_kit_combine',[RepackingController::class,'printlbl_kitcombine']);
 Route::get('repacking/printlbl_assy',[RepackingController::class,'printlbl_assy']);
 
 Route::post('repacking/printassy/{id}',[RepackingController::class,'printassy']);
@@ -153,6 +155,7 @@ Route::post('repacking/cancel_scanin',[RepackingController::class,'cancel_scanin
 
 Route::get('repacking/scanCombine',[RepackingController::class,'scanCombine']);
 Route::post('repacking/scanCombine/inputCombine',[RepackingController::class,'inputCombine']);
+
 Route::get('repacking/scanCombine/printMaster',[RepackingController::class,'printMaster']);
 Route::get('repacking/cancelation',[RepackingController::class,'view_borrow_cancelation']);
 Route::post('repacking/printNew/{id}',[RepackingController::class,'printNewlabel']);

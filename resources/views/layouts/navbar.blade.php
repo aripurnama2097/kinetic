@@ -162,6 +162,15 @@
                                   </div>
                               </div>
                           </div>
+                          {{-- <div class="dropdown-menu-columns">
+                            <div class="dropdown-menu-column">
+                                <div class="dropend">
+                                    <a class="dropdown-item " href="{{ url('/repacking/viewscan') }}">
+                                        Menu ScanIn
+                                    </a>
+                                </div>
+                            </div>
+                        </div> --}}
                           <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
                                 <div class="dropend">
