@@ -272,16 +272,33 @@ class PartlistController extends Controller
 
 
 
-        // STEP SCAN ISSUE
-        $get_lastuniq = DB::table('partscan')
-                        ->max('unique_continue');
-        $uniq_cont = $get_lastuniq;
-        if($status_print != 'end_continue'){
-            $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
-        }
+
 
         //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
         if (!empty(@$status_print)) {
+
+
+             // STEP SCAN ISSUE
+            $get_lastuniq = DB::table('partscan')
+                            ->max('unique_continue');
+
+            $uniq_cont = $get_lastuniq;
+
+            if($status_print != 'continue_combine'){
+                 $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
+            }
+
+            // compare stdpack dg part continue
+            if($status_print == 'continue_combine'){
+                $compare_stdpack = DB::connection('sqlsrv')->select("SELECT stdpack, (sum(scan_issue))+$qty as scan_issue
+                                                                        from partscan
+                                                                        where unique_continue = '{$uniq_cont}'
+                                                                        group by stdpack");
+                $comparing = $compare_stdpack[0];
+                if($comparing->scan_issue > $comparing->stdpack){
+                    return false;
+                }
+            }
 
             DB::connection('sqlsrv')
                 ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
@@ -446,10 +463,9 @@ class PartlistController extends Controller
 
             ]);
     }
-
     public function scan_continue(Request $request)
     {
-        $this->scan_issue($request, "continue");
+        $this->scan_issue($request, "start_combine");
 
         $scan_label = $request->scan_label;
 
@@ -470,8 +486,14 @@ class PartlistController extends Controller
     }
     public function scan_end_continue(Request $request)
     {
-        $this->scan_issue($request, "end_continue");
+        $issuing = $this->scan_issue($request, "continue_combine");
+        if($issuing == false){
+            return response()->json([
+                'success' => false,
+                'message' => 'QTY LARGER THAN STDPACK !!!'
 
+            ]);
+        }
         $scan_label = $request->scan_label;
 
         //PARAM LABEL

@@ -143,9 +143,7 @@
                                                             <div class="col-4 text-dark" style="position:right;font-color:black;font-size:16px" id="QRText"></div>
                                                         {{-- </div> --}}
                                                     </div>
-
                                                 {{-- </div> --}}
-
                                                 <br>
                                                 <thead class="thead-dark">
                                                     <tr id="tr-id">
@@ -609,15 +607,7 @@
                         success: function(response) {
                             console.log("2.scan Issue: ",response)
                             var data = ""
-                            // console.log("SCAN PART ",response.data);
                             $.each(response.data, function(key, value) {
-
-                                // var audio = document.getElementById('audio');
-                                // var source = document.getElementById('audioSource');
-                                // var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
-                                // audio.load()
-                                // audio.play();
-                                // console.log('key=>'+key+'|value=>'+value)
 
                                 data = data + "<tr>"
                                 if (value.tot_scan == 0 && value.balance_issue == 0) {
@@ -661,7 +651,7 @@
                                     icon: 'success',
                                     title: response.message,
                                     showConfirmButton :false,
-                                    timer:200
+                                    timer:100
 
                                     // timer: 5000
 
@@ -669,8 +659,6 @@
                             }
 
                             else {
-
-                                // console.log("warning",response.message);
                                 let warningMessage = response.message;
 
                                 console.log("message",warningMessage.indexOf('Loose'))
@@ -751,7 +739,7 @@
                                             icon: 'warning',
                                             title: response.message,
                                             showConfirmButton :false,
-                                            timer:1500
+                                            timer:1000
 
 
                                         })
@@ -773,7 +761,7 @@
                                             icon: 'warning',
                                             title: response.message,
                                             showConfirmButton :false,
-                                            timer:1500
+                                            timer:1000
 
 
                                         })
@@ -864,6 +852,7 @@
                                         })
                                     } else if (result.isDenied) {
                                         // Swal.fire('Continue scan')
+
                                         $.ajax({
                                             type: "POST",
                                            dataType: "json",
@@ -877,6 +866,8 @@
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
+                                                let warningMessage = response.message;
+                                                // console.log("message",warningMessage.indexOf('OVER'));
                                                 console.log("5. Continue Check: ", response);
 
                                                 var audio = document.getElementById('audio');
@@ -938,7 +929,27 @@
                                             },
                                             success: function(response) {
                                                 console.log("6. End Continue Check: ", response);
+                                                if(response.success == false){
+                                                    Swal.fire({
 
+                                                        icon: 'warning',
+                                                        title: response.message,
+                                                        showConfirmButton :false,
+                                                        timer:5000
+
+
+                                                    })
+
+
+                                                    var audio = document.getElementById('audio');
+                                                                var source = document.getElementById('audioSource');
+                                                                var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                                audio.load()
+                                                                audio.play();
+
+
+                                                    return;
+                                                }
                                                 var audio = document.getElementById('audio');
                                                 var source = document.getElementById('audioSource');
                                                 var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
