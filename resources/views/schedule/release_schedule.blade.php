@@ -40,7 +40,7 @@
                  
             </div>
             </div>
-            <div class="container-fluid mt-1">
+            <div class="container-xl mt-1">
 
                     @if (Session::has('success'))
                         <p class="alert alert-success">{{ Session::get('success') }}</p>
@@ -78,7 +78,7 @@
                             <div class="card-body border-bottom ">
                                 <div class="table-responsive  rounded-1 shadow-sm">
                                     {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
-                                    <table style="width:100%" id="schedule-release"  class="table  table-bordered border-dark shadow-sm">
+                                    <table style="width:50%" id="schedule-release"  class="table  table-bordered border-dark shadow-sm">
                                        
                                         <thead class="thead-dark">
                                             <tr class="headings">

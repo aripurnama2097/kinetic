@@ -54,8 +54,8 @@
                                             <td style="font-size: 12px;">{{ $value->partno }} </td>
                                             <td style="font-size: 12px;">{{ $value->partname }} </td>
                                             <td  style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td>                                         
-                                            <td  style="font-size: 14px; font-weight:bold"> {{ $value->tot_scan }}</td>   
-                                            <td  class="text-danger"style="font-size: 14px;"> {{ $value->balance_issue }}</td>   
+                                            <td  class="text-primary" style="font-size: 14px; font-weight:bold"> {{ $value->tot_scan }}</td>   
+                                            <td  class="text-danger"style="font-size: 14px;font-weight:bold"> {{ $value->balance_issue }}</td>   
                                             </tr>
                                             <?php $no++ ;?>
                                             @endforeach

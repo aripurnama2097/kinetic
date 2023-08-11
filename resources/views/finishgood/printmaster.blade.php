@@ -6,16 +6,17 @@
 
 
 {{-- <div class="container"> --}}
-
+{{-- {{dd($qrskid)}} --}}
   <div class="col-12">
 
-{{-- {{dd($qty,$seq)}} --}}
+{{-- {{dd($data[]->qrdata)}} --}}
     {{-- <h3 colspan="6" class="text-center mt-3"> PT JVC Kenwood Electronics Indonesia</h3> --}}
     <div class="d-flex justify-content-center">
       <div class="table" widht="80%">
           <table class="border border-dark border-3 col-12 mt-2">
             <thead>
               <tr>
+                <th style="border-color:black"class="text-center" >QR</td>
                 <th style="border-color:black"class="text-center" >CUSTPO</td>
                 <th style="border-color:black"class="text-center">ITEM NO</td>
                 <th style="border-color:black"class="text-center">ITEM DESC</td>
@@ -26,26 +27,23 @@
             <tbody>
               @foreach ($data as $value )               
              <tr style="border-color:black">     
-              {{-- @foreach($seq as $key) 
-              <tr>   
-                 @foreach($qty as $keyval) 
-                 <tr>    --}}
+             
+              
+                <td class="text-center mb-1" style="font-size: 12px;border-color:black;"> {!! QrCode::size(50)->generate($value->skid_no) !!}</td>
                 <td style="border-color:black"class="text-center">{{$value->custpo}}</td>
                 <td style="border-color:black" class="text-center">{{$value->partno}}</td>
                 <td style="border-color:black"class="text-center">{{$value->partname}}</td>
                 <td style="border-color:black"class="text-center">{{$value->tot_scan}}</td>
                 <td style="border-color:black"class="text-center">{{$value->qty_running}}</td>
                 <td style="border-color:black"class="text-center">{{$value->sum_total}}</td>
-                 {{-- </tr>   
-                 @endforeach
-                </tr>   
-                @endforeach --}}
+              
+           
               </tr>
               @endforeach
              
             </tbody>
           </table>
-          {{-- @endforeach --}}
+  
 
 
 
