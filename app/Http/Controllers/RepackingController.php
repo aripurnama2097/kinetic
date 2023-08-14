@@ -58,11 +58,14 @@ class RepackingController extends Controller
         $cek_status = DB::connection('sqlsrv')
                         ->select(" SELECT * FROM  partscan
                                     where partno = '{$label_scan}'
-                                        and status_print = 'loosecarton' 
-                                        or status_print is null
+                                    and after_print is null
+                                    and ( status_print is null or status_print ='loosecarton')
                                   ");
 
-  
+        if($cek_status == null){
+            echo "<p style =font-size:20px;font-weight:bold;text-color:red > Label After Print, Please Check Log Print !</p>";
+        }
+
         if($cek_status == TRUE  ){
             // STEP 2. AMBIL PARAMETER LABEL QR dari partlist
             $param = DB::connection('sqlsrv')
@@ -78,7 +81,7 @@ class RepackingController extends Controller
             $custpo     =   $param[0]->custpo ;
 
 
-            //SEND DATA UNTUK CONTENT PRINT LABEL SELAIN STATUS CONTINUE
+            //STEP 2. SEND DATA UNTUK CONTENT PRINT LABEL SELAIN STATUS CONTINUE
             $param2 = DB::connection('sqlsrv')
             ->select("SELECT distinct a.id,a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,
                         a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue,
@@ -87,13 +90,12 @@ class RepackingController extends Controller
                         inner join partscan as b on a.partno = b.partno and a.demand = b.demand
                         where 	 a.custpo ='{$custpo}' 
                         and a.partno ='{$partno}' 
-                        and b.status_print = 'loosecarton' 
-                        or  b.status_print is null 
+                        and b.after_print is null
+                        and ( b.status_print is null or b.status_print='loosecarton')
                     ");
 
-            // dd($param2);
 
-            // STEP 1. INSERT TO PRINT LOG
+            // STEP 3. INSERT TO PRINT LOG
             $logPrint = DB::connection('sqlsrv')
                 ->insert(" INSERT
                                into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
@@ -103,21 +105,23 @@ class RepackingController extends Controller
                                 inner join partscan as b on a.partno = b.partno and a.demand = b.demand
                                 where 	 a.custpo ='{$custpo}' 
                                 and a.partno ='{$partno}'  
-                                and b.status_print = 'loosecarton' 
-                                or  b.status_print is null 
+                                and b.after_print is null
+                                and ( b.status_print is null or b.status_print='loosecarton')
                             ");
+
+            
+
+            // STEP 4. UPDATE COLUMN AFTER PRINT DI PARTSCAN
+            $update = DB::connection('sqlsrv')
+                ->update("UPDATE partscan  set after_print = 1 
+                            where partno ='{$partno}'   
+                            and after_print is null
+                            and (status_print is null or status_print='loosecarton')
+                ");
 
             return view('repacking.original', compact('param2'));
         }
   
-
-
-      // PRINT SUMM QTY BOX
-   
-
-        
-        
-
 
     }
 
@@ -134,7 +138,7 @@ class RepackingController extends Controller
         // STEP 1. CEK STATUS PRINT PADA PART
 
         
-            // STEP 2. AMBIL PARAMETER LABEL QR
+            // STEP 1. AMBIL PARAMETER LABEL QR
             $content = DB::connection('sqlsrv')
             ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue,
                         a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
@@ -150,7 +154,7 @@ class RepackingController extends Controller
             $getid = DB::connection('sqlsrv')
                             ->select("SELECT idnumber from partscan where label = '{$scan_label}'");
 
-            //SEND DATA UNTUK CONTENT PRINT LABEL
+            //STEP 2. SEND DATA UNTUK CONTENT PRINT LABEL
             $content2 = DB::connection('sqlsrv')
             ->select("SELECT distinct partno,partname,custpo, sum(scan_issue) as scan_issue,dest,prodno,shelfno,'{$getid[0]->idnumber}' as idnumber
                         from
@@ -159,12 +163,13 @@ class RepackingController extends Controller
                         and partno ='{$partno}'
                         and unique_continue = (select top 1 unique_continue
                                                 from partscan
-                                                where label = '{$scan_label}')
+                                                where label = '{$scan_label}'
+                                                )
                         group by partno,partname,custpo,dest,prodno,shelfno
             ");
 
 
-            // STEP 1. INSERT TO PRINT LOG
+            // STEP 3. INSERT TO PRINT LOG
              $logPrint = DB::connection('sqlsrv')
                 ->insert(" INSERT
                                 into log_print_kit_original (partno,partname,qty_scan,dest,custpo,shelfno, prodno,idnumber)
@@ -178,6 +183,22 @@ class RepackingController extends Controller
                                                             where label = '{$scan_label}')
                          group by partno,partname,custpo,dest,prodno,shelfno
                             ");
+
+
+                
+            // STEP 4. UPDATE COLUMN AFTER SCAN DI PARTSCAN
+            DB::connection('sqlsrv')
+                ->update("UPDATE  partscan
+                            SET
+                            after_print = 1
+                            where partno ='{$partno}'   
+                            and after_print is null
+                            and unique_continue = (select top 1 unique_continue
+                                                    from partscan
+                                                where label = 'A4J-0067-01     1708159 10     I10816 A4J-0067-01    202301250432102198000007'
+                                                )
+                        ");
+
 
             return view('repacking.originalsumm', compact('content2'));
         
