@@ -37,32 +37,31 @@
 
         <!-- Page body MENU -->
         <div class="page-body">
-            <div class="container-xl">
-                {{-- <div class="row row-deck row-cards">
-        
-        </div> --}}
-            </div>
-
             <div class="container-xl mt-1 ">
                 <div class="row row-deck row-cards ">
                     <div class="col-12 ">
                         <div class="card rounded-1 col-12 ">
                             <div class="card-header text-center justify-content-center">
-                                <h2 style="font-size:30px"class="text-dark "> -- DATA SCANOUT--</h2>
+                                <h2 style="font-size:30px"class="text-dark "> -- FINAL CHECK--</h2>
                             </div>
 
                             <div class="btn-group mb-3" role="group">
-                                <div class="col-12  ">
-                                    <a class="btn btn-primary   col-12" data-bs-toggle="collapse" href="#scan-check"
+                                <div class="col-6  ">
+                                    <a class="btn btn-success  col-12 text-white"data-bs-toggle="collapse"   id="btn-compare"
                                         role="button" aria-expanded="false" aria-controls="skid-packing">
                                         <i class="ti ti-start"></i>
-                                        START CHECK
+                                        COMPARE QR
                                     </a>
+                                   
                                 </div>
-                              
-                               
-                            </div>
-                           
+                                <div class="col-6  ">
+                                    <a class="btn btn-primary   col-12 text-white"  data-bs-toggle="collapse" id="btn-check"
+                                        role="button" aria-expanded="false" aria-controls="skid-packing">
+                                        <i class="ti ti-start"></i>
+                                        CHECK DATA SKID
+                                    </a>
+                                </div>                           
+                            </div>                      
                         </div>
                     </div>
 
@@ -72,12 +71,37 @@
                     @endif
 
 
+                    {{-- FORM SCAN OUT --}}
+                    <div class="collapse mt-4" id="compare">
+                        <div class="col-12 ">
+                            <div class="card rounded-1 col-12 mb-2 border border-success shadow-lg">
+                                <h2 style="font-weight:bold"class="text-center text-dark"> COMPARE</h2>
+                                <div class="justify-content-center mt-3 ml-3 mr-3 ">                                              
+                                    <div class="d-flex justify-content-center">
+                                        <div class="row row-cards col-12 mb-4">
+                                            <div class="mb-3 col-sm-12 col-12">                                            
+                                                <input style="font-size:20px"
+                                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                    type="text" name="qrskid" value="" id="qrskid" 
+                                                    placeholder="SCAN QR SKID" autofocus>
+                                                <input style="font-size:20px"
+                                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                    type="text" name="qrlabel" value="" id="qrlabel" 
+                                                    placeholder="SCAN QR label" disabled>                                                                                                                                                                    
+                                            </div>                                      
+                                        </div>                                    
+                                   </div>                               
+                               </div>
+                           </div>
+                       </div> 
+                    </div>
                   
                     
                      {{-- FORM SCAN OUT --}}
-                    <div class="collapsed-flex justify-content-center " id="scan-check">
+                    <div class="collapse mt-4" id="check">
                         <div class="col-12 ">
-                            <div class="card rounded-1 col-12 mb-2">
+                            <div class="card rounded-1 col-12 mb-2 border border-primary shadow-lg">
+                                <h2 style="font-weight:bold"class="text-center text-dark mt-2"> CHECK DATA QR</h2>
                                 <div class="justify-content-center mt-3 ml-3 mr-3 ">                             
                                     {{-- <h1 class="text-dark text-center"> --SCAN OUT--</h1>                 --}}
                                     <div class="d-flex justify-content-center">
@@ -96,7 +120,7 @@
                                     </div>
                                     <div class="col-12 text-dark ml-0 " style="position:left;font-color:black;font-size:18px;font-weight:bol" id="QRText"></div>
 
-                                        <table style="width:100%"
+                                    <table style="width:100%"
                                         class="text-nowrap  table border-bordered  shadow-sm">
                                         <thead class="thead-dark">
                                             <tr>
@@ -114,15 +138,17 @@
 
                                         <tbody id="view-check">
                                         </tbody>
-                                    </table>                           
-                                    </div>
+                                    </table> 
+                                </div>                          
                             </div>
+                            
                         </div>
                     </div> 
                 </div>         
             </div>
          </div>
-    </div>
+    
+</div>
 
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">
@@ -130,7 +156,17 @@
         $(document).ready(function() {
             const spinner = document.querySelector('#spinner');
 
-         
+            $('#btn-compare').on('click', function(){
+          
+                $('#check').hide();
+                $('#compare').show();
+             })
+
+            $('#btn-check').on('click', function(){
+            
+                $('#compare').hide();
+                $('#check').show();
+            })
       
 
         $('#qr_skid').on('keypress', function(e) {
@@ -201,6 +237,49 @@
                         $('#qr_skid').val("");
                         $('#qr_skid').focus();
 
+                }
+            })
+
+
+            $('#qrskid').on('keypress', function(e) {
+                if (e.which == 13) {
+                    var qrskid = $('#qrskid').val();
+                    if (qrskid != '') {
+                        $('#qrlabel').attr('disabled', false);
+                      
+                        $('#qrlabel').focus();
+                    }
+                }
+            })
+
+            $('#qrlabel').on('keypress', function(e) {
+                if (e.which == 13) {
+                    var qrlabel = $('#qrlabel').val();
+                    var qrskid = $('#qrskid').val();
+                   
+                    let skidno          = qrskid.substr(0, 11); //get PARTNO KIT
+                    let getskidno       = qrskid.split(":");
+      	            let skid_check      = getskidno[1];// GET PO KIT
+
+                   console.log(skid_check);
+
+                   if(qrlabel == skid_check){
+                    var audio = document.getElementById('audio');
+                                                                var source = document.getElementById('audioSource');
+                                                                var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                                                audio.load()
+                                                                audio.play();
+                                                                return;                                           
+                    alert("OKE...");
+                  
+                   }
+                   else{
+                    alert("Please Check Content Skid");
+
+                   }
+
+                   $('#qrskid').val("");
+                   $('#qrskid').focus();
                 }
             })
     });

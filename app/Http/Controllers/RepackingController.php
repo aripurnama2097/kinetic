@@ -564,8 +564,8 @@ class RepackingController extends Controller
                         select prodno,carton_no from temp_print
                         ");
 
-       DB::table('temp_print')
-            ->truncate();
+    //    DB::table('temp_print')
+    //         ->truncate();
 
 
 

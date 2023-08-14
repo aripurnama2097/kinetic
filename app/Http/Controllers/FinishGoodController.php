@@ -326,8 +326,8 @@ class FinishGoodController extends Controller
                             group by
                                     custpo,partno,partname,skid_no,qty_running
                             ");
-
-      
+        // dd($data[0]->qrdata);
+    //   $data2 =[$skidno, $data];
 
        return view('finishgood.printmaster',compact('data'));
 

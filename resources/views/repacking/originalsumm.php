@@ -149,10 +149,10 @@ include('./phpqrcode/qrlib.php');
 
           $host		= getenv("REMOTE_ADDR");
 
-          // $myfile 	= fopen("\\\\$host\\PrintSato\\print_". substr($value->idnumber, -6) .".txt", "w") or die("Unable to open file!");
-          // $txt 		= $print;
-          // fwrite($myfile, $txt);
-          // fclose($myfile);
+          $myfile 	= fopen("\\\\$host\\PrintSato\\print_". substr($value->idnumber, -6) .".txt", "w") or die("Unable to open file!");
+          $txt 		= $print;
+          fwrite($myfile, $txt);
+          fclose($myfile);
  echo '--------------- --------------- --------------- --------------- --------------- --------------- --------------- ---------------';
 
 

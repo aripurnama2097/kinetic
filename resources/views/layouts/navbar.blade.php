@@ -1,4 +1,7 @@
-<header class="navbar navbar-expand-md navbar-dark navbar-overlap d-print-none">
+
+{{-- <header class="navbar navbar-expand-md d-print-none"  data-bs-theme="dark"> --}}
+{{-- <div class="page"> --}}
+ <header class="navbar navbar-expand-md navbar-dark navbar-overlap d-print-none">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu"
             aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +43,8 @@
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
                           
                           </span>
-                          <span style="font-size:20px" class="nav-link-title">  <i class="ti ti-home-ribbon"></i>
+                          <i class="ti ti-home-ribbon mr-2"></i>
+                          <span style="font-size:16px" class="nav-link-title">  
                               Home
                           </span>
                       </a>
@@ -50,9 +54,9 @@
                   <?php if (Auth::user()->role === 'admin'||Auth::user()->role === 'Admin Planning') { ?>
                    <li class="nav-item dropdown">
                      <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                          <span style="font-size:18px" >  <i class="ti ti-book-upload"></i>
+                        <i class="ti ti-book-upload"></i>
                               Master Schedule
-                          </span>
+                         
                       </a>
                       <div class="dropdown-menu">
                           <div class="dropdown-menu-columns ">
@@ -77,25 +81,29 @@
                       </div>
                     </li>
 
-                    
-                 <li class="nav-item dropdown ml-3">
-                        <a class="text-white"href="{{ url('/schedule/release_schedule') }}" >
-                             <span style="font-size:18px" >  <i class="ti ti-calendar-minus mr-2"></i>
-                                 Schedule Release
-                             </span>
-                         </a>
-                      
-                  </li>
+               
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/schedule/release_schedule') }}">
+                        {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        
+                        </span> --}}
+                        <i class="ti ti-calendar-minus mr-2"></i>
+                        <span style="font-size:14px" class="nav-link-title">  
+                            Schedule Release 
+                        </span>
+                    </a>
+                </li>
                   {{-- MC ISSUE --}}
                   <li class="nav-item dropdown">
                     <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown"
                         data-bs-auto-close="outside" role="button" aria-expanded="false">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
                          
                           
-                        </span>
-                        <span style="font-size:18px" class="nav-link-title">  <i class="ti ti-package"></i>
-                            MC Menu
+                        </span> --}}<i class="ti ti-package mr-2"></i>
+                        <span style="font-size:15px" class="nav-link-title">  
+                          MC Menu
                         </span>
                     </a>
                     <div class="dropdown-menu">
@@ -145,10 +153,11 @@
                       <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
                      
-                          <span class="nav-link-icon d-md-none d-lg-inline-block">
+                          {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
                             
-                          </span>
-                          <span style="font-size:18px" class="nav-link-title">     <i class="ti ti-transfer-in"></i>
+                          </span> --}}
+                          <i class="ti ti-transfer-in mr-2"></i>
+                          <span style="font-size:16px" class="nav-link-title">     
                               Repacking
                           </span>
                       </a>
@@ -162,15 +171,7 @@
                                   </div>
                               </div>
                           </div>
-                          {{-- <div class="dropdown-menu-columns">
-                            <div class="dropdown-menu-column">
-                                <div class="dropend">
-                                    <a class="dropdown-item " href="{{ url('/repacking/viewscan') }}">
-                                        Menu ScanIn
-                                    </a>
-                                </div>
-                            </div>
-                        </div> --}}
+                         
                           <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
                                 <div class="dropend">
@@ -192,14 +193,13 @@
                       </div>
                   </li>
 
+                  {{-- SHIPPING MODUL --}}
                   <li class="nav-item dropdown">
                       <a class="nav-link " href="#navbar-extra" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
                       
-                          <span class="nav-link-icon d-md-none d-lg-inline-block">
-                            
-                          </span>
-                          <span style="font-size:18px" class="nav-link-title">    <i class="ti ti-transfer-out"></i>
+                          <i class="ti ti-transfer-out mr-2"></i>
+                          <span style="font-size:16px" class="nav-link-title">    
                               Shipping
                           </span>
                       </a>
@@ -221,13 +221,14 @@
                       </div>
                   </li>
 
+                  {{-- GENERAL MODUL --}}
                   <li class="nav-item active dropdown">
                       <a class="nav-link " href="#navbar-layout" data-bs-toggle="dropdown"
                           data-bs-auto-close="outside" role="button" aria-expanded="false">
-                          <span class="nav-link-icon d-md-none d-lg-inline-block">
+                          {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
                              
-                          </span>
-                          <span style="font-size:18px" class="nav-link-title"><i class="ti ti-chalkboard"></i>
+                          </span> --}}<i class="ti ti-chalkboard mr-2"></i>
+                          <span style="font-size:15px" class="nav-link-title">
                               General
                           </span>
                       </a>
@@ -244,7 +245,6 @@
                                   <a href="{{url('borrow/cancelation')}}" class="dropdown-item text-dark"><i class="ti ti-circle-letter-x"></i>
                                      Cancelation Part
                                 </a>
-
                               </div>
 
                           </div>
@@ -254,10 +254,10 @@
                   {{-- KSM --}}
                   <li class="nav-item dropdown">
                       <a  href ="{{url('/kitmonitoring')}}" class="text-light">
-                       
-                          <span class="nav-link-icon d-md-none d-lg-inline-block">
-                          </span>
-                          <span style="font-size:16px" class="nav-link-title">   <i class="ti ti-device-desktop"></i>
+                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        </span>
+                     <i class="ti ti-device-desktop"></i>
+                          <span style="font-size:15px" class="nav-link-title">  
                               KIT Monitor
                           </span>
                       </a>
@@ -269,7 +269,7 @@
                       <a class="nav-link" href="{{url('kitmonitoring/shippout')}}">
                           <span class="nav-link-icon d-md-none d-lg-inline-block">
                           </span>
-                          <span style="font-size:18px" class="nav-link-title">   <i class="ti ti-package-export"></i>
+                          <span style="font-size:14px" class="nav-link-title">   
                               KIT SSO
                           </span>
                       </a>
@@ -419,5 +419,6 @@
           </div>
       </div>
 </header>
+{{-- </div> --}}
 
 

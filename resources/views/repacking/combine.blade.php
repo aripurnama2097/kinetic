@@ -10,7 +10,7 @@
 
   <div class="d-flex justify-content-center">
     <div class="table border-4" widht="100%">
-        <table   class="border border-dark border-3 col-10  mt-2">
+        <table  class="border border-dark border-3 col-10  mt-2">
       <thead>
         <tr>
           <td align="center" colspan="6" style="border-color:black;font-size:20px;" > PT JVC Kenwood Electronics Indonesia</td>
@@ -29,10 +29,10 @@
         </tr>
 
       </tr>
-        <tr>
+        <tr >
           <th class="text-center mb-1" style="font-size:12px;border-color:black;">QR code</th>
           <th class="text-center mb-1"style="font-size:12px;border-color:black;">Cust PO</th>
-          <th class="text-center mb-1"style="font-size:12px;border-color:black;">Item No</th>
+          <th class="text-center mb-1"style="font-size:12px;border-color:black;width:200px">Item No</th>
           <th class="text-center mb-1"style="font-size:12px;border-color:black;">Item Description</th>
           <th class="text-center mb-1"style="font-size:12px;border-color:black;">Shelf No</th>
           <th class="text-center mb-1"style="font-size:12px;border-color:black;">Qty</th>
