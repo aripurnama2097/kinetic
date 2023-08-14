@@ -227,9 +227,13 @@ class RepackingController extends Controller
         $kitLabel = $request->kit_label;
 
         // GET PARAM FROM KIT LABEL
+
         $label_scan = substr($mcLabel,0,15);
         $partno = substr($kitLabel, 0,11);
-        $qty    = substr($kitLabel, 17,19);
+
+        
+        $qty2    = substr($kitLabel, 17,19);
+        $qty = trim($qty2);
 
         // $data = "K2K-0165-02:KNOB assy:40:JK NAGANO:9344785::2306260005";
         $data = $kitLabel;

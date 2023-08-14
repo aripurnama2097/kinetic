@@ -276,9 +276,9 @@ class SchTentativeController extends Controller
             // STEP 2.INSERT INTO REPACKING LIST
             DB::connection('sqlsrv')
             ->insert("INSERT into repacking_list(custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
-                                           partname,shelfno,demand) 
+                                           partname,shelfno,demand,bal_receive) 
                       select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand from schedule_temp as a
+                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,a.demand from schedule_temp as a
                                       inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
                       where a.dest != 'PAKISTAN'
                       UNION ALL
@@ -292,9 +292,9 @@ class SchTentativeController extends Controller
           //  STEP 3.INSERT INTO FG LIST
           DB::connection('sqlsrv')
             ->insert("INSERT into finishgood_list(custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
-                                          partname,shelfno,demand) 
+                                          partname,shelfno,demand,bal_running) 
                       select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand from schedule_temp as a
+                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,a.demand from schedule_temp as a
                                       inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
                       where a.dest != 'PAKISTAN'
                       UNION ALL
