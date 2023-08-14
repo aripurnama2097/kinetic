@@ -14,46 +14,50 @@ class KitmonitorController extends Controller
 
         $data = DB::connection('sqlsrv')
         ->select("SELECT  
-                        a.custcode,a.dest,a.model,a.prodno
-                        ,sum(a.demand) as lot_qty
-                        ,a.jkeipodate,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem
-                        ,(select count(tot_scan) from partlist 
-                                where a.prodno = prodno  and tot_scan = demand
-                        ) as mc_issue
-                        ,a.orderitem - (select count(balance_issue) from partlist
-                                where a.prodno = prodno  and balance_issue = 0
-                        ) as bal_mc
+                    a.custcode,a.dest,a.model,a.prodno
+                    ,sum(a.demand) as lot_qty
+                , a.vandate,a.etd,a.eta,a.shipvia,a.orderitem
+                    ,(select count(tot_scan) from partlist 
+                            where a.prodno = prodno  and tot_scan = demand
+                    ) as mc_issue
+                    ,a.orderitem - (select count(balance_issue) from partlist
+                            where a.prodno = prodno  and balance_issue = 0
+                    ) as bal_mc
 
-                        ,(select count(tot_input) from inhouse_list
-                                where a.prodno = lotno  and tot_input = shipqty
-                        ) as inhouse_output
-                        ,a.orderitem - (select count(balance) from inhouse_list
-                                where a.prodno = lotno  and balance = 0
-                        ) as bal_inhouse
+                    ,(select count(tot_input) from inhouse_list
+                            where a.prodno = lotno  and tot_input = shipqty
+                    ) as inhouse_output
+                    ,a.orderitem - (select count(balance) from inhouse_list
+                            where a.prodno = lotno  and balance = 0
+                    ) as bal_inhouse
 
 
-                        ,(select count(act_running) from finishgood_list 
-                                where a.prodno = prodno  and act_running = demand
-                        ) as kit_output
-                        ,a.orderitem - (select count(bal_running) from finishgood_list
-                                where a.prodno = prodno  and bal_running = 0
-                        ) as bal_kit
-                        ,(select count(box_no) from finishgood_list  
-                            where prodno = a.prodno
-                        ) as total_box
-                        --,(select count(*) from (select distinct skid_no from finishgood_list where prodno = a.prodno and demand = a.demand ) as a) as total_skid
-                            ,c.skid_no 
-                            ,e.partno,e.symptom,f.invoice_no
-                        from schedule as a
-                            left join partlist as b on a.prodno = b.prodno and b.demand = a.demand
-                            left join finishgood_list as c on a.prodno = c.prodno  and c.demand = a.demand
-                            left join inhouse_list as d on a.prodno = d.lotno and d.shipqty = a.demand
-                            left join borrow as e on a.prodno = e.prodno
-                            left join test_scan as f on a.prodno = f.prodno
-                        group by
-                            a.custcode,a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem,c.skid_no
-                            ,e.symptom,e.prodno,e.partno,f.invoice_no,b.prodno
-                        order by max(a.vandate) ");
+                    ,(select count(act_running) from finishgood_list 
+                            where a.prodno = prodno  and act_running = demand
+                    ) as kit_output
+                    ,a.orderitem - (select count(bal_running) from finishgood_list
+                            where a.prodno = prodno  and bal_running = 0
+                    ) as bal_kit
+                    ,(select count(box_no) from finishgood_list  
+                        where prodno = a.prodno
+                    ) as total_box
+                
+                    ,(select COUNT(DISTINCT skid_no) FROM finishgood_list   
+                        where prodno = a.prodno
+                    )as total_skid
+                    ,e.partno,e.symptom,f.invoice_no
+                    from schedule as a
+                        left join partlist as b on a.prodno = b.prodno and b.demand = a.demand
+                        left join finishgood_list as c on a.prodno = c.prodno  and c.demand = a.demand
+                        left join inhouse_list as d on a.prodno = d.lotno and d.shipqty = a.demand
+                        left join borrow as e on a.prodno = e.prodno
+                        left join test_scan as f on a.prodno = f.prodno
+                    group by
+                        a.custcode,a.dest,a.model,a.prodno,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem,b.prodno
+                        ,e.symptom,e.prodno,e.partno,f.invoice_no
+                
+                    order by max(a.vandate)
+         ");
 
 
 

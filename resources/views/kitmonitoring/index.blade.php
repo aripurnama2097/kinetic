@@ -51,21 +51,21 @@
                                                 <th class="text-center" style="font-size: 13px;">Model</th>
                                                 <th class="text-center" style="font-size: 13px;">Prod No</th>
                                                 <th class="text-center" style="font-size: 13px;">Lot Qty</th>
-                                                <th class="text-center" style="font-size: 13px;">JKEI Po Date</th>
+                                                {{-- <th class="text-center" style="font-size: 13px;">JKEI Po Date</th> --}}
                                                 <th class="text-center" style="font-size: 13px;">VanDate</th>
                                                 <th class="text-center" style="font-size: 13px;">ETD</th>
                                                 <th class="text-center" style="font-size: 13px;">ETA</th>
                                                 <th class="text-center" style="font-size: 13px;">Shipvia</th>
                                                 <th class="text-center" style="font-size: 13px;">Order Item</th>
                                                 {{-- <th class="text-center" style="font-size: 13px;">Today target</th> --}}
-                                                <th class="table-success text-dark" style="font-size: 13px;">MC Issue</th>
+                                                <th class="table-success" style="font-size: 13px;">MC Issue</th>
                                                 <th class="text-center" style="font-size: 13px;">Diff MC</th>
                                                 <th class="text-center" style="font-size: 13px;">In House</th>
                                                 <th class="text-center" style="font-size: 13px;">Bal Inhouse</th>
                                                 <th class="text-center" style="font-size: 13px;">KIT Output</th>
                                                 <th class="text-center" style="font-size: 13px;">Balance</th>
-                                                <th class="text-center" style="font-size: 13px;">Total Skid</th>
                                                 <th class="text-center" style="font-size: 13px;">Total Box</th>
+                                                <th class="text-center" style="font-size: 13px;">Total Skid</th>
                                                 <th class="text-center" style="font-size: 13px;">Part No</th>
                                                 <th class="text-center" style="font-size: 13px;">Problem</th>
                                                 <th class="text-center" style="font-size: 13px;">Status</th>
@@ -82,7 +82,7 @@
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->model }}</td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->prodno }}</td>                                         
                                             <td class="text-center text-dark" style="font-size: 13px;font-weight:bold">{{ $value->lot_qty}}</td>             
-                                            <td class="text-center" style="font-size: 12px;">{{ $value->jkeipodate }} </td>
+                                            {{-- <td class="text-center" style="font-size: 12px;">{{ $value->jkeipodate }} </td> --}}
                                             <td class="text-center" style="font-size: 12px;">{{ $value->vandate}} </td>
                                             <td class="text-center" style="font-size: 12px;">{{ $value->etd}}  </td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->eta}} </td>
@@ -95,8 +95,8 @@
                                             <td class="text-center text-danger" style="font-size: 13px;font-weight:bold" >{{ $value->bal_inhouse}} </td>
                                             <td class="text-center text-success" style="font-size: 13px;font-weight:bold" >{{ $value->kit_output}}</td>
                                             <td class="text-center text-danger" style="font-size: 13px;font-weight:bold" > {{ $value->bal_kit}}</td>                                  
-                                            <td class="text-center" style="font-size: 12px;">{{ $value->skid_no}}</td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->total_box}}</td>
+                                            <td class="text-center" style="font-size: 12px;">{{ $value->total_skid}}</td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->partno}}</td>                                       
                                             <td class="text-center" style="font-size: 12px;">{{$value->symptom}}</td>
                                             <td class="text-center" style="font-size: 12px;">                                              
