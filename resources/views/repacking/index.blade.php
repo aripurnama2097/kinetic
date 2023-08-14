@@ -130,7 +130,7 @@
                                 {{-- PRINT ASSY INPUT --}}
                                 <div class="collapse mt-4" id="print-assyInput">
                                     <div class="table-responsive  rounded-1 shadow-sm">
-                                        <h1 class="text-dark text-center"> Assy Category</h1>
+                                
                                         <table style="width:100%" id="example"
                                             class="table table-striped border border-primary shadow-sm">
                                             <thead class="thead-dark">
@@ -290,7 +290,7 @@
             {{-- PRINT LABEL KIT PROCESS --}}
             <div class="collapse mt-4" id="print_label">
                 <div class="col-12 ">
-                    <div class="card rounded-1 col-12 mb-2">
+                    <div class="card rounded-1 col-12 mb-2 border border-success">
                         <h1 class="text-dark text-center"> Print Label KIT</h1>
                         <div class="row row-cards col-12 mb-4">
                             <div class="mb-3 col-sm-12 col-12">

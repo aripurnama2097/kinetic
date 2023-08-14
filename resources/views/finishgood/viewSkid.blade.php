@@ -90,8 +90,8 @@
                         <div class="col-12 ">
                             <div class="card rounded-1 col-12 mb-2">
                                 <div class="justify-content-center mt-3 ml-3 mr-3 ">
-                                    <a class="btn btn-secondary mb-2" href="{{ url('repacking/logPrintOrg') }}"> Log Print
-                                        <i class="ti ti-printer"></i> </a>
+                                    {{-- <a class="btn btn-secondary mb-2" href="{{ url('repacking/logPrintOrg') }}"> Log Print
+                                        <i class="ti ti-printer"></i> </a> --}}
                                     <a class="btn btn-success mb-2" href="{{ url('finishgood/viewSkid') }}"> Refresh <i
                                             class="ti ti-refresh"></i> </a>
                                    
