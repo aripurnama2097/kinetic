@@ -480,10 +480,12 @@
                                 data = data + "</tr>"
                             })
                             $('#borrow-takeout').html(data);
-                            $('#scan_label').focus();
-                            $('#scan_label').val("");
+                           
                         }
                     });
+                    $('#scan_label').val("");
+                    $('#scan_label').focus();
+                            
                 }
             });
 

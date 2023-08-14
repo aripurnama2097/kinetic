@@ -78,7 +78,18 @@ class BorrowController extends Controller
                                         partno = '{$partno}'  and  custpo = '{$custpo}'
                                         
                                         ") ;
+            $cekqty = DB::connection('sqlsrv')
+                        ->select("SELECT act_running from finishgood_list where partno = '{$partno}'  and  custpo = '{$custpo}'
+                                 ");
 
+                if($cekqty[0]->act_running == 0){
+                        DB::connection('sqlsrv')
+                        ->update("UPDATE finishgood_list
+                                        SET
+                                        skid_no = NULL, box_no = NULL
+                                        where  partno = '{$partno}'  and  custpo = '{$custpo}'
+                                ");
+                }
             $data = DB::connection('sqlsrv')
             ->select("SELECT * FROM borrow where  partno = '{$partno}'  and  custpo = '{$custpo}'");
 
@@ -121,6 +132,18 @@ class BorrowController extends Controller
                                         ") ;
 
 
+                        $cekqty = DB::connection('sqlsrv')
+                                                ->select("SELECT act_running from finishgood_list where partno = '{$partno}'  and  custpo = '{$custpo}'
+                                                        ");
+                                                        
+                                        if($cekqty[0]->act_running == 0){
+                                                DB::connection('sqlsrv')
+                                                ->update("UPDATE finishgood_list
+                                                                SET
+                                                                skid_no = NULL, box_no = NULL
+                                                                where  partno = '{$partno}'  and  custpo = '{$custpo}'
+                                                        ");
+                                        }
 
                 $data = DB::connection('sqlsrv')
                 ->select("SELECT * FROM borrow where  partno = '{$partno}'  and  custpo = '{$custpo}'");
@@ -195,6 +218,8 @@ class BorrowController extends Controller
                                     partno = '{$partno}'  and  custpo = '{$custpo}'
                                     
                                     ") ;
+
+                
         
             $data = DB::connection('sqlsrv')
                         ->select("SELECT * FROM borrow where  partno = '{$partno}'  and  custpo = '{$custpo}'");

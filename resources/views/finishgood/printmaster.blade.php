@@ -9,19 +9,21 @@
 {{-- {{dd($qrskid)}} --}}
   <div class="col-12">
 
-{{-- {{dd($data[]->qrdata)}} --}}
+{{-- {{dd($data[0]->skid_no)}} --}}
     {{-- <h3 colspan="6" class="text-center mt-3"> PT JVC Kenwood Electronics Indonesia</h3> --}}
     <div class="d-flex justify-content-center">
       <div class="table" widht="80%">
           <table class="border border-dark border-3 col-12 mt-2">
             <thead>
               <tr>
-                <th style="border-color:black"class="text-center" >QR</td>
+                <th class="text-center mb-1" style="font-size: 12px;border-color:black;"> {!! QrCode::size(50)->generate($data[0]->skid_no) !!}</th>
+                
                 <th style="border-color:black"class="text-center" >CUSTPO</td>
                 <th style="border-color:black"class="text-center">ITEM NO</td>
                 <th style="border-color:black"class="text-center">ITEM DESC</td>
-                <th style="border-color:black"class="text-center" colspan="2">PACKING DETAIL</td>
-                <th style="border-color:black"class="text-center">TOTAL QTY</td>
+                <th style="border-color:black"class="text-center" colspan="3">PACKING DETAIL</td>
+                  <th style="border-color:black"class="text-center">TOTAL QTY</td>
+               
               </tr>
             </thead>
             <tbody>
@@ -29,11 +31,12 @@
              <tr style="border-color:black">     
              
               
-                <td class="text-center mb-1" style="font-size: 12px;border-color:black;"> {!! QrCode::size(50)->generate($value->skid_no) !!}</td>
+                <td class="text-center mb-1" style="font-size: 12px;border-color:black;"> </td>
                 <td style="border-color:black"class="text-center">{{$value->custpo}}</td>
                 <td style="border-color:black" class="text-center">{{$value->partno}}</td>
                 <td style="border-color:black"class="text-center">{{$value->partname}}</td>
-                <td style="border-color:black"class="text-center">{{$value->tot_scan}}</td>
+                <td style="border-color:black"class="text-center">{{$value->tot_scan}} </td>
+                <td style="border-color:black"class="text-center">X</td>
                 <td style="border-color:black"class="text-center">{{$value->qty_running}}</td>
                 <td style="border-color:black"class="text-center">{{$value->sum_total}}</td>
               
