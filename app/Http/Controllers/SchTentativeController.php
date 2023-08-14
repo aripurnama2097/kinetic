@@ -283,7 +283,7 @@ class SchTentativeController extends Controller
                       where a.dest != 'PAKISTAN'
                       UNION ALL
                       select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand from schedule_temp as a 
+                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
                                       inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                       where a.dest ='PAKISTAN'
                       order by vandate asc ");
@@ -299,7 +299,7 @@ class SchTentativeController extends Controller
                       where a.dest != 'PAKISTAN'
                       UNION ALL
                       select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand from schedule_temp as a 
+                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
                                       inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                       where a.dest ='PAKISTAN'
                       order by vandate asc ");
