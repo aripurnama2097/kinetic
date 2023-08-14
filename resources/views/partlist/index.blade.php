@@ -114,7 +114,7 @@
                                                 id="filtprod-no" name="prodno">
                                                 <option value="-">-- PROD NO --</option>
                                                 @foreach ($dataprodno as $dd)
-                                                    <option value="{{ $dd->prodno }}">{{ $dd->prodno }}</option>
+                                                    <option value="{{ $dd->prodno }}">{{ $dd->prodno }} / {{ $dd->created_at }}</option>
                                                 @endforeach
                                             </select>
                                             <button type="submit" class="btn btn-info d-none d-sm-inline-block">

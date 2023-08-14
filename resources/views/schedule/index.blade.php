@@ -371,7 +371,7 @@
                             url: "{{ url('/schedule/email') }}",
                             success: function(result) {
                              
-                                console.log(name_1,name_2) 
+                                // console.log(name_1,name_2) 
 
                                 swal.fire(
                                     'SUCCESS!',

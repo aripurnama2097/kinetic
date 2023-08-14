@@ -17,7 +17,8 @@ class PartlistController extends Controller
             ->get();
 
         $dataprodno = DB::connection('sqlsrv')
-            ->select("SELECT distinct (prodno) from partlist");
+            ->select("SELECT distinct (prodno),(created_at) from partlist 
+                        order by created_at desc");
 
         $datajkeipo = DB::connection('sqlsrv')
             ->select("SELECT distinct (jkeipodate) from partlist");
