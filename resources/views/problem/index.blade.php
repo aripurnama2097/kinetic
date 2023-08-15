@@ -10,11 +10,11 @@
 
      <div class="col-md-12">
       <div class="col-md-12 mt-3">
-      <a href="#" class="btn btn-light mb-3 btn-sm" data-bs-toggle="modal" data-bs-target="#stdpack-upload"><i class="ti ti-user-plus"></i>
+      {{-- <a href="#" class="btn btn-light mb-3 btn-sm" data-bs-toggle="modal" data-bs-target="#stdpack-upload"><i class="ti ti-user-plus"></i>
         Add User
-      </a>
+      </a> --}}
 
-      <a href="{{url('problem/view')}}" class="btn btn-success mb-3 btn-sm" ><i class="ti ti-ban"></i>
+      <a href="{{url('problem/view')}}" class="btn btn-success mb-3 btn-sm " ><i class="ti ti-ban"></i>
         Problem History
       </a>
     </div>
@@ -59,9 +59,9 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label required">DIC</label>
+                <label class="form-label required">DIC(Email)</label>
                 <div>
-                  <input type="email" class="form-control" name="dic" placeholder="INPUT DIC" required>          
+                  <input type="email" class="form-control" name="dic" placeholder="INPUT EMAIL DIC" required>          
                 </div>
               </div>
           </div>

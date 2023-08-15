@@ -12,16 +12,16 @@
                 <div class="btn-group col-12 mt-5 mb-5" role="group">
                     <a class="btn btn-primary col-6 text-white" data-bs-toggle="collapse" id="btn-takeout" role="button"
                         aria-expanded="false" aria-controls="take_out">
-                        Borrow Takeout <i class="ti ti-arrow-bar-right"></i>
+                        Borrow Takeout <i class="ti ti-arrow-big-right-lines-filled"></i>
                     </a>
 
                     <a class="btn btn-success col-6 text-white" data-bs-toggle="collapse" id="btn-return" role="button"
-                        aria-expanded="false" aria-controls="return"><i class="ti ti-arrow-bar-left"></i>
+                        aria-expanded="false" aria-controls="return"><i class="ti ti-arrow-big-left-lines-filled"></i>
                         Borrow Return
                     </a>
                     <div class="d-flex justify-content-center">
                         <a class="btn btn-dark col-6 text-white text-center" data-bs-toggle="collapse" id="btn-show"
-                            role="button" aria-expanded="false" aria-controls="return"><i class="ti ti-caret-down"></i>
+                            role="button" aria-expanded="false" aria-controls="return"><i class="ti ti-table-down"></i>
                             Data Borrow
                         </a>
                     </div>
@@ -238,9 +238,9 @@
     <div class="collapse mt-4 ml-3 mr-3" id="show">
              
       <div class="card-body border-bottom d-flex justify-content-center ">
-        <div class="card-header">
-          <h3 style="font-size:15px"class="card-title text-primary">DATA BORROW</h3>
-      </div>
+        {{-- <div class="card-header mb-2">
+          <h3 style="font-size:15px"class="card-title text-primary"><i class="ti ti-table-down"></i>DATA BORROW</h3>
+      </div> --}}
           <div class="table-responsive  rounded-1 shadow-sm mt-3 mb-3 ml-0 mr-1">
               <table style="width:100%" class="table table-vcenter table-striped">
                   <thead>
