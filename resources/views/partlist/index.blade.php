@@ -591,7 +591,7 @@
                 // e.preventDefault();
                 if (e.which == 13) {
 
-                    // var parlistno = $('#partlist_no').val();
+                    var partlist_no = $('#partlist_no').val();
                     var scan_label = $('#scan_label').val();
                     console.log("1. Label Scan: ",scan_label);
                     $.ajax({
@@ -602,6 +602,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         data: {
+                            partlist_no: partlist_no,
                             scan_label: scan_label
                         },
                         success: function(response) {
@@ -745,9 +746,9 @@
                                         })
 
 
-                                        var audio = document.getElementById('audio');
+                                                    var audio = document.getElementById('audio');
                                                     var source = document.getElementById('audioSource');
-                                                    var audio = new Audio("{{asset('')}}storage/sound/part_stdpack.mp3");
+                                                    var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
                                                     audio.load()
                                                     audio.play();
 
@@ -802,6 +803,7 @@
                                                     ).attr('content')
                                             },
                                             data: {
+                                                partlist_no: partlist_no,
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
@@ -863,6 +865,7 @@
                                                     ).attr('content')
                                             },
                                             data: {
+                                                partlist_no: partlist_no,
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
@@ -925,6 +928,7 @@
                                                     ).attr('content')
                                             },
                                             data: {
+                                                partlist_no: partlist_no,
                                                 scan_label: scan_label
                                             },
                                             success: function(response) {
@@ -935,7 +939,7 @@
                                                         icon: 'warning',
                                                         title: response.message,
                                                         showConfirmButton :false,
-                                                        timer:5000
+                                                        timer:200
 
 
                                                     })

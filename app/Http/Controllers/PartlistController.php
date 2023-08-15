@@ -137,6 +137,7 @@ class PartlistController extends Controller
     public function scan_issue(Request $request, $status_print = null)
     {
 
+        $partlist_no = $request->partlist_no;
 
         $scan_nik = $request->scan_nik;
         $scan_label = $request->scan_label;
@@ -161,7 +162,11 @@ class PartlistController extends Controller
 
         // STEP 2. CEK ISI PART NO DIPARTLIST
         $cek_part = DB::connection('sqlsrv')
-            ->select("SELECT * FROM partlist where partno ='{$label_scan}'");
+            ->select("SELECT * FROM partlist 
+                        where partlist_no ='{$partlist_no}'
+                         and  partno ='{$label_scan}'
+                    
+                    ");
 
 
         if (!$cek_part) {
@@ -192,7 +197,9 @@ class PartlistController extends Controller
                     // (KONSEP : UPDATE DATA 1 PO  DULU SAMPAI CLEAR,BARU KE PO SELANJUTNYA)
         $cek_total = DB::connection('sqlsrv')
             ->select("SELECT  * from partlist
-                        where  partno = '{$label_scan}' and tot_scan != demand
+                        where partlist_no ='{$partlist_no}'
+                        and   partno = '{$label_scan}'                
+                        and tot_scan != demand
                         order by custpo asc
                         ");
 
@@ -218,7 +225,8 @@ class PartlistController extends Controller
         // STEP 4.PILIH PART UNTUK DI UPDATE DATA
         $selectPart = DB::connection('sqlsrv')
             ->select("SELECT top 1 * from partlist
-                                    where  partno = '{$label_scan}'
+                                    where  partlist_no ='{$partlist_no}'
+                                    and  partno = '{$label_scan}'                             
                                     and demand >= (coalesce(tot_scan,0) + $qty)
                                     order by custpo asc");
 
@@ -308,7 +316,8 @@ class PartlistController extends Controller
                           select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
                                     orderitem,custpo,partno, partname,mcshelfno,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}','{$idnumber}','{$uniq_cont}'
                                     from partlist
-                                    where partno = '{$label_scan}'
+                                    where partlist_no ='{$partlist_no}'
+                                    and partno = '{$label_scan}'                                
                                     and  (coalesce(tot_scan,0)+{$qty}) <= demand
                                     order by custpo asc ");
 
@@ -328,7 +337,10 @@ class PartlistController extends Controller
 
             // TAMPILKAN DATA PARTLIST HASIL SCAN
             $param = DB::connection('sqlsrv')
-                ->select("SELECT * from partlist where partno ='{$label_scan}'");
+                ->select("SELECT * from partlist 
+                           where   partlist_no ='{$partlist_no}'
+                           and
+                                  partno ='{$label_scan}'");
 
 
             // GET PARTLIST NO
@@ -337,7 +349,8 @@ class PartlistController extends Controller
 
 
             $data = DB::connection('sqlsrv')
-                ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+                ->select("SELECT * from partlist where partlist_no ='{$partlist_no}'
+                                                    and partno ='{$label_scan}' and tot_scan != 0");
 
             // return $data;
 
@@ -374,7 +387,8 @@ class PartlistController extends Controller
                     select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
                     orderitem,custpo,partno, partname,mcshelfno,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$idnumber}'
                     from partlist
-                    where partno = '{$label_scan}'
+                    where  partlist_no ='{$partlist_no}'
+                    and  partno = '{$label_scan}'                   
                     and  (coalesce(tot_scan,0)+{$qty}) <= demand
                     order by custpo asc ");
 
@@ -394,7 +408,10 @@ class PartlistController extends Controller
 
             // TAMPILKAN DATA PARTLIST HASIL SCAN
             $param = DB::connection('sqlsrv')
-                ->select("SELECT * from partlist where partno ='{$label_scan}'");
+                ->select("SELECT * from partlist 
+                           where   partlist_no ='{$partlist_no}'
+                           and
+                                  partno ='{$label_scan}'");
 
 
             // GET PARTLIST NO
@@ -402,9 +419,11 @@ class PartlistController extends Controller
 
 
 
-            $data = DB::connection('sqlsrv')
-                ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+    
 
+                $data = DB::connection('sqlsrv')
+                ->select("SELECT * from partlist where partlist_no ='{$partlist_no}'
+                                                    and partno ='{$label_scan}' and tot_scan != 0");
             // return $data;
             $sum = array($selectPart[0]->tot_scan, $qty);
             $act_qty = array_sum($sum);
@@ -446,12 +465,15 @@ class PartlistController extends Controller
         // return "tes";
         return $this->scan_issue($request, "loosecarton");
 
+        $partlist_no = $request->partlist_no;
         $scan_label = $request->scan_label;
 
         //PARAM LABEL
         $label_scan = substr($scan_label, 0, 15);
+
         $data = DB::connection('sqlsrv')
-            ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+                ->select("SELECT * from partlist where partlist_no ='{$partlist_no}'
+                                                    and partno ='{$label_scan}' and tot_scan != 0");
 
         // return $data;
 
@@ -468,12 +490,15 @@ class PartlistController extends Controller
     {
         $this->scan_issue($request, "start_combine");
 
+        $partlist_no = $request->partlist_no;
         $scan_label = $request->scan_label;
 
         //PARAM LABEL
         $label_scan = substr($scan_label, 0, 15);
+
         $data = DB::connection('sqlsrv')
-            ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+                ->select("SELECT * from partlist where partlist_no ='{$partlist_no}'
+                                                    and partno ='{$label_scan}' and tot_scan != 0");
 
         // return $data;
 
@@ -495,12 +520,16 @@ class PartlistController extends Controller
 
             ]);
         }
+
+        $partlist_no = $request->partlist_no;
         $scan_label = $request->scan_label;
 
         //PARAM LABEL
         $label_scan = substr($scan_label, 0, 15);
+
         $data = DB::connection('sqlsrv')
-            ->select("SELECT * from partlist where partno ='{$label_scan}' and tot_scan != 0");
+        ->select("SELECT * from partlist where partlist_no ='{$partlist_no}'
+                                            and partno ='{$label_scan}' and tot_scan != 0");
 
         // return $data;
 
