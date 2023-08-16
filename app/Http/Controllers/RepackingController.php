@@ -346,7 +346,6 @@ class RepackingController extends Controller
 
     public function inputCombine(Request $request){
 
-        // return $request;
         $scan_nik = $request->scan_nik;
         $mcLabel = $request->mc_label;
         $kitLabel = $request->kit_label;
@@ -355,7 +354,7 @@ class RepackingController extends Controller
         $label_scan = substr($mcLabel,0,15);
         $status_print = 'combine';
 
-        // $data = "K2K-0165-02:KNOB assy:40:JK NAGANO:9344785::2306260005";
+       
         $datakit = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
 
@@ -364,7 +363,7 @@ class RepackingController extends Controller
         $height = $request->height;
         $gw = $request->gw;
 
-        // dd($label_scan,$partno);
+      
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
                     ->select("SELECT * FROM scanin_repacking where label_mc ='{$mcLabel}' or
@@ -389,10 +388,7 @@ class RepackingController extends Controller
                                         and demand >= (coalesce(act_receive,0) + $qty)
                                         order by custpo asc");
 
-                                // dd($selectPart);
-
-
-            // return $selectPart;
+                             
             // STEP 2.INSERT INTO REPACKING SCAN IN
             DB::connection('sqlsrv')
                     ->insert("INSERT into scanin_repacking(custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik)
@@ -435,33 +431,44 @@ class RepackingController extends Controller
             $get_prodno = DB::connection('sqlsrv')
                             ->select("SELECT prodno from repacking_list where partno ='{$partno}'
                                          and custpo ='{$custpo}'");
+            
+            $cek_part = DB::connection('sqlsrv')
+                             ->select("SELECT  count(partno) as tot_part from temp_print 
+                                     ");
 
-            $lastOrder = DB::table('tblheadercombine')
-            // ->where('box_no')
-            ->max('carton_no');
+            $cek_carton = DB::connection('sqlsrv')
+                            ->select("SELECT  carton_no from temp_print 
+                                    ");
+            // dd($cek_part[0]->tot_part);
 
-            $carton_no = $lastOrder ? $lastOrder + 1 : 1;
+            $cartonOrder = DB::table('tblheadercombine')
+                              ->max('carton_no');
 
-            // $carton_no = '1';
+            if($cek_part[0]->tot_part == 0){
+                $carton_no = $cartonOrder ? $cartonOrder + 1 : 1;
+            }
+            else if($cek_part[0]->tot_part != 0){
+                $carton_no = $cek_carton[0]->carton_no; 
+
+            }
+          
+
+          
             // GET SEQUENCE NO
             $currentDate = Carbon::now();
             $dateAsNumber = $currentDate->format('Ymd');
             $lastOrder = DB::table('temp_print')
                              ->whereDate('created_at',$currentDate)
                              ->max('id');
-
             $order = $lastOrder ? $lastOrder + 1 : 1;
             $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
             $sequence_no = substr($uniqueNumber,12,1);
-
             $seq = $get_prodno[0]->prodno . '-'  . $carton_no . '-' . $sequence_no;
-            //CEK CUST PO
+            // END SEQUENCE
+
+            //CEK CUST PO       
             $cek_po = DB::connection('sqlsrv')
                             ->select("SELECT  count(custpo) as custpo from temp_print where custpo ='{$custpo}'");
-
-
-
-
                     // 2. MASUKAN DATA KE TEMP PRINT JIKA PO MASIH BELUM ADA PADA TABLE
                         if($cek_po[0]->custpo == 0  ){
                             // INSERT DATA TO TEMP PRINT TABLE
@@ -487,16 +494,7 @@ class RepackingController extends Controller
 
                                                                        ]);
                                                                }
-
-                                            //    return response()
-                                            //            ->json([
-                                            //                'success' => true,
-                                            //                'message' => 'Scan success...',
-                                            //                'data'    => $viewdata
-                                            //            ]);
-                                               }
-
-
+                        }
 
                         else{
 
@@ -522,43 +520,16 @@ class RepackingController extends Controller
                                                     ]);
                                             }
 
-                            // return response()
-                            //         ->json([
-                            //             'success' => true,
-                            //             'message' => 'Scan success...',
-                            //             'data'    => $viewdata
-                            //         ]);
-                            //         echo"failed";
-                            // }
-
-                            }
+                        }
 
 
-                    // $sum = array($selectPart[0]->act_receive, $qty);
-                    // $act_qty = array_sum($sum);
-
-                    // // dd($act_qty);
-
-
-                    // $viewdata = DB::connection('sqlsrv')
-                    //                 ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
-
-                    //                 if (($act_qty  == $selectPart[0]->demand)) {
-                    //                     return response()
-                    //                         ->json([
-                    //                             'success' => false,
-                    //                             'message' => 'FINISH SCAN...',
-                    //                             'data'    => $viewdata
-
-                    //                         ]);
-                    //                 }
-
-                    return response()
-                            ->json([
-                                'success' => true,
-                                'message' => 'Scan success...',
-                                'data'    => $viewdata
-                            ]);
+                   
+                            return response()
+                                        ->json([
+                                            'success' => true,
+                                            'message' => 'Scan success...',
+                                            'data'    => $viewdata
+                                        ]);
 
                     }
 
@@ -589,8 +560,8 @@ class RepackingController extends Controller
                         select prodno,carton_no from temp_print
                         ");
 
-       DB::table('temp_print')
-            ->truncate();
+    //    DB::table('temp_print')
+    //         ->truncate();
 
 
 
@@ -899,7 +870,8 @@ class RepackingController extends Controller
 
     function reset_tbltmp(){
 
-        DB::table('temp_print')->delete();
+        DB::table('temp_print')->truncate();
+
         return redirect()->back()->with('delete', 'All records have been deleted.');
     }
 

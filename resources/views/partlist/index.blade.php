@@ -139,7 +139,7 @@
                                                     </div>
                                                     <div class="row">
                                                         {{-- <div class="card mt-3 p-2 col-12 row"> --}}
-                                                            <div class="col-1" id="contentQR"></div>
+                                                            <div class="col-1 ml-4" id="contentQR"></div>
                                                             <div class="col-4 text-dark" style="position:right;font-color:black;font-size:16px" id="QRText"></div>
                                                         {{-- </div> --}}
                                                     </div>
@@ -147,19 +147,13 @@
                                                 <br>
                                                 <thead class="thead-dark">
                                                     <tr id="tr-id">
-                                                        {{-- <th style="font-size: 10px;">No</th> --}}
-                                                        {{-- <th style="font-size: 10px;">Part list No</th> --}}
-                                                        {{-- <th style="font-size: 10px;">Cust Code</th>
-                                                        <th style="font-size: 10px;">Prod No</th>
-                                                        <th style="font-size: 10px;">JKEI Po date</th>
-                                                        <th style="font-size: 10px;">van Date</th> --}}
                                                         <th class="text-center"style="font-size: 17px;text-center;border-color:black">Cust PO</th>
                                                         <th class="text-center"style="font-size: 17px;text-center;border-color:black">Vandate</th>
                                                         <th class="text-center"style="font-size: 17px;text-center;border-color:black">Part Number</th>
                                                         <th class="text-center"style="font-size: 17px;text-center;border-color:black">Part Name</th>
                                                         <th class="text-center"style="font-size: 17px;text-center;border-color:black">Demand</th>
                                                         <th class="text-center"style="font-size: 17px;text-center;border-color:black">Std Pack</th>
-                                                        {{-- <th style ="font-size: 17px;">MC Shelf No</th> --}}
+                                                        <th  class="text-center"style="font-size: 17px;text-center;border-color:black">Lokasi</th>
                                                         <th class="text-center"style="font-size: 17px;text-center;border-color:black">Vendor</th>
                                                     </tr>
                                                 </thead>
@@ -318,14 +312,14 @@
 
         $(document).ready(function() {
 
-            // $('#sch-mc').DataTable( {
-            //     dom: 'Bfrtip',
-            //     buttons: [
+            $('#sch-mc').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
 
-            //         'excelHtml5',
-            //         'csvHtml5'
-            //     ]
-            // } );
+                    'excelHtml5',
+                    'csvHtml5'
+                ]
+            } );
 
             $('#btn-print').on('click', function(){
                 $('#scanin').hide();
@@ -418,12 +412,13 @@
                             // data = data + "<td>" + value.custcode + "</td>"
                             // data = data + "<td>" + value.prodno + "</td>"
                             // data = data + "<td>" + value.jkeipodate + "</td>"
-                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.custpo + "</td>"
-                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.vandate + "</td>"
-                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.partno + "</td>"
+                            data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.custpo + "</td>"
+                            data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.vandate + "</td>"
+                            data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.partno + "</td>"
                             data = data + "<td style=font-size:12px;text-align:center;border-color:black>" + value.partname + "</td>"
-                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.demand + "</td>"
-                            data = data + "<td style=font-size:15px;text-align:center;border-color:black>" + value.stdpack + "</td>"
+                            data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.demand + "</td>"
+                            data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.stdpack + "</td>"
+                            data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.mcshelfno + "</td>"
                             data = data + "<td style=font-size:12px;text-align:center;border-color:black>" + value.vendor + "</td>"
                             data = data + "</tr>"
                         })
