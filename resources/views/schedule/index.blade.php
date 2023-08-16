@@ -14,43 +14,22 @@
         <div class="bg-dark mt-3">
             <div class="container-fluid">
               <div class="card ml-3 mr-3">
-                {{-- <div class="card-header"> --}}
-                  {{-- </div> --}}
-                  <div class="card-body">
-                  <h2>FILTER </h2>
-                  <div class="row">
-                    <div class="col-5">
-                      <form id="filter-Data">
-            
-                        <select style="font-size:15px" class="form-control col-3 btn btn-light btn-sm" id="prod-no" name="prodno">
-                          <option value="-">-- PROD NO --</option>
-                          @foreach ($data2 as $dd)
-                          <option value="{{ $dd->prodno }}">{{ $dd->prodno }}</option>
-                          @endforeach
-                        </select>
-                        <button type="submit" class="btn btn-primary d-none d-sm-inline-block  ">
-                          <i class="ti ti-filter"></i>
-                          Search
-                        </button>
-                      </form>
-                    </div>
+               
+                  <div class="card-body">                
+                  <div class="col-12 btn-group">                  
+                    <a class="btn btn-dark text-white " data-bs-toggle="collapse" id="btn-sch"  role="button"
+                        aria-expanded="false" aria-controls="partlist">
+                        <i class="ti ti-calendar"></i>
+                        SHOW DATA
+                   </a>
 
-                    {{-- <div class="col-7 ml-6">
-                      <form id="filter-Data" class="form-inline  float-left">
-                        <input type="date" class="form-control mr-2" name="start_date" id="release-date"
-                          value="{{ date('Y-m-d') }}">
-                        <input type="date" class="form-control mr-2" name="end_date" id="release-date"
-                          value="{{ date('Y-m-d') }}">
-                        
-                        <button type="submit" class="btn btn-primary d-none d-sm-inline-block  ">
-                          <i class="ti ti-filter"></i>
-                          Search
-                        </button>
-                      </form>
-                    </div> --}}
+                    <a class="btn btn-primary text-white " data-bs-toggle="collapse" id="btn-dic"  role="button"
+                        aria-expanded="false" aria-controls="partlist">
+                        <i class="ti ti-mail"></i>
+                        ADD DIC
+                    </a>   
 
-                  </div>
-                 
+                  </div>               
                 </div>
             </div>
             </div>
@@ -61,32 +40,31 @@
                     @endif
 
 
-                    <div class="col-12 ">
-                        <div class="card  col-12 ">
-
-                            <div class="card-header ml-3 ">
-                                <button id="share-schedule" class="btn btn-info  ">
+                    <div class="col-12 "> 
+                            {{-- SHOW DATA SCHEDULE --}}
+                        <div class="collapse mt-4" id="view-schedule" hide>
+                          <div class="card  col-12 ">
+                          <h4 style="font-size:25px"class="card-title text-primary mt-3 ml-3">  <i class="ti ti-calendar"></i>SCHEDULE RELEASE</h4>
+                            <div class="btn-group mt-3 ml-4 col-6">
+                                <button id="share-schedule" class="btn btn-info btn-sm  ">
                                     <i class="ti ti-share"></i>
                                     Share Schedule
                                 </button>
+            
                                 <a data-bs-toggle="modal" data-bs-target="#modal-partlist"
-                                    class="btn btn-secondary   text-light ml-2">
+                                    class="btn btn-success  btn-sm text-light ml-2">
                                     <i class="ti ti-file-export"></i>
                                     Generate Partlist
                                 </a>
-                                {{-- <a href="{{ url('/schedule') }}" class="btn btn-warning ml-2">
-                                    <i class="ti ti-360"></i>
-                                    Refresh
-                                </a> --}}
+                             
                                 <a data-bs-toggle="modal" data-bs-target="#cancel-partlist"
-                                   class="btn btn-danger   text-light ml-2"><i class="ti ti-circle-letter-x"></i>
+                                   class="btn btn-danger btn-sm   text-light ml-2"><i class="ti ti-circle-letter-x"></i>
                                     Cancel Partlist
                                 </a>
                             </div>
-
-                            {{-- </div>   --}}
-
-                            <div class="card-body border-bottom ">
+                           
+        
+                            <div class="card-body border-bottom ">                           
                                 <div class="table-responsive  rounded-1 shadow-sm">
                                     {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
                                     <table style="width:100%" id="schedule-release"  class="table  table-bordered border-dark shadow-sm">                                   
@@ -156,12 +134,66 @@
                             </div>
                         </div>
                     </div>
-                {{-- </div> --}}
+
+
+                        <div class="collapse mt-4" id="view-dic" hide>
+                            <form  action ="{{url('schedule/add_dic')}}" method="post" class="card" enctype="multipart/form-data">
+                                @csrf
+                            <div class="card-header">
+                                  <h3 style="font-size:25px"class="card-title text-primary">ADD DIC</h3>
+                                </div>
+                                <div class="card-body">
+                                  <div class="row">
+                                      <div class="mb-3 col-6">
+                                          <label class="form-label required">DIC Name</label>
+                                          <div>
+                                            <input type="text" class="form-control"  name="name" id="name" placeholder="Enter NAME" required>
+                                          </div>
+                                      </div>
+                                      <div class="mb-3 col-6">
+                                          <label class="form-label required">DIC Email</label>
+                                          <div>
+                                            <input type="email" class="form-control"  name="email" id="email" placeholder="Enter NIK" required>
+                                          </div>
+                                      </div>
+                                    
+                                                       
+                                      </div>
+                                  </div>
+                                 
+                                <div class="card-footer text-end">
+                                  <button type = "submit"  class="btn btn-info">Submit</button>
+                                </div>
+                              </form>
+
+                              <div class="card mt-2 mb-2 ">
+                                <div class="table-responsive  rounded-1 shadow-sm mt-3 mb-3 ml-0 mr-1 col-12 ">
+                                  <table style="width:100%" id="problem-data"  class="table table-vcenter table-striped">
+                                      <thead >
+                                          <tr class="headings">                                                             
+                                              <th style="font-size: 13px;">Name</th>
+                                              <th style="font-size: 13px;">Email</th>   
+                                              <th style="font-size: 13px;">Created By</th>                  
+                                              <th style="font-size: 13px;">Last Updated</th>
+                                          </tr>
+                                      </thead>
+                        
+                                      <tbody>
+                                          @foreach ($dataemail as $key => $value)             
+                                          <td style="font-size: 13px;">{{ $value->name }}</td>
+                                          <td style="font-size: 13px;"> {{ $value->email }}</td>
+                                          <td style="font-size: 13px;"> {{ $value->inputuser }}</td>            
+                                          <td style="font-size: 13px;"> {{ $value->created_at }}</td>                 
+                                          </tr>
+                                          @endforeach
+                                      </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                        </div>
+                        </div>
+                    </div>
             </div>
-
-
-
-
         </div>
     </div>
 
@@ -266,6 +298,17 @@
 
         $(document).ready(function() {
 
+            $('#btn-sch').on('click', function(){
+                $('#view-dic').hide();
+                $('#view-schedule').show();
+            })
+
+            
+            $('#btn-dic').on('click', function(){
+                $('#view-schedule').hide();
+                $('#view-dic').show();
+            })
+
 
             $('#schedule-release').DataTable( {
                     dom: 'Bfrtip',
@@ -333,13 +376,6 @@
                 });
   
                 Swal.fire({
-                    html:
-                        '<input  placeholder="INPUT EMAIL"id="name1" name="name1" cols="5" class="col-12 row-cols-5"  type="textarea">',
-                        //  +'<br>'  +
-                        // '<input placeholder="INPUT EMAIL"id="name2" name="name2" class=" col-8" type="text">' +'<br>'  +
-                        // '<input placeholder="INPUT EMAIL"id="name3" name="name3" class=" col-8" type="text">' +'<br>'  +
-                        // '<input placeholder="INPUT EMAIL"id="name4" name="name4" class=" col-8" type="text">' +'<br>'  +
-                        // '<input placeholder="INPUT EMAIL"id="name5" name="name5" class=" col-8" type="text">',
                     icon: 'warning',
                     title: ' Share Update Schedule?',
                     showDenyButton: false,
@@ -349,30 +385,15 @@
                 }).then((result) => {
                     /* Read more about isConfirmed, isDenied below */
                     if (result.isConfirmed) {
-                        name_1= $('#name1').val();
-                        // name_2= $('#name2').val();
-                        // name_3= $('#name3').val();
-                        // name_4= $('#name4').val();
-                        // name_5= $('#name5').val();
-
+                       
                         $.ajax({
                             type: 'POST',
-                            data: {
-                                    name1: name_1,
-                                    // name2: name_2,
-                                    // name3: name_3,
-                                    // name4: name_4,
-                                    // name5: name_5,
-                                    _token: '{{ csrf_token() }}'
-                                },
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
                             url: "{{ url('/schedule/email') }}",
                             success: function(result) {
-                             
-                                // console.log(name_1,name_2) 
-
+                          
                                 swal.fire(
                                     'SUCCESS!',
                                     'Share email to DIC',

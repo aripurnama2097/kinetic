@@ -17,13 +17,16 @@ class ScheduleController extends Controller
                 order by a.vandate asc");
 
         $data2=DB::connection('sqlsrv')
-        ->select("SELECT distinct (prodno) from schedule ");
+                ->select("SELECT distinct (prodno) from schedule ");
 
         $data3=DB::connection('sqlsrv')
-        ->select("SELECT distinct (prodno) from schedule where dest !='PAKISTAN' 
-                     and status is null");
+                ->select("SELECT distinct (prodno) from schedule where dest !='PAKISTAN' 
+                            and status is null");
 
-        return view('schedule.index', compact('data','data2','data3'));
+        $dataemail = DB::connection('sqlsrv')
+                ->select("SELECT * from tblemaildic");
+
+        return view('schedule.index', compact('data','data2','data3','dataemail'));
     }
 
 
@@ -119,6 +122,24 @@ class ScheduleController extends Controller
 
             return redirect()->back()->with('success', 'Cancel partlist success ');
 
+    }
+
+    public function add_dic(request $request){
+        $name        = $request->name;
+        $email       = $request->email;
+        $inputuser   = auth()->user()->name; 
+
+        DB::connection('sqlsrv')
+            ->insert("INSERT into tblemaildic(name,email,inputuser)
+                            SELECT
+                            '{$name}','{$email}','$inputuser'
+                   
+                   
+                   ");
+
+
+      
+            return redirect()->back()->with('success','created user successfully');
     }
 
 }

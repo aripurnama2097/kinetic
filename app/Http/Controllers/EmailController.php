@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Mail\NotifyMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 
 class EmailController extends Controller
 {
@@ -13,7 +14,11 @@ class EmailController extends Controller
 
     //   return $request;
 
-      $datauser = $request->name1;
+      $datauser = DB::connection('sqlsrv')
+                    ->select('SELECT email from tblemaildic');
+
+
+    // return $datauser;
     //   list($user1, $user2, $user3, $dest, $custpo, $shelfno, $idnumber) = explode(",", $datauser);
 
     //   $user = explode(",", $datauser);

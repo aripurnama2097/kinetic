@@ -114,7 +114,7 @@ Route::post('schedule/partlist',[ScheduleController::class, 'partlist']);
 Route::post('schedule/email',[EmailController::class, 'index']);
 Route::get('schedule/release_schedule',[ScheduleController::class, 'view_schrelease']);
 Route::post('schedule/cancel_partlist',[ScheduleController::class, 'cancel_partlist']);
-
+Route::post('schedule/add_dic', [ScheduleController::class,'add_dic']);
 
 
 // ========================================MASTER SCHEDULE  RELEASE ROUTING===========================
