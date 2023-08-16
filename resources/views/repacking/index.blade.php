@@ -290,28 +290,30 @@
             {{-- PRINT LABEL KIT PROCESS --}}
             <div class="collapse mt-4" id="print_label">
                 <div class="col-12 ">
-                    <div class="card rounded-1 col-12 mb-2 border border-success">
-                        <h1 class="text-dark text-center"> Print Label KIT</h1>
+                    <div class="card rounded-1 col-12 mb-2 border border-success  shadow-lg rounded-2">
+                        <h1 style="font-weight:bold"class="text-dark text-center mt-4"> <i class="ti ti-printer"> </i>Print Label KIT (Original/Loosecarton)</h1>
                         <div class="row row-cards col-12 mb-4">
                             <div class="mb-3 col-sm-12 col-12">
                                 <input style="font-size:20px"
-                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                    class="form-control form-control-xs mb-2 text-center border border-secondary text-dark"
                                     type="text" name="pic" value="" id="scan_nik" maxlength="8"
                                     placeholder="SCAN NIK HERE">
-                                <input class="form-control form-control-lg mb-2 text-center border border-secondary "
+                                <input class="form-control form-control-lg mb-2 text-center border border-secondary text-dark "
                                     type="text" name="scan_label" value="" id="scan_label"
                                     placeholder="SCAN MC LABEL" disabled>
                             </div>
                         </div>
+                    </div>
 
+                    <div class="card rounded-1 col-12 mb-2 border border-primary mt-3 shadow-lg rounded">
                         <div class="row row-cards col-12 mb-4">
-                            <h1 class="text-dark text-center"> Print Label KIT - Combine Qty Label</h1>
+                            <h1 style="font-weight:bold" class=" text-center mt-4 text-primary"><i class="ti ti-printer"> </i>Print Label KIT - Combine Qty Label</h1>
                             <div class="mb-3 col-sm-12 col-12">
                                 <input style="font-size:20px"
-                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                    class="form-control form-control-xs mb-2 text-center border border-secondary text-dark "
                                     type="text" name="scan_pic" value="" id="scan_pic" maxlength="8"
                                     placeholder="SCAN NIK HERE">
-                                <input class="form-control form-control-lg mb-2 text-center border border-secondary "
+                                <input class="form-control form-control-lg mb-2 text-center border border-secondary text-dark"
                                     type="text" name="scan_label_mc" value="" id="scan_label_mc"
                                     placeholder="SCAN MC LABEL" disabled>
                             </div>

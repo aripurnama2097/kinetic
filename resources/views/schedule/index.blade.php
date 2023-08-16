@@ -46,19 +46,24 @@
                           <div class="card  col-12 ">
                           <h4 style="font-size:25px"class="card-title text-primary mt-3 ml-3">  <i class="ti ti-calendar"></i>SCHEDULE RELEASE</h4>
                             <div class="btn-group mt-3 ml-4 col-6">
+                                <button data-bs-toggle="modal" data-bs-target="#check" class="btn btn-dark btn-sm  ">
+                                    <i class="ti ti-check"></i>
+                                    Check Data 
+                                </button>
+
                                 <button id="share-schedule" class="btn btn-info btn-sm  ">
                                     <i class="ti ti-share"></i>
                                     Share Schedule
                                 </button>
             
                                 <a data-bs-toggle="modal" data-bs-target="#modal-partlist"
-                                    class="btn btn-success  btn-sm text-light ml-2">
+                                    class="btn btn-success  btn-sm text-light ">
                                     <i class="ti ti-file-export"></i>
                                     Generate Partlist
                                 </a>
                              
                                 <a data-bs-toggle="modal" data-bs-target="#cancel-partlist"
-                                   class="btn btn-danger btn-sm   text-light ml-2"><i class="ti ti-circle-letter-x"></i>
+                                   class="btn btn-danger btn-sm   text-light "><i class="ti ti-circle-letter-x"></i>
                                     Cancel Partlist
                                 </a>
                             </div>
@@ -293,6 +298,44 @@
         </div>
     </div>
 
+    {{-- ====================GENERATE PARTLIST========================================= --}}
+    <div class="modal modal-blur fade" id="check" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">CHECK DATA</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{{ url('schedule/check_data') }}" method="GET">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div>
+                                  
+                                    <input class="form-control" name="prodno" id="prodno" placeholder="INPUT PRODNO"
+                                    required>
+                                     <br>
+                                   
+
+                                    <button type="submit" class="btn btn-primary d-none d-sm-inline-block">
+                                        <i class="ti ti-file-export"></i>
+                                        Submit
+                                    </button>
+                                    <br>
+                                    <br>
+                                    <p style="font-wight:bold" class="text-danger"> * Pastikan Prod No yang di input sudah
+                                        sesuai </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">
 

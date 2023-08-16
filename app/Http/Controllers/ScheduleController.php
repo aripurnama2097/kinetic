@@ -142,4 +142,19 @@ class ScheduleController extends Controller
             return redirect()->back()->with('success','created user successfully');
     }
 
+
+    public function viewcheck_data(request $request){
+
+        $prodno = $request->prodno;
+
+        $data = DB::connection('sqlsrv')
+                    ->select(" SELECT a.*, b.stdpack,b.vendor from schedule as a
+                                left join std_pack as b 
+                                    on a.partno = b.partnumber
+                                        where prodno ='{$prodno}' and b.stdpack is null
+                           ");
+
+        return view('schedule.checkdata',compact('data'));
+    }
+
 }
