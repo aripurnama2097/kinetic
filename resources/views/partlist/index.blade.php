@@ -663,6 +663,7 @@
                                 console.log("message",warningMessage.indexOf('OVER'))
                                 console.log("message",warningMessage.indexOf('PART'))
                                 console.log("message",warningMessage.indexOf('DEMAND'))
+                                console.log("message",warningMessage.indexOf('QTY'))
                                     if(warningMessage.indexOf('WRONG') == 0){
                                         Swal.fire({
 
@@ -766,6 +767,28 @@
                                                     var audio = document.getElementById('audio');
                                                     var source = document.getElementById('audioSource');
                                                     var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
+                                                    audio.load()
+                                                    audio.play();
+
+
+                                        return;
+                                    }
+
+                                      if(warningMessage.indexOf('QTY') == 0){
+                                        Swal.fire({
+
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:1000
+
+
+                                        })
+
+
+                                                    var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/Over_Qty.mp3");
                                                     audio.load()
                                                     audio.play();
 

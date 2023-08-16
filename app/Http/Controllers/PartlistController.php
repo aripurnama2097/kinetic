@@ -193,7 +193,27 @@ class PartlistController extends Controller
         //--------------END CEK-----------------
 
 
-        // STEP 3. CEK TOTAL SCAN UNTUK KONDISI DOUBLE PARTNO(PO BERBEDA) DALAM 1 PRODNO
+        //  // STEP 3. CEK TOTAL BERDASARKAN PARTNO
+         $cek_balance = DB::connection('sqlsrv')
+                       ->select ("SELECT count(partno) as partnot_clear
+                                                    from partlist
+                                    where  partlist_no ='{$partlist_no}'
+                                    and partno ='{$label_scan}'  
+                                    and  balance_issue <> 0
+																	
+                                ");
+
+                            //  dd($cek_balance[0]->partnot_clear);
+
+                    if($cek_balance[0]->partnot_clear ==0){
+                        return response()
+                        ->json([
+                            'success' => false,
+                            'message' => 'OVER DEMAND...',
+                        ]);
+                    }
+
+        // STEP 4. CEK TOTAL SCAN UNTUK KONDISI DOUBLE PARTNO(PO BERBEDA) DALAM 1 PRODNO
                     // (KONSEP : UPDATE DATA 1 PO  DULU SAMPAI CLEAR,BARU KE PO SELANJUTNYA)
         $cek_total = DB::connection('sqlsrv')
             ->select("SELECT  * from partlist
@@ -208,15 +228,14 @@ class PartlistController extends Controller
         $sum = array($cek_total[0]->tot_scan, $qty);
         $act_qty = array_sum($sum);
 
-        // dd($act_qty);
 
         if (($act_qty  > $cek_total[0]->demand)) {
             return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'OVER QTY...',
+            ->json([
+                'success' => false,
+                'message' => 'QTY OVER FROM STDPACK...',
 
-                ]);
+            ]);
         }
          // ENDSTEP 3
 
@@ -229,14 +248,6 @@ class PartlistController extends Controller
                                     and  partno = '{$label_scan}'                             
                                     and demand >= (coalesce(tot_scan,0) + $qty)
                                     order by custpo asc");
-
-
-
-        // dd($qty,$selectPart[0]->stdpack );
-
-        // $cek_continue = DB::connection('sqlsrv')
-        //                 ->select("SELECT count(*) as continue_status from partscan where partno = '{$label_scan}'
-                            // and status_print = 'continue'");
 
 
                 if ($qty < $selectPart[0]->stdpack && $status_print == null) {
@@ -252,7 +263,7 @@ class PartlistController extends Controller
                         return response()
                         ->json([
                             'success' => false,
-                            'message' => 'OVER QTY...',
+                            'message' => 'QTY OVER FROM STDPACK...',
 
                         ]);
                     }
