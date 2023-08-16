@@ -329,7 +329,7 @@ class FinishGoodController extends Controller
         // dd($data[0]->qrdata);
     //   $data2 =[$skidno, $data];
 
-       return view('finishgood.printmaster',compact('data'));
+       return view('finishgood.printmaster',compact('data','packing_no'));
 
 
     }

@@ -81,11 +81,11 @@
                                         <div class="row row-cards col-12 mb-4">
                                             <div class="mb-3 col-sm-12 col-12">                                            
                                                 <input style="font-size:20px"
-                                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                    class="form-control form-control-xs mb-2 text-center border border-secondary text-dark "
                                                     type="text" name="qrskid" value="" id="qrskid" 
                                                     placeholder="SCAN QR SKID" autofocus>
                                                 <input style="font-size:20px"
-                                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                    class="form-control form-control-xs mb-2 text-center border border-secondary text-dark"
                                                     type="text" name="qrlabel" value="" id="qrlabel" 
                                                     placeholder="SCAN QR label" disabled>                                                                                                                                                                    
                                             </div>                                      
@@ -254,32 +254,69 @@
 
             $('#qrlabel').on('keypress', function(e) {
                 if (e.which == 13) {
+
+                    // SKD20230801003:1:JK NAGANO:NA356:03:2022-06-17
+                    // 1:NA356
+
                     var qrlabel = $('#qrlabel').val();
                     var qrskid = $('#qrskid').val();
                    
-                    let skidno          = qrskid.substr(0, 11); //get PARTNO KIT
+                   
                     let getskidno       = qrskid.split(":");
-      	            let skid_check      = getskidno[1];// GET PO KIT
+                    let skid_no         = getskidno[1];
+                    let char            = ":";
+                    let packing_no      = getskidno[3];
 
-                   console.log(skid_check);
+                    let resultskid = skid_no.concat(char,packing_no);
 
-                   if(qrlabel == skid_check){
-                    var audio = document.getElementById('audio');
+      	            // let skid_check      = getskidno[1] . getskidno[3] ;// GET PO KIT
+
+                   console.log(qrlabel,resultskid);
+
+                   if(qrlabel == resultskid){
+                    swal.fire({
+                                    icon: 'success',
+                                    title: 'Oke',
+                                    showConfirmButton :false,
+                                    timer:1000
+
+
+                                })
+                    // if(qrskid.search(qrlabel)>= 0){
+                                                                var audio = document.getElementById('audio');
                                                                 var source = document.getElementById('audioSource');
                                                                 var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
                                                                 audio.load()
                                                                 audio.play();
                                                                 return;                                           
-                    alert("OKE...");
+                    $('#qrskid').focus();
+                   $('#qrskid').val("");
+                   $('#qrlabel').val("");
                   
                    }
                    else{
-                    alert("Please Check Content Skid");
+                    swal.fire({
+                                    icon: 'error',
+                                    title: 'WRONG',
+                                    showConfirmButton :false,
+                                    timer:1000
+
+
+                                })
+
+                                                                var audio = document.getElementById('audio');
+                                                                var source = document.getElementById('audioSource');
+                                                                var audio = new Audio("{{asset('')}}storage/sound/WRONG.mp3");
+                                                                audio.load()
+                                                                audio.play();
+                                                                return;     
+                    // alert("Please Check Content Skid");
 
                    }
 
-                   $('#qrskid').val("");
                    $('#qrskid').focus();
+                   $('#qrskid').val("");
+                   $('#qrlabel').val("");
                 }
             })
     });

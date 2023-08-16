@@ -16,7 +16,8 @@
           <table class="border border-dark border-3 col-12 mt-2">
             <thead>
               <tr>
-                <th class="text-center mb-1" style="font-size: 12px;border-color:black;"> {!! QrCode::size(50)->generate($data[0]->skid_no) !!}</th>
+                <?php $content = $data[0]->skid_no . ':' . $packing_no  ?>
+                <th class="text-center mb-1" style="font-size: 12px;border-color:black;"> {!! QrCode::size(50)->generate($content) !!}</th>
                 
                 <th style="border-color:black"class="text-center" >CUSTPO</td>
                 <th style="border-color:black"class="text-center">ITEM NO</td>
