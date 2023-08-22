@@ -71,7 +71,9 @@
                                                 <th class="text-center" style="font-size: 10px;">Action</th>
                                                 <th class="text-center" style="font-size: 10px;">Status</th>
                                                 <th class="text-center" style="font-size: 10px;">Last Updated</th>
+                                            <?php if (Auth::user()->role === 'user' || Auth::user()->role === 'Admin QA' ||Auth::user()->role === 'Admin QC') { ?>
                                                 <th class="text-center" style="font-size: 10px;">Response</th>
+                                            <?php } ?>
                                             
                           
                                             </tr>
@@ -111,6 +113,7 @@
     
                                             </td>                                    
                                             <td class="text-primary text-center"   style="font-size: 12px; font-weight:bold">{{$value->updated_at}} </td>
+                                            <?php if (Auth::user()->role === 'user' || Auth::user()->role === 'Admin QA' ||Auth::user()->role === 'Admin QC') { ?>
                                             <td  style="font-size: 14px;">                                         
                                                 <?php if ($value->status != 'Done'){?>
                                                     <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#updateModal_{{$value->id}}"><i class="ti ti-arrow-big-right-filled"></i>Response</a>
@@ -183,6 +186,7 @@
                                                 </div>
                                               </div>
                                             </td> 
+                                            <?php } ?>
                                             </tr>
                                             @endforeach
                                         </tbody>

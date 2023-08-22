@@ -111,13 +111,7 @@
                                                     echo '<span class= "badge bg-success">READY</span>';
                                                   }
                     
-                                                //   if ($value->running_date =='' && $value->start_date !='') {
-                                                //     echo '<span class= "badge badge-light">NEW SCHEDULE</span>';
-                                                //   }    
-                    
-                                                //  if ($value->running_date =='' && $value->start_date ='') {
-                                                //     echo '<span class= "badge badge-secondary">NO SCHEDULE</span>';
-                                                //   }                 
+                                                        
                                                   ?> 
                                             
                                             </td>

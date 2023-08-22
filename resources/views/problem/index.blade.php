@@ -13,11 +13,24 @@
       {{-- <a href="#" class="btn btn-light mb-3 btn-sm" data-bs-toggle="modal" data-bs-target="#stdpack-upload"><i class="ti ti-user-plus"></i>
         Add User
       </a> --}}
+  <div class="col-md-12 mt-3 ml-0">
+        <div class="btn-group col-12 mt-5 mb-5" role="group">
+          <a class="btn btn-primary col-6 text-white" data-bs-toggle="collapse" id="btn-problem" role="button"
+              aria-expanded="false" aria-controls="take_out">
+              <i class="ti ti-ban"></i>
+              Input Problem  
+          </a>
 
-      <a href="{{url('problem/view')}}" class="btn btn-success mb-3 btn-sm " ><i class="ti ti-ban"></i>
-        Problem History
-      </a>
+          <a class="btn btn-success col-6 text-white" href="{{url('problem/view')}}"
+              aria-expanded="false" aria-controls="return"><i class="ti ti-file"></i>
+              Problem History
+          </a>
+      </div>
+  </div>
+
+     
     </div>
+    <div class="collapse mt-4" id="problem" hide>
         <form  action ="{{url('problem/create')}}" method="post" class="card" enctype="multipart/form-data">
           @csrf
           <div class="card-header">
@@ -69,6 +82,7 @@
             <button type = "submit"  class="btn btn-primary">Submit</button>
           </div>
         </form>
+    </div>
 
       {{-- <div class="card mt-2 mb-2">
         <div class="table-responsive  rounded-1 shadow-sm mt-3 mb-3 ml-0 mr-1">
@@ -136,6 +150,14 @@
 <script type="text/javascript">
 
     $(document).ready(function() {
+
+      $('#btn-problem').on('click', function() {
+                // $('#return').hide();
+                // $('#show').hide();
+                $('#problem').show();
+            })
+
+
       $('#problem-data').DataTable( {
         dom: 'Bfrtip',
         buttons: [
