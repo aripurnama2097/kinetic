@@ -114,7 +114,7 @@
                                                 <input style="font-size:20px"
                                                     class="form-control form-control-xs mb-2 text-center border border-secondary "
                                                     type="text" name="custpo"  id="custpo" maxlength="8"
-                                                    placeholder="CUSTPO"  disabled>
+                                                    placeholder="CUST NO"  disabled>
                                                 <select style="font-size:15px"  class="form-control form-control-xs mb-2 text-center border border-secondary "
                                                     id="vandate" name="vandate" disabled>
             

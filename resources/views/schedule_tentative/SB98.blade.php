@@ -152,8 +152,12 @@
               <button type="button" class="btn btn-link link-warning" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-plus"></i>
+              <button id="submit" type="submit"  class="btn btn-primary ms-auto" >
+                <div id="spinner" class="spinner" style="display: none;">
+                  <div class="spinner-border text-warning text-end mr-3" role="status">
+                      <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
                 Upload 
               </button>
               
@@ -182,6 +186,17 @@ $(document).ready(function () {
             'csvHtml5'
         ]
     } );
+
+    const cancelButton = document.querySelector('#cancel');
+   const submitButton = document.querySelector('#submit');
+  
+    const spinner = document.querySelector('#spinner');
+    // Ketika tombol submit diklik
+    submitButton.addEventListener('click', function() {
+      // Menampilkan spinner loading
+      spinner.style.display = 'block';
+    });
+
 
 
 

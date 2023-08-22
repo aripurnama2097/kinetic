@@ -141,11 +141,31 @@
               <button type="button" class="btn btn-link link-warning" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-plus"></i>
-                Upload 
+              <button id="submit" type="submit"  class="btn btn-primary ms-auto" >
+                <div id="spinner" class="spinner" style="display: none;">
+                  <div style="fopnt-weight:bold" class="spinner-border text-warning text-end mr-3" role="status">
+                      <span class="sr-only">Loading...</span>
+                  </div>
+                  {{-- <span class="spinner-border spinner-border-sm"></span>
+                  Loading.. --}}
+                </div>
+
+                {{-- <div class="spinner-grow text-warning"></div> --}}
+                {{-- <div id="btn-upload" class="btn btn-primary ms-auto" style="display: none;"> --}}
+                UPLOAD
+                {{-- </div> --}}
               </button>
             </div>
+
+          
+
+            {{-- <div class="d-flex justify-content-end">
+              <div id="spinner" class="spinner" style="display: none;">
+                <div class="spinner-border text-info text-end" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div> --}}
           </form>
         </div>
     </div>
@@ -160,9 +180,49 @@
             
 $(document).ready(function () {
 
+   const cancelButton = document.querySelector('#cancel');
+   const submitButton = document.querySelector('#submit');
+   const submitButton2 = document.querySelector('#btm-upload');
+  
+  
+    const spinner = document.querySelector('#spinner');
+    // Ketika tombol submit diklik
+    submitButton.addEventListener('click', function() {
+      // Menampilkan spinner loading
+      spinner.style.display = 'block';
+      submitButton2.style.display = 'none';
+      
+    });
+
+    // cancelButton.addEventListener('click', function() {
+    //   // Menampilkan spinner loading
+    // spinner.style.display = 'none';
+    // });
+
+
+
+    // $('#submit').click(function() {
+    // const Toast = Swal.mixin({
+    //   toast: true,
+    //   position: 'top-end',
+    //   showConfirmButton: false,
+    //   timer: 5000,
+    //   timerProgressBar: true,
+    //   didOpen: (toast) => {
+    //     toast.addEventListener('mouseenter', Swal.stopTimer)
+    //     toast.addEventListener('mouseleave', Swal.resumeTimer)
+    //   }
+    // })
+    
+    // Toast.fire({
+    //   icon: 'info',
+    //   title: 'Process Compare'
+    // })
+    
+    // });
     // DATATABLE
     $('#sch-temp').DataTable( {
-        // dom: 'Bfrtip',
+        dom: 'Bfrtip',
         buttons: [
            
             'excelHtml5',

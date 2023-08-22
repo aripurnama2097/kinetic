@@ -48,7 +48,7 @@
                             <div class="btn-group mt-3 ml-4 col-6">
                                 <button data-bs-toggle="modal" data-bs-target="#check" class="btn btn-dark btn-sm  ">
                                     <i class="ti ti-check"></i>
-                                    Check Data 
+                                    Check Data Stdpack
                                 </button>
 
                                 <button id="share-schedule" class="btn btn-info btn-sm  ">
@@ -71,7 +71,6 @@
         
                             <div class="card-body border-bottom ">                           
                                 <div class="table-responsive  rounded-1 shadow-sm">
-                                    {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
                                     <table style="width:100%" id="schedule-release"  class="table  table-bordered border-dark shadow-sm">                                   
                                         <thead class="thead-dark">
                                             <tr class="headings">

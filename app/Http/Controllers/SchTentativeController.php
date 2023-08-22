@@ -81,6 +81,7 @@ class SchTentativeController extends Controller
         $result = DB::select("EXEC insSb98sum $pic ");
        
         if ($result) {
+          return redirect()->back()->with('success', 'Upload SB98 Schedule Success');
             return redirect()->back()->with('success', 'Stored procedure oke');
         } else {
             return redirect()->back()->with('error', 'failed store procedure.');
