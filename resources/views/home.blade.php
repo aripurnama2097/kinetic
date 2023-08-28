@@ -132,11 +132,11 @@
 
     <div class="container py-4">
       <div class="copyright">
-        &copy; Copyright <strong><span>IT Application</span></strong>. All Rights Reserved
+        &copy; Copyright 2023<strong><span>IT Application</span></strong>
       </div>
       <div class="credits">
        
-        Designed by <a href="#">IT</a>
+        {{-- Designed by <a href="#">IT</a> --}}
       </div>
     </div>
   </footer><!-- End Footer -->

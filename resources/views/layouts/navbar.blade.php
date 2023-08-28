@@ -70,13 +70,18 @@
                                   </div>
                               </div>
                               <div class="dropdown-menu-column ">
-                                  <a href="{{ url('/schedule_tentative') }}" class="dropdown-item  ">
+                                <a href="{{ url('/schedule_tentative') }}" class="dropdown-item  ">
+                                    Setup Master Schedule
+                                </a>
+                            </div>
+                              <div class="dropdown-menu-column ">
+                                  <a href="{{ url('/schedule_tentative/result') }}" class="dropdown-item  ">
                                       Schedule Tentative
                                   </a>
                               </div>
                               <div class="dropdown-menu-column">
                                   <a href="{{ url('/schedule') }}" class="dropdown-item ">
-                                      Schedule Generate
+                                      Schedule Release
                                   </a>
                               </div>
                           </div>
@@ -85,17 +90,15 @@
 
                
                 {{-- SCHDEULE RELEASE --}}
-                 <li class="nav-item">
+                 {{-- <li class="nav-item">
                     <a class="nav-link" href="{{ url('/schedule/release_schedule') }}">
-                        {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
-                        
-                        </span> --}}
+                       
                         <i class="ti ti-calendar-minus mr-2"></i>
                         <span style="font-size:14px" class="nav-link-title">  
                             Schedule Release 
                         </span>
                     </a>
-                 </li>
+                 </li> --}}
 
                   {{-- MC ISSUE --}}
                   <li class="nav-item dropdown">
@@ -309,22 +312,23 @@
 
                   {{-- MC ISSUE --}}
                   <li class="nav-item ">
-                    <a  href="{{ url('/partlist') }}"  class="text-light">
-                        <span class="nav-link-icon d-md-none d-lg-inline-block">
+                    <a class="nav-link" href="{{ url('/partlist') }}"  class="text-light">
+                        {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
                         
-                        </span>
+                        </span> --}}
                         <i class="ti ti-file-text mr-2"></i>
                         <span style="font-size:15px" class="nav-link-title">  
                           MC Partlist
                         </span>
                     </a>
                  </li>
+                
 
                  <li class="nav-item">
-                    <a  href="{{ url('/partlist/view') }}"  class="text-light">
-                         <span class="nav-link-icon d-md-none d-lg-inline-block">
+                    <a  class="nav-link"href="{{ url('/partlist/view') }}"  class="text-light">
+                         {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
                         
-                        </span>
+                        </span> --}}
                       <i class="ti ti-package mr-2"></i>
                         <span style="font-size:15px" class="nav-link-title">  
                           MC Data
@@ -356,17 +360,7 @@
                   </li> --}}
 
                      {{-- KSM --}}
-                  <li class="nav-item ">
-                    <a  href ="{{url('/kitmonitoring')}}" class="text-light">
-                      <span class="nav-link-icon d-md-none d-lg-inline-block">
-                      </span>
-                   <i class="ti ti-device-desktop mr-1"></i>
-                        <span style="font-size:14px" class="nav-link-title">  
-                            KIT Monitor
-                        </span>
-                    </a>
-
-                </li>
+                 
                 <?php } ?>
 
                 {{-- ====ADMIN QA==== --}}

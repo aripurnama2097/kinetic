@@ -15,16 +15,22 @@ class ImportStdPack implements ToModel,WithStartRow
     */
     public function model(array $row)
     {
+
+        DB::table('std_pack')
+            ->select('partnumber')
+            ->get();
+            
       $data = new StdPack([
             'partnumber'         => $row[0],
             'partname'           => $row[1],
             'lenght'             => $row[2],
             'widht'              => $row[3],
             'height'             => $row[4],
-            'weight'            => $row[5],
+            'weight'             => $row[5],
             'stdpack'            => $row[6],
-            'vendor'            => $row[7],
-            'jknshelf'            => $row[8],
+            'vendor'             => $row[7],
+            'jknshelf'           => $row[8],
+            'mcshelfno'          => $row[9],
         ]);
 
 
