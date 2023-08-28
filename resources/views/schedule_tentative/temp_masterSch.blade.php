@@ -1,4 +1,4 @@
-@extends('layouts.mainPartlist')
+@extends('layouts.main')
  <head>
   
     

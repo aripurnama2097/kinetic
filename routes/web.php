@@ -100,10 +100,11 @@ Route::get('schedule_tentative/SA90/delete',[SA90Controller::class, 'delete']);
 Route::get('/schedule_tentative/inhouse',[SchTentativeController::class, 'view_inhouse']);
 Route::post('/schedule_tentative/inhouse/upload',[SchTentativeController::class, 'import_Inhouse']);
 
+
+
 // ========================================VIEW RESULT COMPARE SCH===========================
-Route::get('/schedule_tentative/servicePart',[SchServiceNGController::class, 'index']);
-Route::get('schedule_tentative/skdPart',[SchSKDNGController::class, 'index']);
-Route::get('/schedule_tentative/generate',[SchTentativeController::class, 'generate']);
+Route::get('/schedule_tentative/result',[SchTentativeController::class, 'result']);
+Route::post('/schedule_tentative/result/generate',[SchTentativeController::class, 'generate']);
 
 
 

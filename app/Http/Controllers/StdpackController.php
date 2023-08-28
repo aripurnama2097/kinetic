@@ -12,17 +12,29 @@ use Yajra\DataTables\DataTables;
 
 class StdpackController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
        
-        // $data = DB::table('std_pack')
-        //         ->orderBy('created_at', 'desc')
-        //         // ->get()
-        //         ->paginate(100);
-        $data = StdPack::latest()->paginate(8);
+                $pagination = 10;
+                $keyword= $request->keyword;
 
-                // $data = DB::table('std_pack')->orderBy('id', 'desc')->get();
+                $data = StdPack::where('partnumber', 'LIKE', '%'.$keyword.'%')
+                                ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
+                                ->orWhere('lenght', 'LIKE', '%'.$keyword.'%')
+                                ->orWhere('widht', 'LIKE', '%'.$keyword.'%')
+                                ->orWhere('jknshelf', 'LIKE', '%'.$keyword.'%')
+                                ->latest()->paginate(10);
+                                // ->orderBy('id','asc');
+                                $data->withPath('stdpack');
+                                $data->appends($request->all());
+                // $data->orderBy('id','asc')->get();
+        // $data2= $data->orderBy('id', 'asc')->get();
+             return view ('/stdpack.index',compact(
+                                                    'data'
+                                                   ))->with('i', (request()->input('page', 1) -1) * $pagination
+                         );
 
-                return view('/stdpack.index',compact('data'));
+
+                // return view('/stdpack.index',compact('data'));
                 
                 // USE DataTables
                 
@@ -46,6 +58,7 @@ class StdpackController extends Controller
 
     public function create(Request $request){
 
+        // if()
           StdPack ::create($request->all());
 
           return redirect()->back()->with('success', 'Data Berhasil Disimpan');

@@ -18,22 +18,13 @@
               Overview
             </div>
             <h2 class="page-title">
-              Standard Pack
+              Master StdPack
             </h2>
           </div>
           <!-- Page title actions -->
           <div class="col-auto ms-auto d-print-none">
             <div class="btn-list">
-              <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
-              <span class="d-none d-sm-inline">
-                <a href="#" class="btn btn-light " data-bs-toggle="modal" data-bs-target="#stdpack-upload"> <i class="ti ti-arrow-big-down-filled"></i>
-                  Upload Std Pack
-                </a>
-              </span>
-              <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#create-stdpack">
-                <i class="ti ti-plus"></i>
-                Create Std Pack
-              </a>
+             
             </div>
           </div>
         </div>
@@ -55,15 +46,32 @@
                 @if(Session::has('success'))
                 <p class="alert alert-success">{{Session::get('success')}}</p>
                 @endif
+               
+                <div class=" btn-group-sm">
+                 
+                  <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
+                 
+                    <a href="#" class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#stdpack-upload"> <i class="ti ti-arrow-big-down-filled"></i>
+                      Upload Master
+                    </a>
+              
+                  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#create-stdpack">
+                    <i class="ti ti-plus"></i>
+                    Create Std Pack
+                  </a>
+                  <a href="{{url('/stdpack')}}" class="btn btn-success btn-sm " >
+                    <i class="ti ti-360"></i>
+                    Refresh
+                  </a>
+                </div>
 
-                <a href="{{url('/stdpack')}}" class="btn btn-info d-none d-sm-inline-block btn-sm " >
-                  <i class="ti ti-360"></i>
-                  Refresh
-                </a>
-
-            
-                <br>
-                <br>
+                <form class="mt-2 mb-2"action="{{url('stdpack')}}" method="GET">			
+                  <input type="text" name="keyword"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
+                  <button class="btn btn-primary btn-sm" type="submit" ><i class="ti ti-search"></i> SEARCH</button>
+                											
+              </form>		
+               
+               
                 <div class="table-responsive  rounded-1">
                   <table id="stdpack" class="table table-bordered ">
                     <thead class="thead-dark">
@@ -78,20 +86,16 @@
                         <th>Weight</th>
                         <th>Pack</th>
                         <th>Vendor</th>
-                        <th>JKN Shelf No</th>         
-                        <th>Action</th> 
-
-                        
-                      
+                        <th>JKN Shelf No</th>   
+                        <th>MC Shelf No</th>         
+                        <th>Action</th>    
                       </tr>
                     </thead>
                     <tbody>
-                      <?php
-                      $no = 1
-                      ?>
+                     
                       @foreach($data as $key => $value)
                       <tr>
-                        <td style="font-size: 12px;">{{ $no}}</td>
+                        <td class="text-center">{{ ++$i }}</td>
                         <td> {{$value->partnumber}}</td>
                         <td > {{$value->partname}}</td>
                         <td> {{$value->lenght}}</td>
@@ -101,6 +105,7 @@
                         <td> {{$value->stdpack}}</td>
                         <td> {{$value->vendor}}</td>
                         <td> {{$value->jknshelf}}</td>
+                        <td> {{$value->mcshelfno}}</td>
                        
                         <td class="btn-group"> 
                          
@@ -215,7 +220,7 @@
                        
                        
                       </tr>
-                      <?php $no++ ;?>
+                  
                       @endforeach
                      
                   
@@ -230,6 +235,7 @@
               <div class="card-footer d-flex align-items-center">
                 <div class="d-flex justify-content-center col-12 btn-sm">
                   {{ $data->links('vendor.pagination.custom') }}
+
                 </div>
               </div>
             </div>
@@ -386,16 +392,16 @@
 <script type="text/javascript">
   $(document).ready(function() {
    
-    $('#stdpack').DataTable( {
-                // dom: 'Bfrtip',
-                bInfo: false, 
-                paginate:false,
-                buttons: [
+    // $('#stdpack').DataTable( {
+    //             // dom: 'Bfrtip',
+    //             bInfo: false, 
+    //             paginate:false,
+    //             buttons: [
                 
-                    'excelHtml5',
-                    'csvHtml5'
-                ]
-            } );
+    //                 'excelHtml5',
+    //                 'csvHtml5'
+    //             ]
+    //         } );
 
     $('#delete-all-data').click(function() {
         
