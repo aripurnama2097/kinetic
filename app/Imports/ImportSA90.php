@@ -4,8 +4,8 @@ namespace App\Imports;
 
 use App\Models\tblSA90;
 use Maatwebsite\Excel\Concerns\ToModel;
-
-class ImportSA90 implements ToModel
+use Maatwebsite\Excel\Concerns\WithUpserts;
+class ImportSA90 implements ToModel, WithUpserts
 {
     /**
     * @param array $row
@@ -21,5 +21,10 @@ class ImportSA90 implements ToModel
             'qty'       =>$row[16]
             //
         ]);
+    }
+
+    public function uniqueBy()
+    {
+        return 'partnumber';
     }
 }

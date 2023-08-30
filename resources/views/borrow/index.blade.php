@@ -71,10 +71,23 @@
                             <div class="mb-3 col-6">
                                 <label class="form-label required">Symptom</label>
                                 <div>
-                                    <input type="text" class="form-control" name="symptom" id="symptom"
+                                    {{-- <input type="text" class="form-control" name="symptom" id="symptom"
                                         placeholder="SYMPTOM" required disabled>
                                     <small class="form-hint">
-                                    </small>
+                                    </small> --}}
+
+                                    <select class="form-control" name="symptom" id="symptom" required >
+                                        <option>--Select Symptom--</option>
+                                        <option>Bending</option>
+                                        <option>Broken</option>
+                                        <option>Crack</option>
+                                        <option>Dented</option>
+                                        <option>Different Color</option>
+                                        <option>Dimension NG</option>
+                                        <option>Dirty</option>
+                                        <option>Flashes</option>
+                                        <option>Mixing</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -235,14 +248,13 @@
         
         </div>
     </div>
-    <div class="collapse mt-4 ml-3 mr-3" id="show">
-             
+    <div class="collapse mt-4 ml-3 mr-3" id="show">           
       <div class="card-body border-bottom d-flex justify-content-center ">
         {{-- <div class="card-header mb-2">
           <h3 style="font-size:15px"class="card-title text-primary"><i class="ti ti-table-down"></i>DATA BORROW</h3>
       </div> --}}
           <div class="table-responsive  rounded-1 shadow-sm mt-3 mb-3 ml-0 mr-1">
-              <table style="width:100%" class="table table-vcenter table-striped">
+              <table style="width:100%" id="data-borrow" class="table table-vcenter table-striped">
                   <thead>
                       <tr>
 
@@ -304,6 +316,15 @@
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">
         $(document).ready(function() {
+
+            $('#data-borrow').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+           
+            'excelHtml5',
+            'csvHtml5'
+        ]
+      });
 
             $('#btn-takeout').on('click', function() {
                 $('#return').hide();

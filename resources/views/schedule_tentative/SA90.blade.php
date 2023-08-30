@@ -28,7 +28,13 @@
           
                
                   <h2 style="font-size:30px" class="text-dark text-center"> SA 90 DATA </h2>
-              
+                  @if(Session::has('success'))
+                  <p class="alert alert-success bg-success text-light">{{Session::get('success')}}</p>
+                  @endif
+
+                  @if(Session::has('error'))
+                  <p class="alert alert-danger bg-danger text-light">{{Session::get('error')}}</p>
+                  @endif
                  
                   <div class="btn-group mb-2">
               
@@ -41,7 +47,7 @@
                 <br>
              
                   <div class="table-responsive  rounded-1 mb-5">
-                    <table  id="sa-90" class="table table-bordered yajra-datatable" >
+                    <table  id="sa-90" class="table table-bordered " >
                       <thead class="thead-dark">
                         <tr>                                         
                           <th style ="font-size: 10px;">Model</th>
@@ -102,10 +108,19 @@
               <button type="button" class="btn btn-link link-warning" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button type="submit" href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                <i class="ti ti-plus"></i>
-                Upload 
+              <button id="submit" type="submit"  class="btn btn-primary ms-auto" >
+                <div id="spinner" class="spinner" style="display: none;">
+                  <div style="fopnt-weight:bold" class="spinner-border text-success text-end mr-3" role="status">
+                      <span class="sr-only">Loading...</span>
+                  </div>
+                  {{-- <span class="spinner-border spinner-border-sm"></span>
+                  Loading.. --}}
+                </div>
+
+                {{-- <div class="spinner-grow text-warning"></div> --}}
+                {{-- <div id="btn-upload" class="btn btn-primary ms-auto" style="display: none;"> --}}
+                UPLOAD
+                {{-- </div> --}}
               </button>
               
             </div>
@@ -124,6 +139,20 @@
 
             
 $(document).ready(function () {
+   const cancelButton = document.querySelector('#cancel');
+   const submitButton = document.querySelector('#submit');
+   const submitButton2 = document.querySelector('#btm-upload');
+  
+  
+    const spinner = document.querySelector('#spinner');
+    // Ketika tombol submit diklik
+    submitButton.addEventListener('click', function() {
+      // Menampilkan spinner loading
+      spinner.style.display = 'block';
+      submitButton2.style.display = 'none';
+      
+    });
+
 
     // DATATABLE
     $('#sa-90').DataTable( {
@@ -168,9 +197,12 @@ $(document).ready(function () {
                 'Your file has been reset.',
                 'success'
                   )
+                  window.location.reload();
                 }
+                
 
             });
+           
     
   } else if (
     /* Read more about handling dismissals below */

@@ -39,7 +39,7 @@
                       <i class="ti ti-file-export"></i>
                       Generate Schedule
                     </button> --}}
-                    <a href="{{url('/schedule_tentative')}} " class="btn btn-success " ><i class="ti ti-360"></i>Refresh 
+                    <a href="{{url('/schedule_tentative/result')}} " class="btn btn-success " ><i class="ti ti-360"></i>Refresh 
                     </a>
                   </button>
                   </div>

@@ -36,21 +36,12 @@
     <div class="page-body">
       <div class="container-xl ">
         <div class="card card-lg">
-         
-        
-             
-
-             
-              <div class="card-body border-bottom py-2">
-               
+              <div class="card-body border-bottom py-2">            
                 @if(Session::has('success'))
-                <p class="alert alert-success">{{Session::get('success')}}</p>
-                @endif
-               
-                <div class=" btn-group-sm">
-                 
-                  <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
-                 
+                <p class="alert alert-success bg-success">{{Session::get('success')}}</p>
+                @endif             
+                <div class=" btn-group-sm">                
+                  <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>                
                     <a href="#" class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#stdpack-upload"> <i class="ti ti-arrow-big-down-filled"></i>
                       Upload Master
                     </a>
@@ -71,7 +62,9 @@
                 											
               </form>		
                
-               
+              @foreach($errors->get('partnumber') as $error)
+              <span class="help-block bg-danger">{{ $error }}</span>
+              @endforeach
                 <div class="table-responsive  rounded-1">
                   <table id="stdpack" class="table table-bordered ">
                     <thead class="thead-dark">
@@ -295,9 +288,10 @@
             <div class="modal-body">
               <form  action="{{url('/stdpack/create')}}"  method="POST" >
                 @csrf
-            <div class="mb-3">
+            <div class="mb-3" {{ $errors->get('partnumber') ? 'has-error' : '' }}>
                 <label class="form-label">Item Number</label>
                 <input type="text" name="partnumber" class="form-control" name="example-text-input" placeholder="PART NUMBER">
+               
             </div>
             <br>
             <br>
@@ -369,8 +363,19 @@
               <button type="button shadow-lg" class="btn btn-light link-warning" data-bs-dismiss="modal">
                 Cancel
               </button>
-              <button type="submit"  class="btn btn-primary ms-auto" >
-                Create new stdpack
+              <button id="submit" type="submit"  class="btn btn-primary ms-auto" >
+                <div id="spinner" class="spinner" style="display: none;">
+                  <div style="fopnt-weight:bold" class="spinner-border text-success text-end mr-3" role="status">
+                      <span class="sr-only">Loading...</span>
+                  </div>
+                  {{-- <span class="spinner-border spinner-border-sm"></span>
+                  Loading.. --}}
+                </div>
+
+                {{-- <div class="spinner-grow text-warning"></div> --}}
+                {{-- <div id="btn-upload" class="btn btn-primary ms-auto" style="display: none;"> --}}
+                CREATE
+                {{-- </div> --}}
               </button>
           </div>
         </form>
@@ -391,6 +396,20 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+
+    const cancelButton = document.querySelector('#cancel');
+   const submitButton = document.querySelector('#submit');
+   const submitButton2 = document.querySelector('#btm-upload');
+  
+  
+    const spinner = document.querySelector('#spinner');
+    // Ketika tombol submit diklik
+    submitButton.addEventListener('click', function() {
+      // Menampilkan spinner loading
+      spinner.style.display = 'block';
+      submitButton2.style.display = 'none';
+      
+    });
    
     // $('#stdpack').DataTable( {
     //             // dom: 'Bfrtip',

@@ -47,10 +47,18 @@ class SchTentativeController extends Controller
   public function importsch_temp(Request $request) 
   {
         
-   
+    $req = $request->uploadby;
     $data =  Excel::import(new ImportScheduleTemp, request()->file('file'));
+
+    // dd($data);
+
+     DB::connection('sqlsrv')
+      ->update("UPDATE schedule_temp
+                SET input_user = '{$req}'
+               
+               ");
  
-    return redirect()->back()->with('success', 'Upload Excell Schedule Success');
+    return redirect()->back()->with('success', 'Upload Schedule Success');
 
   }
 
@@ -58,7 +66,7 @@ class SchTentativeController extends Controller
 
     DB::table('schedule_temp')->truncate();
 
-    return redirect()->back()->with('delete', 'All records have been deleted.');
+    return redirect()->back()->with('error', 'All records have been deleted.');
 
   }
 
@@ -77,20 +85,20 @@ class SchTentativeController extends Controller
       $pic = $request->uploadby;
       $data =  Excel::import(new ImportSB98, request()->file('file'));
 
-      // try {
+      try {
         $result = DB::select("EXEC insSb98sum $pic ");
        
-      //   if ($result) {
-      //     return redirect()->back()->with('success', 'Upload SB98 Schedule Success');
-      //       return redirect()->back()->with('success', 'Stored procedure oke');
-      //   } else {
-      //       return redirect()->back()->with('error', 'failed store procedure.');
-      //   }
-      // } 
+        if ($result) {
+          return redirect()->back()->with('success', 'Upload SB98 Schedule Success');
+            return redirect()->back()->with('success', 'Stored procedure oke');
+        } else {
+            return redirect()->back()->with('error', 'failed store procedure.');
+        }
+      } 
       
-      // catch (\Exception $e) {
-      //     return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
-      // }
+      catch (\Exception $e) {
+          return redirect()->back()->with('error', 'Terjadi kesalahan: '.$e->getMessage());
+      }
         
       
   return redirect()->back()->with('success', 'Upload SB98 Schedule Success');
@@ -148,7 +156,7 @@ class SchTentativeController extends Controller
 
     //   return $update;
 
-      return redirect()->back()->with('oke', 'Upload SA90 Success');
+      return redirect()->back()->with('success', 'Upload SA90 Success');
   }
 
   public function view_inhouse(){
@@ -330,7 +338,7 @@ class SchTentativeController extends Controller
 
 
     $dataprodno =DB::connection('sqlsrv')
-    ->select("SELECT distinct (prodno) from schedule_temp where dest !='PAKISTAN' 
+    ->select("SELECT distinct (prodno) from schedule_temp 
                 ");
 
 

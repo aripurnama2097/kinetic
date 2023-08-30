@@ -310,6 +310,7 @@ $('#delete-all-data').click(function() {
                 'Your file has been reset.',
                 'success'
                   )
+                  window.location.reload();
                 }
 
             });

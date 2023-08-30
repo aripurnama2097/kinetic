@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithUpsertColumns;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Illuminate\Support\Facades\Validator;
 
-class ImportSB98 implements Tomodel
+class ImportSB98 implements ToModel, WithUpserts
 {
     /**
     * @param array $row
@@ -70,6 +70,17 @@ class ImportSB98 implements Tomodel
     // {
     //     return ['custcode'];
     // }
+
+    // public function upsertColumns()
+    // {
+    //     return ['custcode', 'partno'];
+    // }
+
+
+    public function uniqueBy()
+    {
+        return 'partno';
+    }
 
 
 }

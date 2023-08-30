@@ -25,8 +25,18 @@
             <div class="col-12 ">
               <div class="card rounded-1 " >
                 <div class="card-body border-bottom ">            
-                  <h2 style="font-size:30px" class="text-dark text-center"> Master Schedule Temporary</h2>                 
-                  <div class="btn-group">
+                  <h2 style="font-size:30px" class="text-dark text-center"> Master Schedule Temporary</h2>  
+                  @if(Session::has('success'))
+                  <p class="alert alert-success bg-success text-light">{{Session::get('success')}}</p>
+                  @endif
+
+                  @if(Session::has('error'))
+                  <p class="alert alert-danger bg-danger text-light">{{Session::get('error')}}</p>
+                  @endif
+                   @if(Session::has('delete'))
+                   <p class="alert alert-info">{{Session::get('delete')}}</p>
+                   @endif               
+                  <div class="btn-group mb-2 mt-2">
                     
                   
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
@@ -40,14 +50,8 @@
 
                 </div>
                    <br>
-                   @if(Session::has('success'))
-                   <p class="alert alert-success">{{Session::get('success')}}</p>
-                   @endif
-                   @if(Session::has('delete'))
-                   <p class="alert alert-info">{{Session::get('delete')}}</p>
-                   @endif
-                  <br>
-                  <br>
+                  
+                
                   <div class="table-responsive  rounded-1 mb-5">
                     <table  id="sch-temp" class="table table-bordered yajra-datatable" >
                       <thead class="thead-dark">
@@ -157,15 +161,7 @@
               </button>
             </div>
 
-          
-
-            {{-- <div class="d-flex justify-content-end">
-              <div id="spinner" class="spinner" style="display: none;">
-                <div class="spinner-border text-info text-end" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-              </div>
-            </div> --}}
+   
           </form>
         </div>
     </div>
@@ -259,11 +255,15 @@ $(document).ready(function () {
                         url: "{{url('schedule_tentative/schTemp/delete')}}",
                         type: 'get',
                         success: function(result) {
+
+                          
                         swalWithBootstrapButtons.fire(
-                        'SUCCESS!',
-                        'Your file has been reset.',
-                        'success'
+                            'SUCCESS!',
+                            'Your file has been reset.',
+                            'success'
                         )
+
+                        window.location.reload();
                         }
 
                     });

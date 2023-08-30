@@ -34,32 +34,30 @@ class StdpackController extends Controller
                          );
 
 
-                // return view('/stdpack.index',compact('data'));
-                
-                // USE DataTables
-                
-                // if (request()->ajax()) {
-                //     $data = StdPack::query();
-                //     return DataTables::of($data)
-                //     ->addIndexColumn()
-                //         // ->addColumn('action', function($row){
-                //         //     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-                //         //     return $actionBtn;
-                //         // })d
-                      
-                //         // ->rawColumns(['action'])
-                       
-        
-                //         ->make(true);
-                // }
-                // return view('/stdpack.index');
 
             }
 
     public function create(Request $request){
 
         // if()
-          StdPack ::create($request->all());
+        //   StdPack ::create($request->all());
+
+
+          $this->validate($request, [
+            'partnumber'=>'required|unique:std_pack,partnumber',
+        ]);  
+
+            $model = new StdPack();
+            $model->partnumber      = $request->partnumber;
+            $model->partname        = $request->partname;
+            $model->lenght          = $request->lenght;
+            $model->widht           = $request->widht;
+            $model->height          = $request->height;
+            $model->weight          = $request->weight;
+            $model->stdpack         = $request->stdpack;
+            $model->vendor          = $request->vendor;
+            $model->jknshelf        = $request->jknshelf;
+            $model->save();
 
           return redirect()->back()->with('success', 'Data Berhasil Disimpan');
     }
