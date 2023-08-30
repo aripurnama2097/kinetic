@@ -32,47 +32,54 @@
         <!-- Page body MENU -->
         <div class="page-body">
             <div class="container-xl">
-            </div>
-
-            <div class="container-xl mt-1 ">
-                <div class="row row-deck row-cards ">
-                    <div class="col-12 ">
-                        <div class="card rounded-1 col-12 mb-2">
-                            <div class="col-12 mt-3 mb-3 ">
-                                <a style="font-size:20px" class="btn btn-primary col-12" data-bs-toggle="collapse" href="#scan-collapse"
-                                    role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    --- START SCAN ---  
-                                </a>
-                            </div>
+                <div class="container-xl mt-1 ">
+                    <div class="row row-deck row-cards ">
+                        <div class="col-12 ">
+                            <div class="card rounded-1 col-12 mb-2">
+                                <div class="col-12 mt-3 mb-3 ">
+                                    <a style="font-size:20px" class="btn btn-primary col-12" data-bs-toggle="collapse" href="#scan-collapse"
+                                        role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        --- START SCAN ---  
+                                    </a>
+                                </div>
 
                             {{-- DATA SCAN IN --}}
                             <div class="collapse " id="scan-collapse">
                                 <div class="justify-content-center mt-3 ml-3 mr-3 ">
 
                                     <div class="row row-cards col-12">
-                                        <div class="mb-3 col-sm-12 col-12">
+                                        <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end">          
                                             <input style="font-size:20px"
-                                                class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                class="form-control form-control-lg mb-2 text-center border border-secondary"
                                                 type="text" name="scan_nik" value="" id="scan_nik" maxlength="8"
-                                                placeholder="SCAN NIK HERE" autofocus>
+                                                placeholder="NIK" autofocus>
+                                                <input
+                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
+                                                type="text" name="lenght" value="" id="lenght"
+                                                placeholder="Lenght" disabled>
+                                             
+                                                <input
+                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
+                                                type="text" name="widht" value="" id="widht"
+                                                placeholder="Widht" disabled>
+                                             
+                                                <input
+                                                class="form-control form-control-lg  mb-2 text-center border border-secondary "
+                                                type="text" name="height" value="" id="height"
+                                                placeholder="Height" disabled>
+                                                <input
+                                                    class="form-control form-control-lg mb-2 text-center border border-secondary  "
+                                                    type="text" name="gw" value="" id="gw"
+                                                    placeholder="GW" disabled>
+                                       </div>
+                                       <div class="mb-3 col-sm-7 col-7">
                                        
                                             <input
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary "
                                                 type="text" name="kit_label" value="" id="kit_label"
                                                 placeholder="SCAN KIT LABEL" disabled>
-                                                <h1 id="msg" class="card-text text-center"></h1>
-                                                <h5 id="msg" class="card-text text-success"></h5>                        
-                                                <audio id="audio">
-                                                    <source id="audioSource" src="{{asset('')}}storage/sound/OK.mp3" type="audio"> 
-                                                </audio>                                 
-                                                   <div class="d-flex justify-content-center">
-                                                        <label class="text-center font-weight-bold text-success" id="result_OK"  style="font-size:50px;"> 
-                                                        </label>
-                                                        <label class="text-center font-weight-bold text-danger" id="result_NG" style="font-size:50px;"> 
-                                                        </label>  
-                                                  </div>
-
-                                        </div>
+                                        </div> 
+                                    </div>
                                         
                                         <div class="card-body border-bottom d-flex justify-content-center ">
                                             <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">
@@ -100,7 +107,7 @@
                                             <br>
                                             <br>
                                         </div>
-                                    </div>
+                                 
                                 </div>
                             </div>
                     </div>
@@ -155,7 +162,10 @@
                 if (e.which == 13) {
                     var val_nik = $('#scan_nik').val();
                     if (val_nik != '') {
-                     
+                        $('#lenght').attr('disabled', false);
+                        $('#widht').attr('disabled', false);
+                        $('#height').attr('disabled', false);
+                        $('#gw').attr('disabled', false);
                         $('#kit_label').attr('disabled', false);
                         $('#kit_label').focus();
                     
@@ -178,6 +188,12 @@
                     let getPO           = val_kitLabel.split(":");
       	            let qty_kit         = getPO[2];// GET PO KIT
 
+
+                      let lenght = $('#lenght').val();
+                     let widht = $('#widht').val();
+                     let height = $('#height').val();
+                     let gw = $('#gw').val();
+
                     // if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
                     //     console.log(qty_kit)
                         $.ajax({
@@ -186,7 +202,10 @@
                             url: "{{ url('/repacking/scanassy/input_assy/') }}",
                             data: {
                                 scan_nik : scan_nik,
-                              
+                                lenght : lenght,
+                                widht: widht,
+                                height : height,
+                                gw : gw,                                 
                                 kit_label: val_kitLabel,
                                 _token: '{{ csrf_token() }}'
                             },

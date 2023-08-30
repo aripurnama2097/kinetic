@@ -57,8 +57,7 @@
                                 <div class="justify-content-center mt-3 ml-3 mr-3 mb-3">
 
                                     <div class="row row-cards col-12">
-                                        <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end">
-                                    
+                                        <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end">          
                                             <input style="font-size:20px"
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary"
                                                 type="text" name="scan_nik" value="" id="scan_nik" maxlength="8"
@@ -92,11 +91,6 @@
                                                 type="text" name="kit_label" value="" id="kit_label"
                                                 placeholder="SCAN KIT LABEL" disabled>
                                         </div> 
-
-                                      
-                                           
-                                           
-                                       
                                     </div>
 
                                     <div class="table-responsive ml-2 mr-2">

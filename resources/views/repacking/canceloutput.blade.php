@@ -61,9 +61,9 @@
                         <th style ="font-size: 10px;">Cust PO</th>
                         <th style ="font-size: 10px;">Part Number</th>
                         <th style ="font-size: 10px;">Part Name</th>   
-                        <th style ="font-size: 10px;">Qty Label</th>           
+                        <th style ="font-size: 10px;">Qty Label Original</th>           
                         <th style ="font-size: 10px;">Qty Cancel</th> 
-                        <th style ="font-size: 10px;">Qty Split</th> 
+                        <th style ="font-size: 10px;">Qty Split(New Label)</th> 
                         <th style ="font-size: 10px;">DIC</th>                       
                         <th style ="font-size: 10px;">Date</th>
                         <th style ="font-size: 10px;">Print</th>                        

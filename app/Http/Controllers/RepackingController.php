@@ -239,7 +239,10 @@ class RepackingController extends Controller
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
-
+        $lenght = $request->lenght;
+        $widht = $request->widht;
+        $height = $request->height;
+        $gw = $request->gw;
 
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
@@ -300,17 +303,25 @@ class RepackingController extends Controller
 
 
 
-         // STEP 3.UPDATE IN REPACKING LIST
-     $update =    DB::connection('sqlsrv')
+            // STEP 3.UPDATE IN REPACKING LIST
+        $update =    DB::connection('sqlsrv')
+            ->update("UPDATE repacking_list
+                                    SET act_receive = ( select sum(qty_receive )
+                                        from scanin_repacking  as b where
+                                    b.partno = repacking_list.partno  and b.custpo = repacking_list.custpo),
+                                        bal_receive = repacking_list.demand - (repacking_list.act_receive + {$qty})
+                                        from scanin_repacking as b  where
+                                    repacking_list.id = '{$selectPart[0]->id}' ") ;
+
+
+        DB::connection('sqlsrv')
         ->update("UPDATE repacking_list
-                                SET act_receive = ( select sum(qty_receive )
-                                    from scanin_repacking  as b where
-                                b.partno = repacking_list.partno  and b.custpo = repacking_list.custpo),
-                                    bal_receive = repacking_list.demand - (repacking_list.act_receive + {$qty})
-                                    from scanin_repacking as b  where
-                                repacking_list.id = '{$selectPart[0]->id}' ") ;
+                    set
+                    gw = '{$gw}' where custpo = '{$custpo}'
 
 
+            ") ;
+            
         $sum = array($selectPart[0]->act_receive, $qty);
         $act_qty = array_sum($sum);
 
@@ -675,6 +686,10 @@ class RepackingController extends Controller
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
+        $lenght = $request->lenght;
+        $widht = $request->widht;
+        $height = $request->height;
+        $gw = $request->gw;
 
 
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
@@ -725,6 +740,12 @@ class RepackingController extends Controller
                                     from scanin_repacking as b  where
                                 repacking_list.id = '{$selectPart[0]->id}' ") ;
 
+
+        DB::connection('sqlsrv')
+                ->update("UPDATE repacking_list
+                            set
+                            gw = '{$gw}' where custpo = '{$custpo}'
+                    ") ;
 
                  $viewdata = DB::connection('sqlsrv')
                                 ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");

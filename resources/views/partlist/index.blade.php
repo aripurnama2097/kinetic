@@ -42,13 +42,13 @@
             </div>
 
             <div class="container-xl mt-1 ">
-                <div class="row row-deck row-cards ">
+                <div class="row row-deck row-cards responsive">
                     <div class="col-12 ">
-                        <div class="card rounded-1 col-12 ">
+                        <div class="card rounded-1 col-12 responsive">
                             <br>
                             <br>
-                            <div class="btn-group" role="group">
-                                <a class="btn btn-primary text-white" data-bs-toggle="collapse" id="btn-print"  role="button"
+                            <div class="btn-group " role="group">
+                                <a class="btn btn-primary text-white col-6" data-bs-toggle="collapse" id="btn-print"  role="button"
                                     aria-expanded="false" aria-controls="partlist">
                                     <i class="ti ti-printer"></i>
                                     PARTLIST SCHEDULE
@@ -418,7 +418,7 @@
                             data = data + "<td style=font-size:12px;text-align:center;border-color:black>" + value.partname + "</td>"
                             data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.demand + "</td>"
                             data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.stdpack + "</td>"
-                            data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.mcshelfno + "</td>"
+                            data = data + "<td style=font-size:13px;text-align:center;border-color:black>" + value.lokasi + "</td>"
                             data = data + "<td style=font-size:12px;text-align:center;border-color:black>" + value.vendor + "</td>"
                             data = data + "</tr>"
                         })
@@ -586,6 +586,7 @@
                 // e.preventDefault();
                 if (e.which == 13) {
 
+                    // var scan_nik = $('#scan_nik').val();
                     var partlist_no = $('#partlist_no').val();
                     var scan_label = $('#scan_label').val();
                     console.log("1. Label Scan: ",scan_label);
@@ -597,6 +598,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         data: {
+                            // scan_nik:scan_nik,
                             partlist_no: partlist_no,
                             scan_label: scan_label
                         },

@@ -50,7 +50,21 @@
                         <div class="card-header text-center justify-content-center">
                             <h2 style="font-size:30px"class="text-dark ">--PART CATEGORY-</h2>
                         </div>
-                       
+                        <div class="btn-group mb-3 col-12 ml-1 mr-2" role="group">
+                            {{-- <div class="col-6  "> --}}
+                                <a class="btn btn-secondary col-12  text-white" data-bs-toggle="collapse" id="btn-print-label" role="button"
+                                    aria-expanded="false" aria-controls="assy">
+                                    <i class="ti ti-printer"></i>
+                                    PRINT LABEL KIT
+                                </a>
+                            {{-- </div> --}}
+                            {{-- <div class="col-6  "> --}}
+                                
+                                <a class="btn btn-light col-12 text-dark" href="{{ url('repacking/logPrintOrg') }}"> Log Print
+                                    <i class="ti ti-printer"></i> </a>
+                            {{-- </div> --}}
+                           
+                        </div>
                         <div class="btn-group mb-3" role="group">
                             <div class="col-4  ">
                                 <a class="btn btn-primary   col-12 text-white" data-bs-toggle="collapse" id="btn-assy" role="button"
@@ -72,26 +86,7 @@
                                     <i class="ti ti-box-seam"></i>COMBINE PART
                                 </a>
                             </div>
-                        </div>
-
-                        <div class="btn-group mb-3 col-12 ml-1 mr-2" role="group">
-                            {{-- <div class="col-6  "> --}}
-                                <a class="btn btn-secondary col-12  text-white" data-bs-toggle="collapse" id="btn-print-label" role="button"
-                                    aria-expanded="false" aria-controls="assy">
-                                    <i class="ti ti-printer"></i>
-                                    PRINT LABEL KIT
-                                </a>
-                            {{-- </div> --}}
-                            {{-- <div class="col-6  "> --}}
-                                
-                                <a class="btn btn-light col-12 text-dark" href="{{ url('repacking/logPrintOrg') }}"> Log Print
-                                    <i class="ti ti-printer"></i> </a>
-                            {{-- </div> --}}
-                           
-                        </div>
-
-                        
-                        
+                        </div>        
                     </div>
                 </div>
 
