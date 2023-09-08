@@ -88,6 +88,10 @@
                                                 placeholder="SCAN MC LABEL" disabled>
                                             <input
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary "
+                                                type="text" name="combine_no" value="{{$carton_no}}" id="combine_no"
+                                                placeholder="COMBINE NO" disabled>
+                                            <input
+                                                class="form-control form-control-lg mb-2 text-center border border-secondary "
                                                 type="text" name="kit_label" value="" id="kit_label"
                                                 placeholder="SCAN KIT LABEL" disabled>
                                         </div> 
@@ -174,7 +178,6 @@
                     var val_nik = $('#scan_nik').val();
                     if (val_nik != '') {
                         $('#mc_label').attr('disabled', false);
-                        $('#kit_label').attr('disabled', false);
                         $('#mc_label').focus();
                     }
                 }
@@ -189,10 +192,25 @@
                         $('#widht').attr('disabled', false);
                         $('#height').attr('disabled', false);
                         $('#gw').attr('disabled', false);
-                        $('#kit_label').focus();
+                        $('#combine_no').attr('disabled', false);
+                        $('#kit_label').attr('disabled', false);
+                        $('#combine_no').focus();
+
                     }
                 }
             });
+
+
+            $('#combine_no').on('keypress', function(e){
+                if(e.which == 13) {
+                    $('#kit_label').attr('disabled', false);
+                    $('#kit_label').focus();
+
+                }
+
+
+            });
+    
 
 
             //STEP 2. SCAN LABEL KIT
@@ -215,6 +233,7 @@
                      let widht = $('#widht').val();
                      let height = $('#height').val();
                      let gw = $('#gw').val();
+                     let combine_no = $('#combine_no').val();
 
                         if (val_kitLabel != '') {                  
                             $('#print-master').attr('disabled', false);
@@ -234,7 +253,8 @@
                                 lenght : lenght,
                                 widht: widht,
                                 height : height,
-                                gw : gw,                         
+                                gw : gw,  
+                                combine_no : combine_no,                        
                                 kit_label: val_kitLabel,
                             
                                 _token: '{{ csrf_token() }}'
@@ -472,7 +492,8 @@
             function printCombine(){
 
 
-                window.location.assign("{{url('repacking/scanCombine/printMaster')}}" )
+                var url = ("{{url('repacking/scanCombine/printMaster')}}" )
+                window.open(url , '_blank'); 
 
             
             }

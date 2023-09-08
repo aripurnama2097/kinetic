@@ -217,6 +217,9 @@ class RepackingController extends Controller
 
     public function scanIn(){
 
+       
+
+
         return view('repacking.scanin');
     }
 
@@ -290,11 +293,16 @@ class RepackingController extends Controller
                 order by custpo asc");
 
         // dd($selectPart);
+        $lastOrder = DB::table('tblheadercombine')
+        // ->where('box_no')
+        ->max('carton_no');
+  
+        $carton_no = $lastOrder ? $lastOrder + 1 : 1;
 
         // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik)
-                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}'
+        ->insert("INSERT into scanin_repacking(carton_no,custcode,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik,gw)
+                select top 1  '{$carton_no}',custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}'
                 from repacking_list
                     where partno = '{$partno}' and custpo ='{$custpo}'
                     and  (coalesce(act_receive,0)+{$qty}) <= demand
@@ -314,13 +322,22 @@ class RepackingController extends Controller
                                     repacking_list.id = '{$selectPart[0]->id}' ") ;
 
 
+        $get_prodno = DB::connection('sqlsrv')
+        ->select("SELECT prodno from repacking_list where partno ='{$partno}'
+                    and custpo ='{$custpo}'");
+
         DB::connection('sqlsrv')
-        ->update("UPDATE repacking_list
-                    set
-                    gw = '{$gw}' where custpo = '{$custpo}'
+        ->insert("INSERT into tblheadercombine(prodno,carton_no)
+                    select '{$get_prodno[0]->prodno}','{$carton_no}'
+             
+                    ");
+        // DB::connection('sqlsrv')
+        // ->update("UPDATE repacking_list
+        //             set
+        //             gw = '{$gw}' where custpo = '{$custpo}'
 
 
-            ") ;
+        //     ") ;
             
         $sum = array($selectPart[0]->act_receive, $qty);
         $act_qty = array_sum($sum);
@@ -352,7 +369,13 @@ class RepackingController extends Controller
 
     public function scanCombine(){
 
-        return view('repacking.scanCombine');
+        $lastOrder = DB::table('tblheadercombine')
+        // ->where('box_no')
+        ->max('carton_no');
+  
+        $carton_no = $lastOrder ? $lastOrder + 1 : 1;
+
+        return view('repacking.scanCombine', compact('carton_no'));
     }
 
     public function inputCombine(Request $request){
@@ -373,6 +396,7 @@ class RepackingController extends Controller
         $widht = $request->widht;
         $height = $request->height;
         $gw = $request->gw;
+        $carton_no = $request->combine_no;
 
       
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
@@ -402,9 +426,10 @@ class RepackingController extends Controller
                              
             // STEP 2.INSERT INTO REPACKING SCAN IN
             DB::connection('sqlsrv')
-                    ->insert("INSERT into scanin_repacking(custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik)
-                        SELECT  '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}'
-                        ");
+                    ->insert("INSERT into 
+                                        scanin_repacking(carton_no,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik,gw)
+                                SELECT  '{$carton_no}','{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}'
+                                ");
 
 
 
@@ -419,16 +444,14 @@ class RepackingController extends Controller
                                     from scanin_repacking as b  where
                                             repacking_list.id = '{$selectPart[0]->id}' ") ;
 
-        //   dd($selectPart[0]->id);
+
+            // DB::connection('sqlsrv')
+            // ->update("UPDATE repacking_list
+            //              set
+            //             gw = '{$gw}' where custpo = '{$custpo}'
 
 
-            DB::connection('sqlsrv')
-            ->update("UPDATE repacking_list
-                         set
-                        gw = '{$gw}' where custpo = '{$custpo}'
-
-
-                ") ;
+            //     ") ;
 
 
 
@@ -561,14 +584,16 @@ class RepackingController extends Controller
     public function printMaster(){
 
       $param= DB::connection('sqlsrv')
-                     ->select("SELECT distinct custpo, prodno,partno,partname,dest,shelfno, qty,carton_no,sequence_no FROM temp_print");
+                     ->select("SELECT distinct custpo, prodno,partno,partname,dest,shelfno, qty,carton_no,sequence_no 
+                                FROM temp_print");
 
       $totalItem = DB::table('temp_print')->distinct('custpo')->count('custpo');
 
        // STEP 2. INSERT INTO TBLIDBOX
        DB::connection('sqlsrv')
             ->insert("INSERT into tblheadercombine(prodno,carton_no)
-                        select prodno,carton_no from temp_print
+                        select prodno,carton_no
+                             from temp_print
                         ");
 
     //    DB::table('temp_print')
@@ -720,10 +745,11 @@ class RepackingController extends Controller
         //         ");
 
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_kit,scan_nik)
-                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}'
-                from repacking_list
-                    where partno = '{$partno}' and custpo ='{$custpo}'
+        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_kit,scan_nik,gw)
+                            select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}','{$gw}'
+                            from repacking_list
+                    where
+                     partno = '{$partno}' and custpo ='{$custpo}'
                     and  (coalesce(act_receive,0)+{$qty}) <= demand
                     order by custpo asc
                 ");

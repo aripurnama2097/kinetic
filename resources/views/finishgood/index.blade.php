@@ -333,8 +333,11 @@
                     let box_no        = $('#box_no').val();
                     let prodno        = $('#prodno').val();
                     let kit_label    = $('#kit_label').val();
-                    window.location.assign(       "{{ url('/finishgood/printID') }}" + "?scan_nik=" + scan_nik + "&packing_no=" + packing_no + "&box_no=" + box_no +"&prodno=" + prodno + "&kit_label=" + kit_label  )
-                       
+
+
+
+                    var url = (       "{{ url('/finishgood/printID') }}" + "?scan_nik=" + scan_nik + "&packing_no=" + packing_no + "&box_no=" + box_no +"&prodno=" + prodno + "&kit_label=" + kit_label  )
+                     window.open(url , '_blank');     
         }
     </script>
 @endsection
