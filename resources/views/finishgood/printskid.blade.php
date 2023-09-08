@@ -2,11 +2,20 @@
   <link rel="stylesheet" type="text/css" href="{{asset ('')}}mainassets/css/style.css">
   <link rel="stylesheet" type="text/css" href="{{asset ('')}}mainassets/css/bootstrap/css/bootstrap.min.css">
   <script type="text/javascript" src="{{asset ('')}}mainassets/js/bootstrap/js/bootstrap.min.js "></script>
+  <script LANGUAGE="JavaScript">
+
+        function printWindow(){
+            bV = parseInt(navigator.appVersion)
+        if (bV >= 4) window.print();
+        }
+
+      
+</script>
 </head>
 
 
 {{-- <div class="container"> --}}
-
+<body onload="printWindow()">
   <div class="col-12">
 
 
@@ -93,6 +102,7 @@
       </div>
     </div>
   </div>
+</div>
 {{-- </div> --}}
 
 

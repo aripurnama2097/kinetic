@@ -531,13 +531,28 @@
             let dest                 = $('#dest').val();
             let type_skid            = $('#type_skid').val();
             
-            window.location.assign(       "{{ url('/finishgood/viewSkid/printSkid') }}" + "?packing_no=" + packing_no + "&skid_no=" + skid_no + "&custpo=" + custpo + "&vandate=" + vandate +"&dest=" + dest + "&type_skid=" + type_skid  )
+            var url  = (       "{{ url('/finishgood/viewSkid/printSkid') }}" + "?packing_no=" + packing_no + "&skid_no=" + skid_no + "&custpo=" + custpo + "&vandate=" + vandate +"&dest=" + dest + "&type_skid=" + type_skid  )
+
+            window.open(url , '_blank');
         }
 
-    function printMaster(){
-            let qr_skid               = $('#qr_skid').val();
+    function printMaster(e){
 
-            window.location.assign("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid   )
+        
+            let qr_skid               = $('#qr_skid').val();
+          
+
+            // window.location.assign("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid   )
+
+            // const endpoint = location.origin + '/fscr/public/print_label?label_mc='+ this.label_mc;
+            // const routeParam = location.search;
+            // let url = endpoint + routeParam;
+
+            var url = ("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid)
+            window.open(url , '_blank');
+
+            // window.open("{{ url('/finishgood/viewSkid/printMaster','_blank') }}","_blank" + "?qr_skid=" + qr_skid,   )
+
     }
 
 
