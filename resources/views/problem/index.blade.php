@@ -56,10 +56,22 @@
             <div class="mb-3">
                 <label class="form-label required">SYMPTOM</label>
                 <div>
-                  <input type="text" class="form-control" name="symptom" id="symptom" placeholder="SYMPTOM" required>
+                  {{-- <input type="text" class="form-control" name="symptom" id="symptom" placeholder="SYMPTOM" required>
                   <small class="form-hint">
                    
-                  </small>
+                  </small> --}}
+                  <select class="form-control" name="symptom" id="symptom" required >
+                    <option>--Select Symptom-</option>
+                    <option>Bending</option>
+                    <option>Broken</option>
+                    <option>Crack</option>
+                    <option>Dented</option>
+                    <option>Different Color</option>
+                    <option>Dimension NG</option>
+                    <option>Dirty</option>
+                    <option>Flashes</option>
+                    <option>Mixing</option>
+                </select>
                 </div>
               </div>
           
