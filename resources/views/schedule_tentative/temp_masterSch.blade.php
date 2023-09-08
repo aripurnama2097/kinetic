@@ -51,13 +51,11 @@
                 </div>
                    <br>
                   
-                
+                {{-- MASTER --}}
                   <div class="table-responsive  rounded-1 mb-5">
                     <table  id="sch-temp" class="table table-bordered yajra-datatable" >
                       <thead class="thead-dark">
-                        <tr>                   
-                        
-                         
+                        <tr>                                           
                             {{-- <th style ="font-size: 10px;">No</th> --}}
                             <th style ="font-size: 10px;">Customer Code</th>
                             <th style ="font-size: 10px;">Cust PO</th>
@@ -105,10 +103,68 @@
                     </table>
                     <br>
             
-                    <a href="{{url('/schedule_tentative')}} " class="btn btn-primary" >Back </a>
+                   
           
              
                   </div>
+
+                   {{-- RESULT --}}
+                   <h2>DATA NG</h2>
+                   <div class="card">
+                    
+                   </div>
+                   <div class="table-responsive  rounded-1 mb-5">
+                    <table  id="sch-temp" class="table table-bordered" >
+                      <thead class="border">
+                        <tr>    
+                            <th style ="font-size: 10px;">Remark</th>                       
+                            <th style ="font-size: 10px;">Customer Code</th>
+                            <th style ="font-size: 10px;">Cust PO</th>
+                            <th style ="font-size: 10px;">Part Number</th>
+                            <th style ="font-size: 10px;">Part Name</th>                      
+                            <th style ="font-size: 10px;">Prod No</th>                       
+                            
+                        </tr>
+                       </thead>
+          
+                      <tbody>
+                        @foreach($result as $key => $value)
+                        <tr>
+                          <td style ="font-size: 12px;"> <?php 
+                            if($value->partnumber == NULL){
+                              echo '<span class= "badge text-bg-danger"> Part Number Tidak Sesuai</span>';
+                            }
+                            // echo'<p style="font-weight:bold"> /</p>';
+                            // if($value->qty == NULL){
+                            //   echo '<span class= "badge text-bg-danger"> Demand Tidak Sesuai</span>';
+                            // }
+                           
+                            
+                            if($value->custcode == NULL){
+                              echo '<span class= "badge text-bg-danger"> Cust Code Tidak Ditemukan</span>';
+                            }
+   
+                          
+                            
+                            ?>
+                            </td>
+                         <td style ="font-size: 12px;"> {{$value->custcode}}</td>
+                         <td style ="font-size: 12px;"> {{$value->custpo}} </td>
+                         <td style ="font-size: 12px;"> {{$value->partno}} </td>
+                         <td style ="font-size: 12px;"> {{$value->partname}} </td>                
+                         <td style ="font-size: 12px;"> {{$value->prodno}} </td>           
+                           </tr>
+                         @endforeach
+                      </tbody>
+                    </table>
+                    <br>
+            
+                  
+          
+             
+                  </div>
+
+
                 </div>
               </div>
             </div>

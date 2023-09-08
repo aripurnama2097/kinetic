@@ -41,7 +41,21 @@ class SchTentativeController extends Controller
    $data =  DB::table('schedule_temp')
     ->get();
 
-    return view('schedule_tentative.temp_masterSch',compact('data'));
+
+    $result = DB::connection('sqlsrv')
+                  ->select("SELECT c.partnumber, c.qty, a.*  
+                              FROM schedule_temp as a
+                                        left join tblSB98 as c ON   
+                                  a.custcode = c.cust_code 
+                                  and a.custpo = c.cust_po 
+                                  and a.partno = c.partnumber
+                                  and a.demand  = c.qty
+                                    where 
+                                a.dest != 'PAKISTAN' 
+                                and c.partnumber 
+                             is null");
+
+    return view('schedule_tentative.temp_masterSch',compact('data','result'));
   }
 
   public function importsch_temp(Request $request) 
@@ -292,6 +306,22 @@ class SchTentativeController extends Controller
             DB::connection('sqlsrv')
                     ->insert("INSERT into repacking_list(custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
                                            partname,shelfno,demand,bal_receive) 
+                      select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
+                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,a.demand from schedule_temp as a
+                                      inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
+                      where a.dest != 'PAKISTAN'
+                      UNION ALL
+                      select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
+                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
+                                      inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
+                      where a.dest ='PAKISTAN'
+                      order by vandate asc ");
+
+
+  //  STEP 3.INSERT INTO FG LIST
+          DB::connection('sqlsrv')
+            ->insert("INSERT into finishgood_list(custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
+                                          partname,shelfno,demand,bal_running) 
                       select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
                                       a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,a.demand from schedule_temp as a
                                       inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty

@@ -12,17 +12,19 @@
         <div class="row g-2 align-items-center d-flex justify-content-center">
           
           <!-- Page title actions -->
-       
+       <h2>UPLOAD MASTER </h2>
             <div class="btn-group col-8 ">
              
+              <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-light" >
+                SB98 Master                 
+               </a>
+
+               <a   href="{{url('/schedule_tentative/SA90')}}" class="btn btn-light">
+                 SA90 Master
+               </a>
+               
                 <a  href="{{url('/schedule_tentative/master_scheduleTemp')}}" class="btn btn-light" >
                   Excell Schedule           
-                 </a>
-                <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-light" >
-                  SB98 Master                 
-                 </a>
-                 <a   href="{{url('/schedule_tentative/SA90')}}" class="btn btn-light">
-                   SA90 Master
                  </a>
                  <a   href="{{url('/schedule_tentative/inhouse')}}" class="btn btn-primary">
                   Inhouse Master

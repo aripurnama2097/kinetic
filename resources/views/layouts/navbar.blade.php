@@ -234,7 +234,7 @@
                              
                           </span> --}}<i class="ti ti-chalkboard mr-2"></i>
                           <span style="font-size:15px" class="nav-link-title">
-                              General
+                              Problem & Borrowing
                           </span>
                       </a>
                       <div class="dropdown-menu">
