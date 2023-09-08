@@ -41,6 +41,26 @@ class FinishGoodController extends Controller
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
+        // STEP 1. CEK LABEL KIT DI SCAN OUT
+        $valid = DB::connection('sqlsrv')
+                     ->select("SELECT count(bal_receive) as tot_clear from repacking_list
+                                where custpo ='{$custpo}'
+                                and bal_receive = 0"
+                     
+                    
+                );
+
+                // dd($valid[0]->tot_clear);
+        // CEK DATA PADA REPACKING
+        if($valid[0]->tot_clear == 0){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Part Not Match...'
+                ]);
+            }
+    
+
 
         // STEP 1. CEK LABEL KIT DI SCAN OUT
         $cek_label = DB::connection('sqlsrv')
@@ -65,12 +85,17 @@ class FinishGoodController extends Controller
                    order by custpo asc");
         // return $selectPart;
 
+        $get_carton_no = DB::connection('sqlsrv')
+                        ->select("SELECT carton_no from scanin_repacking where label_kit ='{$kitLabel}'
+                                  
+                                ");
 
         if ($selectPart == true) {
             // STEP 2.INSERT INTO SCAN OUT
             DB::connection('sqlsrv')
-                ->insert("INSERT into scanout(custpo,prodno,partno, partname, qty_running,kit_label,packing_no,box_no,scan_nik) 
-                    SELECT  '{$custpo}','{$prodno}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$boxno}', '{$nik}'
+                ->insert("INSERT into scanout
+                                    (carton_no, custpo,prodno,partno, partname, qty_running,kit_label,packing_no,box_no,scan_nik) 
+                            SELECT  '{$get_carton_no[0]->carton_no}', '{$custpo}','{$prodno}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$boxno}', '{$nik}'
                     ");
 
             // STEP 3.UPDATE IN FINISH GOOD LIST     
@@ -233,6 +258,22 @@ class FinishGoodController extends Controller
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
 
+         // STEP 1. CEK LABEL KIT DI SCAN OUT
+         $valid = DB::connection('sqlsrv')
+         ->select("SELECT count(bal_receive) as tot_clear from repacking_list
+                    where custpo ='{$custpo}'
+                    and bal_receive = 0"
+                 );
+// CEK DATA PADA REPACKING
+        // dd($valid);
+        if($valid[0]->tot_clear == 0){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'BEFORE SCAN REPACKING'
+                ]);
+            }
+
         // STEP 1. CEK LABEL KIT DI SCAN OUT
         $cek_label = DB::connection('sqlsrv')
             ->select("SELECT * FROM scanout where kit_label ='{$kitLabel}'");
@@ -258,11 +299,18 @@ class FinishGoodController extends Controller
 
         // ++TAMBAH PARAM KONTENT QR SKID KE SCAN OUT TABLE
 
+
+        $get_carton_no = DB::connection('sqlsrv')
+        ->select("SELECT carton_no from scanin_repacking where label_kit ='{$kitLabel}'
+                  
+                ");
+
         if ($selectPart == true) {
             // STEP 2.INSERT INTO SCAN OUT
             DB::connection('sqlsrv')
-                ->insert("INSERT into scanout(custpo,partno, partname, qty_running,kit_label,packing_no,skid_no,scan_nik) 
-                    SELECT  '{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}'
+                ->insert("INSERT into scanout
+                                        (carton_no, custpo,partno, partname, qty_running,kit_label,packing_no,skid_no,scan_nik) 
+                                SELECT  '{$get_carton_no[0]->carton_no}','{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}'
                     ");
 
             $seq = '1';
@@ -282,14 +330,20 @@ class FinishGoodController extends Controller
                $seq1 =  DB::connection('sqlsrv')
                 ->update("UPDATE finishgood_list 
                                 set tot_sequence = (tot_sequence + 1) where custpo ='{$custpo}' ");
-// return $seq1;
+
               // STEP 3.UPDATE IN FINISH GOOD LIST     
                DB::connection('sqlsrv')
-              ->update("UPDATE finishgood_list 
-                               set skid_no = '{$skidno}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
+                    ->update("UPDATE finishgood_list 
+                                    set skid_no = '{$skidno}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
+
+                DB::connection('sqlsrv')
+                ->update("UPDATE finishgood_list 
+                                set packing_no = '{$packing_no}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
 
               $view_scan = DB::connection('sqlsrv')
-                            ->select("SELECT * from finishgood_list where skid_no ='{$skidno}'");
+                            ->select("SELECT * from finishgood_list where skid_no ='{$skidno}'
+                                         and packing_no ='{$packing_no}'
+                                    ");
 
             return response()
                 ->json([
@@ -311,25 +365,51 @@ class FinishGoodController extends Controller
    
     public function printMasterlist(request $request){
 
+
+       
+
         $qrskid     = $request->qr_skid;
 
          // SKD20230712001:1:PAKISTAN:NA356:03:2022-06-17
          $qrdata = $qrskid;
          list($skidcode, $skidno, $destSkid, $packing_no, $type_skid, $vandate) = explode(":", $qrdata);
 
+
+          // GET TOT_CARTON
+        $tot_carton = DB::connection('sqlsrv')
+        ->select("SELECT count (distinct carton_no) as tot_carton  from scanout 
+                          where skid_no ='{$skidno}'
+                         and packing_no = '{$packing_no}'
+                " );
+
+
+// dd($tot_carton);
+
        $data =  DB::connection ('sqlsrv')
-                ->select("SELECT  custpo,partno,partname,skid_no,qty_running
-                                    ,(select count(qty_running) where skid_no ='{$skidno}') as tot_scan 
-                                    ,(select sum(qty_running) where skid_no ='{$skidno}') as sum_total 
-                            from scanout
-                                    where skid_no ='{$skidno}'
-                            group by
-                                    custpo,partno,partname,skid_no,qty_running
+                ->select("SELECT          (select distinct(carton_no)
+                                                        where skid_no ='{$skidno}' 
+                                                        and packing_no ='NA356'												
+                                            ) as carton_no 
+--,(select count(carton_no)
+--						where skid_no ='6'  
+--						and packing_no ='NA356'												
+--			   ) as end_carton 
+                                            ,custpo,partno,partname,skid_no,packing_no,qty_running
+                                            ,(select count(qty_running) where skid_no ='{$skidno}' 
+                                                            and packing_no ='{$packing_no}') as tot_scan 
+                                            ,(select sum(qty_running) where skid_no ='{$skidno}' 
+                                                            and packing_no ='{$packing_no}') as sum_total 
+                                            from scanout
+                                            where skid_no ='{$skidno}'
+                                            and packing_no ='{$packing_no}'
+                                            group by
+                                            carton_no,custpo,partno,partname,skid_no,packing_no,qty_running
+                                            order by carton_no
                             ");
         // dd($data[0]->qrdata);
     //   $data2 =[$skidno, $data];
 
-       return view('finishgood.printmaster',compact('data','packing_no'));
+       return view('finishgood.printmaster',compact('data','packing_no','tot_carton'));
 
 
     }
