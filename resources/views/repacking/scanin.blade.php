@@ -53,76 +53,79 @@
                             </div>
 
                             {{-- DATA SCAN IN --}}
-                            <div class="collapse " id="scan-collapse">
-                                <div class="justify-content-center mt-3 ml-3 mr-3 ">
-
-                                    <div class="row row-cards col-12">
-                                        <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end">          
-                                            <input style="font-size:20px"
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary"
-                                                type="text" name="scan_nik" value="" id="scan_nik" maxlength="8"
-                                                placeholder="NIK" autofocus>
-                                                <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                                type="text" name="lenght" value="" id="lenght"
-                                                placeholder="Lenght" disabled>
-                                             
-                                                <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                                type="text" name="widht" value="" id="widht"
-                                                placeholder="Widht" disabled>
-                                             
-                                                <input
-                                                class="form-control form-control-lg  mb-2 text-center border border-secondary "
-                                                type="text" name="height" value="" id="height"
-                                                placeholder="Height" disabled>
-                                                <input
+                            <div class="card border shadow-lg">
+                                <div class="collapse " id="scan-collapse">
+                                    <div class="justify-content-center mt-3 ml-3 mr-3 ">
+    
+                                        <div class="row row-cards col-12">
+                                            <div class="mb-3 col-sm-5 col-5 d-flex justify-content-end">          
+                                                <input style="font-size:20px"
+                                                    class="form-control form-control-lg mb-2 text-center border border-secondary"
+                                                    type="text" name="scan_nik" value="" id="scan_nik" maxlength="8"
+                                                    placeholder="NIK" autofocus>
+                                                    <input
                                                     class="form-control form-control-lg mb-2 text-center border border-secondary  "
-                                                    type="text" name="gw" value="" id="gw"
-                                                    placeholder="GW" disabled>
-                                       </div>
-                                       <div class="mb-3 col-sm-7 col-7">
-                                            <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary "
-                                                type="text" name="mc_label" value="" id="mc_label"
-                                                placeholder="SCAN MC LABEL" disabled>
-                                            <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary "
-                                                type="text" name="kit_label" value="" id="kit_label"
-                                                placeholder="SCAN KIT LABEL" disabled>
-                                        </div> 
-                                    </div>
-
-                                        <div class="card-body border-bottom d-flex justify-content-center ">
-                                            <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">
-        
-                                                <table style="width:100%"
-                                                    class="text-nowrap  table border-bordered border border-primary shadow-sm">
-                                                    <thead class="thead-dark">
-                                                        <tr>
-                                                            {{-- <th style="font-size: 10px;">No</th> --}}
-                                                            <th style="font-size: 10px;">Cust Code</th>
-                                                            <th style="font-size: 10px;">Cust Po</th>
-                                                            <th style="font-size: 10px;">Prod No</th>
-                                                            <th style="font-size: 10px;">Part Number</th>
-                                                            <th style="font-size: 10px;">Part Name</th>
-                                                            <th style="font-size: 10px;">Demand</th>
-                                                            <th style="font-size: 10px;">Total Scan</th>
-                                                            <th style="font-size: 10px;">Balance Scan</th>
-                                                        </tr>
-                                                    </thead>
-        
-                                                    <tbody id="scanin-view">
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <br>
-                                            <br>
+                                                    type="text" name="lenght" value="" id="lenght"
+                                                    placeholder="Lenght" disabled>
+                                                 
+                                                    <input
+                                                    class="form-control form-control-lg mb-2 text-center border border-secondary  "
+                                                    type="text" name="widht" value="" id="widht"
+                                                    placeholder="Widht" disabled>
+                                                 
+                                                    <input
+                                                    class="form-control form-control-lg  mb-2 text-center border border-secondary "
+                                                    type="text" name="height" value="" id="height"
+                                                    placeholder="Height" disabled>
+                                                    <input
+                                                        class="form-control form-control-lg mb-2 text-center border border-secondary  "
+                                                        type="text" name="gw" value="" id="gw"
+                                                        placeholder="GW" disabled>
+                                           </div>
+                                           <div class="mb-3 col-sm-7 col-7">
+                                                <input
+                                                    class="form-control form-control-lg mb-2 text-center border border-secondary "
+                                                    type="text" name="mc_label" value="" id="mc_label"
+                                                    placeholder="SCAN MC LABEL" disabled>
+                                                <input
+                                                    class="form-control form-control-lg mb-2 text-center border border-secondary "
+                                                    type="text" name="kit_label" value="" id="kit_label"
+                                                    placeholder="SCAN KIT LABEL" disabled>
+                                            </div> 
                                         </div>
-                                        
-                                   
+    
+                                            <div class="card-body border-bottom d-flex justify-content-center ">
+                                                <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">
+            
+                                                    <table style="width:100%"
+                                                        class="text-nowrap  table border-bordered border border-primary shadow-sm">
+                                                        <thead class="thead-dark">
+                                                            <tr>
+                                                                {{-- <th style="font-size: 10px;">No</th> --}}
+                                                                <th style="font-size: 10px;">Cust Code</th>
+                                                                <th style="font-size: 10px;">Cust Po</th>
+                                                                <th style="font-size: 10px;">Prod No</th>
+                                                                <th style="font-size: 10px;">Part Number</th>
+                                                                <th style="font-size: 10px;">Part Name</th>
+                                                                <th style="font-size: 10px;">Demand</th>
+                                                                <th style="font-size: 10px;">Total Scan</th>
+                                                                <th style="font-size: 10px;">Balance Scan</th>
+                                                            </tr>
+                                                        </thead>
+            
+                                                        <tbody id="scanin-view">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <br>
+                                                <br>
+                                            </div>
+                                            
+                                       
+                                    </div>
                                 </div>
                             </div>
+                            
                     </div>
                     <br>
 

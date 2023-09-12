@@ -96,6 +96,9 @@ class SchTentativeController extends Controller
 
   public function importSB98(Request $request){
 
+      DB::table('tblSB98temp')->truncate();
+      DB::table('tblSB98')->truncate();
+
       $pic = $request->uploadby;
       $data =  Excel::import(new ImportSB98, request()->file('file'));
 

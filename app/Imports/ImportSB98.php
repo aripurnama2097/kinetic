@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithUpsertColumns;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Illuminate\Support\Facades\Validator;
 
-class ImportSB98 implements ToModel, WithUpserts
+class ImportSB98 implements ToModel
 {
     /**
     * @param array $row
@@ -23,8 +23,7 @@ class ImportSB98 implements ToModel, WithUpserts
     {
 
 
-        
-        // if(($row['reqdate'] == 0 || $row['jkeipodate'] == 0  || $row['vandate'] == 0  || $row['etd'] == 0  || $row['eta'] == 0 )){
+    
             return new TblSB98([
                 'custcode'  =>$row[1],
                 'custpo'         =>$row[3],
@@ -38,49 +37,12 @@ class ImportSB98 implements ToModel, WithUpserts
                 'etd'            => trim ($row[51]),
                 'eta'            => trim ($row[52]),  
             ]);
-        // }
 
         }
-        // public function upsertColumns()
-        //     {
-        //         return ['custcode'];
-        //     }
-
-        // public function collection(Collection $rows)
-        // {
-        //  Validator::make($rows->toArray(), [
-        //      '*.custcode' => 'required',
-        //      '*.custpo' => 'required',
-        //      '*.jkeipodate' => 'required',
-        //  ])->validate();
-  
-        // foreach ($rows as $row) {
-        //     TblSB98::create([
-        //         'custcode' => $row['custcode'],
-        //         'custpo' => $row['custpo'],
-        //         'jkeipodate' => $row['jkeipodate'],
-        //         // 'password' => bcrypt($row['password']),
-        //     ]);
-        // }
-        
-    
-        //  }
-
-    //     public function uniqueBy()
+       
+    // public function uniqueBy()
     // {
-    //     return ['custcode'];
+    //     return 'custpo';
     // }
-
-    // public function upsertColumns()
-    // {
-    //     return ['custcode', 'partno'];
-    // }
-
-
-    public function uniqueBy()
-    {
-        return 'partno';
-    }
-
 
 }

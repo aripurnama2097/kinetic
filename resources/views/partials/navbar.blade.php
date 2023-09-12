@@ -1,14 +1,17 @@
-<nav class="navbar navbar-expand-lg navbar-dark ">
+{{-- <nav class="navbar navbar-expand-lg navbar-dark "> --}}
+  <nav class="card-header text-white bg-white panel-heading">
+    
   <div class="container">
-    <a class="navbar-brand" href="#"> <i class="bi bi-arrows-move"></i>  KINETIC</a>
+    <a style="font-size:35px;font-weight:bold"class="navbar-brand text-info" href="#"> 
+      <i class="ti ti-device-desktop"></i> 
+      <img style="max-width: 30px" src ="{{asset('../public/css/1.jpg')}}"> </img> 
+     KINETIC</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-
       </ul>
       <form class="d-flex">
         <ion-icon name="log-out-outline"></ion-icon>
@@ -43,6 +46,8 @@
 
     </div>
   </div>
+
+  
 </nav>
 
 
