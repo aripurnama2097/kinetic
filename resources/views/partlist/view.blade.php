@@ -16,7 +16,7 @@
               <div class="card ml-3 mr-3 mt-3">
                 {{-- <div class="card-header"> --}}
                   {{-- </div> --}}
-                  <div class="card-body">
+                  {{-- <div class="card-body">
                   <h2>FILTER </h2>
                   <div class="row">
                     <div class="col-5">
@@ -24,9 +24,7 @@
             
                         <select style="font-size:15px" class="form-control col-3 btn btn-light btn-sm" id="prod-no" name="prodno">
                           <option value="-">-- PROD NO --</option>
-                          {{-- @foreach ($data2 as $dd)
-                          <option value="{{ $dd->prodno }}">{{ $dd->prodno }}</option>
-                          @endforeach --}}
+                        
                         </select>
                         <button type="submit" class="btn btn-primary d-none d-sm-inline-block  ">
                           <i class="ti ti-filter"></i>
@@ -38,7 +36,7 @@
 
                   </div>
                  
-                </div>
+                </div> --}}
             </div>
             </div>
             <div class="container-fluid mt-1">
