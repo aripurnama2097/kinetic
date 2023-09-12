@@ -7,8 +7,8 @@
             aria-controls="navbar-menu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <h1 class="ml-3"style="font-size:30px">KINETIC</h1>
-        
+        <h1 class="ml-3"style="font-size:25px">KINETIC</h1>
+      
 
         <div class="navbar-nav flex-row  order-md-last">
 

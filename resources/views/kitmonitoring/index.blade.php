@@ -43,9 +43,10 @@
                     @endif
                     <div class="col-12 ">             
                                 <div class="table-responsive  rounded-1 shadow-sm">
-                                    <table style="width:100%" id="kit-monitor"  class="table table-vcenter table-bordered">
+                                    <table style="width:100%"  class="table table-vcenter table-striped">
                                         <thead class="thead-dark">
-                                            <tr class="headings">                   
+                                            <tr class="headings">      
+                                                <th class="text-center" style="font-size: 13px;">No</th>       
                                                 <th class="text-center" style="font-size: 13px;">Cust No</th>
                                                 <th class="text-center" style="font-size: 13px;">Dest</th>
                                                 <th class="text-center" style="font-size: 13px;">Model</th>
@@ -77,6 +78,8 @@
                           
                                         <tbody>
                                             @foreach ($data as $key => $value)             
+                                            <td class="text-black text-center">{{ ++$i }}
+                                            </td> 
                                             <td class="text-center" style="font-size: 12px;">{{ $value->custcode }}</td>
                                             <td class="text-center" style="font-size: 12px;">{{ $value->dest }}</td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->model }}</td>
@@ -164,9 +167,19 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                   
                                 </div>
                                 <a  class="btn btn-secondary btn-sm text-light mt-2" href="{{url('/problem')}}" ><i class="ti ti-arrow-narrow-left"></i>BACK</a>               
                     </div>
+                    <div class="card-footer d-flex align-items-center">
+                        <div class="d-flex justify-content-center col-12 btn-sm">
+                            {{-- {{ $data->appends(Request::all())->links('vendor.pagination.custom') }} --}}
+
+                            {{-- {!! $data->render() !!} --}}
+                          {{-- {{ $data->links('vendor.pagination.custom') }} --}}
+        
+                        </div>
+                      </div>
             </div>
                 </div>    
         

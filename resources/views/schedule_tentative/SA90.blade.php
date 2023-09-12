@@ -65,7 +65,7 @@
                           <td style ="font-size: 12px;"> {{$item->prodNo}} </td>
                           <td style ="font-size: 12px;"> {{$item->partnumber}} </td>                
                           <td style ="font-size: 12px;"> {{$item->qty}}</td>     
-                          <td style ="font-size: 12px;"> {{$item->created_at}}</td> 
+                          <td style ="font-size: 12px;"> {{$item->updated_at}}</td> 
                         </tr>
                         @endforeach
                        

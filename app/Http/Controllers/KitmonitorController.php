@@ -12,6 +12,8 @@ class KitmonitorController extends Controller
 
     public function index(){
 
+
+        $pagination = 8;
         $data = DB::connection('sqlsrv')
         ->select("SELECT  
                     a.custcode,a.dest,a.model,a.prodno
@@ -61,7 +63,10 @@ class KitmonitorController extends Controller
 
 
 
-        return view('kitmonitoring.index',compact('data'));
+        return view('kitmonitoring.index',compact('data'))->with('i', (request()->input('page', 1) -1) * $pagination);   
+
+
+        // return view ('picking.index',compact('data','get_location'))->with('i', (request()->input('page', 1) -1) * $pagination);   
 
     }
 

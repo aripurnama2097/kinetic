@@ -21,10 +21,10 @@
    {{-- <div class="page-body">
       
       <div class="container-xl mt-1 ">  --}}
-          <div class="row row-deck row-cards ">          
-            <div class="col-12 ">
+          <div class="row row-deck row-card ">          
+            <div class="col-12 bg-dark ">
               <div class="card rounded-1 " >
-                <div class="card-body border-bottom ">            
+                <div class="card-body border-bottom  ">            
                   <h2 style="font-size:30px" class="text-dark text-center"> Master Schedule Temporary</h2>  
                   @if(Session::has('success'))
                   <p class="alert alert-success bg-success text-light">{{Session::get('success')}}</p>
@@ -52,7 +52,7 @@
                    <br>
                   
                 {{-- MASTER --}}
-                  <div class="table-responsive  rounded-1 mb-5">
+                  <div class="table-responsive  rounded-1 mb-5  ">
                     <table  id="sch-temp" class="table table-bordered yajra-datatable" >
                       <thead class="thead-dark">
                         <tr>                                           
@@ -96,7 +96,7 @@
                          <td style ="font-size: 12px;"> {{$value->etd}}</td>
                          <td style ="font-size: 12px;"> {{$value->eta}}</td>
                          <td style ="font-size: 12px;"> {{$value->input_user}}</td>
-                         <td style ="font-size: 12px;"> {{$value->created_at}}</td>
+                         <td style ="font-size: 12px;"> {{$value->updated_at}}</td>
                            </tr>
                          @endforeach
                       </tbody>
@@ -132,7 +132,11 @@
                         <tr>
                           <td style ="font-size: 12px;"> <?php 
                             if($value->partnumber == NULL){
-                              echo '<span class= "badge text-bg-danger"> Part Number Tidak Sesuai</span>';
+                              echo '<span class= "badge text-bg-danger">Custpo/Part Number Tidak Sesuai</span>';
+                            }
+
+                            if($value->custpo== NULL){
+                              echo '<span class= "badge text-bg-danger">Custpo/Part Number Tidak Sesuai</span>';
                             }
                             // echo'<p style="font-weight:bold"> /</p>';
                             // if($value->qty == NULL){
