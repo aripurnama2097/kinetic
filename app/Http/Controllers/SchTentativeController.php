@@ -43,17 +43,21 @@ class SchTentativeController extends Controller
 
 
     $result = DB::connection('sqlsrv')
-                  ->select("SELECT c.partnumber, c.qty, a.*  
-                              FROM schedule_temp as a
-                                        left join tblSB98 as c ON   
-                                  a.custcode = c.cust_code 
-                                  and a.custpo = c.cust_po 
-                                  and a.partno = c.partnumber
-                                  and a.demand  = c.qty
-                                    where 
-                                a.dest != 'PAKISTAN' 
-                                and c.partnumber 
-                             is null");
+                  ->select("			SELECT c.*, a.*  
+                  FROM schedule_temp as a
+                            left join tblSB98 as c ON   
+                      a.custcode = c.cust_code 
+                      and
+      a.custpo = c.cust_po                             
+                        where 
+                    a.dest != 'PAKISTAN' 
+    or
+    a.partno != c.partnumber
+    or
+    a.demand != c.qty
+                    or
+    c.partnumber
+                 is null");
 
     return view('schedule_tentative.temp_masterSch',compact('data','result'));
   }
@@ -72,7 +76,7 @@ class SchTentativeController extends Controller
                
                ");
  
-    return redirect()->back()->with('success', 'Upload Schedule Success');
+    return redirect()->back()->with('success', 'Upload Schedule Success, Please Compare result check');
 
   }
 
@@ -388,6 +392,22 @@ class SchTentativeController extends Controller
                         ");
          return view('schedule_tentative.result',compact('data','dataprodno'));
   }
+
+
+
+  public function viewstdpack(request $request){
+
+    $prodno = $request->prodno;
+
+    $data = DB::connection('sqlsrv')
+                ->select(" SELECT a.*, b.stdpack,b.vendor from schedule_temp as a
+                            left join std_pack as b 
+                                on a.partno = b.partnumber
+                                    where prodno ='{$prodno}' and b.stdpack is null
+                       ");
+
+    return view('schedule_tentative.check_stdpack',compact('data'));
+}
 
 
   

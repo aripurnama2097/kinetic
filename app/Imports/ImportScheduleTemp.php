@@ -80,7 +80,7 @@ class ImportScheduleTemp implements ToModel, WithUpserts,WithStartRow
 
     public function uniqueBy()
     {
-        return 'partno';
+        return 'custpo';
     }
 
     public function startRow(): int

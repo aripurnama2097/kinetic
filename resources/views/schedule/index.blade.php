@@ -46,10 +46,10 @@
                           <div class="card  col-12 ">
                           <h4 style="font-size:25px"class="card-title text-primary mt-3 ml-3">  <i class="ti ti-calendar"></i>SCHEDULE RELEASE</h4>
                             <div class="btn-group mt-3 ml-4 col-6">
-                                <button data-bs-toggle="modal" data-bs-target="#check" class="btn btn-dark btn-sm  ">
+                                {{-- <button data-bs-toggle="modal" data-bs-target="#check" class="btn btn-dark btn-sm  ">
                                     <i class="ti ti-check"></i>
                                     Check Data Stdpack
-                                </button>
+                                </button> --}}
 
                                 <button id="share-schedule" class="btn btn-info btn-sm  ">
                                     <i class="ti ti-share"></i>
@@ -64,7 +64,7 @@
                              
                                 <a data-bs-toggle="modal" data-bs-target="#cancel-partlist"
                                    class="btn btn-danger btn-sm   text-light "><i class="ti ti-circle-letter-x"></i>
-                                    Cancel Partlist
+                                    Cancel Partlist MC
                                 </a>
                             </div>
                            

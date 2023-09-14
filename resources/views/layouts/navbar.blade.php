@@ -208,7 +208,7 @@
                               Shipping
                           </span>
                       </a>
-                      <div class="dropdown-menu">
+                      <div class="dropdown-menu ">
                           <div class="dropdown-menu-columns">
                               <div class="dropdown-menu-column">
                                   <a class="dropdown-item" href="{{url('/finishgood')}}">
@@ -220,6 +220,9 @@
                                   <a class="dropdown-item" href="{{url('/finishgood/view_check')}}">
                                       Scan Out Check
                                 </a>  
+                                <a class="dropdown-item" href="{{url('/finishgood/masterlist')}}">
+                                    Download Master List
+                              </a>  
                               </div>
 
                           </div>

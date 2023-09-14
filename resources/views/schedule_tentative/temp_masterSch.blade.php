@@ -47,6 +47,10 @@
                     Header
                   </a>
                   <a href="{{url('/schedule_tentative/master_scheduleTemp')}} " class="btn btn-success  float-right" >Refresh </a>
+                  <button data-bs-toggle="modal" data-bs-target="#check" class="btn btn-dark btn-sm  ">
+                    <i class="ti ti-check"></i>
+                    Check Data Stdpack
+                </button>
 
                 </div>
                    <br>
@@ -69,7 +73,8 @@
               
                             <th style ="font-size: 10px;">Van Date</th>
                             <th style ="font-size: 10px;">ETD</th>
-                            <th style ="font-size: 10px;">ETA</th>
+                            <th style ="font-size: 10px;">ETA</th> 
+                            <th style ="font-size: 10px;">Demand</th>
                             <th style ="font-size: 10px;">Upload by</th>
                             <th style ="font-size: 10px;">last Updated</th>
                          
@@ -95,6 +100,7 @@
                          <td style ="font-size: 12px;"> {{$value->vandate}}</td>
                          <td style ="font-size: 12px;"> {{$value->etd}}</td>
                          <td style ="font-size: 12px;"> {{$value->eta}}</td>
+                         <td style ="font-size: 12px;"> {{$value->demand}}</td>
                          <td style ="font-size: 12px;"> {{$value->input_user}}</td>
                          <td style ="font-size: 12px;"> {{$value->updated_at}}</td>
                            </tr>
@@ -102,19 +108,15 @@
                       </tbody>
                     </table>
                     <br>
-            
-                   
-          
-             
                   </div>
 
                    {{-- RESULT --}}
-                   <h2>DATA NG</h2>
+                   <h2>DATA HASIL COMPARE</h2>
                    <div class="card">
                     
                    </div>
                    <div class="table-responsive  rounded-1 mb-5">
-                    <table  id="sch-temp" class="table table-bordered" >
+                    <table  id="result" class="table table-bordered" >
                       <thead class="border">
                         <tr>    
                             <th style ="font-size: 10px;">Remark</th>                       
@@ -122,53 +124,82 @@
                             <th style ="font-size: 10px;">Cust PO</th>
                             <th style ="font-size: 10px;">Part Number</th>
                             <th style ="font-size: 10px;">Part Name</th>                      
-                            <th style ="font-size: 10px;">Prod No</th>                       
+                            <th style ="font-size: 10px;">Prod No</th> 
+                            <th style ="font-size: 10px;">Demand</th>                      
                             
                         </tr>
-                       </thead>
-          
+                       </thead>        
                       <tbody>
                         @foreach($result as $key => $value)
                         <tr>
                           <td style ="font-size: 12px;"> <?php 
-                            if($value->partnumber == NULL){
-                              echo '<span class= "badge text-bg-danger">Custpo/Part Number Tidak Sesuai</span>';
-                            }
-
-                            if($value->custpo== NULL){
-                              echo '<span class= "badge text-bg-danger">Custpo/Part Number Tidak Sesuai</span>';
-                            }
-                            // echo'<p style="font-weight:bold"> /</p>';
-                            // if($value->qty == NULL){
-                            //   echo '<span class= "badge text-bg-danger"> Demand Tidak Sesuai</span>';
-                            // }
-                           
-                            
-                            if($value->custcode == NULL){
-                              echo '<span class= "badge text-bg-danger"> Cust Code Tidak Ditemukan</span>';
-                            }
-   
+                          
+                          if($value->custpo == $value->cust_po && $value->partnumber == $value->partno  && $value->demand == $value->qty){
+                   
+                          echo '<span class= "badge text-bg-success">OK</span>';
+                          }
                           
                             
+                           else if($value->custcode ==null){
+                              echo '<span class= "badge text-bg-danger">Error! Cust Code '.$value->custcode.' Tidak Ditemukan</span>';
+                            }
+                            elseif($value->custpo != $value->cust_po){
+
+                              $msg_custpo = $value->custpo;
+                              $msg_cust_po = $value->cust_po;
+
+                              if($msg_custpo == ''){
+                                $msg_custpo = 'Tidak Ada';
+                              }
+                              if($msg_cust_po == ''){
+                                $msg_cust_po = 'Tidak Ada';
+                              }
+
+                              echo '<span class= "badge text-bg-danger">Error!Custpo '.$msg_custpo.', seharusnya  '.$msg_cust_po.'</span>';
+                            }
+                            
+                            elseif($value->partnumber != $value->partno){
+                              $msg_partnumber = $value->partnumber;
+                              $msg_partno = $value->partno;
+
+                              if($msg_partnumber == ''){
+                                $msg_partnumber = 'Tidak Ada';
+                              }
+                              if($msg_partno == ''){
+                                $msg_partno = 'Tidak Ada';
+                              }
+
+                              echo ' <span class= "badge text-bg-danger">Error!partnumber '.$msg_partno.', seharusnya  '.$msg_partnumber.'</span>';
+                            }
+
+                            elseif($value->demand != $value->qty){
+                              $msg_demand = $value->demand;
+                              $msg_qty = $value->qty;
+
+                              if($msg_demand == ''){
+                                $msg_demand = 'Tidak Ada';
+                              }
+                              if($msg_qty == ''){
+                                $msg_qty = 'Tidak Ada';
+                              }
+
+                              echo ' <span class= "badge text-bg-danger">Error! Qty '.$msg_demand.', seharusnya  '.$msg_qty.'</span>';
+                            }
                             ?>
                             </td>
                          <td style ="font-size: 12px;"> {{$value->custcode}}</td>
                          <td style ="font-size: 12px;"> {{$value->custpo}} </td>
                          <td style ="font-size: 12px;"> {{$value->partno}} </td>
                          <td style ="font-size: 12px;"> {{$value->partname}} </td>                
-                         <td style ="font-size: 12px;"> {{$value->prodno}} </td>           
+                         <td style ="font-size: 12px;"> {{$value->prodno}} </td>   
+                         <td style ="font-size: 12px;"> {{$value->demand}} </td>               
                            </tr>
                          @endforeach
                       </tbody>
                     </table>
                     <br>
-            
-                  
-          
-             
+         
                   </div>
-
-
                 </div>
               </div>
             </div>
@@ -225,6 +256,46 @@
           </form>
         </div>
     </div>
+</div>
+
+
+ {{-- ====================GENERATE PARTLIST========================================= --}}
+ <div class="modal modal-blur fade" id="check" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">CHECK DATA STDPACK</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form action="{{ url('schedule_tentative/check_data') }}" method="GET">
+              @csrf
+              <div class="modal-body">
+                  <div class="row">
+                      <div class="col-lg-12">
+                          <div>
+                            
+                              <input class="form-control" name="prodno" id="prodno" placeholder="INPUT PRODNO"
+                              required>
+                               <br>
+                             
+
+                              <button type="submit" class="btn btn-primary d-none d-sm-inline-block">
+                                  <i class="ti ti-file-export"></i>
+                                  Submit
+                              </button>
+                              <br>
+                              <br>
+                              <p style="font-wight:bold" class="text-danger"> * Pastikan Prod No yang di input sudah
+                                  sesuai </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+          </form>
+      </div>
+  </div>
 </div>
 
 <script type="text/javascript" src="{{asset ('')}}js/jquery-3.7.0.js "></script>
@@ -285,6 +356,17 @@ $(document).ready(function () {
             'csvHtml5'
         ]
     } );
+
+
+    $('#result').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+           
+            'excelHtml5',
+            'csvHtml5'
+        ]
+    } );
+
 
 
   // RESET MASTER
