@@ -26,6 +26,15 @@ class FinishGoodController extends Controller
     }
 
 
+    public function masterlist(){
+
+        $data = DB::connection('sqlsrv')
+        ->select("SELECT * FROM  log_printmasterskid");
+
+        return view('finishgood.masterlist',compact('data'));
+    }
+
+
     public function scanout_box(Request $request)
     {
 
@@ -260,13 +269,14 @@ class FinishGoodController extends Controller
 
          // STEP 1. CEK LABEL KIT DI SCAN OUT
          $valid = DB::connection('sqlsrv')
-         ->select("SELECT count(bal_receive) as tot_clear from repacking_list
-                    where custpo ='{$custpo}'
-                    and bal_receive = 0"
-                 );
+         ->select("SELECT * from scanin_repacking
+                           where label_kit ='{$kitLabel}'                        
+                   ");
+
 // CEK DATA PADA REPACKING
+
         // dd($valid);
-        if($valid[0]->tot_clear == 0){
+        if($valid == null){
             return response()
                 ->json([
                     'success' => false,
@@ -366,9 +376,10 @@ class FinishGoodController extends Controller
     public function printMasterlist(request $request){
 
 
-       
+    //    return $request;
 
         $qrskid     = $request->qr_skid;
+        $height     = $request->skid_height;
 
          // SKD20230712001:1:PAKISTAN:NA356:03:2022-06-17
          $qrdata = $qrskid;
@@ -386,33 +397,89 @@ class FinishGoodController extends Controller
 // dd($tot_carton);
 
        $data =  DB::connection ('sqlsrv')
-                ->select("SELECT          (select distinct(carton_no)
-                                                        where skid_no ='{$skidno}' 
-                                                        and packing_no ='NA356'												
-                                            ) as carton_no 
---,(select count(carton_no)
---						where skid_no ='6'  
---						and packing_no ='NA356'												
---			   ) as end_carton 
-                                            ,custpo,partno,partname,skid_no,packing_no,qty_running
-                                            ,(select count(qty_running) where skid_no ='{$skidno}' 
-                                                            and packing_no ='{$packing_no}') as tot_scan 
-                                            ,(select sum(qty_running) where skid_no ='{$skidno}' 
-                                                            and packing_no ='{$packing_no}') as sum_total 
-                                            from scanout
-                                            where skid_no ='{$skidno}'
-                                            and packing_no ='{$packing_no}'
-                                            group by
-                                            carton_no,custpo,partno,partname,skid_no,packing_no,qty_running
-                                            order by carton_no
+                ->select(" SELECT  (select distinct(carton_no)
+                                                where skid_no ='{$skidno}' 
+                                                and packing_no ='{$packing_no}'												
+                                    ) as carton_no 
+                                    ,custpo,partno,partname,skid_no,packing_no,qty_running
+                                    ,(select count(qty_running) where skid_no ='{$skidno}' 
+                                                    and packing_no ='{$packing_no}') as tot_scan 
+                                    ,(select sum(qty_running) where skid_no ='{$skidno}' 
+                                                    and packing_no ='{$packing_no}') as sum_total 
+                                    from scanout
+                                    where skid_no ='{$skidno}'
+                                    and packing_no ='{$packing_no}'
+                                    group by
+                                    carton_no, custpo,partno,partname,skid_no,packing_no,qty_running 
                             ");
-        // dd($data[0]->qrdata);
-    //   $data2 =[$skidno, $data];
+
+
+    
+
+     $ins =  DB::connection('sqlsrv')
+        ->insert("INSERT INTO log_printmasterskid(carton_no,skid_no,type_skid,height,packing_no,custpo,partno,partname,qty_running,seq,total_running)
+                
+                SELECT  (select distinct(carton_no)
+                                                where skid_no ='{$skidno}' 
+                                                and packing_no ='{$packing_no}'												
+                                    ) as carton_no 
+                                    ,skid_no,'{$type_skid}','{$height}',packing_no,custpo,partno,partname,qty_running
+                                    ,(select count(qty_running) where skid_no ='{$skidno}' 
+                                                    and packing_no ='{$packing_no}') as tot_scan 
+                                    ,(select sum(qty_running) where skid_no ='{$skidno}' 
+                                                    and packing_no ='{$packing_no}') as sum_total 
+                                    from scanout
+                                    where skid_no ='{$skidno}'
+                                    and packing_no ='{$packing_no}'
+                                    group by
+                                    carton_no, custpo,partno,partname,skid_no,packing_no,qty_running 
+                ");
+
+        // dd($ins);
 
        return view('finishgood.printmaster',compact('data','packing_no','tot_carton'));
 
 
     }
+
+
+    public function viewlogMaster(){
+
+
+        $data = DB::connection('sqlsrv')
+                    ->select("SELECT * FROM  log_printmasterskid");
+
+        return view('finishgood.logmaster',compact('data'));
+    }
+
+
+    public function logmaster(request $request, $id){
+
+ 
+
+        $getdata = DB::connection('sqlsrv')
+                    ->select(" SELECT * 
+                                    from	log_printmasterskid 
+                                    where id = '{$id}' ");
+
+// dd($getdata[0]->skid_no);
+        $param = DB::connection('sqlsrv')
+                    ->select("SELECT  * 
+                                    from	log_printmasterskid 
+                                         where 
+                                           skid_no ='{$getdata[0]->skid_no}'
+                                            and packing_no = '{$getdata[0]->packing_no}'
+                                    ");
+
+        // dd($param);
+
+
+        return view('finishgood.logmasterprint',compact('param'));
+        
+    }
+
+
+    
 
     public function scanout_data(){
 
