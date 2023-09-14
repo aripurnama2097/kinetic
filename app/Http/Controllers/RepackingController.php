@@ -247,6 +247,26 @@ class RepackingController extends Controller
         $height = $request->height;
         $gw = $request->gw;
 
+        // dd($qty);
+
+        //CEK STDPACK
+        // $cek_stdpack = DB::connection('sqlsrv')
+        //         ->select("SELECT * FROM std_pack 
+        //                     where 
+        //                     partnumber ='{$partno}'
+        //         ");
+
+
+        // if($cek_stdpack[0]->stdpack != $qty){
+        //     echo'isi gross weight';
+        //     return response()
+        //         ->json([
+        //             'success' => false,
+        //             'message' => 'ISI GROSS WEIGHT...'
+        //         ]);
+        // }
+
+
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
                     ->select("SELECT * FROM scanin_repacking where label_mc ='{$mcLabel}' or
@@ -301,8 +321,8 @@ class RepackingController extends Controller
 
         // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(carton_no,custcode,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik,gw)
-                select top 1  '{$carton_no}',custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}'
+        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
+                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}','{$lenght}','{$widht}','{$height}'
                 from repacking_list
                     where partno = '{$partno}' and custpo ='{$custpo}'
                     and  (coalesce(act_receive,0)+{$qty}) <= demand
@@ -401,8 +421,9 @@ class RepackingController extends Controller
       
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
-                    ->select("SELECT * FROM scanin_repacking where label_mc ='{$mcLabel}' or
-                            label_kit ='{$kitLabel}'");
+                    ->select("SELECT * FROM scanin_repacking 
+                            where label_mc ='{$mcLabel}' or
+                                  label_kit ='{$kitLabel}'");
 
 
         if($cek_label){
@@ -427,8 +448,8 @@ class RepackingController extends Controller
             // STEP 2.INSERT INTO REPACKING SCAN IN
             DB::connection('sqlsrv')
                     ->insert("INSERT into 
-                                        scanin_repacking(carton_no,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik,gw)
-                                SELECT  '{$carton_no}','{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}'
+                                        scanin_repacking(carton_no,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
+                                SELECT  '{$carton_no}','{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}','{$lenght}','{$widht}','{$height}'
                                 ");
 
 
@@ -512,8 +533,6 @@ class RepackingController extends Controller
                                             ");
                                                $sum = array($selectPart[0]->act_receive, $qty);
                                                $act_qty = array_sum($sum);
-
-                                               // dd($act_qty);
 
 
                                                $viewdata = DB::connection('sqlsrv')

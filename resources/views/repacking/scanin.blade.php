@@ -96,7 +96,6 @@
     
                                             <div class="card-body border-bottom d-flex justify-content-center ">
                                                 <div class="table-responsive  rounded-1 shadow-sm  mr-5 col-12 shadow-lg ">
-            
                                                     <table style="width:100%"
                                                         class="text-nowrap  table border-bordered border border-primary shadow-sm">
                                                         <thead class="thead-dark">
@@ -141,12 +140,8 @@
     </div>
     </div>
     </div>
-    {{-- @endsection
 
-@section('script') --}}
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
-
-
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {

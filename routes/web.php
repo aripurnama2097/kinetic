@@ -81,6 +81,7 @@ Route::get('/stdpack/delete_all',[StdpackController::class, 'delete_all']);
 // ========================================SCHEDULE TENTATIVE ROUTING===========================
 Route::get('/schedule_tentative',[SchTentativeController::class, 'index']);
 Route::get('/schedule_tentative/master_scheduleTemp',[SchTentativeController::class, 'view_tempschedule']);
+Route::get('/schedule_tentative/check_data',[SchTentativeController::class, 'viewstdpack']);
 Route::post('/schedule_tentative/master_scheduleTemp/importsch',[SchTentativeController::class, 'importsch_temp']);
 Route::get('schedule_tentative/schTemp/delete',[SchTentativeController::class, 'reset_mastersch']);
 Route::get('schedule_tentative/headersch',[SchTentativeController::class, 'headersch']);
@@ -168,15 +169,22 @@ Route::get('finishgood',[FinishGoodController::class,'index']);
 Route::post('finishgood/scanout_box',[FinishGoodController::class,'scanout_box']);
 Route::get('finishgood/printID',[FinishGoodController::class,'printid_box']);
 Route::get('/finishgood/scanoutData',[FinishGoodController::class,'scanout_data']);
+Route::get('finishgood/masterlist',[FinishGoodController::class,'masterlist']);
 
 Route::get('finishgood/viewSkid',[FinishGoodController::class,'viewSkid']);
 Route::get('finishgood/viewSkid/printSkid',[FinishGoodController::class,'printSkid']);
 Route::get('/finishgood/viewSkid/{id}/destroy',[FinishGoodController::class,'destroy']);
 Route::post('finishgood/viewSkid/scanout_skid',[FinishGoodController::class,'scanout_skid']);
 Route::get('finishgood/viewSkid/printMaster',[FinishGoodController::class,'printMasterlist']);
+Route::get('/finishgood/viewSkid/logprintMaster',[FinishGoodController::class,'viewlogMaster']);
+Route::post('/finishgood/viewSkid/logprintMaster/{id}',[FinishGoodController::class,'logmaster']);
+
+
 Route::get('/finishgood/viewDummy',[FinishGoodController::class,'view_dummy']);
 Route::get('/finishgood/view_check',[FinishGoodController::class,'view_check']);
 Route::get('finishgood/viewSkid/checkData',[FinishGoodController::class,'check_data']);
+
+
 
 
 // =======================================PROBLEM FOUND  ROUTING===========================
