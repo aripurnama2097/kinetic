@@ -188,7 +188,7 @@
 
                                         <table style="width:100%"
                                         class="text-nowrap  table border-bordered  shadow-sm">
-                                        <thead class="thead-dark">
+                                        <thead class="">
                                             <tr>
                                                 {{-- <th style="font-size: 10px;">No</th> --}}
                                                 <th style="font-size: 10px;">Cust Code</th>
@@ -205,9 +205,15 @@
                                         <tbody id="view-scanout">
                                         </tbody>
                                     </table>
-                                    <button  id="print-masterlist" onclick="printMaster()" class="btn btn-success text-white  col-12 mb-3" disabled><i class="ti ti-print"></i>
-                                        Print Master List
-                                    </button>
+                                    <div class="row col-12">
+                                        <button  id="print-masterlist" onclick="printMaster()" class="btn btn-success text-white  col-6 mb-3" disabled><i class="ti ti-print"></i>
+                                            Print Master List
+                                        </button>
+                                        <button  id="log-masterlist" onclick="logMaster()" class="btn btn-dark text-white  col-6 mb-3"><i class="ti ti-print"></i>
+                                            Log Master
+                                        </button>
+                                    </div>
+                                    
                                     </div>
                             </div>
                         </div>
@@ -540,7 +546,8 @@
 
         
             let qr_skid               = $('#qr_skid').val();
-          
+            let skid_height               = $('#skid_height').val();
+            
 
             // window.location.assign("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid   )
 
@@ -548,10 +555,17 @@
             // const routeParam = location.search;
             // let url = endpoint + routeParam;
 
-            var url = ("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid)
+            var url = ("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid + "&skid_height="+skid_height)
             window.open(url , '_blank');
 
-            // window.open("{{ url('/finishgood/viewSkid/printMaster','_blank') }}","_blank" + "?qr_skid=" + qr_skid,   )
+    }
+
+
+    function logMaster(){
+
+        var url = ("{{ url('/finishgood/viewSkid/logprintMaster') }}")
+            window.open(url , '_blank');
+
 
     }
 
