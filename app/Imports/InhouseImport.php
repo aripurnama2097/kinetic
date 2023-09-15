@@ -6,7 +6,8 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use App\Models\Inhouse;
 use Maatwebsite\Excel\Concerns\ToModel;
-class InhouseImport implements Tomodel
+use Maatwebsite\Excel\Concerns\WithUpserts;
+class InhouseImport implements Tomodel, WithUpserts
 {
     /**
     * @param Collection $collection
@@ -25,5 +26,10 @@ class InhouseImport implements Tomodel
             'jknpo'   =>$row[3]
             //
         ]);
+    }
+
+    public function uniqueBy()
+    {
+        return 'lotno';
     }
 }

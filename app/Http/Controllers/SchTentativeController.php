@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Imports\ImportScheduleTemp;
+use App\Imports\ImportScheduleSkd;
 use App\Imports\ImportSB98;
 use App\Imports\ImportSA90;
 use App\Imports\InhouseImport;
@@ -39,27 +40,61 @@ class SchTentativeController extends Controller
   public function view_tempschedule(){
 
    $data =  DB::table('schedule_temp')
+   ->where('dest','!=','PAKISTAN')
     ->get();
 
 
     $result = DB::connection('sqlsrv')
-                  ->select("			SELECT c.*, a.*  
-                  FROM schedule_temp as a
-                            left join tblSB98 as c ON   
-                      a.custcode = c.cust_code 
-                      and
-      a.custpo = c.cust_po                             
-                        where 
-                    a.dest != 'PAKISTAN' 
-    or
-    a.partno != c.partnumber
-    or
-    a.demand != c.qty
-                    or
-    c.partnumber
-                 is null");
+                  ->select("	  SELECT c.*, a.*  
+                              FROM schedule_temp as a
+                                        left join tblSB98 as c ON   
+                                  a.custcode = c.cust_code 
+                                  and
+                                      a.custpo = c.cust_po                             
+                                                        where 
+                                                    a.dest != 'PAKISTAN' ");
 
     return view('schedule_tentative.temp_masterSch',compact('data','result'));
+  }
+
+
+  public function skdpart(){
+
+    $data =  DB::table('schedule_temp')
+                ->where('dest','=','PAKISTAN')
+    ->get();
+
+    $result = DB::connection('sqlsrv')
+    ->select("   SELECT c.*, a.*  
+                      FROM schedule_temp as a
+                    left join tblSA90 as c 
+                    ON   
+                  a.model = c.modelname 
+                  and
+                          a.prodno = c.prodNo       
+                  AND a.partno = c.partnumber AND 
+                  a.demand = c.qty
+                          where 
+                                  a.dest = 'PAKISTAN' 
+                  and c.partnumber is null ");
+    return view('schedule_tentative.skdpart',compact('data','result'));
+  }
+
+
+  public function import_skd( request $request){
+    $req = $request->uploadby;
+    $data =  Excel::import(new ImportScheduleSkd, request()->file('file'));
+
+    // dd($data);
+
+     DB::connection('sqlsrv')
+      ->update("UPDATE schedule_temp
+                SET input_user = '{$req}'
+               
+               ");
+ 
+    return redirect()->back()->with('success', 'Upload Schedule Success, Please Compare result check');
+
   }
 
   public function importsch_temp(Request $request) 
@@ -82,10 +117,18 @@ class SchTentativeController extends Controller
 
   public function reset_mastersch(){
 
-    DB::table('schedule_temp')->truncate();
+    DB::table('schedule_temp')
+            ->where('dest','!=','PAKISTAN')->delete();
 
     return redirect()->back()->with('error', 'All records have been deleted.');
 
+  }
+
+  public function deleteskd(){
+    DB::table('schedule_temp')
+      ->where('dest','=','PAKISTAN')->delete();
+
+    return redirect()->back()->with('error', 'All records have been deleted.');
   }
 
 
@@ -259,8 +302,8 @@ class SchTentativeController extends Controller
 
   
 
-    // GENERATE SCHEDULE RELEASE/ INSERT INTO REPACKING LIST OR FG LIST
-  public function generate(Request $request){
+  // GENERATE SCHEDULE RELEASE/ INSERT INTO REPACKING LIST OR FG LIST
+  public function generateschedule(Request $request){
 
       // return $request;
       $pic = $request->nik;
@@ -290,7 +333,7 @@ class SchTentativeController extends Controller
                                     SELECT distinct prodno from repacking_list where prodno='{$prodno}'
                                   
                                   ");
-        // dd($cekprodno);
+      
 
       if($cekprodno == null){
             DB::connection('sqlsrv')
@@ -300,15 +343,16 @@ class SchTentativeController extends Controller
                                               a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,'{$pic}' from schedule_temp as a
                                               inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
                               where a.dest != 'PAKISTAN'
+                              and a.prodno ='{$prodno}'
                               UNION ALL
                               select	 '{$uniqueNumber}',a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
                                               a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand, '{$pic}' from schedule_temp as a 
                                               inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                               where a.dest ='PAKISTAN'
+                              and a.prodno ='{$prodno}'
+
+                             
                               order by vandate asc ");
-
-
-
 
             DB::connection('sqlsrv')
                     ->insert("INSERT into repacking_list(custcode, dest,attention, model, prodno, lotqty, jkeipodate, vandate, etd,eta,shipvia,orderitem,custpo,partno,
@@ -317,11 +361,14 @@ class SchTentativeController extends Controller
                                       a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,a.demand from schedule_temp as a
                                       inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
                       where a.dest != 'PAKISTAN'
+                      and a.prodno ='{$prodno}'
                       UNION ALL
                       select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
-                                      inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
-                      where a.dest ='PAKISTAN'
+                                              a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
+                                              inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
+                              where a.dest ='PAKISTAN'
+                              and a.prodno ='{$prodno}'
+                     
                       order by vandate asc ");
 
 
@@ -333,11 +380,13 @@ class SchTentativeController extends Controller
                                       a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno, a.demand,a.demand from schedule_temp as a
                                       inner join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
                       where a.dest != 'PAKISTAN'
+                      and a.prodno ='{$prodno}'
                       UNION ALL
                       select	a.custcode, a.dest,a.attention,a.model,a.prodno, a.lotqty, a.jkeipodate, a.vandate, a.etd,a.eta,
-                                      a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
-                                      inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
-                      where a.dest ='PAKISTAN'
+                                        a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
+                                        inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
+                      where a.dest ='PAKISTAN'      
+                      and a.prodno ='{$prodno}'           
                       order by vandate asc ");
                       
                       return redirect()->back()->with('success', 'Generate schedule success');
@@ -346,21 +395,26 @@ class SchTentativeController extends Controller
       else{
 
         return redirect()->back()->with('error', 'Prodno Exist Release Schedule');
-        //  DB::connection('sqlsrv')
-                //  DB::table('schedule')
-                //  ->where('prodno',"=", $prodno)
-                //  ->update(['partno','custcode']);
 
       }
-  
-          //  STEP 4.RESET ALL MASTER
-          // DB::table('schedule_temp')->truncate();
-          // DB::table('tblSB98temp')->truncate();
-          // DB::table('tblSB98')->truncate();
-          // DB::table('tblSA90')->truncate();
 
-        // return redirect()->back()->with('success', 'Generate schedule success');
+  }
 
+
+  public function generateInhouse(request $request){
+
+      $pic = $request->nik;
+      
+            DB::connection('sqlsrv')
+                    ->insert("INSERT into inhouse_list(model,lotno,shipqty,jknpo,balance,pic_release)
+                                select model,lotno,shipqty,jknpo,shipqty,'{$pic}' from masterinhouse"
+                            );
+    
+        
+         DB::table('masterinhouse')->truncate(); 
+                      
+                      return redirect()->back()->with('success', 'Generate Inhouse success');
+    
   }
 
   public function headersch(){
@@ -381,11 +435,11 @@ class SchTentativeController extends Controller
 
             $data = DB::connection('sqlsrv')
             ->select("SELECT c.partnumber, c.qty, a.*  FROM schedule_temp as a
-                        left join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
+                        INNER join tblSB98 as c ON    a.custcode = c.cust_code AND a.custpo = c.cust_po AND  a.partno = c.partnumber AND a.demand = c.qty
                         where a.dest != 'PAKISTAN'
                             UNION ALL
                       SELECT	d.partnumber, d.qty,a.*  FROM schedule_temp as a
-                        left join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
+                        INNER join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                         where a.dest ='PAKISTAN'
         
                         order by a.vandate asc

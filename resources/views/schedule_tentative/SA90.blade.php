@@ -27,7 +27,7 @@
                 <div class="card-body border-bottom ">
           
                
-                  <h2 style="font-size:30px" class="text-dark text-center"> SA 90 DATA </h2>
+                  <h2 style="font-size:30px" class="text-dark text-center"> SA90 MASTER</h2>
                   @if(Session::has('success'))
                   <p class="alert alert-success bg-success text-light">{{Session::get('success')}}</p>
                   @endif
@@ -39,41 +39,46 @@
                   <div class="btn-group mb-2">
               
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
-                  <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sa90"> <i class="ti ti-arrow-big-down-filled"></i>
+                  <a href="#" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modal-sa90"> <i class="ti ti-arrow-big-down-filled"></i>
                     Upload SA90
                   </a>
-                  <a href="{{url('/schedule_tentative/SA90')}} " class="btn btn-success  float-right" >Refresh </a>
+                  <a href="{{url('/schedule_tentative/SA90')}} " class="btn btn-success  btn-sm" >Refresh </a>
                 </div>
-                <br>
+                <a  href="{{url('/schedule_tentative')}}"class="btn btn-warning btn-sm float-right ">
+                  <i class="ti ti-arrow-narrow-up"></i>
+                  Go Top Menu
+                </a>
              
-                  <div class="table-responsive  rounded-1 mb-5">
-                    <table  id="sa-90" class="table table-bordered " >
-                      <thead class="thead-dark">
-                        <tr>                                         
-                          <th style ="font-size: 10px;">Model</th>
-                          <th style ="font-size: 10px;">Prod No</th>
-                          <th style ="font-size: 10px;">Part Number</th>                                                
-                          <th style ="font-size: 10px;">Demand</th>                       
-                          <th style ="font-size: 10px;">Last Update</th>                       
-                        </tr>
-                       </thead>
-                      <tbody>
-                        @foreach ($data as $item)
-                        <tr>
+               <div class="card mt-2  shadow-lg">
+                <div class="table-responsive  rounded-1 mt-2">
+                  <table  id="sa-90" class="table table-bordered " >
+                    <thead class="thead-dark">
+                      <tr>                                         
+                        <th style ="font-size: 10px;">Model</th>
+                        <th style ="font-size: 10px;">Prod No</th>
+                        <th style ="font-size: 10px;">Part Number</th>                                                
+                        <th style ="font-size: 10px;">Demand</th>                       
+                        <th style ="font-size: 10px;">Last Update</th>                       
+                      </tr>
+                     </thead>
+                    <tbody>
+                      @foreach ($data as $item)
+                      <tr>
 
-                          <td style ="font-size: 12px;"> {{$item->modelname}} </td>
-                          <td style ="font-size: 12px;"> {{$item->prodNo}} </td>
-                          <td style ="font-size: 12px;"> {{$item->partnumber}} </td>                
-                          <td style ="font-size: 12px;"> {{$item->qty}}</td>     
-                          <td style ="font-size: 12px;"> {{$item->updated_at}}</td> 
-                        </tr>
-                        @endforeach
-                       
-                      </tbody>
-                    </table>
-                    <br>       
-                    <a href="{{url('/schedule_tentative')}} " class="btn btn-primary" >Back </a>      
-                  </div>
+                        <td style ="font-size: 12px;"> {{$item->modelname}} </td>
+                        <td style ="font-size: 12px;"> {{$item->prodNo}} </td>
+                        <td style ="font-size: 12px;"> {{$item->partnumber}} </td>                
+                        <td style ="font-size: 12px;"> {{$item->qty}}</td>     
+                        <td style ="font-size: 12px;"> {{$item->updated_at}}</td> 
+                      </tr>
+                      @endforeach
+                     
+                    </tbody>
+                  </table>
+                  <br>       
+                </div>
+               </div>
+                 
                 </div>
               </div>
             </div>

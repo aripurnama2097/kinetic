@@ -30,44 +30,48 @@
                   <h2 style="font-size:30px" class="text-dark text-center"> IN HOUSE MASTER </h2>
               
                  
-                  <div class="btn-group mb-2">
-              
+                  <div class="btn-group mb-2">    
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
-                  <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sa90"> <i class="ti ti-arrow-big-down-filled"></i>
+                  <a href="#" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modal-sa90"> <i class="ti ti-arrow-big-down-filled"></i>
                     Upload Master
                   </a>
-                  <a href="{{url('/schedule_tentative/inhouse')}} " class="btn btn-success  float-right" >Refresh </a>
+                  <a href="{{url('/schedule_tentative/inhouse')}} " class="btn btn-success  btn-sm" >Refresh </a>
                 </div>
-                <br>
-             
-                  <div class="table-responsive  rounded-1 mb-5">
-                    <table  id="sa-90" class="table table-bordered yajra-datatable">
-                      <thead class="thead-dark">
-                        <tr>                                         
-                          <th style ="font-size: 10px;">Model</th>
-                          <th style ="font-size: 10px;">Lot No</th>
-                          <th style ="font-size: 10px;">Ship Qty</th>                                                
-                          <th style ="font-size: 10px;">JKN PO</th>                       
-                          <th style ="font-size: 10px;">Last Update</th>>                       
-                        </tr>
-                       </thead>
-                      <tbody>
-                        @foreach ($data as $item)
-                        <tr>
+                <a  href="{{url('/schedule_tentative')}}"class="btn btn-warning btn-sm float-right ">
+                  <i class="ti ti-arrow-narrow-up"></i>
+                  Go Top Menu
+                </a>
+     
+             <div class="card mt-2">
+              <div class="table-responsive  rounded-1 ">
+                <table  id="sa-90" class="table table-bordered yajra-datatable">
+                  <thead class="thead-dark">
+                    <tr>                                         
+                      <th style ="font-size: 10px;">Model</th>
+                      <th style ="font-size: 10px;">Lot No</th>
+                      <th style ="font-size: 10px;">Ship Qty</th>                                                
+                      <th style ="font-size: 10px;">JKN PO</th>                       
+                      <th style ="font-size: 10px;">Last Update</th>>                       
+                    </tr>
+                   </thead>
+                  <tbody>
+                    @foreach ($data as $item)
+                    <tr>
 
-                          <td style ="font-size: 12px;"> {{$item->model}} </td>
-                          <td style ="font-size: 12px;"> {{$item->lotno}} </td>
-                          <td style ="font-size: 12px;"> {{$item->shipqty}} </td>                
-                          <td style ="font-size: 12px;"> {{$item->jknpo}}</td>     
-                          <td style ="font-size: 12px;"> {{$item->created_at}}</td> 
-                        </tr>
-                        @endforeach
-                       
-                      </tbody>
-                    </table>
-                    <br>       
-                    <a href="{{url('/schedule_tentative')}} " class="btn btn-primary" >Back </a>      
-                  </div>
+                      <td style ="font-size: 12px;"> {{$item->model}} </td>
+                      <td style ="font-size: 12px;"> {{$item->lotno}} </td>
+                      <td style ="font-size: 12px;"> {{$item->shipqty}} </td>                
+                      <td style ="font-size: 12px;"> {{$item->jknpo}}</td>     
+                      <td style ="font-size: 12px;"> {{$item->created_at}}</td> 
+                    </tr>
+                    @endforeach
+                   
+                  </tbody>
+                </table>
+              
+              </div>
+             </div>
+                
                 </div>
               </div>
             </div>

@@ -21,11 +21,12 @@
    {{-- <div class="page-body">
       
       <div class="container-xl mt-1 ">  --}}
+        <div class="card">
           <div class="row row-deck row-card ">          
             <div class="col-12 bg-dark ">
               <div class="card rounded-1 " >
                 <div class="card-body border-bottom  ">            
-                  <h2 style="font-size:30px" class="text-dark text-center"> Master Schedule Temporary</h2>  
+                  <h2 style="font-size:30px" class="text-dark text-center mb-3"> SERVICE PART</h2>  
                   @if(Session::has('success'))
                   <p class="alert alert-success bg-success text-light">{{Session::get('success')}}</p>
                   @endif
@@ -36,27 +37,30 @@
                    @if(Session::has('delete'))
                    <p class="alert alert-info">{{Session::get('delete')}}</p>
                    @endif               
-                  <div class="btn-group mb-2 mt-2">
+                  <div class="btn-group btn-sm mb-2 mt-3">
                     
                   
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
-                  <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-schtemp"> <i class="ti ti-file-upload"></i></i>
+                  <a href="#" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modal-schtemp"> <i class="ti ti-file-upload"></i></i>
                     Upload Master
                   </a>
-                  <a href="{{url('schedule_tentative/headersch')}}" class="btn btn-primary"> <i class="ti ti-arrow-big-down-filled"></i>
+                  <a href="{{url('schedule_tentative/headersch')}}" class="btn btn-primary btn-sm"> <i class="ti ti-arrow-big-down-filled"></i>
                     Header
                   </a>
-                  <a href="{{url('/schedule_tentative/master_scheduleTemp')}} " class="btn btn-success  float-right" >Refresh </a>
+                  <a href="{{url('/schedule_tentative/master_scheduleTemp')}} " class="btn btn-success btn-sm" >Refresh </a>
                   <button data-bs-toggle="modal" data-bs-target="#check" class="btn btn-dark btn-sm  ">
                     <i class="ti ti-check"></i>
                     Check Data Stdpack
                 </button>
 
                 </div>
+                <a  href="{{url('/schedule_tentative')}}"class="btn btn-warning btn-sm float-right ">
+                  <i class="ti ti-arrow-narrow-up"></i>
+                  Go Top Menu
+                </a>
                    <br>
-                  
-                {{-- MASTER --}}
-                  <div class="table-responsive  rounded-1 mb-5  ">
+                 <div class="card ">
+                  <div class="table-responsive  rounded-1 mt-2  ">
                     <table  id="sch-temp" class="table table-bordered yajra-datatable" >
                       <thead class="thead-dark">
                         <tr>                                           
@@ -107,15 +111,17 @@
                          @endforeach
                       </tbody>
                     </table>
-                    <br>
+                   
                   </div>
+                  </div> 
+                {{-- MASTER --}}
+                 
 
                    {{-- RESULT --}}
-                   <h2>DATA HASIL COMPARE</h2>
-                   <div class="card">
-                    
-                   </div>
-                   <div class="table-responsive  rounded-1 mb-5">
+                 
+                   <div class="card ">
+                    <h2 class="mt-2 ml-2">DATA HASIL COMPARE</h2>
+                   <div class="table-responsive  rounded-1 mt-2">
                     <table  id="result" class="table table-bordered" >
                       <thead class="border">
                         <tr>    
@@ -201,9 +207,12 @@
          
                   </div>
                 </div>
+                </div>
               </div>
             </div>
           </div>
+        </div>
+        
         </div>
       </div>
     </div>

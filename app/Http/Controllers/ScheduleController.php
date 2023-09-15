@@ -19,6 +19,7 @@ class ScheduleController extends Controller
         $data2=DB::connection('sqlsrv')
                 ->select("SELECT distinct (prodno) from schedule ");
 
+        // GENERATE PARTLIST UNTUK SCHEDULE SELAIN PAKISTAN
         $data3=DB::connection('sqlsrv')
                 ->select("SELECT distinct (prodno) from schedule where dest !='PAKISTAN' 
                             and status is null");
@@ -111,6 +112,13 @@ class ScheduleController extends Controller
             ->where('prodno','=',$prodno)
             ->delete();
 
+
+             // STEP 2. DELETE DATA PARTLIST BASE ON PRODNO
+        // DB::table('schedule')
+        //     ->where('prodno','=',$prodno)
+        //     ->delete();
+
+
        // STEP 2. UPDATE STATUS SCHEDULE AGAR BISA DI GENERATE ULANG
         DB::table('schedule')
             ->where('prodno','=',$prodno)
@@ -126,7 +134,7 @@ class ScheduleController extends Controller
 
     public function add_dic(request $request){
         $name        = $request->name;
-    $email       = $request->email;
+        $email       = $request->email;
         $inputuser   = auth()->user()->name; 
 
         DB::connection('sqlsrv')

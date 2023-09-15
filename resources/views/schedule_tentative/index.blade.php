@@ -23,10 +23,10 @@
                  SA90 Master
                </a>
                
-                <a  href="{{url('/schedule_tentative/master_scheduleTemp')}}" class="btn btn-light" >
+                {{-- <a  href="{{url('/schedule_tentative/master_scheduleTemp')}}" class="btn btn-light" >
                   Excell Schedule           
-                 </a>
-                 <a   href="{{url('/schedule_tentative/inhouse')}}" class="btn btn-primary">
+                 </a> --}}
+                 <a   href="{{url('/schedule_tentative/inhouse')}}" class="btn btn-info">
                   Inhouse Master
                  </a>
             </div>
@@ -37,7 +37,17 @@
 
 
 
-
+    <div class="btn-group col-12 mt-5 " role="group">
+      <a class="btn btn-primary" href="{{url('/schedule_tentative/skdpart')}}">
+          {{-- <i class="ti ti-printer"></i> --}}
+          SKD PART
+      </a>
+      <div class="col-6  ">
+          <a class="btn btn-dark col-12" href="{{url('/schedule_tentative/master_scheduleTemp')}}">
+              ---SERVICE PART---
+          </a>
+      </div>
+   </div>
     <!-- Page body MENU -->
     
    

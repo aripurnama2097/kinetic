@@ -35,10 +35,10 @@
                     <i class="ti ti-file-export"></i>
                     Generate Schedule
                   </a>       
-                    {{-- <button  id="generate-sch" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-schedule">
+                    <button  id="generate-inhouse" class="btn btn-dark d-none d-sm-inline-block">
                       <i class="ti ti-file-export"></i>
-                      Generate Schedule
-                    </button> --}}
+                      Generate Inhouse
+                    </button>
                     <a href="{{url('/schedule_tentative/result')}} " class="btn btn-success " ><i class="ti ti-360"></i>Refresh 
                     </a>
                   </button>
@@ -198,47 +198,47 @@
 
 
     //GENERATE SCHEDULE 
-    // $('#generate-sch').on('click', function() {
+    $('#generate-inhouse').on('click', function() {
       
-    //   $('#example .check:checked').each(function() {
-    //     selected.push($(this).val());
-    //   });
+      $('#example .check:checked').each(function() {
+        selected.push($(this).val());
+      });
 
-    //   Swal.fire({
-    //       html:
-    //       '<input id="nik" name="nik" class=" col-8" type="text" placeholder="INPUT NIK" maxlenght="5">',
-    //       icon: 'warning',
-    //       title: ' Generate Schedule?',
-    //       // input :text,
-    //       showDenyButton: false,
-    //       showCancelButton: true,
-    //       confirmButtonText: 'Yes',
+      Swal.fire({
+          html:
+          '<input id="nik" name="nik" class=" col-8" type="text" placeholder="INPUT NIK" maxlenght="5">',
+          icon: 'warning',
+          title: ' Generate Inhouse?',
+          // input :text,
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
         
-    //   }).then((result) => {
-    //     /* Read more about isConfirmed, isDenied below */
-    //     if (result.isConfirmed) {
-    //       nik= $('#nik').val();
-    //       $.ajax({
-    //         type: 'get',
-    //         data:{
-    //                 nik:nik
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          nik= $('#nik').val();
+          $.ajax({
+            type: 'post',
+            data:{
+                    nik:nik
 
-    //         },
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         },
-    //         url: "{{url('schedule_tentative/result/generate')}}",    
-    //         success: function(result) {
-    //                 swal.fire(
-    //               'SUCCESS!',
-    //               'Generate Schedule',
-    //               'success'
-    //                 )
-    //           }
-    //       });
-    //     }
-    //   });
-    // });
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: "{{url('schedule_tentative/result/generateinhouse')}}",    
+            success: function(result) {
+                    swal.fire(
+                  'SUCCESS!',
+                  'Generate Schedule',
+                  'success'
+                    )
+              }
+          });
+        }
+      });
+    });
 
 
         });

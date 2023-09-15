@@ -80,11 +80,19 @@ Route::get('/stdpack/delete_all',[StdpackController::class, 'delete_all']);
 
 // ========================================SCHEDULE TENTATIVE ROUTING===========================
 Route::get('/schedule_tentative',[SchTentativeController::class, 'index']);
+Route::get('/schedule_tentative/skdpart',[SchTentativeController::class, 'skdpart']);
+Route::get('schedule_tentative/skdpart/delete',[SchTentativeController::class, 'deleteskd']);
+
+Route::post('/schedule_tentative/skdpart/importskd',[SchTentativeController::class, 'import_skd']);
+
+
+
 Route::get('/schedule_tentative/master_scheduleTemp',[SchTentativeController::class, 'view_tempschedule']);
 Route::get('/schedule_tentative/check_data',[SchTentativeController::class, 'viewstdpack']);
 Route::post('/schedule_tentative/master_scheduleTemp/importsch',[SchTentativeController::class, 'importsch_temp']);
 Route::get('schedule_tentative/schTemp/delete',[SchTentativeController::class, 'reset_mastersch']);
 Route::get('schedule_tentative/headersch',[SchTentativeController::class, 'headersch']);
+
 
 
 // ========================================SB98 ROUTING===========================
@@ -105,8 +113,8 @@ Route::post('/schedule_tentative/inhouse/upload',[SchTentativeController::class,
 
 // ========================================VIEW RESULT COMPARE SCH===========================
 Route::get('/schedule_tentative/result',[SchTentativeController::class, 'result']);
-Route::post('/schedule_tentative/result/generate',[SchTentativeController::class, 'generate']);
-
+Route::post('/schedule_tentative/result/generate',[SchTentativeController::class, 'generateschedule']);
+Route::post('/schedule_tentative/result/generateinhouse',[SchTentativeController::class, 'generateInhouse']);
 
 
 // ========================================MASTER SCHEDULE  RELEASE ROUTING===========================

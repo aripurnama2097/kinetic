@@ -32,7 +32,7 @@
             <div class="col-12 ">
               <div class="card rounded-1 " >
             
-                <div class="card-body border-bottom ">
+             
           
                  <div class="table-responsive  rounded-1">
                   @if(Session::has('success'))
@@ -46,20 +46,19 @@
                   @endif
 
                   <h2 style="font-size:30px" class="text-dark text-center"> SB98 TENTATIVE </h2>
-                  <div class="btn-group mb-2">
-                  <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#modal-sb98"> <i class="ti ti-arrow-big-down-filled"></i>
+                  <div class="btn-group mb-2 btn-sm">
+                  <a href="#" class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#modal-sb98"> <i class="ti ti-arrow-big-down-filled"></i>
                     Upload SB98
                   </a>
-                  {{-- <button id="confirm-sb98" class="btn btn-secondary btn btn-sm" >
-                    <i class="ti ti-merge"></i>
-                    Summary SB98
-                  </button> --}}
+                
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>
-                  <a href="{{url('/schedule_tentative/SB98')}} " class="btn btn-success  float-right" >Refresh </a>
+                  <a href="{{url('/schedule_tentative/SB98')}} " class="btn btn-success btn-sm" >Refresh </a>
                 </div>
-                  <br>
-                  <br>
-                  <br>
+                <a  href="{{url('/schedule_tentative')}}"class="btn btn-warning btn-sm float-right ">
+                  <i class="ti ti-arrow-narrow-up"></i>
+                  Go Top Menu
+                </a>
+                <div class="card mt-2">
                   <div class="col-12">
                     <table  id="sb98-release" class="table table-bordered yajra-datatable" >
                       <thead class="thead-dark">
@@ -109,12 +108,14 @@
                         @endforeach
                       </tbody>
                     </table>
-                    <a href="{{url('/schedule_tentative')}} " class="btn btn-primary" >Back </a>
+                  
                   </div>
+                </div>
+                 
 
              
                   </div>
-                </div>
+               
               </div>
             </div>
           </div>
