@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class ImportScheduleSkd implements ToModel,WithStartRow
+class ImportScheduleSkd implements ToModel,WithUpserts,WithStartRow
 {
     /**
     * @param Collection $collection
@@ -78,10 +78,11 @@ class ImportScheduleSkd implements ToModel,WithStartRow
     // }
 
 
-    // public function uniqueBy()
-    // {
-    //     return 'custpo';
-    // }
+    public function uniqueBy()
+    {
+        return 'partno';
+    }
+
 
     public function startRow(): int
     {

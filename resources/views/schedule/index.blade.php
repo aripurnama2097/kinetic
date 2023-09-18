@@ -64,7 +64,7 @@
                              
                                 <a data-bs-toggle="modal" data-bs-target="#cancel-partlist"
                                    class="btn btn-danger btn-sm   text-light "><i class="ti ti-circle-letter-x"></i>
-                                    Cancel Partlist MC
+                                    Cancel Partlist
                                 </a>
                             </div>
                            
