@@ -51,23 +51,22 @@ class FinishGoodController extends Controller
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
         // STEP 1. CEK LABEL KIT DI SCAN OUT
+        // STEP 1. CEK LABEL KIT DI SCAN OUT
         $valid = DB::connection('sqlsrv')
-                     ->select("SELECT count(bal_receive) as tot_clear from repacking_list
-                                where custpo ='{$custpo}'
-                                and bal_receive = 0"
-                     
-                    
-                );
+        ->select("SELECT * from scanin_repacking
+                          where label_kit ='{$kitLabel}'                        
+                  ");
 
-                // dd($valid[0]->tot_clear);
-        // CEK DATA PADA REPACKING
-        if($valid[0]->tot_clear == 0){
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'Part Not Match...'
-                ]);
-            }
+// CEK DATA PADA REPACKING
+
+       // dd($valid);
+       if($valid == null){
+           return response()
+               ->json([
+                   'success' => false,
+                   'message' => 'BEFORE SCAN REPACKING'
+               ]);
+           }
     
 
 
@@ -88,23 +87,25 @@ class FinishGoodController extends Controller
         // ambil part dari  finishgoodlist -> kondisi part apabila  part dan custpo di list = custpo  pada kit label
         $selectPart = DB::connection('sqlsrv')
             ->select("SELECT top 1 * from finishgood_list
-                   where  partno = '{$partno}'
-                   and custpo ='{$custpo}'
-                   and demand >= (coalesce(act_running,0) + $qty)
-                   order by custpo asc");
+                        where  partno = '{$partno}'
+                        and custpo ='{$custpo}'
+                        and demand >= (coalesce(act_running,0) + $qty)
+                        order by custpo asc
+                    ");
         // return $selectPart;
 
-        $get_carton_no = DB::connection('sqlsrv')
-                        ->select("SELECT carton_no from scanin_repacking where label_kit ='{$kitLabel}'
+        $get_data = DB::connection('sqlsrv')
+                        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where label_kit ='{$kitLabel}'
                                   
                                 ");
 
+        // TAMBAHKAN LENGHT DAN GW
         if ($selectPart == true) {
             // STEP 2.INSERT INTO SCAN OUT
             DB::connection('sqlsrv')
                 ->insert("INSERT into scanout
-                                    (carton_no, custpo,prodno,partno, partname, qty_running,kit_label,packing_no,box_no,scan_nik) 
-                            SELECT  '{$get_carton_no[0]->carton_no}', '{$custpo}','{$prodno}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$boxno}', '{$nik}'
+                                    (carton_no, custpo,prodno,partno, partname, qty_running,kit_label,packing_no,box_no,scan_nik,gw,lenght,widht,height) 
+                            SELECT  '{$get_data[0]->carton_no}', '{$custpo}','{$prodno}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$boxno}', '{$nik}','{$get_data[0]->gw}','{$get_data[0]->lenght}','{$get_data[0]->widht}','{$get_data[0]->height}'
                     ");
 
             // STEP 3.UPDATE IN FINISH GOOD LIST     
@@ -310,8 +311,8 @@ class FinishGoodController extends Controller
         // ++TAMBAH PARAM KONTENT QR SKID KE SCAN OUT TABLE
 
 
-        $get_carton_no = DB::connection('sqlsrv')
-        ->select("SELECT carton_no from scanin_repacking where label_kit ='{$kitLabel}'
+        $get_data = DB::connection('sqlsrv')
+        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where label_kit ='{$kitLabel}'
                   
                 ");
 
@@ -319,8 +320,8 @@ class FinishGoodController extends Controller
             // STEP 2.INSERT INTO SCAN OUT
             DB::connection('sqlsrv')
                 ->insert("INSERT into scanout
-                                        (carton_no, custpo,partno, partname, qty_running,kit_label,packing_no,skid_no,scan_nik) 
-                                SELECT  '{$get_carton_no[0]->carton_no}','{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}'
+                                        (carton_no, custpo,partno, partname, qty_running,kit_label,packing_no,skid_no,scan_nik,gw,lenght,widht,height) 
+                                SELECT  '{$get_data[0]->carton_no}','{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}','{$get_data[0]->gw}','{$get_data[0]->lenght}','{$get_data[0]->widht}','{$get_data[0]->height}'
                     ");
 
             $seq = '1';
@@ -417,7 +418,7 @@ class FinishGoodController extends Controller
     
 
      $ins =  DB::connection('sqlsrv')
-        ->insert("INSERT INTO log_printmasterskid(carton_no,skid_no,type_skid,height,packing_no,custpo,partno,partname,qty_running,seq,total_running)
+        ->insert("INSERT INTO log_printmasterskid(carton_no,skid_no,type_skid,height,packing_no,custpo,partno,partname,qty_running,seq,total_running,gw)
                 
                 SELECT  (select distinct(carton_no)
                                                 where skid_no ='{$skidno}' 
@@ -428,6 +429,8 @@ class FinishGoodController extends Controller
                                                     and packing_no ='{$packing_no}') as tot_scan 
                                     ,(select sum(qty_running) where skid_no ='{$skidno}' 
                                                     and packing_no ='{$packing_no}') as sum_total 
+                                    ,(select sum(gw) where skid_no ='{$skidno}' 
+                                                    and packing_no ='{$packing_no}') as gw               
                                     from scanout
                                     where skid_no ='{$skidno}'
                                     and packing_no ='{$packing_no}'

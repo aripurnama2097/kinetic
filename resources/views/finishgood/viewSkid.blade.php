@@ -432,7 +432,7 @@
                                             icon: 'success',
                                             title: response.message,
 
-                                            timer: 2000,
+                                            timer: 200,
                                             showConfirmButton: false,
 
                                         })
@@ -454,7 +454,7 @@
                                                             icon: 'warning',
                                                             title: response.message,
                                                             showConfirmButton :false,
-                                                            timer:2000
+                                                            timer:300
                                                         
 
                                                         })
@@ -476,7 +476,7 @@
                                                                 icon: 'warning',
                                                                 title: response.message,
                                                                 showConfirmButton :false,
-                                                                timer:2000
+                                                                timer:500
                                                             
 
                                                             })

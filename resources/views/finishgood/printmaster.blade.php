@@ -23,7 +23,7 @@
               </tr>
               <tr>
                 {{-- <th colspan ="2" style="border-color:black"class="text-center" > TOTAL CARTON : {{$tot_carton[0]->tot_carton }}</th> --}}
-                <th   style="border-color:black" class="text-center" >COMBINE NO</td>
+                <th   style="border-color:black" class="text-center" >CARTON NO</td>
                 <th style="border-color:black"class="text-center" >CUSTPO</td>
                 <th style="border-color:black"class="text-center">ITEM NO</td>
                 <th style="border-color:black"class="text-center">ITEM DESC</td>
