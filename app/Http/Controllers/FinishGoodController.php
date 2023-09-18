@@ -474,10 +474,28 @@ class FinishGoodController extends Controller
                                             and packing_no = '{$getdata[0]->packing_no}'
                                     ");
 
-        // dd($param);
+
 
 
         return view('finishgood.logmasterprint',compact('param'));
+        
+    }
+
+
+
+    public function changemaster(request $request, $id){
+
+ 
+        $start = $request->start_carton;
+        $end  = $request->end_carton;
+
+        DB::table('log_printmasterskid')
+                    ->where('id', $id)
+                    ->update(['start_carton' => $start,
+                            'end_carton' => $end
+                        ]);
+                   
+        return redirect()->back()->with('success', 'Data Has been change');
         
     }
 

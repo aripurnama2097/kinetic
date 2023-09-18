@@ -57,11 +57,14 @@
                      <thead class="thead-dark">
                        <tr>                   
                      
-                        <th style ="font-size: 10px;">Carton No</th>
+                        <th class="text-center" style ="font-size: 10px;">Start Carton</th>
+                        <th  class="text-center"style ="font-size: 10px;">End Carton</th>
                         <th style ="font-size: 10px;">Packing No</th>
                         <th style ="font-size: 10px;">Skid No</th>
                         <th style ="font-size: 10px;">Part No</th>           
                         <th style ="font-size: 10px;">Part Name</th>  
+                        <th style="border-color:black"class="text-center" colspan="3">PACKING DETAIL</td>
+                          <th style="border-color:black"class="text-center">TOTAL QTY</td>
                         <th style ="font-size: 10px;">GW</th>           
                         <th style ="font-size: 10px;">Height</th>
                         <th style ="font-size: 10px;">Type Skid</th>  
@@ -75,11 +78,16 @@
                        @foreach($data as $key => $value)
                   
                        <tr>
-                         <td style ="font-size: 12px;"> {{$value->carton_no}}</td>
+                        <td class="text-center" style ="font-size: 12px;"> {{$value->start_carton}}</td>
+                        <td  class="text-center"style ="font-size: 12px;">{{$value->end_carton}} </td>
                          <td style ="font-size: 12px;">{{$value->packing_no}} </td>
                          <td style ="font-size: 12px;">{{$value->skid_no}} </td>
                          <td style ="font-size: 12px;">{{$value->partno}} </td> 
                          <td style ="font-size: 12px;">{{$value->partname}} </td>
+                         <td style="border-color:black"class="text-center">{{$value->seq}} </td>
+                         <td style="border-color:black"class="text-center">X</td>
+                         <td style="border-color:black"class="text-center">{{$value->qty_running}}</td>
+                         <td style="border-color:black"class="text-center">{{$value->total_running}}</td>
                     
                          <td style ="font-size: 12px;"> {{$value->gw}}</td> 
                          <td style ="font-size: 12px;"> {{$value->height}}</td> 

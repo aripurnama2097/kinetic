@@ -61,15 +61,22 @@
 
                   <div class="table-responsive  rounded-1 shadow-sm">      
                               
-                    <a class="btn btn-success mb-2" href="{{url('/repacking/logPrintOrg')}}"> <i class="ti ti-360"></i> Refresh  </a>
+                    <a  href="{{url('/finishgood/viewSkid')}}"class="btn btn-warning btn-sm float-right ">
+                      <i class="ti ti-arrow-narrow-up"></i>
+                      Go Top Menu
+                    </a>
                    <table style="width:100%" id="download-master" class="table table-striped border border-primary shadow-sm" >
                      <thead class="thead-dark">
-                       <tr>                             
-                        <th style ="font-size: 10px;">Carton No</th>
-                        <th style ="font-size: 10px;">Packing No</th>
-                        <th style ="font-size: 10px;">Skid No</th>
-                        <th style ="font-size: 10px;">Part No</th>           
-                        <th style ="font-size: 10px;">Part Name</th>                        
+                       <tr>                       
+                        <th class="text-center" style ="font-size: 10px;">Start Carton</th>
+                        <th  class="text-center"style ="font-size: 10px;">End Carton</th>
+                        <th class="text-center" style ="font-size: 10px;">Combine No</th>
+                        <th  class="text-center"style ="font-size: 10px;">Packing No</th>
+                        <th  class="text-center"style ="font-size: 10px;">Skid No</th>
+                        <th  class="text-center"style ="font-size: 10px;">Part No</th>           
+                        <th  class="text-center"style ="font-size: 10px;">Part Name</th>    
+                        <th class="text-center" style="border-color:black"class="text-center" colspan="3">PACKING DETAIL</td>
+                          <th  class="text-center"style="border-color:black"class="text-center">TOTAL QTY</td>                    
                         <th style ="font-size: 10px;">Print</th>         
                        </tr>
                       </thead>        
@@ -77,15 +84,22 @@
                        @foreach($data as $key => $value)
                   
                        <tr>
-                         <td style ="font-size: 12px;"> {{$value->carton_no}}</td>
-                         <td style ="font-size: 12px;">{{$value->packing_no}} </td>
-                         <td style ="font-size: 12px;">{{$value->skid_no}} </td>
-                         <td style ="font-size: 12px;">{{$value->partno}} </td> 
-                         <td style ="font-size: 12px;">{{$value->partname}} </td>
+                        <td class="text-center" style ="font-size: 12px;"> {{$value->start_carton}}</td>
+                        <td  class="text-center"style ="font-size: 12px;">{{$value->end_carton}} </td>
+                         <td  class="text-center"style ="font-size: 12px;"> {{$value->carton_no}}</td>
+                         <td  class="text-center"style ="font-size: 12px;">{{$value->packing_no}} </td>
+                         <td  class="text-center"style ="font-size: 12px;">{{$value->skid_no}} </td>
+                         <td  class="text-center"style ="font-size: 12px;">{{$value->partno}} </td> 
+                         <td  class="text-center"style ="font-size: 12px;">{{$value->partname}} </td>
+                         <td  class="text-center"style="border-color:black"class="text-center">{{$value->seq}} </td>
+                         <td  class="text-center"style="border-color:black"class="text-center">X</td>
+                         <td  class="text-center"style="border-color:black"class="text-center">{{$value->qty_running}}</td>
+                         <td  class="text-center"style="border-color:black"class="text-center">{{$value->total_running}}</td>
                          <td style ="font-size: 12px;">
 
                         
-                          <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#logPrintOrg_{{$value->id}}">Re Print</a>
+                          <a  class="btn btn-primary btn-sm text-white "  data-toggle="modal" data-target="#logPrintOrg_{{$value->id}}"><i class="ti ti-printer"></i>Re Print</a>
+                          <a  class="btn btn-warning btn-sm text-white "  data-toggle="modal" data-target="#change_{{$value->id}}"><i class="ti ti-edit"></i>Change</a>
                         
                           <div class="modal modal-blur fade" id="logPrintOrg_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
@@ -100,12 +114,16 @@
                                         @csrf
                                         <div class="mb-3">
                                             <label class="form-label">PIC</label>
-                                            <input type="text" name="pic_print"  id="pic_print" class="form-control" name="example-text-input"  placeholder="PIC">
+                                            <input type="text" name="pic_print"  id="pic_print" class="form-control mb-2" name="example-text-input"  placeholder="PIC">
+                                            {{-- <label class="form-label">START CARTON</label>
+                                            <input type="text" name="start_carton"  id="start_carton" class="form-control mb-2" name="example-text-input"  placeholder="PIC">
+                                            <label class="form-label">END CARTON</label>
+                                            <input type="text" name="end_carton"  id="end_carton" class="form-control mb-2" name="example-text-input"  placeholder="PIC"> --}}
                                         </div>                                       
                                     </div>  
                         
                                     <div class="modal-footer">
-                                      <button type="button" class="btn btn-light link-warning" data-bs-dismiss="modal">
+                                      <button type="button shadow-lg" class="btn btn-light link-warning" data-bs-dismiss="modal">
                                         Cancel
                                       </button>
                                       <button  type="submit"  class="btn btn-primary ms-auto" >
@@ -119,6 +137,40 @@
                           </div>
 
 
+
+                          <div class="modal modal-blur fade" id="change_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Change Data</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div> 
+                                    <div class="modal-body">                               
+                                      <form action="{{ url('/finishgood/viewSkid/changemaster/' . $value->id) }}" method="POST" >
+                                      
+                                        @csrf
+                                        <div class="mb-3">
+                                            
+                                            <label class="form-label">START CARTON</label>
+                                            <input type="text" name="start_carton"  id="start_carton" class="form-control mb-2" name="example-text-input"  placeholder="START CARTON">
+                                            <label class="form-label">END CARTON</label>
+                                            <input type="text" name="end_carton"  id="end_carton" class="form-control mb-2" name="example-text-input"  placeholder="END CARTON">
+                                        </div>                                       
+                                    </div>  
+                        
+                                    <div class="modal-footer">
+                                      <button type="button shadow-lg" class="btn btn-light link-warning" data-bs-dismiss="modal">
+                                        Cancel
+                                      </button>
+                                      <button  type="submit"  class="btn btn-primary ms-auto" >
+                                       Save
+                                      </button>
+                                  </div>
+                                </form>
+                            </div> 
+                              </div>
+                            </div>
+                          </div>
 
                         </td>       
                    

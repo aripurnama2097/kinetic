@@ -33,7 +33,7 @@
               </tr>
               <tr>
                 {{-- <th colspan ="2" style="border-color:black"class="text-center" > TOTAL CARTON : {{$tot_carton[0]->tot_carton }}</th> --}}
-                <th   style="border-color:black" class="text-center" >COMBINE NO</td>
+                <th   style="border-color:black" colspan="2" class="text-center" >CARTON NO</td>
                 <th style="border-color:black"class="text-center" >CUSTPO</td>
                 <th style="border-color:black"class="text-center">ITEM NO</td>
                 <th style="border-color:black"class="text-center">ITEM DESC</td>
@@ -48,18 +48,15 @@
              <tr style="border-color:black">     
              </tr>
              <tr>
-              
-              
-                <td style="border-color:black"class="text-center">{{$value->carton_no}}</td>
+                <td style="border-color:black"class="text-center">{{$value->start_carton}}</td>
+                <td style="border-color:black"class="text-center">{{$value->end_carton}}</td>
                 <td style="border-color:black"class="text-center">{{$value->custpo}}</td>
                 <td style="border-color:black" class="text-center">{{$value->partno}}</td>
                 <td style="border-color:black"class="text-center">{{$value->partname}}</td>
                 <td style="border-color:black"class="text-center">{{$value->seq}} </td>
                 <td style="border-color:black"class="text-center">X</td>
                 <td style="border-color:black"class="text-center">{{$value->qty_running}}</td>
-                <td style="border-color:black"class="text-center">{{$value->total_running}}</td>
-              
-           
+                <td style="border-color:black"class="text-center">{{$value->total_running}}</td>  
               </tr>
               @endforeach
              

@@ -186,6 +186,8 @@ Route::post('finishgood/viewSkid/scanout_skid',[FinishGoodController::class,'sca
 Route::get('finishgood/viewSkid/printMaster',[FinishGoodController::class,'printMasterlist']);
 Route::get('/finishgood/viewSkid/logprintMaster',[FinishGoodController::class,'viewlogMaster']);
 Route::post('/finishgood/viewSkid/logprintMaster/{id}',[FinishGoodController::class,'logmaster']);
+Route::post('/finishgood/viewSkid/changemaster/{id}',[FinishGoodController::class,'changemaster']);
+
 
 
 Route::get('/finishgood/viewDummy',[FinishGoodController::class,'view_dummy']);
