@@ -205,7 +205,7 @@
                       
                           <i class="ti ti-transfer-out mr-2"></i>
                           <span style="font-size:16px" class="nav-link-title">    
-                              Shipping
+                              Finish Good
                           </span>
                       </a>
                       <div class="dropdown-menu ">
