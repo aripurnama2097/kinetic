@@ -662,14 +662,14 @@ class PartlistController extends Controller
 
             // dd($param);
 
-            if ($param == false ) {
-                return response()
-                    ->json([
-                        'success' => false,
-                        'message' => 'MODEL NOT EXIST IN SCHEDULE...',
+            // if ($param == false ) {
+            //     return response()
+            //         ->json([
+            //             'success' => false,
+            //             'message' => 'MODEL NOT EXIST IN SCHEDULE...',
 
-                    ]);
-            }
+            //         ]);
+            // }
                         // GET PARAM BASE SCAN LABEL
             $dest      =   $param[0]->dest;
             $custpo    =   $param[0]->custpo;

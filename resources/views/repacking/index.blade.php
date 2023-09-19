@@ -286,7 +286,7 @@
             <div class="collapse mt-4" id="print_label">
                 <div class="col-12 ">
                     <div class="card rounded-1 col-12 mb-2 border border-success  shadow-lg rounded-2">
-                        <h1 style="font-weight:bold"class="text-dark text-center mt-4"> <i class="ti ti-printer"> </i>Print Label KIT (Original/Loosecarton)</h1>
+                        <h1 style="font-weight:bold"class="text-dark text-center mt-4"> <i class="ti ti-printer"> </i>Print Label KIT (Qty Label 1)</h1>
                         <div class="row row-cards col-12 mb-4">
                             <div class="mb-3 col-sm-12 col-12">
                                 <input style="font-size:20px"
@@ -302,7 +302,7 @@
 
                     <div class="card rounded-1 col-12 mb-2 border border-primary mt-3 shadow-lg rounded">
                         <div class="row row-cards col-12 mb-4">
-                            <h1 style="font-weight:bold" class=" text-center mt-4 text-primary"><i class="ti ti-printer"> </i>Print Label KIT - Combine Qty Label</h1>
+                            <h1 style="font-weight:bold" class=" text-center mt-4 text-primary"><i class="ti ti-printer"> </i>Print Label KIT - Qty Label More Than 1</h1>
                             <div class="mb-3 col-sm-12 col-12">
                                 <input style="font-size:20px"
                                     class="form-control form-control-xs mb-2 text-center border border-secondary text-dark "

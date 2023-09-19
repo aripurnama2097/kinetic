@@ -56,7 +56,7 @@
                      <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                         <i class="ti ti-book-upload mr-2"></i>
                         <span style="font-size:14px" class="nav-link-title">  
-                              Master Schedule
+                              Setup Master & Schedule
                         </span>
                          
                       </a>
@@ -65,7 +65,7 @@
                               <div class="dropdown-menu-column">
                                   <div class="dropend">
                                       <a class="dropdown-item " href="{{url('/stdpack')}}" >
-                                          Setup Standard Pack                  
+                                          Item Master                  
                                       </a>                  
                                   </div>
                               </div>
@@ -190,7 +190,7 @@
                             <div class="dropdown-menu-column">
                                 <div class="dropend">
                                     <a class="dropdown-item " href="{{ url('/repacking/cancelation') }}">
-                                        Cancelation
+                                        Cancelation Data
                                     </a>
                                 </div>
                             </div>

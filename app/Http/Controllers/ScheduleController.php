@@ -114,9 +114,15 @@ class ScheduleController extends Controller
 
 
              // STEP 2. DELETE DATA PARTLIST BASE ON PRODNO
-        // DB::table('schedule')
-        //     ->where('prodno','=',$prodno)
-        //     ->delete();
+        DB::table('schedule')
+            ->where('prodno','=',$prodno)
+            ->delete();
+
+            
+            DB::table('repacking_list')
+            ->where('prodno','=',$prodno)
+            ->delete();
+
 
 
        // STEP 2. UPDATE STATUS SCHEDULE AGAR BISA DI GENERATE ULANG

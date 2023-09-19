@@ -53,7 +53,7 @@ class KitmonitorController extends Controller
                         left join finishgood_list as c on a.prodno = c.prodno  and c.demand = a.demand
                         left join inhouse_list as d on a.prodno = d.lotno and d.shipqty = a.demand
                         left join borrow as e on a.prodno = e.prodno
-                        left join test_scan as f on a.prodno = f.prodno
+                        left join tbl_invoice as f on a.prodno = f.prodno
                     group by
                         a.custcode,a.dest,a.model,a.prodno,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem,b.prodno
                         ,e.symptom,e.prodno,e.partno,f.invoice_no
@@ -97,7 +97,7 @@ class KitmonitorController extends Controller
                         left join finishgood_list as c on a.prodno = c.prodno  and c.demand = a.demand
                         left join inhouse_list as d on a.prodno = d.lotno and d.shipqty = a.demand
                         left join borrow as e on a.prodno = e.prodno
-                        left join test_scan as f on a.prodno = f.prodno
+                        left join tbl_invoice as f on a.prodno = f.prodno
                         --where a.prodno ='NA494'
                         group by
                         a.custcode,a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem,c.skid_no
@@ -113,7 +113,7 @@ class KitmonitorController extends Controller
         $pic = $request->pic;
 
         DB::connection('sqlsrv')
-            ->insert("INSERT into test_scan(prodno,invoice_no,created_by)
+            ->insert("INSERT into tbl_invoice(prodno,invoice_no,created_by)
                     select '{$prodno}','{$inv}', '{$pic}'");
     }
 
@@ -133,7 +133,7 @@ class KitmonitorController extends Controller
                     left join finishgood_list as c on a.prodno = c.prodno  and c.demand = a.demand
                     left join inhouse_list as d on a.prodno = d.lotno and d.shipqty = a.demand
                     left join borrow as e on a.prodno = e.prodno
-                    inner join test_scan as f on a.prodno = f.prodno
+                    inner join tbl_invoice as f on a.prodno = f.prodno
                     --where f.invoice_no = null and a.prodno = f.prodno
                 group by
                     a.custcode,a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem,c.skid_no

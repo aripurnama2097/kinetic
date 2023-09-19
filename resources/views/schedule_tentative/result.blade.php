@@ -45,7 +45,7 @@
                   </div>
 
                   <div class="col-12">
-                    <table style="width:100%" id="sch-tentative" class="text-nowrap  table table-striped border border-secondary table-sm" >
+                    <table style="width:100%" id="schedule-release" class="text-nowrap  table table-striped border border-secondary table-sm" >
                       <thead class="thead-dark">
                         <tr>                   
                           <th style ="font-size: 10px;">Result</th>  
@@ -99,7 +99,7 @@
                           <td style ="font-size: 12px;"> {{$value->model}}</td>
                        
                           
-                          <td style ="font-size: 12px;"  data-order="1" data-filter="prodno"> {{$value->prodno}}</td>
+                          <td style ="font-size: 12px;"> {{$value->prodno}}</td>
                           <td style ="font-size: 12px;"> {{$value->lotqty}}</td>
                           <td style ="font-size: 12px;"> {{$value->jkeipodate}}</td>
                           <td style ="font-size: 12px;"> {{$value->vandate}}</td>
@@ -185,15 +185,14 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
-           $('#sch-tentative').DataTable( {
-                dom: 'Bfrtip',
-                // dom: '<"top"i>rt<"topflp><"clear">',
-                buttons: [
-                  
-                    'excelHtml5',
-                    'csvHtml5'
-                ]
-    } );
+          $('#schedule-release').DataTable( {
+                    dom: 'Bfrtip',
+                    buttons: [
+                    
+                        'excelHtml5',
+                        'csvHtml5'
+                    ]
+                } );
 
 
 
