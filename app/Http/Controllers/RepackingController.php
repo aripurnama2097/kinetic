@@ -822,7 +822,7 @@ class RepackingController extends Controller
     }
 
 
-      //  PRINT ASSY KIT
+      //  PRINT ASSY KIT - INPUT
     public function printassy(Request $request, $id){
 
 
@@ -831,12 +831,13 @@ class RepackingController extends Controller
 
         //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
         $param = DB::connection('sqlsrv')
-                    ->select("SELECT a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.idnumber,b.qty_input from schedule as a
-                                inner join inhouse_scanin as b on a.partno = b.model and a.custpo= b.jknpo and a.prodno = b.lotno
+                    ->select("SELECT a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.id,b.idnumber,b.qty_input from schedule as a
+                                inner join inhouse_scanin as b on a.partno = a.partno
+                                --  and a.custpo= b.jknpo 
                                 where b.id = '{$id}' ");
 
 
-            if ($param == false) {
+            if (!$param) {
                 echo('Part Not Exist In Schedule');
                 return response()->json([
                     'success' => false,

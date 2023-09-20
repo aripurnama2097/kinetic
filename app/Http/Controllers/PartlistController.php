@@ -606,6 +606,8 @@ class PartlistController extends Controller
         $type       = 'scanin';
 
         $partno = substr($assylabel, 0, 11);
+
+       /*  dd($partno); */
         $qty    = substr($assylabel, 11, 3);
         $prodno    = substr($assylabel, 16, 4);
 
@@ -632,9 +634,9 @@ class PartlistController extends Controller
                                 where  model = '{$partno}' and lotno='{$prodno}'
                                 ");
 
-                                // dd($cek_total);
+                            
 
-        if ($cek_total == false) {
+        if (!$cek_total ) {
             return response()->json([
                 'success' => false,
                 'message' => 'Part Not Exist In Master',
@@ -658,18 +660,18 @@ class PartlistController extends Controller
             //GET CONTENT FROM SCHEDULE
             $param = DB::connection('sqlsrv')
                 ->select("SELECT * from schedule where partno ='{$partno}'
-                                and prodno ='{$prodno}' ");
+                                and custpo ='{$cek_total[0]->jknpo}' ");
 
-            // dd($param);
+    
 
-            // if ($param == false ) {
-            //     return response()
-            //         ->json([
-            //             'success' => false,
-            //             'message' => 'MODEL NOT EXIST IN SCHEDULE...',
+            if (!$param) {
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'MODEL NOT EXIST IN SCHEDULE...',
 
-            //         ]);
-            // }
+                    ]);
+            }
                         // GET PARAM BASE SCAN LABEL
             $dest      =   $param[0]->dest;
             $custpo    =   $param[0]->custpo;
