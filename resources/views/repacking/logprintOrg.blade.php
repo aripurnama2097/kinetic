@@ -43,7 +43,7 @@
                 <div class="card-header text-center justify-content-center">
                   <h2 style="font-size:30px"class="text-dark " >--LOG PRINT LABEL KIT-</h2> 
                 </div>
-            
+              
 
               </div>
             </div>
@@ -55,17 +55,24 @@
   
               
             <div class="col-12">
-              <div class="card  col-12 " >      
+              <div class="card  col-12 " >    
+                <div class="col-6">
+                  <form class="mt-2 mb-2"action="{{url('repacking/logPrintOrg')}}" method="GET">			
+                    <input type="text" name="keyword"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
+                    <button class="btn btn-warning btn-sm" type="submit" ><i class="ti ti-search"></i> SEARCH</button>
+                                        
+                </form>		
+                  </div>  
              
                 <div class="card-body border-bottom ">                
 
                   <div class="table-responsive  rounded-1 shadow-sm">      
                               
-                    <a class="btn btn-success mb-2" href="{{url('/repacking/logPrintOrg')}}"> <i class="ti ti-360"></i> Refresh  </a>
-                   <table style="width:100%" id="example" class="table table-striped border border-primary shadow-sm" >
+                  
+                   <table style="width:100%"class="table table-striped border border-primary shadow-sm" >
                      <thead class="thead-dark">
                        <tr>                   
-                     
+                        <th style ="font-size: 10px;">No</th>
                         <th style ="font-size: 10px;">ID Number</th>
                         <th style ="font-size: 10px;">Cust PO</th>
                         <th style ="font-size: 10px;">Part Number</th>
@@ -74,6 +81,7 @@
                         <th style ="font-size: 10px;">Cust Name</th> 
                         <th style ="font-size: 10px;">Shelf No</th>                       
                         <th style ="font-size: 10px;">Prod No</th>
+                        <th style ="font-size: 10px;">Create Date</th>
                          <th style ="font-size: 10px;">Last Print</th>  
                          <th style ="font-size: 10px;">Print</th> 
                               
@@ -84,6 +92,7 @@
                        @foreach($data as $key => $value)
                   
                         </td> 
+                        <td class="text-center">{{ ++$i }}</td>
                          <td style ="font-size: 12px;"> {{$value->idnumber}}</td>
                          <td style ="font-size: 12px;">{{$value->custpo}} </td>
                          <td style ="font-size: 12px;">{{$value->partno}} </td>
@@ -91,7 +100,8 @@
                          <td style ="font-size: 12px;"> {{$value->qty_scan}}</td>  
                          <td style ="font-size: 12px;"> {{$value->dest}}</td>                    
                          <td style ="font-size: 12px;"> {{$value->shelfno}}</td>       
-                         <td style ="font-size: 12px;"> {{$value->prodno}}</td>               
+                         <td style ="font-size: 12px;"> {{$value->prodno}}</td> 
+                         <td style ="font-size: 12px;"> {{$value->created_at}}</td>               
                          </td>    
                          <td style ="font-size: 12px;"> {{$value->last_print}} </td>               
                          </td>   
@@ -145,9 +155,12 @@
                      </tbody>
                
                    </table>
-                   <a class="btn btn-primary mb-2" href="{{url('/repacking')}}"> Back <i class="ti ti-back"></i> </a>
+                  
                   </div>
-                
+                  <div class="d-flex justify-content-center col-12 btn-sm">
+                    {{ $data->links('vendor.pagination.custom') }}
+  
+                  </div>
               </div>
               </div>
             </div>

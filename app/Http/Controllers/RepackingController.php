@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-
+use App\Models\LogPrintKit;
 class RepackingController extends Controller
 {
     public function index(){
@@ -41,9 +41,91 @@ class RepackingController extends Controller
 
     }
 
+     // PROCESS PRINT LABEL KIT
+     public function printlbl_kit(Request $request){
+
+        $scan_nik = $request ->scan_nik;
+        $scan_label = $request->scan_label;
+
+        //PARAM LABEL
+        $label_scan = substr($scan_label,0,15);
+        $qty = substr($scan_label, 24,5);
+        $unique = substr($scan_label,28,49);
+
+        // STEP 1. CEK STATUS PRINT PADA PART
+
+        $cek_status = DB::connection('sqlsrv')
+                        ->select(" SELECT * FROM  partscan
+                                    where partno = '{$label_scan}'
+                                    and after_print is null
+                                    and ( status_print is null or status_print ='loosecarton')
+                                  ");
+
+        if(!$cek_status ){
+            echo "<p style =font-size:20px;font-weight:bold;text-color:red > Label After Print, Please Check Log Print !</p>";
+        }
+
+        if($cek_status == TRUE  ){
+            // STEP 2. AMBIL PARAMETER LABEL QR dari partlist
+            $param = DB::connection('sqlsrv')
+            ->select("SELECT  * from partscan
+                            where
+                            label ='{$scan_label}' 
+                    ");
+
+            // GET PARAM BASE SCAN LABEL
+            $partlist   =   $param[0]->partlist_no;
+            $partno     =   $param[0]->partno;
+            $custpo     =   $param[0]->custpo ;
+
+
+            //STEP 2. SEND DATA UNTUK CONTENT PRINT LABEL SELAIN STATUS CONTINUE
+            $param2 = DB::connection('sqlsrv')
+            ->select("SELECT distinct a.id,a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,
+                        a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue,
+                        a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
+                                from partlist as a
+                        inner join partscan as b on a.partno = b.partno and a.demand = b.demand
+                        where 	 a.custpo ='{$custpo}' 
+                        and a.partno ='{$partno}' 
+                        and b.after_print is null
+                        and ( b.status_print is null or b.status_print='loosecarton')
+                    ");
+
+
+            // STEP 3. INSERT TO PRINT LOG
+            $logPrint = DB::connection('sqlsrv')
+                ->insert(" INSERT
+                               into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
+                                SELECT distinct
+                                b.idnumber,a.partno,a.partname,  b.scan_issue,a.dest,a.custpo,a.mcshelfno, a.prodno
+                                            from partlist as a
+                                inner join partscan as b on a.partno = b.partno and a.demand = b.demand
+                                where 	 a.custpo ='{$custpo}' 
+                                and a.partno ='{$partno}'  
+                                and b.after_print is null
+                                and ( b.status_print is null or b.status_print='loosecarton')
+                            ");
+
+            
+
+            // STEP 4. UPDATE COLUMN AFTER PRINT DI PARTSCAN
+            $update = DB::connection('sqlsrv')
+                ->update("UPDATE partscan  set after_print = 1 
+                            where partno ='{$partno}'   
+                            and after_print is null
+                            and (status_print is null or status_print='loosecarton')
+                ");
+
+            return view('repacking.original', compact('param2'));
+        }
+  
+
+    }
+
 
     // PROCESS PRINT LABEL KIT
-    public function printlbl_kit(Request $request){
+    public function printlbl_kitbackup(Request $request){
 
         $scan_nik = $request ->scan_nik;
         $scan_label = $request->scan_label;
@@ -207,12 +289,34 @@ class RepackingController extends Controller
     }
 
 
-    public function logPrintOrg(){
+    public function logPrintOrg(request $request){
 
-        $data = DB::table('log_print_kit_original')
-        ->get();
+        // $data = DB::table('log_print_kit_original')
+        // ->get();
 
-        return view('repacking.logprintOrg', compact('data'));
+
+        $pagination = 10;
+        $keyword= $request->keyword;
+
+        $data = LogPrintKit::where('idnumber', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('prodno', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('partno', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
+                        ->latest()->paginate(10);
+                        // ->orderBy('id','desc');
+                        // ->orderBy('id','asc');
+                        // $data->withPath('repacking.logPrintOrg');
+                        $data->appends($request->all());
+        // $data->orderBy('id','asc')->get();
+// $data2= $data->orderBy('id', 'asc')->get();
+     return view ('/repacking.logPrintOrg',compact(
+                                            'data'
+                                           ))->with('i', (request()->input('page', 1) -1) * $pagination
+                 );
+
+
+        // return view('repacking.logprintOrg', compact('data'));
     }
 
     public function scanIn(){
