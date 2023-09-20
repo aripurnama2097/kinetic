@@ -296,6 +296,21 @@
                         <i class="ti ti-user-plus mr-2"></i>
                     </a>
                  </li>
+
+
+
+                  {{-- USER SETTING --}}
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{asset('')}}storage/WI/KINETIC_GUIDANCE.pdf">
+                        {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        </span> --}}
+                      
+                        <span style="font-size:16px" class="nav-link-title">
+                           Guidance
+                        </span>
+                        {{-- <i class="ti ti-user-plus mr-2"></i> --}}
+                    </a>
+                 </li>
                  <?php } ?>
 
                 {{-- ==== ADMIN MC=========== --}}
