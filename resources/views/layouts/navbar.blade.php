@@ -56,7 +56,7 @@
                      <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                         <i class="ti ti-book-upload mr-2"></i>
                         <span style="font-size:14px" class="nav-link-title">  
-                              Setup Master & Schedule
+                              Item Master & Schedule
                         </span>
                          
                       </a>
@@ -71,7 +71,7 @@
                               </div>
                               <div class="dropdown-menu-column ">
                                 <a href="{{ url('/schedule_tentative') }}" class="dropdown-item  ">
-                                    Setup Master Schedule
+                                     Master Data Schedule
                                 </a>
                             </div>
                               <div class="dropdown-menu-column ">
@@ -353,6 +353,17 @@
                         </span>
                     </a>
                  </li>
+                 <li class="nav-item">
+                    <a class="nav-link" href="{{asset('')}}storage/WI/KINETIC_GUIDANCE.pdf">
+                        {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
+                        </span> --}}
+                      
+                        <span style="font-size:16px" class="nav-link-title">
+                           Guidance
+                        </span>
+                        {{-- <i class="ti ti-user-plus mr-2"></i> --}}
+                    </a>
+                 </li>
                     {{-- <div class="dropdown-menu">
                         <div class="dropdown-menu-columns">
                             <div class="dropdown-menu-column">
@@ -426,6 +437,18 @@
                         </a>
   
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{asset('')}}storage/WI/KINETIC_GUIDANCE.pdf">
+                            {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
+                            </span> --}}
+                          
+                            <span style="font-size:16px" class="nav-link-title">
+                               Guidance
+                            </span>
+                            {{-- <i class="ti ti-user-plus mr-2"></i> --}}
+                        </a>
+                     </li>
                 <?php } ?>
               </ul>
           </div>
