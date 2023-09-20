@@ -56,7 +56,7 @@
                   </a>
                 </div>
 
-                <form class="mt-2 mb-2"action="{{url('repacking/logPrintOrg')}}" method="GET">			
+                <form class="mt-2 mb-2"action="{{url('/stdpack')}}" method="GET">			
                   <input type="text" name="keyword"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
                   <button class="btn btn-primary btn-sm" type="submit" ><i class="ti ti-search"></i> SEARCH</button>
                 											
