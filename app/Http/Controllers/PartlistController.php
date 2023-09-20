@@ -288,7 +288,7 @@ class PartlistController extends Controller
                     ->max('id');
 
         $order = $get_id ? $get_id + 1 : 1;
-        $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $idnumber = 'I' . $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
 
 
