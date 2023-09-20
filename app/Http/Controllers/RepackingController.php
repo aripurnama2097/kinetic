@@ -62,7 +62,7 @@ class RepackingController extends Controller
                                     and ( status_print is null or status_print ='loosecarton')
                                   ");
 
-        if($cek_status == null){
+        if(!$cek_status ){
             echo "<p style =font-size:20px;font-weight:bold;text-color:red > Label After Print, Please Check Log Print !</p>";
         }
 
