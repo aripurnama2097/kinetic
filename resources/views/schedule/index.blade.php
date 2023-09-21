@@ -26,7 +26,7 @@
                     <a class="btn btn-primary text-white " data-bs-toggle="collapse" id="btn-dic"  role="button"
                         aria-expanded="false" aria-controls="partlist">
                         <i class="ti ti-mail"></i>
-                        ADD DIC
+                        ADD PIC
                     </a>   
 
                   </div>               
@@ -51,10 +51,16 @@
                                     Check Data Stdpack
                                 </button> --}}
 
-                                <button id="share-schedule" class="btn btn-info btn-sm  ">
+                                {{-- <button id="share-schedule" class="btn btn-info btn-sm  ">
                                     <i class="ti ti-share"></i>
                                     Share Schedule
-                                </button>
+                                </button> --}}
+
+                                <a data-bs-toggle="modal" data-bs-target="#modal-schedule"
+                                class="btn btn-info btn-sm  text-white">
+                                <i class="ti ti-file-export"></i>
+                                Share Schedule
+                            </a>
             
                                 <a data-bs-toggle="modal" data-bs-target="#modal-partlist"
                                     class="btn btn-success  btn-sm text-light ">
@@ -297,25 +303,30 @@
         </div>
     </div>
 
+
     {{-- ====================GENERATE PARTLIST========================================= --}}
-    <div class="modal modal-blur fade" id="check" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-schedule" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">CHECK DATA</h5>
+                    <h5 class="modal-title">SHARE SCHEDULE</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{{ url('schedule/check_data') }}" method="GET">
+                <form action="{{ url('schedule/sharesch') }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div>
-                                  
-                                    <input class="form-control" name="prodno" id="prodno" placeholder="INPUT PRODNO"
-                                    required>
-                                     <br>
-                                   
+                                    
+                                    <select style="font-size:15px" class="form-control col-8 btn btn-light btn-sm"
+                                        id="prodno" name="prodno">
+
+                                        @foreach ($data3 as $dd)
+                                            <option value="{{ $dd->prodno }}">{{ $dd->prodno }}</option>
+                                        @endforeach
+                                    </select>
+
 
                                     <button type="submit" class="btn btn-primary d-none d-sm-inline-block">
                                         <i class="ti ti-file-export"></i>
@@ -323,7 +334,7 @@
                                     </button>
                                     <br>
                                     <br>
-                                    <p style="font-wight:bold" class="text-danger"> * Pastikan Prod No yang di input sudah
+                                    <p style="font-wight:bold" class="text-danger"> * Pastikan Prod No yang dipilih sudah
                                         sesuai </p>
                                 </div>
                             </div>
@@ -335,6 +346,8 @@
             </div>
         </div>
     </div>
+
+ 
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">
 
@@ -418,6 +431,8 @@
                 });
   
                 Swal.fire({
+                    html:
+                   '<input id="prodno" name="prodno" class=" col-8" type="text" placeholder="INPUT PRODNO" maxlenght="5">',
                     icon: 'warning',
                     title: ' Share Update Schedule?',
                     showDenyButton: false,
@@ -430,6 +445,9 @@
                        
                         $.ajax({
                             type: 'POST',
+                            data:{
+                                prodno:prodno
+                            },
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             },
