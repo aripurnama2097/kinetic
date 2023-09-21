@@ -84,16 +84,14 @@ class RepackingController extends Controller
 
             //STEP 2. SEND DATA UNTUK CONTENT PRINT LABEL SELAIN STATUS CONTINUE
             $param2 = DB::connection('sqlsrv')
-            ->select("SELECT distinct a.id,a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,
-                        a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue,
-                        a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
-                                from partlist as a
-                        inner join partscan as b on a.partno = b.partno and a.demand = b.demand
-                        where 	 a.custpo ='{$custpo}' 
-                        and a.partno ='{$partno}' 
-                        and b.after_print is null
-                        and ( b.status_print is null or b.status_print='loosecarton')
+            ->select("SELECT * from partscan 
+                        where 	 custpo ='{$custpo}' 
+                        and partno ='{$partno}' 
+                        and after_print is null
+                        and ( status_print is null or status_print='loosecarton')
                     ");
+
+
 
 
             // STEP 3. INSERT TO PRINT LOG
@@ -101,13 +99,12 @@ class RepackingController extends Controller
                 ->insert(" INSERT
                                into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
                                 SELECT distinct
-                                b.idnumber,a.partno,a.partname,  b.scan_issue,a.dest,a.custpo,a.mcshelfno, a.prodno
-                                            from partlist as a
-                                inner join partscan as b on a.partno = b.partno and a.demand = b.demand
-                                where 	 a.custpo ='{$custpo}' 
-                                and a.partno ='{$partno}'  
-                                and b.after_print is null
-                                and ( b.status_print is null or b.status_print='loosecarton')
+                                idnumber,partno,partname,scan_issue,dest,custpo,shelfno, prodno
+                                            from partscan 
+                                where 	 custpo ='{$custpo}' 
+                                and partno ='{$partno}'  
+                                and after_print is null
+                                and ( status_print is null or status_print='loosecarton')
                             ");
 
             
