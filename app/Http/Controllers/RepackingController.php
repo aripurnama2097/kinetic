@@ -274,11 +274,12 @@ class RepackingController extends Controller
                 ->update("UPDATE  partscan
                             SET
                             after_print = 1
-                            where partno ='{$partno}'   
+                            where partno ='{$partno}'  
+                            and custpo ='{$custpo}' 
                             and after_print is null
                             and unique_continue = (select top 1 unique_continue
                                                     from partscan
-                                                where label = 'A4J-0067-01     1708159 10     I10816 A4J-0067-01    202301250432102198000007'
+                                                where label = '{$scan_label}'
                                                 )
                         ");
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 class ScheduleController extends Controller
 {
@@ -169,6 +170,31 @@ class ScheduleController extends Controller
                            ");
 
         return view('schedule.checkdata',compact('data'));
+    }
+
+
+    public function share_schedule(request $request){
+
+           $datauser = DB::connection('sqlsrv')
+                    ->select('SELECT email from tblemaildic');
+
+        $prodno = $request->prodno;
+
+        $dic=[
+            'ari.purnama@jkei.jvckenwood.com'
+          
+        ];
+          // $user= 'ari.purnama@jkei.jvckenwood.com';
+          $details = [
+            'title' => 'Mail from Kinetic',
+            'body' => 'Update Schedule Release KIT & Service Part |
+                       Prodno :' . $prodno 
+                      
+        ];
+
+        Mail::to($datauser)->send(new \App\Mail\NotifyMail($details));
+
+        return redirect()->back()->with('success','Share Schedule Success');
     }
 
 }

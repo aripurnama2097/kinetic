@@ -122,6 +122,8 @@ Route::get('schedule', [ScheduleController::class,'index']);
 Route::post('/schedule/filter',[ScheduleController::class, 'filter']);
 Route::post('schedule/partlist',[ScheduleController::class, 'partlist']);
 Route::post('schedule/email',[EmailController::class, 'index']);
+Route::post('schedule/sharesch',[ScheduleController::class, 'share_schedule']);
+
 Route::get('schedule/release_schedule',[ScheduleController::class, 'view_schrelease']);
 Route::post('schedule/cancel_partlist',[ScheduleController::class, 'cancel_partlist']);
 Route::post('schedule/add_dic', [ScheduleController::class,'add_dic']);

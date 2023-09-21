@@ -38,7 +38,7 @@
 
                         <div class="row">
                             <div class="mb-3 col-6">
-                                <label class="form-label required">SCAN DIC(Borrower)</label>
+                                <label class="form-label required">SCAN PIC(Borrower)</label>
                                 <div>
                                     <input type="text" class="form-control" name="borrower" id="borrower"
                                         placeholder="SCAN NIK" required autofocus minlength="5">
