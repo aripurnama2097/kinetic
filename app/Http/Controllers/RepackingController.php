@@ -57,6 +57,7 @@ class RepackingController extends Controller
         $cek_status = DB::connection('sqlsrv')
                         ->select(" SELECT * FROM  partscan
                                     where partno = '{$label_scan}'
+                                    -- and custpo =
                                     and after_print is null
                                     and ( status_print is null or status_print ='loosecarton')
                                   ");
@@ -71,6 +72,8 @@ class RepackingController extends Controller
             ->select("SELECT  * from partscan
                             where
                             label ='{$scan_label}' 
+                            and after_print is null
+                            and ( status_print is null or status_print ='loosecarton')
                     ");
 
             // GET PARAM BASE SCAN LABEL
