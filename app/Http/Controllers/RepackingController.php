@@ -109,10 +109,11 @@ class RepackingController extends Controller
 
             
 
-            // STEP 4. UPDATE COLUMN AFTER PRINT DI PARTSCAN
+            // STEP 4. UPDATE COLUMN AFTER PRINT DI PARTSCAN/ PELRIU DI IMPROVE
             $update = DB::connection('sqlsrv')
                 ->update("UPDATE partscan  set after_print = 1 
-                            where partno ='{$partno}'   
+                            where partno ='{$partno}'
+                            and custpo ='{$custpo}'    
                             and after_print is null
                             and (status_print is null or status_print='loosecarton')
                 ");
