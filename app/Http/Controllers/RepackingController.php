@@ -56,7 +56,7 @@ class RepackingController extends Controller
 
         $cek_status = DB::connection('sqlsrv')
                         ->select(" SELECT * FROM  partscan
-                                    where partno = '{$label_scan}'
+                                    where label = '{$scan_label}'
                                     -- and custpo =
                                     and after_print is null
                                     and ( status_print is null or status_print ='loosecarton')
@@ -79,13 +79,13 @@ class RepackingController extends Controller
             // GET PARAM BASE SCAN LABEL
             $partlist   =   $param[0]->partlist_no;
             $partno     =   $param[0]->partno;
-            $custpo     =   $param[0]->custpo ;
+            $prodno    =   $param[0]->prodno ;
 
 
             //STEP 2. SEND DATA UNTUK CONTENT PRINT LABEL SELAIN STATUS CONTINUE
             $param2 = DB::connection('sqlsrv')
             ->select("SELECT * from partscan 
-                        where 	 custpo ='{$custpo}' 
+                        where 	 prodno ='{$prodno}' 
                         and partno ='{$partno}' 
                         and after_print is null
                         and ( status_print is null or status_print='loosecarton')
@@ -101,7 +101,7 @@ class RepackingController extends Controller
                                 SELECT distinct
                                 idnumber,partno,partname,scan_issue,dest,custpo,shelfno, prodno
                                             from partscan 
-                                where 	 custpo ='{$custpo}' 
+                                where 	 prodno ='{$prodno}' 
                                 and partno ='{$partno}'  
                                 and after_print is null
                                 and ( status_print is null or status_print='loosecarton')
@@ -113,7 +113,7 @@ class RepackingController extends Controller
             $update = DB::connection('sqlsrv')
                 ->update("UPDATE partscan  set after_print = 1 
                             where partno ='{$partno}'
-                            and custpo ='{$custpo}'    
+                            and prodno ='{$prodno}'    
                             and after_print is null
                             and (status_print is null or status_print='loosecarton')
                 ");
