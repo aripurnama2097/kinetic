@@ -372,6 +372,22 @@ class RepackingController extends Controller
         //         ]);
         // }
 
+                $valid = DB::connection('sqlsrv')
+                ->select("SELECT * from partscan
+                                where label ='{$mcLabel}'                        
+                        ");
+
+        // CEK DATA PADA REPACKING
+
+            // dd($valid);
+            if($valid == null){
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'BEFORE SCAN MC'
+                    ]);
+                }
+    
 
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
