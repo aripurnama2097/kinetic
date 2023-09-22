@@ -150,20 +150,20 @@
                             <form  action ="{{url('schedule/add_dic')}}" method="post" class="card" enctype="multipart/form-data">
                                 @csrf
                             <div class="card-header">
-                                  <h3 style="font-size:25px"class="card-title text-primary">ADD DIC</h3>
+                                  <h3 style="font-size:25px"class="card-title text-primary">ADD PIC</h3>
                                 </div>
                                 <div class="card-body">
                                   <div class="row">
                                       <div class="mb-3 col-6">
-                                          <label class="form-label required">DIC Name</label>
+                                          <label class="form-label required">PIC Name</label>
                                           <div>
-                                            <input type="text" class="form-control"  name="name" id="name" placeholder="Enter NAME" required>
+                                            <input type="text" class="form-control"  name="name" id="name" placeholder="Input Name" required>
                                           </div>
                                       </div>
                                       <div class="mb-3 col-6">
-                                          <label class="form-label required">DIC Email</label>
+                                          <label class="form-label required">PIC Email</label>
                                           <div>
-                                            <input type="email" class="form-control"  name="email" id="email" placeholder="Enter NIK" required>
+                                            <input type="email" class="form-control"  name="email" id="email" placeholder="Input Email" required>
                                           </div>
                                       </div>
                                     
