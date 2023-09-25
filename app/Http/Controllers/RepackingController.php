@@ -57,71 +57,71 @@ class RepackingController extends Controller
         $cek_status = DB::connection('sqlsrv')
                         ->select(" SELECT * FROM  partscan
                                     where label = '{$scan_label}'
-                                    -- and custpo =
-                                    and after_print is null
-                                    and ( status_print is null or status_print ='loosecarton')
                                   ");
 
-        if(!$cek_status ){
+       
+        if (!$cek_status ){
+            echo "<p style =font-size:20px;font-weight:bold;text-color:red > Part Before Scan, MC Issue</p>";
+        }
+
+
+        else if($cek_status[0]->after_print == 1 ){
             echo "<p style =font-size:20px;font-weight:bold;text-color:red > Label After Print, Please Check Log Print !</p>";
         }
 
-        if($cek_status == TRUE  ){
-            // STEP 2. AMBIL PARAMETER LABEL QR dari partlist
-            $param = DB::connection('sqlsrv')
-            ->select("SELECT  * from partscan
-                            where
-                            label ='{$scan_label}' 
-                            and after_print is null
-                            and ( status_print is null or status_print ='loosecarton')
-                    ");
 
-            // GET PARAM BASE SCAN LABEL
-            $partlist   =   $param[0]->partlist_no;
-            $partno     =   $param[0]->partno;
-            $prodno    =   $param[0]->prodno ;
+        else if($cek_status == TRUE  ){
+          
+                        // GET PARAM BASE SCAN LABEL
+                        $partlist   =   $cek_status[0]->partlist_no;
+                        $partno     =   $cek_status[0]->partno;
+                        $prodno     =   $cek_status[0]->prodno ;
 
 
-            //STEP 2. SEND DATA UNTUK CONTENT PRINT LABEL SELAIN STATUS CONTINUE
-            $param2 = DB::connection('sqlsrv')
-            ->select("SELECT * from partscan 
-                        where 	 prodno ='{$prodno}' 
-                        and partno ='{$partno}' 
-                        and after_print is null
-                        and ( status_print is null or status_print='loosecarton')
-                    ");
+                        //STEP 2. SEND DATA UNTUK CONTENT PRINT LABEL SELAIN STATUS CONTINUE
+                        $param2 = DB::connection('sqlsrv')
+                        ->select("SELECT * from partscan 
+                                    where 	 prodno ='{$prodno}' 
+                                    and partno ='{$partno}' 
+                                    and after_print is null
+                                    and ( status_print is null or status_print='loosecarton')
+                                ");
 
+                            if($param2 == TRUE){
+                                
+                                        // STEP 3. INSERT TO PRINT LOG
+                                    $logPrint = DB::connection('sqlsrv')
+                                        ->insert(" INSERT
+                                                        into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
+                                                        SELECT distinct
+                                                        idnumber,partno,partname,scan_issue,dest,custpo,shelfno, prodno
+                                                                    from partscan 
+                                                        where 	 prodno ='{$prodno}' 
+                                                        and partno ='{$partno}'  
+                                                        and after_print is null
+                                                        and ( status_print is null or status_print='loosecarton')
+                                                    ");
 
+                                    
 
+                                    // STEP 4. UPDATE COLUMN AFTER PRINT DI PARTSCAN/ PELRIU DI IMPROVE
+                                    $update = DB::connection('sqlsrv')
+                                        ->update("UPDATE partscan  set after_print = 1 
+                                                    where partno ='{$partno}'
+                                                    and prodno ='{$prodno}'    
+                                                    and after_print is null
+                                                    and (status_print is null or status_print='loosecarton')
+                                        ");
 
-            // STEP 3. INSERT TO PRINT LOG
-            $logPrint = DB::connection('sqlsrv')
-                ->insert(" INSERT
-                               into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
-                                SELECT distinct
-                                idnumber,partno,partname,scan_issue,dest,custpo,shelfno, prodno
-                                            from partscan 
-                                where 	 prodno ='{$prodno}' 
-                                and partno ='{$partno}'  
-                                and after_print is null
-                                and ( status_print is null or status_print='loosecarton')
-                            ");
+                                    return view('repacking.original', compact('param2'));
 
-            
+                            }
 
-            // STEP 4. UPDATE COLUMN AFTER PRINT DI PARTSCAN/ PELRIU DI IMPROVE
-            $update = DB::connection('sqlsrv')
-                ->update("UPDATE partscan  set after_print = 1 
-                            where partno ='{$partno}'
-                            and prodno ='{$prodno}'    
-                            and after_print is null
-                            and (status_print is null or status_print='loosecarton')
-                ");
+                            else{
+                                echo "<p style =font-size:20px;font-weight:bold;text-color:red > Error! Loading Content Print Label/p>";
 
-            return view('repacking.original', compact('param2'));
+                            }           
         }
-  
-
     }
 
 
@@ -355,13 +355,7 @@ class RepackingController extends Controller
 
         // dd($qty);
 
-        //CEK STDPACK
-        // $cek_stdpack = DB::connection('sqlsrv')
-        //         ->select("SELECT * FROM std_pack 
-        //                     where 
-        //                     partnumber ='{$partno}'
-        //         ");
-
+      
 
         // if($cek_stdpack[0]->stdpack != $qty){
         //     echo'isi gross weight';
@@ -372,11 +366,28 @@ class RepackingController extends Controller
         //         ]);
         // }
 
+                $valid = DB::connection('sqlsrv')
+                ->select("SELECT * from partscan
+                                where label ='{$mcLabel}'                        
+                        ");
+
+        // CEK DATA PADA REPACKING
+
+            // dd($valid);
+            if($valid == null){
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'BEFORE SCAN MC'
+                    ]);
+                }
+    
 
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
-                    ->select("SELECT * FROM scanin_repacking where label_mc ='{$mcLabel}' or
-                            label_kit ='{$kitLabel}'");
+                    ->select("SELECT * FROM scanin_repacking 
+                                where label_mc ='{$mcLabel}' or
+                                        label_kit ='{$kitLabel}'");
 
 
         if($cek_label){
@@ -390,10 +401,12 @@ class RepackingController extends Controller
 
 
         $cek_total = DB::connection('sqlsrv')
-        ->select("SELECT  * from repacking_list
-                    where  partno = '{$partno}' and custpo = '{$custpo}'  and act_receive != demand
-                    order by custpo asc
-                    ");
+                    ->select("SELECT  * from repacking_list
+                                where  partno = '{$partno}'
+                                 and custpo = '{$custpo}'  
+                                 and act_receive != demand
+                                order by custpo asc
+                                ");
 
     // dd($cek_total);
 
@@ -425,12 +438,33 @@ class RepackingController extends Controller
   
         $carton_no = $lastOrder ? $lastOrder + 1 : 1;
 
+
+
+          //AMBIL CONTENT GROSS WEIGHT
+          $get_stdpack = DB::connection('sqlsrv')
+          ->select("SELECT * FROM std_pack 
+                      where 
+                      partnumber ='{$partno}'
+                 ");
+
+
+            if(!$get_stdpack){
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'ERROR GET DATA STDPACK, PART NOT EXIST IN MASTER...',
+
+                    ]);
+            }
+
+
         // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
         ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
-                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}','{$lenght}','{$widht}','{$height}'
+                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->gw}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
                 from repacking_list
-                    where partno = '{$partno}' and custpo ='{$custpo}'
+                    where partno = '{$partno}' 
+                    and custpo ='{$custpo}'
                     and  (coalesce(act_receive,0)+{$qty}) <= demand
                     order by custpo asc
                 ");
@@ -457,18 +491,10 @@ class RepackingController extends Controller
                     select '{$get_prodno[0]->prodno}','{$carton_no}'
              
                     ");
-        // DB::connection('sqlsrv')
-        // ->update("UPDATE repacking_list
-        //             set
-        //             gw = '{$gw}' where custpo = '{$custpo}'
-
-
-        //     ") ;
-            
+     
         $sum = array($selectPart[0]->act_receive, $qty);
         $act_qty = array_sum($sum);
 
-        // dd($act_qty);
 
 
         $viewdata = DB::connection('sqlsrv')
