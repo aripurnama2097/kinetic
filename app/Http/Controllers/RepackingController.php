@@ -461,7 +461,7 @@ class RepackingController extends Controller
         // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
         ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
-                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->gw}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
+                select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
                 from repacking_list
                     where partno = '{$partno}' 
                     and custpo ='{$custpo}'
