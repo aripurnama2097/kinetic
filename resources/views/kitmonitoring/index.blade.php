@@ -21,7 +21,7 @@
                             <table style="width:100%" id="kit-monitor" class="table table-vcenter table-striped">
                                 <thead class="thead-dark">
                                     <tr class="headings">      
-                                        <th class="text-center" style="font-size: 13px;">No</th>       
+                                      
                                         <th class="text-center" style="font-size: 13px;">Cust No</th>
                                         <th class="text-center" style="font-size: 13px;">Dest</th>
                                         <th class="text-center" style="font-size: 13px;">Model</th>
@@ -53,8 +53,7 @@
                   
                                 <tbody>
                                     @foreach ($data as $key => $value)             
-                                    <td class="text-black text-center">{{ ++$i }}
-                                    </td> 
+                                   
                                     <td class="text-center" style="font-size: 12px;">{{ $value->custcode }}</td>
                                     <td class="text-center" style="font-size: 12px;">{{ $value->dest }}</td>
                                     <td class="text-center" style="font-size: 12px;"> {{ $value->model }}</td>
@@ -73,8 +72,8 @@
                                     <td class="text-center text-danger" style="font-size: 13px;font-weight:bold" >{{ $value->bal_inhouse}} </td>
                                     <td class="text-center text-success" style="font-size: 13px;font-weight:bold" >{{ $value->kit_output}}</td>
                                     <td class="text-center text-danger" style="font-size: 13px;font-weight:bold" > {{ $value->bal_kit}}</td>                                  
-                                    <td class="text-center" style="font-size: 12px;"> {{ $value->total_box}}</td>
-                                    <td class="text-center" style="font-size: 12px;">{{ $value->total_skid}}</td>
+                                    <td class="text-center" style="font-size: 13px;font-weight:bold"> {{ $value->total_box}}</td>
+                                    <td class="text-center" style="font-size: 13px;font-weight:bold">{{ $value->total_skid}}</td>
                                     <td class="text-center" style="font-size: 12px;"> {{ $value->partno}}</td>                                       
                                     <td class="text-center" style="font-size: 12px;">{{$value->symptom}}</td>
                                     <td class="text-center" style="font-size: 12px;">                                              
