@@ -250,7 +250,7 @@
             })
 
                    // START SCAN-OUT SKID
-        $('#kit_label').on('keypress', function(e) {
+         $('#kit_label').on('keypress', function(e) {
                 if (e.which == 13) {
 
                     let scan_nik        = $('#scan_nik').val();
@@ -258,6 +258,7 @@
                     let skid_height     = $('#skid_height').val();
                     let kit_label       = $('#kit_label').val();
 
+                
 
                     $.ajax({
                             type: "POST",
@@ -278,13 +279,16 @@
                                             var audio   = document.getElementById('audio');
                                             var source  = document.getElementById('audioSource');
                                             var audio   = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                              
+                                            audio.load();
+                                            audio.play();
 
                                         swal.fire({
                                             icon: 'success',
                                             title: response.message,
 
-                                            timer: 5000,
-                                            showConfirmButton: true,
+                                            timer: 200,
+                                            showConfirmButton: false,
 
                                         })
                                         } 
@@ -293,36 +297,88 @@
                                             icon: 'warning',
                                             title: response.message
                                         })  
-                                        }
+
+
+                                                    let warningMessage = response.message;
+                                                    console.log("warning",response.message);
+                                                    console.log("message",warningMessage.indexOf('DOUBLE'))
+                                                    console.log("message",warningMessage.indexOf('OVER'))
+                                                    if(warningMessage.indexOf('DOUBLE') == 0){
+                                                        Swal.fire({
+                                                        
+                                                            icon: 'warning',
+                                                            title: response.message,
+                                                            showConfirmButton :false,
+                                                            timer:300
+                                                        
+
+                                                        })
+                                                    
+                                                    
+                                                    var audio = document.getElementById('audio');
+                                                                var source = document.getElementById('audioSource');
+                                                                var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                                audio.load()
+                                                                audio.play();
+                                                                return;
+                                                            
+                                                
+                                                }
+
+                                                    if(warningMessage.indexOf('OVER') == 0){
+                                                            Swal.fire({
+                                                            
+                                                                icon: 'warning',
+                                                                title: response.message,
+                                                                showConfirmButton :false,
+                                                                timer:500
+                                                            
+
+                                                            })
+                                                        
+                                                            
+                                                                        var audio = document.getElementById('audio');
+                                                                        var source = document.getElementById('audioSource');
+                                                                        var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                                        audio.load()
+                                                                        audio.play();
+                                                                        return;
+                                                                    
+                                                 
+                                                        }
+                                            }
 
                               var data = ""                          
                               $.each(response.data, function(key, value) {
 
                                   data = data + "<tr>"
-                                    //   if (value.tot_scan == 0 && value.balance_issue == 0) {
-                                    //       data = data + "<tr class=table-light>";
-                                    //   }
-                                    //   if (value.tot_scan != 0 && value.balance_issue != 0) {
-                                    //       data = data + "<tr class=table-warning>";
-                                    //   }
-                                    //   if (value.tot_scan == value.demand && value.balance_issue == 0) {
-                                    //       data = data + "<tr class=table-success>";
-                                    //   }
+                                      if (value.act_running == 0 && value.bal_running == 0) {
+                                          data = data + "<tr class=table-light>";
+                                      }
+                                      if (value.act_running != 0 && value.bal_running != 0) {
+                                          data = data + "<tr class=table-warning>";
+                                      }
+                                      if (value.act_running == value.demand && value.bal_running == 0) {
+                                          data = data + "<tr class=table-success>";
+                                      }
 
-                                      data = data + "<td>" + value.id + "</td>"
-                                      data = data + "<td>" + value.custcode + "</td>"
-                                      data = data + "<td>" + value.skid_no + "</td>"
-                                      data = data + "<td>" + value.prodno + "</td>"
-                                      data = data + "<td>" + value.partno + "</td>"
-                                      data = data + "<td>" + value.partname + "</td>"
-                                      data = data + "<td>" + value.demand + "</td>"
-                                      data = data + "<td>" + value.act_running + "</td>"
-                                      data = data + "<td>" + value.bal_running + "</td>"
+                                        // data = data + "<td>" + value.id + "</td>"
+                                        data = data + "<td>" + value.custcode + "</td>"
+                                        data = data + "<td>" + value.skid_no + "</td>"
+                                        data = data + "<td>" + value.prodno + "</td>"
+                                        data = data + "<td>" + value.partno + "</td>"
+                                        data = data + "<td>" + value.partname + "</td>"
+                                        data = data + "<td>" + value.demand + "</td>"
+                                        data = data + "<td>" + value.act_running + "</td>"
+                                        data = data + "<td>" + value.bal_running + "</td>"
                                   data = data + "</tr>"
                               })
                               $('#view-scanout').html(data);
                             }
                         })
+
+                        $('#kit_label').val("");
+                        $('#kit_label').focus();
                 }
             })
 
