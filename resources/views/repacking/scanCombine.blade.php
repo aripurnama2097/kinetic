@@ -82,14 +82,14 @@
                                                     placeholder="GW" disabled>
                                        </div>
                                        <div class="mb-3 col-sm-7 col-7">
+                                           <input
+                                               class="form-control form-control-lg mb-2 text-center border border-secondary "
+                                               type="text" name="combine_no" value="{{$carton_no}}" id="combine_no"
+                                               placeholder="COMBINE NO" disabled>
                                             <input
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary "
                                                 type="text" name="mc_label" value="" id="mc_label"
                                                 placeholder="SCAN MC LABEL" disabled>
-                                            <input
-                                                class="form-control form-control-lg mb-2 text-center border border-secondary "
-                                                type="text" name="combine_no" value="{{$carton_no}}" id="combine_no"
-                                                placeholder="COMBINE NO" disabled>
                                             <input
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary "
                                                 type="text" name="kit_label" value="" id="kit_label"
@@ -194,22 +194,22 @@
                         $('#gw').attr('disabled', false);
                         $('#combine_no').attr('disabled', false);
                         $('#kit_label').attr('disabled', false);
-                        $('#combine_no').focus();
+                        $('#kit_label').focus();
 
                     }
                 }
             });
 
 
-            $('#combine_no').on('keypress', function(e){
-                if(e.which == 13) {
-                    $('#kit_label').attr('disabled', false);
-                    $('#kit_label').focus();
+            // $('#combine_no').on('keypress', function(e){
+            //     if(e.which == 13) {
+            //         $('#kit_label').attr('disabled', false);
+            //         $('#kit_label').focus();
 
-                }
+            //     }
 
 
-            });
+            // });
     
 
 
@@ -427,8 +427,8 @@
                     }
                     $('#kit_label').val("");
                     $('#mc_label').val("");
-                    $('#kit_label').focus();
                     $('#mc_label').focus();
+                    $('#kit_label').focus();
                     // $('#print-master').attr('disabled', true);
                     // $('#delete-tbltemp').attr('disabled', true);
                 }
