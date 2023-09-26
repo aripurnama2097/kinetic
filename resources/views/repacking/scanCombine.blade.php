@@ -84,7 +84,7 @@
                                        <div class="mb-3 col-sm-7 col-7">
                                            <input
                                                class="form-control form-control-lg mb-2 text-center border border-secondary "
-                                               type="text" name="combine_no" value="{{$carton_no}}" id="combine_no"
+                                               type="text" name="combine_no" value="{{$combine_no}}" id="combine_no"
                                                placeholder="COMBINE NO" disabled>
                                             <input
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary "
@@ -427,8 +427,8 @@
                     }
                     $('#kit_label').val("");
                     $('#mc_label').val("");
-                    $('#mc_label').focus();
                     $('#kit_label').focus();
+                    $('#mc_label').focus();
                     // $('#print-master').attr('disabled', true);
                     // $('#delete-tbltemp').attr('disabled', true);
                 }
@@ -491,8 +491,10 @@
 
             function printCombine(){
 
+                  let combine_no = $('#combine_no').val();
 
-                var url = ("{{url('repacking/scanCombine/printMaster')}}" )
+
+                var url = ("{{url('repacking/scanCombine/printMaster')}}" + "?combine_no=" + combine_no)
                 window.open(url , '_blank'); 
 
             
