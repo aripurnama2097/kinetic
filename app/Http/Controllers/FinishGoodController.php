@@ -389,10 +389,19 @@ class FinishGoodController extends Controller
 
           // GET TOT_CARTON
         $tot_carton = DB::connection('sqlsrv')
-        ->select("SELECT count (distinct carton_no) as tot_carton  from scanout 
-                          where skid_no ='{$skidno}'
-                         and packing_no = '{$packing_no}'
-                " );
+                    ->select("SELECT count (distinct carton_no) as tot_carton  from scanout 
+                                    where skid_no ='{$skidno}'
+                                    and packing_no = '{$packing_no}'
+                            " );
+        $gw = DB::connection('sqlsrv')
+                    ->select("SELECT (select sum(gw) from scanout
+                                            where skid_no ='{$skidno}' 
+                                            and packing_no ='{$packing_no}'												
+                                    ) as total_gw
+                                    
+                                " );
+
+
 
 
 // dd($tot_carton);
@@ -440,7 +449,7 @@ class FinishGoodController extends Controller
 
         // dd($ins);
 
-       return view('finishgood.printmaster',compact('data','packing_no','tot_carton'));
+       return view('finishgood.printmaster',compact('data','packing_no','tot_carton','gw'));
 
 
     }
