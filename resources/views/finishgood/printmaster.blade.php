@@ -20,11 +20,11 @@
                
                 <th class="text-center mb-1"style="font-size: 12px;border-color:black;">{!! QrCode::size(50)->generate($content) !!} </th>
                 {{-- <th  style="border-color:black"class="text-center" > TOTAL CARTON : {{$tot_carton[0]->tot_carton }}</th> --}}
-                <th class="text-center mb-1"   style="border-color:black;">GW :  {{$gw[0]->total_gw }} </th>
+                <th class="text-center mb-1"   style="border-color:black;">GW :  {{$gw }} </th>
               </tr>
               <tr>
               
-                <th   style="border-color:black" class="text-center" >CARTON NO</td>
+                {{-- <th   style="border-color:black" class="text-center" >CARTON NO</td> --}}
                 <th style="border-color:black"class="text-center" >CUSTPO</td>
                 <th style="border-color:black"class="text-center">ITEM NO</td>
                 <th style="border-color:black"class="text-center">ITEM DESC</td>
@@ -41,7 +41,7 @@
              <tr>
               
               
-                <td style="border-color:black"class="text-center">{{$value->carton_no}}</td>
+                {{-- <td style="border-color:black"class="text-center">{{$value->carton_no}}</td> --}}
                 <td style="border-color:black"class="text-center">{{$value->custpo}}</td>
                 <td style="border-color:black" class="text-center">{{$value->partno}}</td>
                 <td style="border-color:black"class="text-center">{{$value->partname}}</td>
