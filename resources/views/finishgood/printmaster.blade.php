@@ -20,7 +20,7 @@
                
                 <th class="text-center mb-1"style="font-size: 12px;border-color:black;">{!! QrCode::size(50)->generate($content) !!} </th>
                 {{-- <th  style="border-color:black"class="text-center" > TOTAL CARTON : {{$tot_carton[0]->tot_carton }}</th> --}}
-                <th class="text-center mb-1"   style="border-color:black;">GW :  {{$gw }} </th>
+                <th class="text-center mb-1"   style="border-color:black;">GW :  {{$gw[0]->total_gw }} </th>
               </tr>
               <tr>
               
