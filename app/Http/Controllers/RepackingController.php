@@ -432,11 +432,10 @@ class RepackingController extends Controller
                 order by custpo asc");
 
         // dd($selectPart);
-        $lastOrder = DB::table('tblheadercombine')
-        // ->where('box_no')
-        ->max('carton_no');
+        // $lastOrder = DB::table('tblheadercombine')
+        // ->max('carton_no');
   
-        $carton_no = $lastOrder ? $lastOrder + 1 : 1;
+        // $carton_no = $lastOrder ? $lastOrder + 1 : 1;
 
 
 
@@ -486,11 +485,11 @@ class RepackingController extends Controller
         ->select("SELECT prodno from repacking_list where partno ='{$partno}'
                     and custpo ='{$custpo}'");
 
-        DB::connection('sqlsrv')
-        ->insert("INSERT into tblheadercombine(prodno,carton_no)
-                    select '{$get_prodno[0]->prodno}','{$carton_no}'
+        // DB::connection('sqlsrv')
+        // ->insert("INSERT into tblheadercombine(prodno,carton_no)
+        //             select '{$get_prodno[0]->prodno}','{$carton_no}'
              
-                    ");
+        //             ");
      
         $sum = array($selectPart[0]->act_receive, $qty);
         $act_qty = array_sum($sum);
@@ -521,11 +520,21 @@ class RepackingController extends Controller
 
     public function scanCombine(){
 
-        $combine_no  = DB::table('tblcombine_no')
+        $combine = DB::table('tblcombine_no')
         // ->where('box_no')
         ->max('combine_no');
   
-        $combine_no = + 1;
+        $currentDate = Carbon::now();
+        $dateAsNumber = $currentDate->format('Ymd');
+        $lastOrder = DB::table('tblcombine_no')
+                         ->whereDate('created_at',$currentDate)
+                         ->max('id');
+                         $order = $lastOrder ? $lastOrder + 1 : 1;
+                         $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
+                         $combine_no = substr($uniqueNumber,12,1);              
+
+
+        // $combine_no = + 1;
 
         return view('repacking.scanCombine', compact('combine_no'));
     }
@@ -549,6 +558,8 @@ class RepackingController extends Controller
         $height = $request->height;
         $gw = $request->gw;
         $combine_no = $request->combine_no;
+
+
 
       
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
@@ -612,21 +623,21 @@ class RepackingController extends Controller
                              ->select("SELECT  count(partno) as tot_part from temp_print 
                                      ");
 
-            $cek_carton = DB::connection('sqlsrv')
-                            ->select("SELECT  combine_no from temp_print 
-                                    ");
-            // dd($cek_part[0]->tot_part);
+            // $cek_carton = DB::connection('sqlsrv')
+            //                 ->select("SELECT  combine_no from temp_print 
+            //                         ");
 
-            $cartonOrder = DB::table('tblheadercombine')
-                              ->max('combine_no');
 
-            if($cek_part[0]->tot_part == 0){
-                $combine_no = $cartonOrder ? $cartonOrder + 1 : 1;
-            }
-            else if($cek_part[0]->tot_part != 0){
-                $combine_no = $cek_carton[0]->combine_no; 
+            // $cartonOrder = DB::table('tblheadercombine')
+            //                   ->max('combine_no');
 
-            }
+            // if($cek_part[0]->tot_part == 0){
+            //     $combine_no = $cartonOrder ? $cartonOrder + 1 : 1;
+            // }
+            // else if($cek_part[0]->tot_part != 0){
+            //     $combine_no = $cek_carton[0]->combine_no; 
+
+            // }
           
 
           
@@ -641,6 +652,8 @@ class RepackingController extends Controller
             $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
             $sequence_no = substr($uniqueNumber,12,1);
             $seq = $get_prodno[0]->prodno . '-'  . $combine_no . '-' . $sequence_no;
+
+            // dd($seq);
             // END SEQUENCE
 
             //CEK CUST PO       
@@ -650,8 +663,9 @@ class RepackingController extends Controller
                         if($cek_po[0]->custpo == 0  ){
                             // INSERT DATA TO TEMP PRINT TABLE
                             DB::connection('sqlsrv')
-                                    ->insert("INSERT INTO temp_print(custpo,dest,prodno,partno,partname,shelfno,qty,combine_no,sequence_no)
-                                            select '{$custpo}','{$dest}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$qty}','{$combine_no}','{$seq}'
+                                    ->insert("INSERT INTO temp_print
+                                                            (custpo,dest,prodno,partno,partname,shelfno,qty,combine_no,sequence_no)
+                                                    select '{$custpo}','{$dest}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$qty}','{$combine_no}','{$seq}'
                                             ");
                                                $sum = array($selectPart[0]->act_receive, $qty);
                                                $act_qty = array_sum($sum);
@@ -953,20 +967,19 @@ class RepackingController extends Controller
         $pic = $request->pic_print;
         $id = $request->id;
 
+//STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
+            $param = DB::connection('sqlsrv')
+                        ->select("SELECT top 1 a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.id,b.idnumber,b.qty_input from schedule as a
+                                    inner join inhouse_scanin as b on a.partno = b.model          
+                                    where b.id = '{$id}' 
+                                ");
 
-        // $param = DB::connection('sqlsrv')
-        // ->select(" SELECT  *  from std_pack
-        //             where partno ='{$partno}'
-        //             and lotno='{$prodno}'
-        //             and type ='scanin' ");
+            $stdpack= DB::connection('sqlsrv')
+                        ->select(" SELECT  *  from std_pack
+                                    where partnumber = '{$param[0]->partno}'
+                                ");
 
-        //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
-        $param = DB::connection('sqlsrv')
-                    ->select("SELECT top 1 a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.id,b.idnumber,b.qty_input from schedule as a
-                    inner join inhouse_scanin as b on a.partno = b.model
-                    --  and a.custpo= b.jknpo 
-                    where b.id = '{$id}' ");
-
+       
 
             if (!$param) {
                 echo('Part Not Exist In Schedule');
@@ -986,7 +999,7 @@ class RepackingController extends Controller
              ");
 
 
-         return view('repacking.printassy', compact('param'));
+         return view('repacking.printassy', compact('param','stdpack'));
 
     }
 
