@@ -35,30 +35,41 @@ include('./phpqrcode/qrlib.php');
   // $stdpack         = $param[0]->stdpack;
 
   // $qty_input      =$param[0]->qty_input;
+
+          $getid =  $param[0]->idnumber;
+
        
+	        $label 	= intval($param[0]->qty_input / $stdpack[0]->stdpack);
+					$sisa  	=$param[0]->qty_input % $stdpack[0]->stdpack;
+					$qtystd = $label;
+					$qtybal = $sisa;
+					if($sisa > 0){$label++;}
 
+          else if($sisa > 0){$getid++;}
+					
+					for ($y=1; $y<=$qtystd; $y++){
 
-  foreach ($param as $key => $value) {
+  // foreach ($param as $key => $param[0]) {
 
-      $content  = 'BEGIN:VCARD' . "\n";
-      $content .= 'VERSION:2.1' . "\n";
-      $content .= 'FN:' . $value->partno . "\n";
-      $content .= 'ADR;TYPE=work;' .
-        'LABEL="' . $value->partno . '":'
-        . $value->partname . ';'
-        . $value->qty_input . ' pcs;'
-        . $value->dest . ';'
-        . $value->custpo . ';'
-        . $value->shelfno . ';'
-        . $value->idnumber
-        . "\n";
-      $content   .= 'END:VCARD';
+            $content  = 'BEGIN:VCARD' . "\n";
+            $content .= 'VERSION:2.1' . "\n";
+            $content .= 'FN:' . $param[0]->partno . "\n";
+            $content .= 'ADR;TYPE=work;' .
+              'LABEL="' . $param[0]->partno . '":'
+              . $param[0]->partname . ';'
+              . $stdpack[0]->stdpack . ' pcs;'
+              . $param[0]->dest . ';'
+              . $param[0]->custpo . ';'
+              . $param[0]->shelfno . ';'
+              . $getid
+              . "\n";
+            $content   .= 'END:VCARD';
 
 
       // var_dump($content);
 
       $tempDir = './phpqrcode/imgservice/';
-      $filename  = $value->idnumber;
+      $filename  = $getid;
 
       QRcode::png($content, $tempDir . $filename . '.png', QR_ECLEVEL_L, 1);
       // var_dump($dataQR);
@@ -70,29 +81,29 @@ include('./phpqrcode/qrlib.php');
       echo '<tr>';
       echo '<td width="70px" align="center" style="font-weight:bold;">ROHS OK</td>';
       echo '<td width="85px" style="font-weight:bold;">CustPO</td>';
-      echo '<td width="110px">: ' . substr($value->custpo, 0, 15) . '</td>';
+      echo '<td width="110px">: ' . substr($param[0]->custpo, 0, 15) . '</td>';
       echo '<td width="98px" style="font-weight:bold;">IDNo</td>';
-      echo '<td width="90px">: ' . $value->idnumber . '</td>';
+      echo '<td width="90px">: ' . $getid . '</td>';
       echo '</tr>';
       echo '<tr>';
-      echo '<td rowspan="2" align="center" valign="middle"><img style="max-height: 70px;" src="./phpqrcode/imgservice/' . $value->idnumber . '.png" /></td>';
+      echo '<td rowspan="2" align="center" valign="middle"><img style="max-height: 70px;" src="./phpqrcode/imgservice/' . $getid . '.png" /></td>';
       echo '<td style="font-weight:bold;">PartNo</td>';
-      echo '<td>: ' . substr($value->partno, 0, 15) . '</td>';
+      echo '<td>: ' . substr($param[0]->partno, 0, 15) . '</td>';
       echo '<td style="font-weight:bold;">CustNm</td>';
-      echo '<td>: ' . substr($value->dest, 0, 11) . '</td>';
+      echo '<td>: ' . substr($param[0]->dest, 0, 11) . '</td>';
       echo '</tr>';
       echo '<tr>';
       echo '<td style="font-weight:bold;">PartNm</td>';
-      echo '<td>: ' . substr($value->partname, 0, 15) . '</td>';
+      echo '<td>: ' . substr($param[0]->partname, 0, 15) . '</td>';
       echo '<td style="font-weight:bold;">ShelfNo</td>';
-      echo '<td>: ' . substr($value->shelfno, 0, 11) . '</td>';
+      echo '<td>: ' . substr($param[0]->shelfno, 0, 11) . '</td>';
       echo '</tr>';
       echo '<tr>';
       echo '<td align="center" style="font-weight:bold;">QTY</td>';
-      echo '<td>: ' . substr($value->qty_input, 0, 15) . '</td>';
+      echo '<td>: ' . substr($stdpack[0]->stdpack, 0, 15) . '</td>';
       echo '<td style="font-weight:bold;"><u>CtnNo</td>';
       echo '<td style="font-weight:bold;">Prod No</td>';
-      echo '<td>: ' . substr($value->prodno, 0, 11) . '</td>';
+      echo '<td>: ' . substr($param[0]->prodno, 0, 11) . '</td>';
       echo '</tr>';
       echo '<td align="center" style="font-weight:bold;">&nbsp</td>';
       echo '<td style="font-weight:bold;"></td>';
@@ -105,7 +116,7 @@ include('./phpqrcode/qrlib.php');
 
 
  //	mencetak di sato small printer
- $barcode = $value->partno . ':' . $value->partname . ':' . $value->qty_input . ':' . $value->dest . ':' . $value->custpo . ':' . $value->shelfno . ':' . $value->idnumber;
+ $barcode = $param[0]->partno . ':' . $param[0]->partname . ':' . $stdpack[0]->stdpack . ':' . $param[0]->dest . ':' . $param[0]->custpo . ':' . $param[0]->shelfno . ':' . $getid;
 
           if (strlen(strlen($barcode)) == 1) {
             $len = '000' . strlen($barcode);
@@ -123,18 +134,18 @@ include('./phpqrcode/qrlib.php');
           $data .= $esc . 'H0032' . $esc . 'V0085' . $esc . 'L0101' . $esc . 'M' . 'Rohs OK';
           $data .= $esc . 'H0035' . $esc . 'V0120' . $esc . '2D30,L,03,0,0' . $esc . 'DN' . $len . ',' . $barcode;
 
-          $data .= $esc . 'H0150' . $esc . 'V0085' . $esc . 'L0101' . $esc . 'M' . 'CustPO: ' . substr($value->custpo, 0, 15);
-          $data .= $esc . 'H0515' . $esc . 'V0085' . $esc . 'L0101' . $esc . 'M' . 'ID.No: ' . substr($value->idnumber, 0, 11);
+          $data .= $esc . 'H0150' . $esc . 'V0085' . $esc . 'L0101' . $esc . 'M' . 'CustPO: ' . substr($param[0]->custpo, 0, 15);
+          $data .= $esc . 'H0515' . $esc . 'V0085' . $esc . 'L0101' . $esc . 'M' . 'ID.No: ' . substr($getid, 0, 11);
 
-          $data .= $esc . 'H0150' . $esc . 'V0135' . $esc . 'L0101' . $esc . 'M' . 'PartNo: ' . substr($value->partno, 0, 15);
-          $data .= $esc . 'H0515' . $esc . 'V0135' . $esc . 'L0101' . $esc . 'M' . 'CustNm: ' . substr($value->dest, 0, 11);
+          $data .= $esc . 'H0150' . $esc . 'V0135' . $esc . 'L0101' . $esc . 'M' . 'PartNo: ' . substr($param[0]->partno, 0, 15);
+          $data .= $esc . 'H0515' . $esc . 'V0135' . $esc . 'L0101' . $esc . 'M' . 'CustNm: ' . substr($param[0]->dest, 0, 11);
 
-          $data .= $esc . 'H0150' . $esc . 'V0185' . $esc . 'L0101' . $esc . 'M' . 'PartNm: ' . substr($value->partname, 0, 15);
-          $data .= $esc . 'H0515' . $esc . 'V0185' . $esc . 'L0101' . $esc . 'M' . 'ShelfNo: ' . substr($value->shelfno, 0, 11);
+          $data .= $esc . 'H0150' . $esc . 'V0185' . $esc . 'L0101' . $esc . 'M' . 'PartNm: ' . substr($param[0]->partname, 0, 15);
+          $data .= $esc . 'H0515' . $esc . 'V0185' . $esc . 'L0101' . $esc . 'M' . 'ShelfNo: ' . substr($param[0]->shelfno, 0, 11);
 
-          $data .= $esc . 'H0040' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . substr($value->qty_input, 0, 15);
+          $data .= $esc . 'H0040' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . substr($stdpack[0]->stdpack, 0, 15);
           $data .= $esc . 'H0270' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'CtnNo:';
-          $data .= $esc . 'H0515' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'ProdNo: ' . substr($value->prodno, 0, 11);
+          $data .= $esc . 'H0515' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'ProdNo: ' . substr($param[0]->prodno, 0, 11);
           $data .= $esc . 'Q1';
           $data .= $esc . 'Z';
           $handle = $data;
@@ -147,16 +158,18 @@ include('./phpqrcode/qrlib.php');
           $wkt = date('His');
           // ================= //
 
-          $host		= getenv("REMOTE_ADDR");
+          // $host		= getenv("REMOTE_ADDR");
         
-          $myfile 	= fopen("\\\\$host\\PrintSato\\print_". substr($value->idnumber, -6) .".txt", "w") or die("Unable to open file!");
-          $txt 		= $print;
-          fwrite($myfile, $txt);
-          fclose($myfile);
+          // $myfile 	= fopen("\\\\$host\\PrintSato\\print_". substr($value->idnumber, -6) .".txt", "w") or die("Unable to open file!");
+          // $txt 		= $print;
+          // fwrite($myfile, $txt);
+          // fclose($myfile);
  echo '--------------- --------------- --------------- --------------- --------------- --------------- --------------- ---------------';
 
 
         }
+
+      // }
       // }
     // }
   ?>
