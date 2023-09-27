@@ -223,11 +223,8 @@ class RepackingController extends Controller
         
             // STEP 1. AMBIL PARAMETER LABEL QR
             $content = DB::connection('sqlsrv')
-                            ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue,
-                                        a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
-                                            from partlist as a
-                                    inner join partscan as b on a.partno = b.partno and a.demand = b.demand
-                                    where 	b.label = '{$scan_label}' 
+                            ->select("SELECT * FROM  partscan
+                                        where label = '{$scan_label}'
                                    ");
 
             // GET content BASE SCAN LABEL
