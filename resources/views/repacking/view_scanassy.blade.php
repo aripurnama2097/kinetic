@@ -215,13 +215,7 @@
                                 var data = ""
                                 $.each(response.data, function(key, value) {
 
-                                    // var audio = document.getElementById('audio');
-                                    // var source = document.getElementById('audioSource');
-                                    // var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
-                                    // audio.load()
-                                    // audio.play();
-                                    // console.log('key=>'+key+'|value=>'+value)
-
+                                 
                                     data = data + "<tr>"
                                     if (value.act_receive == 0 && value.bal_receive == 0) {
                                         data = data + "<tr class=table-light>";
@@ -278,6 +272,7 @@
                                         console.log("warning",response.message);
                                         console.log("message",warningMessage.indexOf('DOUBLE'))
                                         console.log("message",warningMessage.indexOf('FINISH'))
+                                        console.log("message",warningMessage.indexOf('PART'))
 
                                         if(warningMessage.indexOf('DOUBLE') == 0){
                                             Swal.fire({
@@ -322,6 +317,29 @@
                                                     
                                             return;
                                         }
+
+
+                                        if(warningMessage.indexOf('PART') == 0){
+                                        Swal.fire({
+
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:1000
+
+
+                                        })
+
+
+                                                    var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
+                                                    audio.load()
+                                                    audio.play();
+
+
+                                        return;
+                                    }
 
                                         }
                                         

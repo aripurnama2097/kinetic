@@ -223,11 +223,12 @@ class RepackingController extends Controller
         
             // STEP 1. AMBIL PARAMETER LABEL QR
             $content = DB::connection('sqlsrv')
-            ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue,
-                        a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
-                            from partlist as a
-                    inner join partscan as b on a.partno = b.partno and a.demand = b.demand
-                    where 	b.label = '{$scan_label}' ");
+                            ->select("SELECT distinct a.id, a.custcode, a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.partlist_no,a.orderitem,a.custpo,a.partno,a.partname,a.mcshelfno, a.demand, a.stdpack,b.scan_issue,
+                                        a.tot_scan,a.balance_issue , b.unique_id, b.label, b.idnumber
+                                            from partlist as a
+                                    inner join partscan as b on a.partno = b.partno and a.demand = b.demand
+                                    where 	b.label = '{$scan_label}' 
+                                   ");
 
             // GET content BASE SCAN LABEL
             $partlist   =   $content[0]->partlist_no;
@@ -895,11 +896,14 @@ class RepackingController extends Controller
                     and demand >= (coalesce(act_receive,0) + $qty)
                     order by custpo asc");
 
-        // STEP 2.INSERT INTO REPACKING SCAN IN
-        // DB::connection('sqlsrv')
-        // ->insert("INSERT into scanin_repacking(custpo,partno, partname, qty_receive,dest,label_kit,scan_nik)
-        //           SELECT  '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}'
-        //         ");
+
+        if(!$selectPart){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'PART NOT EXIST IN SCHEDULE...'
+                ]);
+        }
 
         DB::connection('sqlsrv')
         ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_kit,scan_nik,gw)
@@ -990,16 +994,16 @@ class RepackingController extends Controller
                 ]);
             }
      // STEP 2. INSERT KE LOG PRINT
-     DB::connection('sqlsrv')
-         ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
-             select '{$param[0]->idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$param[0]->qty_input}',
-                     '{$param[0]->dest}',
-                    '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
+            DB::connection('sqlsrv')
+                ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
+                    select '{$param[0]->idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$param[0]->qty_input}',
+                            '{$param[0]->dest}',
+                            '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
 
-             ");
+                    ");
 
 
-         return view('repacking.printassy', compact('param','stdpack'));
+                return view('repacking.printassy', compact('param','stdpack'));
 
     }
 
