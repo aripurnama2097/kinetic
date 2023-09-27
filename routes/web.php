@@ -160,7 +160,9 @@ Route::get('repacking/scanIn',[RepackingController::class,'scanIn']);
 Route::post('repacking/scanIn/inputData',[RepackingController::class,'inputData']);
 
 Route::get('repacking/scan_assy',[RepackingController::class,'view_scanassy']);
-Route::post('repacking/scanassy/input_assy',[RepackingController::class,'input_assy']);
+Route::post('repacking/scanassy/input_assy',[RepackingController::class,'inputassy_mecha']);
+Route::post('/repacking/scanassy/input_assypanel',[RepackingController::class,'inputassy_panel']);
+
 Route::get('repacking/cancel',[RepackingController::class,'view_cancel_scanin']);
 Route::post('repacking/cancel_scanin',[RepackingController::class,'cancel_scanin']);
 
