@@ -22,7 +22,7 @@
           <td  align="center"  cellspacing ="2" class="text-center " style="font-size:14px;border-color:black;" colspan="6" > PROD NO : {{$param[0]->prodno}}</td>  
         </tr>
         <tr>
-          <td  align="center"  class="text-center "  style="font-size:14px;" colspan="6" > CARTON NO :{{$param[0]->carton_no}}</td>
+          <td  align="center"  class="text-center "  style="font-size:14px;" colspan="6" > CARTON NO :{{$combine_no}}</td>
         </tr>
         <tr>
           <td  align="center"  class="text-center"    style="font-size:14px;" colspan="6" > TOTAL ITEM:{{ $totalItem}}</td>
