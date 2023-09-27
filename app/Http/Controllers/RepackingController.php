@@ -432,11 +432,13 @@ class RepackingController extends Controller
                 and demand >= (coalesce(act_receive,0) + $qty)
                 order by custpo asc");
 
-        // dd($selectPart);
-        // $lastOrder = DB::table('tblheadercombine')
-        // ->max('carton_no');
-  
-        // $carton_no = $lastOrder ? $lastOrder + 1 : 1;
+            if(!$selectPart){
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'PART NOT EXIST IN SCHEDULE...'
+                    ]);
+            }
 
 
 
@@ -588,6 +590,13 @@ class RepackingController extends Controller
                                         and demand >= (coalesce(act_receive,0) + $qty)
                                         order by custpo asc");
 
+                if(!$selectPart){
+                    return response()
+                        ->json([
+                            'success' => false,
+                            'message' => 'PART NOT EXIST IN SCHEDULE...'
+                        ]);
+                }
                              
             // STEP 2.INSERT INTO REPACKING SCAN IN
             DB::connection('sqlsrv')
@@ -623,23 +632,6 @@ class RepackingController extends Controller
             $cek_part = DB::connection('sqlsrv')
                              ->select("SELECT  count(partno) as tot_part from temp_print 
                                      ");
-
-            // $cek_carton = DB::connection('sqlsrv')
-            //                 ->select("SELECT  combine_no from temp_print 
-            //                         ");
-
-
-            // $cartonOrder = DB::table('tblheadercombine')
-            //                   ->max('combine_no');
-
-            // if($cek_part[0]->tot_part == 0){
-            //     $combine_no = $cartonOrder ? $cartonOrder + 1 : 1;
-            // }
-            // else if($cek_part[0]->tot_part != 0){
-            //     $combine_no = $cek_carton[0]->combine_no; 
-
-            // }
-          
 
           
             // GET SEQUENCE NO
@@ -862,7 +854,7 @@ class RepackingController extends Controller
         return view('repacking.view_scanassy');
     }
 
-    public function input_assy(Request $request){
+    public function inputassy_mecha(Request $request){
 
         $scan_nik = $request->scan_nik;
         $kitLabel = $request->kit_label;
@@ -905,9 +897,26 @@ class RepackingController extends Controller
                 ]);
         }
 
+         //AMBIL CONTENT GROSS WEIGHT
+         $get_stdpack = DB::connection('sqlsrv')
+         ->select("SELECT * FROM std_pack 
+                     where 
+                     partnumber ='{$partno}'
+                ");
+
+
+           if(!$get_stdpack){
+               return response()
+                   ->json([
+                       'success' => false,
+                       'message' => 'ERROR GET DATA STDPACK, PART NOT EXIST IN MASTER...',
+
+                   ]);
+           }
+
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_kit,scan_nik,gw)
-                            select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}','{$gw}'
+        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_kit,scan_nik,gw,lenght,widht,height)
+                            select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
                             from repacking_list
                     where
                      partno = '{$partno}' and custpo ='{$custpo}'
@@ -926,13 +935,6 @@ class RepackingController extends Controller
                                     bal_receive = repacking_list.demand - (repacking_list.act_receive + {$qty})
                                     from scanin_repacking as b  where
                                 repacking_list.id = '{$selectPart[0]->id}' ") ;
-
-
-        DB::connection('sqlsrv')
-                ->update("UPDATE repacking_list
-                            set
-                            gw = '{$gw}' where custpo = '{$custpo}'
-                    ") ;
 
                  $viewdata = DB::connection('sqlsrv')
                                 ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
@@ -1088,6 +1090,124 @@ class RepackingController extends Controller
         DB::table('temp_print')->truncate();
 
         return redirect()->back()->with('delete', 'All records have been deleted.');
+    }
+
+
+
+
+    public function inputassy_panel(Request $request){
+
+        $input_nik = $request->input_nik;
+        $qr_panel = $request->qr_panel;
+        $qr_kit = $request->qr_kit;
+        $data = $qr_kit;
+        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
+
+        $panjang = $request->panjang;
+        $lebar = $request->lebar;
+        $tinggi = $request->tinggi;
+        $berat = $request->berat;
+
+
+        // STEP 1.CEK LABEL SCAN PADA SCAN IN
+        $cek_label = DB::connection('sqlsrv')
+                    ->select("SELECT * FROM scanin_repacking where
+                            label_kit ='{$qr_kit}'");
+
+
+        if($cek_label){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'DOUBLE SCAN...'
+                ]);
+        }
+        // END CEK LABEL SCAN
+            // ambil part dari list repacking
+            $selectPart = DB::connection('sqlsrv')
+            ->select("SELECT top 1 * from repacking_list
+                    where  partno = '{$partno}' and custpo ='{$custpo}'
+                    and demand >= (coalesce(act_receive,0) + $qty)
+                    order by custpo asc");
+
+
+        if(!$selectPart){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'PART NOT EXIST IN SCHEDULE...'
+                ]);
+        }
+
+
+         //AMBIL CONTENT GROSS WEIGHT
+         $get_stdpack = DB::connection('sqlsrv')
+         ->select("SELECT * FROM std_pack 
+                     where 
+                     partnumber ='{$partno}'
+                ");
+
+
+           if(!$get_stdpack){
+               return response()
+                   ->json([
+                       'success' => false,
+                       'message' => 'ERROR GET DATA STDPACK, PART NOT EXIST IN MASTER...',
+
+                   ]);
+           }
+
+        DB::connection('sqlsrv')
+        ->insert("INSERT into scanin_repacking(custcode,custpo,partno, partname, qty_receive,dest,label_panel,label_kit,scan_nik,gw,lenght,widht,height)
+                            select top 1  custcode, '{$custpo}', '{$partno}','{$partname}','{$qty}', '{$dest}', '{$qr_panel}','{$qr_kit}', '{$input_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
+                            from repacking_list
+                    where
+                     partno = '{$partno}' and custpo ='{$custpo}'
+                    and  (coalesce(act_receive,0)+{$qty}) <= demand
+                    order by custpo asc
+                ");
+
+
+
+         // STEP 3.UPDATE IN REPACKING LIST
+     $update =    DB::connection('sqlsrv')
+        ->update("UPDATE repacking_list
+                                SET act_receive = ( select sum(qty_receive )
+                                    from scanin_repacking  as b where
+                                b.partno = repacking_list.partno  and b.custpo = repacking_list.custpo),
+                                    bal_receive = repacking_list.demand - (repacking_list.act_receive + {$qty})
+                                    from scanin_repacking as b  where
+                                repacking_list.id = '{$selectPart[0]->id}' ") ;
+
+
+
+                 $viewdata = DB::connection('sqlsrv')
+                                ->select("SELECT * from repacking_list where custpo ='{$custpo}' ");
+
+
+                                $sum = array($selectPart[0]->act_receive, $qty);
+                                $act_qty = array_sum($sum);
+
+                                // TAMPILKAN DATA HASIL SCANIN
+                                if (($act_qty  == $selectPart[0]->demand)) {
+                                    return response()
+                                        ->json([
+                                            'success' => false,
+                                            'message' => 'FINISH SCAN...',
+                                            'data'    => $viewdata
+
+                                        ]);
+                                }
+
+
+
+                return response()
+                        ->json([
+                            'success' => true,
+                            'message' => 'Scan success...',
+                            'data'    => $viewdata
+                        ]);
+
     }
 
 
