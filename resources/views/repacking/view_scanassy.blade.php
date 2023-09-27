@@ -36,19 +36,20 @@
                     <div class="row row-deck row-cards ">
                         <div class="col-12 ">
                             <div class="card rounded-1 col-12 mb-2">
-                                <div class="col-12 mt-3 mb-3 row ">
-                                    <a style="font-size:20px" class="btn btn-primary col-6" data-bs-toggle="collapse" href="#scan-collapse"
-                                        role="button" aria-expanded="false" aria-controls="collapseExample">
-                                        --- SCANIN MECHA ---  
+                                <div class="btn-group col-12 mt-5 " role="group">
+                                    <a class="btn btn-primary col-6 text-white" data-bs-toggle="collapse" id="btn-mecha" role="button"
+                                        aria-expanded="false" aria-controls="scan-mecha">
+                                        SCANIN MECHA <i class="ti ti-disc"></i>
                                     </a>
-                                    <a style="font-size:20px" class="btn btn-success col-6" data-bs-toggle="collapse" href="#scan-panel"
-                                        role="button" aria-expanded="false" aria-controls="collapseExample">
-                                        --- PANEL ASSY ---  
+
+                                    <a class="btn btn-success col-6 text-white" data-bs-toggle="collapse" id="btn-panel" role="button"
+                                        aria-expanded="false" aria-controls="scan-panel"><i class="ti ti-device-desktop"></i>
+                                        PANEL ASSY
                                     </a>
                                 </div>
 
                             {{-- DATA SCAN MECHA--}}
-                            <div class="collapse " id="scan-collapse">
+                            <div class="collapse mt-4" id="scan-mecha">
                                 <div class="justify-content-center mt-3 ml-3 mr-3 ">
 
                                     <div class="row row-cards col-12">
@@ -117,7 +118,7 @@
 
 
                              {{-- DATA SCAN PANEL --}}
-                             <div class="collapse " id="scan-panel">
+                             <div class="collapse mt-4" id="scan-panel">
                                 <div class="justify-content-center mt-3 ml-3 mr-3 ">
 
                                     <div class="row row-cards col-12">
@@ -215,11 +216,16 @@
 
         $(document).ready(function() {
 
-            $('#partlist').dataTable({
-                "paging": true,
+            $('#btn-mecha').on('click', function() {
+                $('#scan-panel').hide();
+                $('#scan-mecha').show();
+            })
 
+            $('#btn-panel').on('click', function() {
+                $('#scan-mecha').hide();
+                $('#scan-panel').show();
+            })
 
-            });
 
 
             //  ===============SCAN  IN PROCESSS=================================
