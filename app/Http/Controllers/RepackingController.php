@@ -226,43 +226,54 @@ class RepackingController extends Controller
                             ->select("SELECT * FROM  partscan
                                         where label = '{$scan_label}'
                                    ");
+            if (!$content){
+                echo "<p style =font-size:20px;font-weight:bold;text-color:red > Part Before Scan, MC Issue</p>";
+            }
 
+
+            else if($content[0]->after_print == 1 ){
+                echo "<p style =font-size:20px;font-weight:bold;text-color:red > Label After Print, Please Check Log Print !</p>";
+            }
+
+
+            else if($content == TRUE  ){
             // GET content BASE SCAN LABEL
             $partlist   =   $content[0]->partlist_no;
             $partno     =   $content[0]->partno;
-            $custpo     =   $content[0]->custpo ;
+            $prodno    =   $content[0]->prodno;
 
             $getid = DB::connection('sqlsrv')
                             ->select("SELECT idnumber from partscan where label = '{$scan_label}'");
 
             //STEP 2. SEND DATA UNTUK CONTENT PRINT LABEL
             $content2 = DB::connection('sqlsrv')
-            ->select("SELECT distinct partno,partname,custpo, sum(scan_issue) as scan_issue,dest,prodno,shelfno,'{$getid[0]->idnumber}' as idnumber
-                        from
+            ->select("	SELECT 
+                          unique_continue,partno,partname,custpo, sum(scan_issue) as scan_issue,dest,prodno,shelfno,after_print,idnumber
+                                 from
                         partscan
-                        where 	 custpo ='{$custpo}'
-                        and partno ='{$partno}'
-                        and unique_continue = (select top 1 unique_continue
-                                                from partscan
-                                                where label = '{$scan_label}'
-                                                )
-                        group by partno,partname,custpo,dest,prodno,shelfno
+                                where 	prodno ='{$prodno}'
+                                and partno ='{$partno}'
+                                and after_print is null
+                                and unique_continue is not null
+                                and status_print <> 'loosecarton'
+                    group by partno,partname,custpo,dest,prodno,shelfno,unique_continue,after_print,idnumber
             ");
 
 
             // STEP 3. INSERT TO PRINT LOG
              $logPrint = DB::connection('sqlsrv')
                 ->insert(" INSERT
-                                into log_print_kit_original (partno,partname,qty_scan,dest,custpo,shelfno, prodno,idnumber)
-                                 SELECT distinct partno,partname, sum(scan_issue) as scan_issue,dest,custpo,shelfno,prodno,'{$getid[0]->idnumber}' as idnumber
-                                    from
-                                    partscan
-                                    where 	 custpo ='{$custpo}'
-                                    and partno ='{$partno}'
-                                    and unique_continue = (select top 1 unique_continue
-                                                            from partscan
-                                                            where label = '{$scan_label}')
-                         group by partno,partname,custpo,dest,prodno,shelfno
+                                into log_print_kit_original (unique_continue,partno,partname,qty_scan,dest,custpo,shelfno, prodno,idnumber)
+                                SELECT 
+                                        unique_continue,partno,partname, sum(scan_issue) as scan_issue,dest,custpo,shelfno,prodno,idnumber
+                                                from
+                                        partscan
+                                                where 	prodno ='{$prodno}'
+                                                and partno ='{$partno}'
+                                                and after_print is null
+                                                and unique_continue is not null
+                                                and status_print <> 'loosecarton'
+                                    group by partno,partname,custpo,dest,prodno,shelfno,unique_continue,after_print,idnumber
                             ");
 
 
@@ -272,19 +283,22 @@ class RepackingController extends Controller
                 ->update("UPDATE  partscan
                             SET
                             after_print = 1
-                            where partno ='{$partno}'  
-                            and custpo ='{$custpo}' 
+                            where 	prodno ='{$prodno}'
+                            and partno ='{$partno}'
                             and after_print is null
-                            and unique_continue = (select top 1 unique_continue
-                                                    from partscan
-                                                where label = '{$scan_label}'
-                                                )
+                            and unique_continue is not null
+                            and status_print <> 'loosecarton'
                         ");
 
 
             return view('repacking.originalsumm', compact('content2'));
         
+            }
 
+            else{
+                echo "<p style =font-size:20px;font-weight:bold;text-color:red > Error! Loading Content Combine Label/p>";
+
+            }      
 
     }
 
