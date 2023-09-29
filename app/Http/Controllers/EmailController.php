@@ -14,8 +14,8 @@ class EmailController extends Controller
 
     //   return $request;
 
-      $datauser = DB::connection('sqlsrv')
-                    ->select('SELECT email from tblemaildic');
+    //   $datauser = DB::connection('sqlsrv')
+    //                 ->select('SELECT email from tblemaildic');
 
 
     // return $datauser;
@@ -28,10 +28,10 @@ class EmailController extends Controller
         'body' => 'Update schedule Realese KIT & Service Part'
     ];
 
-    // $user =[
-    //     'ari.purnama@jkei.jvckenwood.com'
-    //     // 'harris.zaki@jkei.jvckenwood.com'
-    // ];
+    $datauser =[
+        'ari.purnama@jkei.jvckenwood.com'
+      
+    ];
 
         // $name_1 = $request->name1;
         // $name_2= $request->name2;
