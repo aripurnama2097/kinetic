@@ -603,7 +603,7 @@ class PartlistController extends Controller
 
         $assylabel = $request->assy_label;
         $pic       = $request->pic;
-        $type       = 'scanin';
+        $type       = 'scanin panel';
 
         $partno = substr($assylabel, 0, 11);
 
@@ -752,7 +752,7 @@ class PartlistController extends Controller
         // $jknpo       = $request->jknpo;
         $lotno       = $request->lotno;
         $qty       = $request->qty;
-        $type       = 'input';
+        $type       = 'input mecha';
 
 
         // STEP 3. CEK TOTAL SCAN PART UNTUK DI UPDATE DATA
