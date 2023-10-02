@@ -16,7 +16,7 @@ class ImportStdPack implements ToModel,WithStartRow
     public function model(array $row)
     {
 
-            
+       
       $data = new StdPack([
             'partnumber'         => $row[0],
             'partname'           => $row[1],
