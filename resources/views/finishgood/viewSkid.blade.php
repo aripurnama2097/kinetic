@@ -374,21 +374,23 @@
                 if (e.which == 13) {
                     var val_qrskid = $('#qr_skid').val();
                     if (val_qrskid != '') {
-                     
+
+                        $('#kit_label').attr('disabled', false);
+                        $('#kit_label').focus();
                         $('#skid_height').attr('disabled', false);
-                        $('#skid_height').focus();
+                    
                     }
                 }
             })
 
              // START SCAN-OUT SKID
-        $('#skid_height').on('keypress', function(e) {
-                if (e.which == 13) {
-                    var val_skid_height = $('#skid_height').val();                     
-                        $('#kit_label').attr('disabled', false);
-                        $('#kit_label').focus();
-                }
-            })
+        // $('#skid_height').on('keypress', function(e) {
+        //         if (e.which == 13) {
+        //             var val_skid_height = $('#skid_height').val();                     
+        //                 $('#kit_label').attr('disabled', false);
+        //                 $('#kit_label').focus();
+        //         }
+        //     })
 
                    // START SCAN-OUT SKID
         $('#kit_label').on('keypress', function(e) {

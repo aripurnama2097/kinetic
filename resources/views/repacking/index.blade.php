@@ -38,31 +38,27 @@
         <!-- Page body MENU -->
         <div class="page-body">
             <div class="container-xl">
-                {{-- <div class="row row-deck row-cards">
-        
-        </div> --}}
+     
             </div>
 
             {{-- <div class="container-xl mt-1 "> --}}
-            <div class="row row-deck row-cards ">
+            <div class="row-cards ">
+                {{-- row row-deck row-cards --}}
                 <div class="col-12 ">
-                    <div class="card rounded-1 col-12 ">
+                    <div class="card rounded-1 col-12 bg-dark border border-dark ">
                         <div class="card-header text-center justify-content-center">
-                            <h2 style="font-size:30px"class="text-dark ">--PART CATEGORY-</h2>
+                            <h2 style="font-size:30px"class="text-light ">--PART CATEGORY--</h2>
                         </div>
                         <div class="btn-group mb-3 col-12 ml-1 mr-2" role="group">
-                            {{-- <div class="col-6  "> --}}
+                    
                                 <a class="btn btn-secondary col-12  text-white" data-bs-toggle="collapse" id="btn-print-label" role="button"
                                     aria-expanded="false" aria-controls="assy">
                                     <i class="ti ti-printer"></i>
                                     PRINT LABEL KIT
                                 </a>
-                            {{-- </div> --}}
-                            {{-- <div class="col-6  "> --}}
                                 
                                 <a class="btn btn-light col-12 text-dark" href="{{ url('repacking/logPrintOrg') }}"> Log Print
                                     <i class="ti ti-printer"></i> </a>
-                            {{-- </div> --}}
                            
                         </div>
                         <div class="btn-group mb-3" role="group">
@@ -281,40 +277,50 @@
                 </div>
             </div>
 
-
             {{-- PRINT LABEL KIT PROCESS --}}
             <div class="collapse mt-4" id="print_label">
-                <div class="col-12 ">
-                    <div class="card rounded-1 col-12 mb-2 border border-success  shadow-lg rounded-2">
-                        <h1 style="font-weight:bold"class="text-dark text-center mt-4"> <i class="ti ti-printer"> </i>Print Label KIT (Qty Label 1)</h1>
-                        <div class="row row-cards col-12 mb-4">
-                            <div class="mb-3 col-sm-12 col-12">
-                                <input style="font-size:20px"
-                                    class="form-control form-control-xs mb-2 text-center border border-secondary text-dark"
-                                    type="text" name="pic" value="" id="scan_nik" maxlength="8"
-                                    placeholder="SCAN NIK HERE">
-                                <input class="form-control form-control-lg mb-2 text-center border border-secondary text-dark "
-                                    type="text" name="scan_label" value="" id="scan_label"
-                                    placeholder="SCAN MC LABEL" disabled>
+                <div class="container">
+                    <div class=" col-12 shadow-lg mt-3 mb-2 bg-info">
+                        <div class="row">
+                            <div class="col-6 ">
+                                <div class="card rounded-1 col-12 mb-2 border border-success  shadow-lg rounded-2 mt-3">
+                                    <h1 style="font-weight:bold"class="text-dark text-center mt-4"> <i class="ti ti-printer"> </i>Print Label KIT (Qty Label 1)</h1>
+                                    <div class="row row-cards col-12 mb-4">
+                                        <div class="mb-3 col-sm-12 col-12">
+                                            <input style="font-size:20px"
+                                                class="form-control form-control-xs mb-2 text-center border border-secondary text-dark"
+                                                type="text" name="pic" value="" id="scan_nik" maxlength="8"
+                                                placeholder="SCAN NIK HERE">
+                                            <input class="form-control form-control-lg mb-2 text-center border border-secondary text-dark "
+                                                type="text" name="scan_label" value="" id="scan_label"
+                                                placeholder="SCAN MC LABEL" disabled>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="card rounded-1 col-12 mb-2 border border-primary mt-3 shadow-lg rounded">
-                        <div class="row row-cards col-12 mb-4">
-                            <h1 style="font-weight:bold" class=" text-center mt-4 text-primary"><i class="ti ti-printer"> </i>Print Label KIT - Qty Label More Than 1</h1>
-                            <div class="mb-3 col-sm-12 col-12">
-                                <input style="font-size:20px"
-                                    class="form-control form-control-xs mb-2 text-center border border-secondary text-dark "
-                                    type="text" name="scan_pic" value="" id="scan_pic" maxlength="8"
-                                    placeholder="SCAN NIK HERE">
-                                <input class="form-control form-control-lg mb-2 text-center border border-secondary text-dark"
-                                    type="text" name="scan_label_mc" value="" id="scan_label_mc"
-                                    placeholder="SCAN MC LABEL" disabled>
+                            
+                            <div class="col-6 ">
+                                <div class="card rounded-1 col-12 mb-2 border border-dark shadow-lg rounded-2 mt-3">
+                                    <div class="row row-cards col-12 mb-4">
+                                        <h1 style="font-weight:bold" class=" text-dark text-center mt-4 "><i class="ti ti-printer"> </i>Print Label KIT - Qty Label More Than 1</h1>
+                                        <div class="mb-3 col-sm-12 col-12">
+                                            <input style="font-size:20px"
+                                                class="form-control form-control-xs mb-2 text-center border border-secondary text-dark "
+                                                type="text" name="scan_pic" value="" id="scan_pic" maxlength="8"
+                                                placeholder="SCAN NIK HERE">
+                                            <input class="form-control form-control-lg mb-2 text-center border border-secondary text-dark"
+                                                type="text" name="scan_label_mc" value="" id="scan_label_mc"
+                                                placeholder="SCAN MC LABEL" disabled>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+             
+               
+              
             </div>
         </div>
     </div>
