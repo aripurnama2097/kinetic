@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\TblHeaderSkid;
+use App\Models\LogPrintMasterlist;
 class FinishGoodController extends Controller
 {
     public function index()
@@ -461,14 +462,23 @@ class FinishGoodController extends Controller
     }
 
 
-    public function viewlogMaster(){
+    public function viewlogMaster(request $request){
 
+        $pagination = 10;
+        $keyword= $request->keyword;
 
-        $data = DB::connection('sqlsrv')
-                    ->select("SELECT * FROM  log_printmasterskid");
+        $data = LogPrintMasterlist::where('packing_no', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('skid_no', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('partno', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
+                        ->latest()->paginate(10);
+                        $data->appends($request->all());
 
-        return view('finishgood.logmaster',compact('data'));
-    }
+     return view ('/finishgood.logmaster',compact(
+                                            'data'
+                                           ))->with('i', (request()->input('page', 1) -1) * $pagination);
+     }
 
 
     public function logmaster(request $request, $id){
@@ -480,6 +490,24 @@ class FinishGoodController extends Controller
                                     from	log_printmasterskid 
                                     where id = '{$id}' ");
 
+
+
+            $tot_carton = DB::connection('sqlsrv')
+            ->select("SELECT (select sum(seq)
+                                from log_printmasterskid
+                                    where skid_no ='{$getdata[0]->skid_no}' 
+                                    and packing_no ='{$getdata[0]->packing_no}'		
+                            ) as tot_carton
+                    " );
+
+            $gw = DB::connection('sqlsrv')
+            ->select("SELECT (select sum(gw) from scanout
+                                    where skid_no ='{$getdata[0]->skid_no}' 
+                                    and packing_no ='{$getdata[0]->packing_no}'													
+                            ) as total_gw
+                            
+                        " );
+
 // dd($getdata[0]->skid_no);
         $param = DB::connection('sqlsrv')
                     ->select("SELECT  * 
@@ -490,9 +518,7 @@ class FinishGoodController extends Controller
                                     ");
 
 
-
-
-        return view('finishgood.logmasterprint',compact('param'));
+        return view('finishgood.logmasterprint',compact('param','tot_carton','gw'));
         
     }
 

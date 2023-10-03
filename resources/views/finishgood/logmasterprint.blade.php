@@ -29,10 +29,12 @@
                 <?php $content = $param[0]->skid_no . ':' .  $param[0]->packing_no  ?>
                
                 <th class="text-center mb-1"style="font-size: 12px;border-color:black;">{!! QrCode::size(50)->generate($content) !!} </th>
-                {{-- <th class="text-center mb-1"   style="border-color:black;">TOTAL CARTON :  {{$tot_carton[0]->tot_carton }} </th> --}}
+                <th  style="border-color:black"class="text-center" > SKID NO : {{$param[0]->skid_no }}</th>
+                <th  style="border-color:black"class="text-center" > TOTAL CARTON : {{$tot_carton[0]->tot_carton }}</th>
+                <th class="text-center mb-1"   style="border-color:black;">GW :  {{$gw[0]->total_gw }} </th>
+              
               </tr>
               <tr>
-                {{-- <th colspan ="2" style="border-color:black"class="text-center" > TOTAL CARTON : {{$tot_carton[0]->tot_carton }}</th> --}}
                 <th   style="border-color:black" colspan="2" class="text-center" >CARTON NO</td>
                 <th style="border-color:black"class="text-center" >CUSTPO</td>
                 <th style="border-color:black"class="text-center">ITEM NO</td>

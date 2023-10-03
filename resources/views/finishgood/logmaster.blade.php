@@ -44,7 +44,11 @@
                   <h2 style="font-size:30px"class="text-dark " >--LOG PRINT MASTER-</h2> 
                 </div>
             
-
+                <form class="mt-2 mb-2"action="{{url('finishgood/viewSkid/logprintMaster')}}" method="GET">			
+                  <input type="text" name="keyword"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
+                  <button class="btn btn-success btn-sm" type="submit" ><i class="ti ti-search"></i> SEARCH</button>
+                                      
+              </form>		
               </div>
             </div>
 
@@ -61,16 +65,16 @@
 
                   <div class="table-responsive  rounded-1 shadow-sm">      
                               
-                    <a  href="{{url('/finishgood/viewSkid')}}"class="btn btn-warning btn-sm float-right ">
+                    <a  href="{{url('/finishgood/viewSkid')}}"class="btn btn-info btn-sm float-right mb-2 ">
                       <i class="ti ti-arrow-narrow-up"></i>
                       Go Top Menu
                     </a>
-                   <table style="width:100%" id="download-master" class="table table-striped border border-primary shadow-sm" >
+                   <table style="width:100%"  class="table table-striped border border-primary shadow-sm" >
                      <thead class="thead-dark">
-                       <tr>                       
+                       <tr>                   
+                        <th class="text-center" style ="font-size: 10px;">No</th>    
                         <th class="text-center" style ="font-size: 10px;">Start Carton</th>
                         <th  class="text-center"style ="font-size: 10px;">End Carton</th>
-                        <th class="text-center" style ="font-size: 10px;">Combine No</th>
                         <th  class="text-center"style ="font-size: 10px;">Packing No</th>
                         <th  class="text-center"style ="font-size: 10px;">Skid No</th>
                         <th  class="text-center"style ="font-size: 10px;">Part No</th>           
@@ -84,9 +88,9 @@
                        @foreach($data as $key => $value)
                   
                        <tr>
+                        <td class="text-center">{{ ++$i }}</td>
                         <td class="text-center" style ="font-size: 12px;"> {{$value->start_carton}}</td>
                         <td  class="text-center"style ="font-size: 12px;">{{$value->end_carton}} </td>
-                         <td  class="text-center"style ="font-size: 12px;"> {{$value->carton_no}}</td>
                          <td  class="text-center"style ="font-size: 12px;">{{$value->packing_no}} </td>
                          <td  class="text-center"style ="font-size: 12px;">{{$value->skid_no}} </td>
                          <td  class="text-center"style ="font-size: 12px;">{{$value->partno}} </td> 
@@ -172,10 +176,7 @@
                             </div>
                           </div>
 
-                        </td>       
-                   
-                        
-                           
+                        </td>          
                        </tr>
                        @endforeach
                      </tbody>
@@ -183,7 +184,10 @@
                    </table>
                   
                   </div>
-                
+                  <div class="d-flex justify-content-center col-12 btn-sm">
+                    {{ $data->links('vendor.pagination.custom') }}
+  
+                  </div>
               </div>
               </div>
             </div>
@@ -195,8 +199,9 @@
 <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
 
 <script type="text/javascript"> 
+
 $(document).ready( function () { 
-  $('#download-master').DataTable( {
+  $('#log-master').DataTable( {
         dom: 'Bfrtip',
         buttons: [
            
@@ -205,53 +210,7 @@ $(document).ready( function () {
         ]
     } );
 
-$('#print_kitOrg').on('submit', function(e) {
-       e.preventDefault(); 
 
-      var scan_nik         = $('#scan_nik').val();
-
-
-      $.ajax({
-            type    :"POST",
-            dataType:"json",
-            data    :{scan_nik:scan_nik},
-            url     :"{{url('repacking/printOriginal/{id}/')}}",
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success : function(response){
-                // window.location.replace(response.redirect);
-                console.log(response);
-                // return;
-              
-
-
-                // let custpo       = response.param.custpo;
-                // let dest   = response.param.dest;
-                // let partno  = response.param.partno;
-                // let partname          = response.param.partname;
-                // let mcshelfno          = response.param.mcshelfno;
-                // let prodno          = response.param.prodno;
-        
-                // window.open("../../printLabel.php"+"?label_balance="+label_balance+"&label_sorting="+label_sorting+"&lokasi="+lokasi
-                // +"&part_number="+part_number+"&po="+po+"&supplierName="+supplierName+"&type="+type+"&qty_actual"+qty_actual); 
-              
-              
-              
-            },
-
-        
-
-            failure: function(form, action) {
-                    Ext.Msg.show({
-                        title: 'OOPS, AN ERROR JUST HAPPEN !',
-                        icons: Ext.Msg.ERROR,
-                        msg: action.result.msg,
-                        buttons: Ext.Msg.OK
-                    });
-                }
-            }) 
-
-
-    });
 
 
   });

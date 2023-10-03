@@ -318,12 +318,8 @@ class RepackingController extends Controller
                         ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
                         ->latest()->paginate(10);
-                        // ->orderBy('id','desc');
-                        // ->orderBy('id','asc');
-                        // $data->withPath('repacking.logPrintOrg');
                         $data->appends($request->all());
-        // $data->orderBy('id','asc')->get();
-// $data2= $data->orderBy('id', 'asc')->get();
+
      return view ('/repacking.logPrintOrg',compact(
                                             'data'
                                            ))->with('i', (request()->input('page', 1) -1) * $pagination
