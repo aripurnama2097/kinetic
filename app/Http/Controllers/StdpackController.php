@@ -104,6 +104,14 @@ class StdpackController extends Controller
         //     'message' =>'berhasil update'
         // ]);
 
+       $data =  DB::table('partlist')
+            ->where('partno',$model->partnumber)
+            ->update(['stdpack'=> $request->stdpack]);
+
+            // dd($data);
+
+        
+
         return redirect('/stdpack')->with('success', 'Success! Data Berhasil Diupdate');
     }
 
