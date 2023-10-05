@@ -305,10 +305,6 @@ class RepackingController extends Controller
 
     public function logPrintOrg(request $request){
 
-        // $data = DB::table('log_print_kit_original')
-        // ->get();
-
-        // return $request;
 
   
         $pagination = 10;
@@ -982,7 +978,7 @@ class RepackingController extends Controller
         $pic = $request->pic_print;
         $id = $request->id;
 
-        for ($i = 0; $i < $total; $i++) {
+     
 
         //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
             $param = DB::connection('sqlsrv')
@@ -1000,7 +996,7 @@ class RepackingController extends Controller
                                     where partnumber = '{$param[0]->partno}'
                                 ");
 
-                $arridnumber = array();
+            
           
 
                 $label 	= intval($param[0]->qty_input / $stdpack[0]->stdpack);
@@ -1008,31 +1004,45 @@ class RepackingController extends Controller
                 $qtystd = $label;//jumlah label yang di print
                 $qtybal = $sisa;
 
-                if($sisa > 0){
-                $label++;
-                }
+                if($sisa > 0){$label++;}
+                    $getid       = $param[0]->idnumber;
+                    $splitid     =  substr($getid,1,9);
+                    $no          = + 1;
+
+                   
 
                 for ($y=1; $y<=$qtystd; $y++){
-                    $getid       = $param[0]->idnumber;
-                    $splitid    =  substr($getid,1,10);
+                    $currentDate = Carbon::now();
+                    $dateAsNumber = $currentDate->format('Ymd');
+                    $date = substr($dateAsNumber,2,8);
+            
+                    $get_id = DB::table('log_print_kit_original')
+                    // ->where('idnumber',$currentDate)
+                    ->max('id');
 
-                  
+                    $order = $get_id ? $get_id + 1 : 1;
+                    $idno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+                    $arridnumber = array();
+                    $idnumber = 'I' . $idno;
+          
 
-                    $no = $splitid + 1;
-
-                    dd($no);
-
-                    $idnumber = 'I' . $splitid . $no;
-                    array_push($arridnumber, $idnumber);
-
-                    DB::connection('sqlsrv')
-                    ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
-                        select '{$idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$qtystd}',
-                                '{$param[0]->dest}',
-                                '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
-    
-                        ");
+                DB::connection('sqlsrv')
+                        ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
+                            select '{$idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$qtystd}',
+                                    '{$param[0]->dest}',
+                                    '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
+        
+                            ");
                 }
+
+                $labelcontent = DB::connection('sqlsrv')
+                                ->select("SELECT * from log_print_kit_original
+                                            where partno ='{$param[0]->partno}'
+                                            and custpo ='{$param[0]->custpo}'
+                                           
+                                            ");
+
+                                  
 
             if (!$param) {
                 echo('Part Not Exist In Schedule');
@@ -1042,8 +1052,8 @@ class RepackingController extends Controller
 
                 ]);
             }
-        }
-                // return view('repacking.printassy', compact('param','stdpack'));
+        // }
+                return view('repacking.printassy', compact('labelcontent'));
 
     }
 

@@ -361,7 +361,7 @@
                                                     icon: 'warning',
                                                     title: response.message,
                                                     showConfirmButton :false,
-                                                    timer:300
+                                                    timer:100
                                                 
 
                                                 })
@@ -383,7 +383,7 @@
                                                     icon: 'warning',
                                                     title: response.message,
                                                     showConfirmButton :false,
-                                                    timer:300
+                                                    timer:100
                                                 
 
                                                 })
@@ -613,7 +613,7 @@
                                                     icon: 'warning',
                                                     title: response.message,
                                                     showConfirmButton :false,
-                                                    timer:300
+                                                    timer:100
                                                 
 
                                                 })
@@ -635,7 +635,7 @@
                                                     icon: 'warning',
                                                     title: response.message,
                                                     showConfirmButton :false,
-                                                    timer:300
+                                                    timer:100
                                                 
 
                                                 })
