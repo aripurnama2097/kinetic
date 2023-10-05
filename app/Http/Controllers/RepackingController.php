@@ -308,7 +308,9 @@ class RepackingController extends Controller
         // $data = DB::table('log_print_kit_original')
         // ->get();
 
+        // return $request;
 
+  
         $pagination = 10;
         $keyword= $request->keyword;
 
@@ -1036,7 +1038,8 @@ class RepackingController extends Controller
             ->select(" SELECT  *  from inhouse_scanin
                         where partno ='{$partno}'
                         and lotno='{$prodno}'
-                        and type ='scanin' ");
+                        and type = 'scanin panel'
+                    ");
 
 
 
