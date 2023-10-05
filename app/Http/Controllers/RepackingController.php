@@ -978,23 +978,61 @@ class RepackingController extends Controller
       //  PRINT ASSY KIT - INPUT
     public function printassy(Request $request, $id){
 
-
+      
         $pic = $request->pic_print;
         $id = $request->id;
 
-//STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
+        for ($i = 0; $i < $total; $i++) {
+
+        //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
             $param = DB::connection('sqlsrv')
-                        ->select("SELECT top 1 a.custcode,a.custpo,a.partno,a.partname,a.dest,a.shelfno,a.prodno, b.id,b.idnumber,b.qty_input from schedule as a
-                                    inner join inhouse_scanin as b on a.partno = b.model          
-                                    where b.id = '{$id}' 
+                        ->select("SELECT a.*, b.id,b.idnumber,b.qty_input
+                               from schedule as a
+                                        inner join inhouse_scanin as b 
+                                        on a.partno = b.model   
+                                        and a.custpo = b.jknpo       
+                                        where b.id = '{$id}' 
                                 ");
+   
 
             $stdpack= DB::connection('sqlsrv')
                         ->select(" SELECT  *  from std_pack
                                     where partnumber = '{$param[0]->partno}'
                                 ");
 
-       
+                $arridnumber = array();
+          
+
+                $label 	= intval($param[0]->qty_input / $stdpack[0]->stdpack);
+                $sisa  	=$param[0]->qty_input % $stdpack[0]->stdpack;
+                $qtystd = $label;//jumlah label yang di print
+                $qtybal = $sisa;
+
+                if($sisa > 0){
+                $label++;
+                }
+
+                for ($y=1; $y<=$qtystd; $y++){
+                    $getid       = $param[0]->idnumber;
+                    $splitid    =  substr($getid,1,10);
+
+                  
+
+                    $no = $splitid + 1;
+
+                    dd($no);
+
+                    $idnumber = 'I' . $splitid . $no;
+                    array_push($arridnumber, $idnumber);
+
+                    DB::connection('sqlsrv')
+                    ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
+                        select '{$idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$qtystd}',
+                                '{$param[0]->dest}',
+                                '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
+    
+                        ");
+                }
 
             if (!$param) {
                 echo('Part Not Exist In Schedule');
@@ -1004,17 +1042,8 @@ class RepackingController extends Controller
 
                 ]);
             }
-     // STEP 2. INSERT KE LOG PRINT
-            DB::connection('sqlsrv')
-                ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
-                    select '{$param[0]->idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$param[0]->qty_input}',
-                            '{$param[0]->dest}',
-                            '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
-
-                    ");
-
-
-                return view('repacking.printassy', compact('param','stdpack'));
+        }
+                // return view('repacking.printassy', compact('param','stdpack'));
 
     }
 
@@ -1035,7 +1064,7 @@ class RepackingController extends Controller
 
             //SEND DATA UNTUK CONTENT PRINT LABEL
             $param = DB::connection('sqlsrv')
-            ->select(" SELECT  a.*,b.prodno  from inhouse_scanin as a
+            ->select(" SELECT  a.*,b.prodno,b.shelfno  from inhouse_scanin as a
                             left join schedule as b on a.partno = b.partno  
                                                     and  a.jknpo = b.custpo
                                 where a.partno ='{$partno}'
