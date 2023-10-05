@@ -610,7 +610,7 @@ class PartlistController extends Controller
             ->whereDate('created_at', $currentDate)
             ->max('id');
         $order = $get_id ? $get_id + 1 : 1;
-        $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $idnumber = 'I' . $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
         $assylabel = $request->assy_label;
         $pic       = $request->pic;
@@ -753,7 +753,7 @@ class PartlistController extends Controller
 
 
         $order = $get_id ? $get_id + 1 : 1;
-        $idnumber = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $idnumber ='I' . $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
         // return $idnumber;
 
