@@ -1035,10 +1035,11 @@ class RepackingController extends Controller
 
             //SEND DATA UNTUK CONTENT PRINT LABEL
             $param = DB::connection('sqlsrv')
-            ->select(" SELECT  *  from inhouse_scanin
-                        where partno ='{$partno}'
-                        and lotno='{$prodno}'
-                        and type = 'scanin panel'
+            ->select(" SELECT  a.*,b.prodno  from inhouse_scanin as a
+                            left join schedule as b on a.partno = b.partno  
+                                                    and  a.jknpo = b.custpo
+                                where a.partno ='{$partno}'
+                                and a.type ='scanin panel'
                     ");
 
 

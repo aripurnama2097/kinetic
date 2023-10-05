@@ -92,7 +92,7 @@ include('./phpqrcode/qrlib.php');
       echo '<td>: ' . substr($value->qty_input, 0, 15) . '</td>';
       echo '<td style="font-weight:bold;"><u>CtnNo</td>';
       echo '<td style="font-weight:bold;">Prod No</td>';
-      echo '<td>: ' . substr($value->lotno, 0, 11) . '</td>';
+      echo '<td>: ' . substr($value->prodno, 0, 11) . '</td>';
       echo '</tr>';
       echo '<td align="center" style="font-weight:bold;">&nbsp</td>';
       echo '<td style="font-weight:bold;"></td>';
@@ -134,7 +134,7 @@ include('./phpqrcode/qrlib.php');
 
           $data .= $esc . 'H0040' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'QTY: ' . substr($value->qty_input, 0, 15);
           $data .= $esc . 'H0270' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'CtnNo:';
-          $data .= $esc . 'H0515' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'ProdNo: ' . substr($value->lotno, 0, 11);
+          $data .= $esc . 'H0515' . $esc . 'V0235' . $esc . 'L0101' . $esc . 'M' . 'ProdNo: ' . substr($value->prodno, 0, 11);
           $data .= $esc . 'Q1';
           $data .= $esc . 'Z';
           $handle = $data;
