@@ -1152,7 +1152,9 @@ class RepackingController extends Controller
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
                     ->select("SELECT * FROM scanin_repacking where
-                            label_kit ='{$qr_kit}'");
+                             label_panel ='{$qr_panel}' or
+                            label_kit ='{$qr_kit}'
+                            ");
 
 
         if($cek_label){
