@@ -693,8 +693,8 @@ class PartlistController extends Controller
 
             // STEP 2. INSERT DATA KE TABLE SCAN IN
             DB::connection('sqlsrv')
-                ->insert("INSERT into inhouse_scanin(partno,lotno,qty_input,label,type,pic,idnumber,jknpo,partname,dest,shelfno)
-                            SELECT '{$partno}','{$prodno}','{$qty}','{$assylabel}','{$type}','{$pic}','{$idnumber}','{$custpo}','{$partname}','{$dest}','{$shelfno}'
+                ->insert("INSERT into inhouse_scanin(partno,lotno,qty_input,label,type,pic,idnumber,jknpo,partname,dest)
+                            SELECT '{$partno}','{$prodno}','{$qty}','{$assylabel}','{$type}','{$pic}','{$idnumber}','{$cek_total[0]->jknpo}','{$partname}','{$dest}'
                             ");
 
             // STEP 3. UPDATE DATA ASSY LIST
@@ -787,8 +787,8 @@ class PartlistController extends Controller
 
         // STEP 2. INSERT DATA KE TABLE SCAN IN
         DB::connection('sqlsrv')
-            ->insert("INSERT into inhouse_scanin(model,lotno,qty_input,type,pic,idnumber)
-                 SELECT '{$model}','{$lotno}','{$qty}','{$type}','{$pic}','{$idnumber}'
+            ->insert("INSERT into inhouse_scanin(model,jknpo,lotno,qty_input,type,pic,idnumber)
+                 SELECT '{$model}','{$cek_total[0]->jknpo}','{$lotno}','{$qty}','{$type}','{$pic}','{$idnumber}'
                  ");
 
 
