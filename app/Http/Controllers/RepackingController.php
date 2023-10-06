@@ -885,7 +885,7 @@ class RepackingController extends Controller
 
         //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
             $param = DB::connection('sqlsrv')
-                        ->select("SELECT a.*, b.id,b.idnumber,b.qty_input
+                        ->select("SELECT a.*, b.id,b.idnumber,b.qty_input,b.lotno
                                from schedule as a
                                         inner join inhouse_scanin as b 
                                         on a.partno = b.model   
@@ -941,7 +941,7 @@ class RepackingController extends Controller
                 $labelcontent = DB::connection('sqlsrv')
                                 ->select("SELECT * from log_print_kit_original
                                             where partno ='{$param[0]->partno}'
-                                            and prodno ='{$param[0]->prodno}'                        
+                                            and prodno ='{$param[0]->lotno}'                        
                                             ");
 
                                   
