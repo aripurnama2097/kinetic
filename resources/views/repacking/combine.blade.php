@@ -107,8 +107,8 @@
       <tbody>
         @foreach($param as $key => $value)   
         <tr class="trcontent">   
-          <?php $barcode =   $value->partno . ':' . $value->partname . ':' . $value->qty. ':' . $value->dest . ':' . $value->custpo . ':' . $value->shelfno . ':' . $value->sequence_no ?>
-          <td class="text-center qrcode" style="font-size: 12px;border-color:black;align:center"> {!! QrCode::size(40)->generate($barcode) !!}</td>
+          <?php $barcode =   $value->partno . ':' . $value->partname . ':' . $value->qty. ':' . $value->dest . ':' . $value->custpo . ':' . $value->shelfno . ':' . $value->idnumber . ':' . $value->sequence_no?>
+          <td class="text-center qrcode" style="font-size: 12px;border-color:black;align:center"> {!! QrCode::size(60)->generate($barcode) !!}</td>
           <td   class="text-center custpo" style="font-size: 12px;border-color:black;align:center">{{$value->custpo}}</td>
           <td  class="text-center partno" style="font-size:12px;border-color:black;align:center">{{$value->partno}}</td>
           <td class="text-center partname"style="font-size: 12px;border-color:black;align:center">{{$value->partname}}</td>
