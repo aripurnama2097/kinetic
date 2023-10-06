@@ -402,9 +402,7 @@
                     let kit_label       = $('#kit_label').val();
 
                     if (kit_label != '') {                  
-                        $('#print-masterlist').attr('disabled', false);
-                      
-                        
+                        $('#print-masterlist').attr('disabled', false);      
                         }
 
                     $.ajax({
@@ -434,7 +432,7 @@
                                             icon: 'success',
                                             title: response.message,
 
-                                            timer: 200,
+                                            timer: 100,
                                             showConfirmButton: false,
 
                                         })
@@ -561,7 +559,6 @@
             window.open(url , '_blank');
 
     }
-
 
     function logMaster(){
 

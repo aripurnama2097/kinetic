@@ -55,7 +55,7 @@ class FinishGoodController extends Controller
         // STEP 1. CEK LABEL KIT DI SCAN OUT
         $valid = DB::connection('sqlsrv')
         ->select("SELECT * from scanin_repacking
-                          where label_kit ='{$kitLabel}'                        
+                          where idnumber ='{$idnumber}'                        
                   ");
 
 // CEK DATA PADA REPACKING
@@ -268,16 +268,16 @@ class FinishGoodController extends Controller
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
+  
+
 
          // STEP 1. CEK LABEL KIT DI SCAN OUT
          $valid = DB::connection('sqlsrv')
          ->select("SELECT * from scanin_repacking
-                           where label_kit ='{$kitLabel}'                        
+                           where idnumber ='{$idnumber}'                          
                    ");
 
 // CEK DATA PADA REPACKING
-
-        // dd($valid);
         if($valid == null){
             return response()
                 ->json([
@@ -310,13 +310,26 @@ class FinishGoodController extends Controller
         // return $selectPart;
 
         // ++TAMBAH PARAM KONTENT QR SKID KE SCAN OUT TABLE
-
+        if (!$selectPart) {
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Error Get Partnumber!...'
+                ]);
+        }
 
         $get_data = DB::connection('sqlsrv')
-        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where label_kit ='{$kitLabel}'
-                  
+        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where idnumber ='{$idnumber}'      
                 ");
 
+        if (!$get_data) {
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Error Get GW Data!...'
+                ]);
+        }
+       
         if ($selectPart == true) {
             // STEP 2.INSERT INTO SCAN OUT
             DB::connection('sqlsrv')
