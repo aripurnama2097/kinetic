@@ -702,15 +702,18 @@ class PartlistController extends Controller
                 ->update("UPDATE inhouse_list
                             set
                             tot_input =  (SELECT sum(qty_input) FROM inhouse_scanin as b where
-                                            inhouse_list.lotno = b.lotno ),
+                                            inhouse_list.lotno = b.lotno
+                                            and   inhouse_list.model = b.partno),
                             balance = shipqty -  (tot_input + $qty) where
-                                            inhouse_list.lotno = '{$prodno}'
+                                            inhouse_list.lotno = '{$prodno}
+                                            and   inhouse_list.model = b.partno'
 
                         ");
 
 
             $data = DB::connection('sqlsrv')
-                ->select("SELECT * from inhouse_list where lotno ='{$prodno}'");
+                ->select("SELECT * from inhouse_list where lotno ='{$prodno}'
+                           and model ='{$partno}'");
 
                 $sum = array($cek_total[0]->tot_input, $qty);
                 $act_qty = array_sum($sum);
