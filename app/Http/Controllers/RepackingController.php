@@ -562,6 +562,20 @@ class RepackingController extends Controller
         $combine_no = $request->combine_no;
 
 
+        $valid = DB::connection('sqlsrv')
+                ->select("SELECT * from partscan
+                                where label ='{$mcLabel}'                        
+                        ");
+
+        // CEK DATA PADA REPACKING
+
+            if($valid == null){
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'BEFORE SCAN MC'
+                    ]);
+                }
 
       
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
@@ -927,8 +941,7 @@ class RepackingController extends Controller
                 $labelcontent = DB::connection('sqlsrv')
                                 ->select("SELECT * from log_print_kit_original
                                             where partno ='{$param[0]->partno}'
-                                            and custpo ='{$param[0]->custpo}'
-                                           
+                                            and prodno ='{$param[0]->prodno}'                        
                                             ");
 
                                   
