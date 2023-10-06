@@ -917,7 +917,7 @@ class RepackingController extends Controller
 
                 DB::connection('sqlsrv')
                         ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno)
-                            select '{$idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$qtystd}',
+                            select '{$idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$stdpack[0]->stdpack}',
                                     '{$param[0]->dest}',
                                     '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}'
         
