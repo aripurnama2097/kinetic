@@ -53,11 +53,15 @@ class FinishGoodController extends Controller
 
         // STEP 1. CEK LABEL KIT DI SCAN OUT
         // STEP 1. CEK LABEL KIT DI SCAN OUT
-        $valid = DB::connection('sqlsrv')
-        ->select("SELECT * from scanin_repacking
-                          where idnumber ='{$idnumber}'                        
-                  ");
+        // $valid = DB::connection('sqlsrv')
+        // ->select("SELECT * from scanin_repacking
+        //                   where idnumber ='{$idnumber}'                        
+        //           ");
 
+            $valid = DB::connection('sqlsrv')
+            ->select("SELECT * from scanin_repacking
+                            where label_kit ='{$kitLabel}'                          
+                    ");
 // CEK DATA PADA REPACKING
 
        // dd($valid);
@@ -274,8 +278,14 @@ class FinishGoodController extends Controller
          // STEP 1. CEK LABEL KIT DI SCAN OUT
          $valid = DB::connection('sqlsrv')
          ->select("SELECT * from scanin_repacking
-                           where idnumber ='{$idnumber}'                          
+                           where label_kit ='{$kitLabel}'                          
                    ");
+
+
+            // $valid = DB::connection('sqlsrv')
+            // ->select("SELECT * from scanin_repacking
+            //                 where idnumber ='{$idnumber}'                          
+            //         ");
 
 // CEK DATA PADA REPACKING
         if($valid == null){

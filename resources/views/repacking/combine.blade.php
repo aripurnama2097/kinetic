@@ -3,7 +3,15 @@
   <link rel="stylesheet" type="text/css" href="{{asset ('')}}mainassets/css/bootstrap/css/bootstrap.min.css">
   <script type="text/javascript" src="{{asset ('')}}mainassets/js/bootstrap/js/bootstrap.min.js "></script>
 
+  <script LANGUAGE="JavaScript">
 
+    function printWindow(){
+        bV = parseInt(navigator.appVersion)
+    if (bV >= 4) window.print();
+    }
+
+  
+</script>
   <style>
     * {
         padding: 0;
@@ -70,9 +78,8 @@
 </head>
 
 
+<body onload="printWindow()">
 <div class="col-6">
-
-
   <div class="d-flex justify-content-center">
     <div class="table border-4" widht="100%">
         <table>
@@ -85,11 +92,7 @@
         
         <tr>
           <td  align="center"  cellspacing ="2" class="text-center " style="font-size:14px;border-color:black;" colspan="6" > PROD NO : {{$param[0]->prodno}}</td>  
-        </tr>
-        <tr>
           <td  align="center"  class="text-center "  style="font-size:14px;" colspan="6" > CARTON NO :{{$combine_no}}</td>
-        </tr>
-        <tr>
           <td  align="center"  class="text-center"    style="font-size:14px;" colspan="6" > TOTAL ITEM:{{ $totalItem}}</td>
         </tr>
 
@@ -101,14 +104,13 @@
           <th class="partname"style="font-size:12px;border-color:black;">Item Description</th>
           <th class="shelfno"style="font-size:12px;border-color:black;">Shelf No</th>
           <th class="qty"  style="font-size:12px;border-color:black;">Qty</th>
-
         </tr>
       </thead>
       <tbody>
         @foreach($param as $key => $value)   
         <tr class="trcontent">   
           <?php $barcode =   $value->partno . ':' . $value->partname . ':' . $value->qty. ':' . $value->dest . ':' . $value->custpo . ':' . $value->shelfno . ':' . $value->idnumber . ':' . $value->sequence_no?>
-          <td class="text-center qrcode" style="font-size: 12px;border-color:black;align:center"> {!! QrCode::size(60)->generate($barcode) !!}</td>
+          <td class="text-center qrcode" style="font-size: 12px;border-color:black;align:center"> {!! QrCode::size(40)->generate($barcode) !!}</td>
           <td   class="text-center custpo" style="font-size: 12px;border-color:black;align:center">{{$value->custpo}}</td>
           <td  class="text-center partno" style="font-size:12px;border-color:black;align:center">{{$value->partno}}</td>
           <td class="text-center partname"style="font-size: 12px;border-color:black;align:center">{{$value->partname}}</td>
@@ -121,3 +123,4 @@
   </div>
   </div>
 </div>
+</body>
