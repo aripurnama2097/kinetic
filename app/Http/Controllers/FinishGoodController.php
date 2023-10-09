@@ -329,7 +329,7 @@ class FinishGoodController extends Controller
         }
 
         $get_data = DB::connection('sqlsrv')
-        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where idnumber ='{$idnumber}'      
+        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where label_kit ='{$kitLabel}'      
                 ");
 
         if (!$get_data) {
