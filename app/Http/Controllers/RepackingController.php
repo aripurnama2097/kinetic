@@ -941,7 +941,7 @@ class RepackingController extends Controller
                 $labelcontent = DB::connection('sqlsrv')
                                 ->select("SELECT * from log_print_kit_original
                                             where partno ='{$param[0]->partno}'
-                                            and prodno ='{$param[0]->lotno}'                        
+                                            and lotno_inhouse ='{$param[0]->lotno}'                        
                                             ");
 
                                   
