@@ -281,7 +281,7 @@
                                                     title: response.message,
 
                                                     showConfirmButton :false,
-                                                    timer:300
+                                                    timer:100
 
                                                 })
                                         } 
@@ -300,13 +300,12 @@
                                                         icon: 'warning',
                                                         title: response.message,
                                                         showConfirmButton :false,
-                                                        timer:300
-                                                    
+                                                        timer:100                                         
 
                                                     })
                                                 
                                                 
-                                                var audio = document.getElementById('audio');
+                                                            var audio = document.getElementById('audio');
                                                             var source = document.getElementById('audioSource');
                                                             var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
                                                             audio.load()

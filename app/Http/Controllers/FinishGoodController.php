@@ -53,15 +53,12 @@ class FinishGoodController extends Controller
 
         // STEP 1. CEK LABEL KIT DI SCAN OUT
         // STEP 1. CEK LABEL KIT DI SCAN OUT
-        // $valid = DB::connection('sqlsrv')
-        // ->select("SELECT * from scanin_repacking
-        //                   where idnumber ='{$idnumber}'                        
-        //           ");
+        $valid = DB::connection('sqlsrv')
+        ->select("SELECT * from scanin_repacking
+                          where idnumber ='{$idnumber}'                        
+                  ");
 
-            $valid = DB::connection('sqlsrv')
-            ->select("SELECT * from scanin_repacking
-                            where label_kit ='{$kitLabel}'                          
-                    ");
+        
 // CEK DATA PADA REPACKING
 
        // dd($valid);
@@ -276,16 +273,16 @@ class FinishGoodController extends Controller
 
 
          // STEP 1. CEK LABEL KIT DI SCAN OUT
-         $valid = DB::connection('sqlsrv')
-         ->select("SELECT * from scanin_repacking
-                           where label_kit ='{$kitLabel}'                          
-                   ");
+        //  $valid = DB::connection('sqlsrv')
+        //  ->select("SELECT * from scanin_repacking
+        //                    where label_kit ='{$kitLabel}'                          
+        //            ");
 
 
-            // $valid = DB::connection('sqlsrv')
-            // ->select("SELECT * from scanin_repacking
-            //                 where idnumber ='{$idnumber}'                          
-            //         ");
+            $valid = DB::connection('sqlsrv')
+            ->select("SELECT * from scanin_repacking
+                            where idnumber ='{$idnumber}'                          
+                    ");
 
 // CEK DATA PADA REPACKING
         if($valid == null){
@@ -329,7 +326,7 @@ class FinishGoodController extends Controller
         }
 
         $get_data = DB::connection('sqlsrv')
-        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where label_kit ='{$kitLabel}'      
+        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where idnumber ='{$idnumber}'      
                 ");
 
         if (!$get_data) {

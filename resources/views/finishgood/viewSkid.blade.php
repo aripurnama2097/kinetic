@@ -428,14 +428,14 @@
                                             audio.load();
                                             audio.play();
 
-                                        swal.fire({
-                                            icon: 'success',
-                                            title: response.message,
+                                        // swal.fire({
+                                        //     icon: 'success',
+                                        //     title: response.message,
 
-                                            timer: 100,
-                                            showConfirmButton: false,
+                                        //     timer: 100,
+                                        //     showConfirmButton: false,
 
-                                        })
+                                        // })
                                         } 
                                         else {
                                             swal.fire({
@@ -454,7 +454,7 @@
                                                             icon: 'warning',
                                                             title: response.message,
                                                             showConfirmButton :false,
-                                                            timer:300
+                                                            timer:200
                                                         
 
                                                         })
