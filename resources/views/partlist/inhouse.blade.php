@@ -248,13 +248,13 @@
                                     audio.load()
                                     audio.play();
 
-                                swal.fire({
-                                    icon: 'success',
-                                    title: response.message,
-                                    showConfirmButton :false,
-                                    timer:2000
+                                // swal.fire({
+                                //     icon: 'success',
+                                //     title: response.message,
+                                //     showConfirmButton :false,
+                                //     // timer:2000
 
-                                })
+                                // })
                                 }
                                 else {
                                     swal.fire({
@@ -266,6 +266,8 @@
                                 let warningMessage = response.message;
                              
                              console.log("message",warningMessage.indexOf('OVER'))
+                             console.log("message",warningMessage.indexOf('DOUBLE'))
+
 
                              if(warningMessage.indexOf('OVER') == 0){
                                     Swal.fire({
@@ -273,7 +275,7 @@
                                         icon: 'warning',
                                         title: response.message,
                                         showConfirmButton :false,
-                                        timer:1000
+                                        timer:500
 
 
                                     })
@@ -288,6 +290,32 @@
 
                                     return;
                                 }
+
+
+                                if(warningMessage.indexOf('DOUBLE') == 0){
+                                        Swal.fire({
+
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:300
+
+
+                                        })
+
+
+                                        var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                    audio.load()
+                                                    audio.play();
+                                                    return;
+
+                                        return;
+                                    }
+
+
+
                                 }
                                 $('#assy_label').val("");
                     }
@@ -365,7 +393,7 @@
                                                     title: response.message,
 
                                                     showConfirmButton :false,
-                                                    timer:2000
+                                                 
 
                                                 })
                                                 }

@@ -698,15 +698,17 @@ class PartlistController extends Controller
                             ");
 
             // STEP 3. UPDATE DATA ASSY LIST
-            DB::connection('sqlsrv')
+           $data2 =  DB::connection('sqlsrv')
                 ->update("UPDATE inhouse_list
                             set
-                            tot_input =  (SELECT sum(qty_input) FROM inhouse_scanin as b where
+                            tot_input =  (SELECT sum(qty_input) FROM inhouse_scanin as b 
+                                            where
                                             inhouse_list.lotno = b.lotno
-                                            and   inhouse_list.model = b.partno),
-                            balance = shipqty -  (tot_input + $qty) where
-                                            inhouse_list.lotno = '{$prodno}
-                                            and   inhouse_list.model = b.partno'
+                                            and  
+                                            inhouse_list.model = b.partno),
+                            balance =  inhouse_list.shipqty -  ( inhouse_list.tot_input + $qty) where
+                                            inhouse_list.lotno = '{$prodno}'
+                                            and   inhouse_list.model = '{$partno}'
 
                         ");
 
