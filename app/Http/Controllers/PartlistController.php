@@ -625,7 +625,7 @@ class PartlistController extends Controller
 
        /*  dd($partno); */
         $qty    = substr($assylabel, 11, 2);
-        dd($qty);
+        // dd($qty);
         $prodno    = substr($assylabel, 16, 4);
 
 
