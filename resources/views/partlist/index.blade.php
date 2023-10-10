@@ -708,10 +708,11 @@
                                                     var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
                                                     audio.load()
                                                     audio.play();
-                                                    return;
-
                                                     $('#scan_label').focus();
                                                     $('#scan_label').val("");
+                                                    return;
+
+                                                   
                                     }
 
                                     if(warningMessage.indexOf('OVER') == 0){
@@ -720,7 +721,7 @@
                                             icon: 'warning',
                                             title: response.message,
                                             showConfirmButton :false,
-                                            timer:1000
+                                            timer:500
 
 
                                         })
@@ -731,11 +732,12 @@
                                                     var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
                                                     audio.load()
                                                     audio.play();
+                                                    $('#scan_label').focus();
+                                                   $('#scan_label').val("");
 
 
                                         return;
-                                        $('#scan_label').focus();
-                                        $('#scan_label').val("");
+                                       
                                     }
 
                                     if(warningMessage.indexOf('PART') == 0){
@@ -755,11 +757,12 @@
                                                     var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
                                                     audio.load()
                                                     audio.play();
+                                                    $('#scan_label').focus();
+                                                    $('#scan_label').val("");
 
 
                                         return;
-                                        $('#scan_label').focus();
-                                        $('#scan_label').val("");
+                                       
                                     }
 
                                     if(warningMessage.indexOf('DEMAND') == 0){
@@ -779,11 +782,12 @@
                                                     var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
                                                     audio.load()
                                                     audio.play();
+                                                    $('#scan_label').focus();
+                                                   $('#scan_label').val("");
 
 
                                         return;
-                                        $('#scan_label').focus();
-                                        $('#scan_label').val("");
+                                      
                                     }
 
                                       if(warningMessage.indexOf('QTY') == 0){
@@ -803,11 +807,12 @@
                                                     var audio = new Audio("{{asset('')}}storage/sound/Over_Qty.mp3");
                                                     audio.load()
                                                     audio.play();
+                                                    $('#scan_label').focus();
+                                                   $('#scan_label').val("");
 
 
                                         return;
-                                        $('#scan_label').focus();
-                                        $('#scan_label').val("");
+                                       
                                     }
 
 

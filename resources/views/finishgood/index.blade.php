@@ -274,6 +274,8 @@
                                                     
                                                     audio.load();
                                                     audio.play();
+                                                    $('#kit_label').val("");
+                                                   $('#kit_label').focus();   
 
 
                                                 swal.fire({
@@ -310,6 +312,8 @@
                                                             var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
                                                             audio.load()
                                                             audio.play();
+                                                            $('#kit_label').val("");
+                                                            $('#kit_label').focus();   
                                                             return;
                                                         
                                             
@@ -317,7 +321,8 @@
                                         }
                             }
                         })
-                        $('#kit_label').val("");        
+                        $('#kit_label').val("");
+                        $('#kit_label').focus();       
                 }
             })
 

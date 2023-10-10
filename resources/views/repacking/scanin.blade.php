@@ -278,6 +278,10 @@
                                             var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
                                             audio.load()
                                             audio.play();
+
+                                            $('#mc_label').val("");
+                                            $('#kit_label').val("");
+                                            $('#mc_label').focus();
                                         
                                                 // swal.fire({
                                                 //     icon: 'success',
@@ -317,7 +321,12 @@
                                                                 var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
                                                                 audio.load();
                                                                 audio.play();
+                                                                $('#mc_label').val("");
+                                                                $('#kit_label').val("");
+                                                                $('#mc_label').focus();
                                                                 return;
+
+                                                              
                                                             
                                             
                                                 }
@@ -339,9 +348,14 @@
                                                                     var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
                                                                     audio.load();
                                                                     audio.play();
+                                                                    $('#mc_label').val("");
+                                                                    $('#kit_label').val("");
+                                                                    $('#mc_label').focus();
 
 
                                                         return;
+
+                                                             
                                                 }
 
 
@@ -362,6 +376,9 @@
                                                                 var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
                                                                 audio.load()
                                                                 audio.play();
+                                                                $('#mc_label').val("");
+                                                                $('#kit_label').val("");
+                                                                $('#mc_label').focus();
 
 
                                             return;
@@ -385,6 +402,9 @@
                                                                     var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
                                                                     audio.load();
                                                                     audio.play();
+                                                                    $('#mc_label').val("");
+                                                                $('#kit_label').val("");
+                                                                $('#mc_label').focus();
 
 
                                                         return;
@@ -404,19 +424,20 @@
                             icon: 'error',
                             title: "WRONG PART",
                             showConfirmButton :false,
-                            timer:400
+                            timer:300
 
 
                             })
 
-                        var audio = document.getElementById('audio');
+                          var audio = document.getElementById('audio');
                             var source = document.getElementById('audioSource');
                             var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
-                            // document.getElementById("result_NG").innerHTML = "NG";
-                            // document.getElementById("result_NG").style.display = "block";
-                            // document.getElementById("result_OK").style.display = "none";
+                        
                             audio.load()
                             audio.play();
+                            $('#mc_label').val("");
+                            $('#kit_label').val("");
+                            $('#mc_label').focus();
 
                     }
                

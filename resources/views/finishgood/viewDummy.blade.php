@@ -282,15 +282,17 @@
                                               
                                             audio.load();
                                             audio.play();
+                                            $('#kit_label').val("");
+                                           $('#kit_label').focus();
 
-                                        swal.fire({
-                                            icon: 'success',
-                                            title: response.message,
+                                        // swal.fire({
+                                        //     icon: 'success',
+                                        //     title: response.message,
 
-                                            timer: 200,
-                                            showConfirmButton: false,
+                                        //     timer: 200,
+                                        //     showConfirmButton: false,
 
-                                        })
+                                        // })
                                         } 
                                         else {
                                             swal.fire({
@@ -309,17 +311,19 @@
                                                             icon: 'warning',
                                                             title: response.message,
                                                             showConfirmButton :false,
-                                                            timer:300
+                                                            timer:100
                                                         
 
                                                         })
                                                     
                                                     
-                                                    var audio = document.getElementById('audio');
+                                                                var audio = document.getElementById('audio');
                                                                 var source = document.getElementById('audioSource');
                                                                 var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
                                                                 audio.load()
                                                                 audio.play();
+                                                                $('#kit_label').val("");
+                                                                $('#kit_label').focus();
                                                                 return;
                                                             
                                                 
@@ -342,6 +346,8 @@
                                                                         var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
                                                                         audio.load()
                                                                         audio.play();
+                                                                        $('#kit_label').val("");
+                                                                         $('#kit_label').focus();
                                                                         return;
                                                                     
                                                  

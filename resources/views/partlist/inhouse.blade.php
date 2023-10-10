@@ -276,7 +276,7 @@
                                         icon: 'warning',
                                         title: response.message,
                                         showConfirmButton :false,
-                                        timer:500
+                                        timer:300
 
 
                                     })

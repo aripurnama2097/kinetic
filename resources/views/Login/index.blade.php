@@ -2,8 +2,8 @@
 
 <style>
   body {
-     background-image: url(http://136.198.117.7/mcsp/public/css/8.jpg);
-     background-color: aliceblue;
+     /* background-image: url(http://136.198.117.7/mcsp/public/css/8.jpg); */
+     background-color:#f5f8fa;
     border-radius: 100%;
     background-image:cover;
     -o-background-size: cover;
@@ -97,14 +97,14 @@
             @endif
               <div style="font-size:25px" class="card-header ">Login</div>
 
-              <div class="card-body">
+              <div class="card-body ">
                 <form action="{{url('/login')}}" method="post">
                   @csrf
                     
-                      <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                          <label for="nik" class="col-md-4 control-label">ID Number</label>
+                      <div class="form-group col-12{{ $errors->has('email') ? ' has-error' : '' }}">
+                          <label style="font-weight:bold"for="nik" class="col-md-6 control-label text-secondary mb-2">ID Number</label>
 
-                          <div class="col-md-6">
+                          <div class="col-md-12">
                             <input type="text"  name="nik"class="form-control @error('nik')is-invalid @enderror" placeholder="NIK" width="40% mb-lg-5" autofocus required>
                            
                              @error('nik')
@@ -116,12 +116,11 @@
                           </div>
                       </div>
 
-                      <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                          <label for="password" class="col-md-4 control-label">Password</label>
+                      <div class="form-group col-12{{ $errors->has('password') ? ' has-error' : '' }}">
+                          <label  style="font-weight:bold" for="password" class="col-md-6 control-label text-secondary mb-2">Password</label>
 
-                          <div class="col-md-6">
-                            <input type="password"  name="password"class="form-control" placeholder="Password" width="40% pd-4" required >
-                           
+                          <div class="col-md-12">
+                            <input type="password"  name="password"class="form-control" placeholder="Password" width="40% pd-4" required >                 
                           </div>
                       </div>
 

@@ -1,5 +1,5 @@
 {{-- <nav class="navbar navbar-expand-lg navbar-dark "> --}}
-  <nav class="card-header text-white bg-white panel-heading">
+  <nav class="card-header text-white bg-white panel-heading" >
     
   <div class="container">
     <a style="font-size:35px;font-weight:bold"class="navbar-brand text-info" href="#"> 

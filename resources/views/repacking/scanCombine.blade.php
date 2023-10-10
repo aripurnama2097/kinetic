@@ -312,6 +312,9 @@
                                             var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
                                             audio.load()
                                             audio.play();
+                                            $('#mc_label').val("");
+                                            $('#kit_label').val("");
+                                            $('#mc_label').focus();
                                         
                                                 // swal.fire({
                                                 //     icon: 'success',
@@ -351,6 +354,9 @@
                                                                 var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
                                                                 audio.load();
                                                                 audio.play();
+                                                                $('#mc_label').val("");
+                                                                $('#kit_label').val("");
+                                                                $('#mc_label').focus();
                                                                 return;
                                                             
                                             
@@ -373,6 +379,9 @@
                                                                     var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
                                                                     audio.load();
                                                                     audio.play();
+                                                                    $('#mc_label').val("");
+                                                                    $('#kit_label').val("");
+                                                                    $('#mc_label').focus();
 
 
                                                         return;
@@ -385,7 +394,7 @@
                                                         icon: 'warning',
                                                         title: response.message,
                                                         showConfirmButton :false,
-                                                        timer:500
+                                                        timer:300
 
 
                                                     })
@@ -396,6 +405,9 @@
                                                                 var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
                                                                 audio.load()
                                                                 audio.play();
+                                                                $('#mc_label').val("");
+                                                                $('#kit_label').val("");
+                                                                $('#mc_label').focus();
 
 
                                             return;
@@ -420,6 +432,9 @@
                                                                     var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
                                                                     audio.load();
                                                                     audio.play();
+                                                                    $('#mc_label').val("");
+                                                                    $('#kit_label').val("");
+                                                                    $('#mc_label').focus();
 
 
                                                         return;
@@ -455,6 +470,9 @@
                              
                                 audio.load()
                                 audio.play();  
+                                $('#mc_label').val("");
+                                $('#kit_label').val("");
+                                $('#mc_label').focus();
                        
 
                    
