@@ -183,6 +183,16 @@
                 }
             })
 
+            $('#combine_no').on('keypress', function(e) {
+                if (e.which == 13) {
+                    // var val_nik = $('#scan_nik').val();
+                    // if (val_nik != '') {
+                        $('#mc_label').attr('disabled', false);
+                        $('#mc_label').focus();
+                    // }
+                }
+            })
+
 
             $('#mc_label').on('keypress', function(e){
                 if(e.which == 13) {
