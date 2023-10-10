@@ -654,6 +654,9 @@
                                     // timer: 5000
 
                                 })
+
+                                $('#scan_label').focus();
+                                $('#scan_label').val("");
                             }
 
                             else {
@@ -684,8 +687,8 @@
                                                     audio.load()
                                                     audio.play();
                                                     return;
-
-                                        return;
+                                                    $('#scan_label').focus();
+                                                    $('#scan_label').val("");
                                     }
 
                                     if(warningMessage.indexOf('DOUBLE') == 0){
@@ -694,7 +697,7 @@
                                             icon: 'warning',
                                             title: response.message,
                                             showConfirmButton :false,
-                                            timer:300
+                                            timer:100
 
 
                                         })
@@ -707,7 +710,8 @@
                                                     audio.play();
                                                     return;
 
-                                        return;
+                                                    $('#scan_label').focus();
+                                                    $('#scan_label').val("");
                                     }
 
                                     if(warningMessage.indexOf('OVER') == 0){
@@ -730,6 +734,8 @@
 
 
                                         return;
+                                        $('#scan_label').focus();
+                                        $('#scan_label').val("");
                                     }
 
                                     if(warningMessage.indexOf('PART') == 0){
@@ -752,6 +758,8 @@
 
 
                                         return;
+                                        $('#scan_label').focus();
+                                        $('#scan_label').val("");
                                     }
 
                                     if(warningMessage.indexOf('DEMAND') == 0){
@@ -774,6 +782,8 @@
 
 
                                         return;
+                                        $('#scan_label').focus();
+                                        $('#scan_label').val("");
                                     }
 
                                       if(warningMessage.indexOf('QTY') == 0){
@@ -796,6 +806,8 @@
 
 
                                         return;
+                                        $('#scan_label').focus();
+                                        $('#scan_label').val("");
                                     }
 
 
@@ -1019,7 +1031,7 @@
                                         })
                                     }
                                 })
-                                var audio = document.getElementById('audio');
+                                                var audio = document.getElementById('audio');
                                                 var source = document.getElementById('audioSource');
                                                 var audio = new Audio("{{asset('')}}storage/sound/loose_carton.mp3");
                                                 audio.load()
@@ -1042,7 +1054,8 @@
         // let scan_label = $('#scan_label').val();
         let partlist_no = $('#partlist_no').val();
 
-        window.location.assign("{{ url('/partlist/showscan') }}" + "?partlist_no=" + partlist_no  )
+        var url = ("{{ url('/partlist/showscan') }}" + "?partlist_no=" + partlist_no  )
+        window.open(url , '_blank'); 
 
        }
     </script>

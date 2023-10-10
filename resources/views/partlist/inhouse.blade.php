@@ -255,6 +255,7 @@
                                 //     // timer:2000
 
                                 // })
+                                $('#assy_label').val("");
                                 }
                                 else {
                                     swal.fire({
@@ -289,6 +290,7 @@
                                                 
 
                                     return;
+                                    $('#assy_label').val("");
                                 }
 
 
@@ -312,6 +314,7 @@
                                                     return;
 
                                         return;
+                                        $('#assy_label').val("");
                                     }
 
 

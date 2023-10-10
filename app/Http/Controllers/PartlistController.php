@@ -573,7 +573,10 @@ class PartlistController extends Controller
         $label_scan = substr($scan_label, 0, 15);
 
         $data = DB::connection('sqlsrv')
-            ->select("SELECT * from partlist where partlist_no='{$partlistno}' ");
+            ->select("SELECT * from partlist
+                        where partlist_no ='{$partlistno}'
+                        and balance_issue <> 0
+            ");
 
         return view('partlist.showscan', compact('data'));
     }
@@ -618,8 +621,11 @@ class PartlistController extends Controller
 
         $partno = substr($assylabel, 0, 11);
 
+     
+
        /*  dd($partno); */
-        $qty    = substr($assylabel, 11, 3);
+        $qty    = substr($assylabel, 11, 2);
+        dd($qty);
         $prodno    = substr($assylabel, 16, 4);
 
 
