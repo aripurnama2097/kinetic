@@ -12,6 +12,7 @@ class RepackingController extends Controller
 
             $assy = DB::table('inhouse_scanin')
                         ->where('model',"!=",NULL)
+                        ->orderBy('created_at', 'desc')
             ->get();
 
             $data = DB::table('partlist')
@@ -315,6 +316,7 @@ class RepackingController extends Controller
                         ->orWhere('partno', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('lotno_inhouse', 'LIKE', '%'.$keyword.'%')
                         ->latest()->paginate(10);
                         $data->appends($request->all());
 
@@ -924,7 +926,7 @@ class RepackingController extends Controller
                     ->max('id');
 
                     $order = $get_id ? $get_id + 1 : 1;
-                    $idno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+                    $idno = $date . 'A' . str_pad($order, 4, '0', STR_PAD_LEFT);
                     $arridnumber = array();
                     $idnumber = 'I' . $idno;
           
