@@ -181,7 +181,7 @@
                           <th class="text-center" style="font-size: 10px;">Part Number</th>
                           <th class="text-center" style="font-size: 10px;">Part Name</th>
                           <th class="text-center" style="font-size: 10px;">Demand</th>
-                          <th class="text-center" style="font-size: 10px;">Skid No</th>
+                         
                           <th class="text-center" style="font-size: 10px;">Symptom</th>
     
                           <th class="text-center" style="font-size: 10px;">Foto</th>
@@ -207,7 +207,7 @@
                       <td style="font-size: 12px;">{{ $value->partno }} </td>
                       <td style="font-size: 12px;">{{ $value->partname }} </td>
                       <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->demand }}</td> 
-                      <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->skid_no }}</td> 
+                   
                       <td style="font-size: 12px;"> {{ $value->symptom }}</td>
                       <td style="font-size: 12px;"><img width="30%" class="img-circle" src="{{ url('/public/img') }}"> </td>
                       <td style="font-size: 12px;">{{$value->created_at}}</td>
