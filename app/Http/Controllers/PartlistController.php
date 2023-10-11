@@ -612,8 +612,9 @@ class PartlistController extends Controller
         $get_id = DB::table('inhouse_scanin')
             ->whereDate('created_at', $currentDate)
             ->max('id');
+            
         $order = $get_id ? $get_id + 1 : 1;
-        $idnumber = 'I' . $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $idnumber = 'I' . $date . 'A' . str_pad($order, 4, '0', STR_PAD_LEFT);
 
         $assylabel = $request->assy_label;
         $pic       = $request->pic;
