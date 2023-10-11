@@ -341,8 +341,8 @@ class FinishGoodController extends Controller
             // STEP 2.INSERT INTO SCAN OUT
             DB::connection('sqlsrv')
                 ->insert("INSERT into scanout
-                                        (carton_no, custpo,partno, partname, qty_running,kit_label,packing_no,skid_no,scan_nik,gw,lenght,widht,height) 
-                                SELECT  '{$get_data[0]->carton_no}','{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}','{$get_data[0]->gw}','{$get_data[0]->lenght}','{$get_data[0]->widht}','{$get_data[0]->height}'
+                                        (prodno,carton_no, custpo,partno, partname, qty_running,kit_label,packing_no,skid_no,scan_nik,gw,lenght,widht,height) 
+                                SELECT  '{$selectPart[0]->prodno}','{$get_data[0]->carton_no}','{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}','{$get_data[0]->gw}','{$get_data[0]->lenght}','{$get_data[0]->widht}','{$get_data[0]->height}'
                     ");
 
             $seq = '1';
