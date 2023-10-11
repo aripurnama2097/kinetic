@@ -124,6 +124,10 @@ class ScheduleController extends Controller
             ->where('prodno','=',$prodno)
             ->delete();
 
+            DB::table('finishgood_list')
+            ->where('prodno','=',$prodno)
+            ->delete();
+
 
 
        // STEP 2. UPDATE STATUS SCHEDULE AGAR BISA DI GENERATE ULANG
