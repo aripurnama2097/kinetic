@@ -918,7 +918,7 @@ class RepackingController extends Controller
 
                 for ($y=1; $y<=$qtystd; $y++){
                     $currentDate = Carbon::now();
-                    $dateAsNumber = $currentDate->format('Ymd');
+                    $dateAsNumber = $currentDate->format('Ym');
                     $date = substr($dateAsNumber,2,8);
             
                     $get_id = DB::table('log_print_kit_original')
