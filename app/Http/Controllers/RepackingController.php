@@ -530,12 +530,13 @@ class RepackingController extends Controller
   
         $currentDate = Carbon::now();
         $dateAsNumber = $currentDate->format('Ymd');
-        $lastOrder = DB::table('tblcombine_no')
-                         ->whereDate('created_at',$currentDate)
-                         ->max('id');
-                         $order = $lastOrder ? $lastOrder + 1 : 1;
-                         $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
-                         $combine_no = substr($uniqueNumber,12,1);              
+        $combine_no = DB::connection('sqlsrv')
+            ->select("SELECT top 1 combine_no from tblcombine_no order by id desc ");
+
+                     
+                        //  $order = $lastOrder ? $lastOrder + 1 : 1;
+                        //  $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
+                        //  $combine_no = substr($uniqueNumber,12,1);              
 
 
         // $combine_no = + 1;

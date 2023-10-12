@@ -5,10 +5,10 @@
 
   <script LANGUAGE="JavaScript">
 
-    function printWindow(){
-        bV = parseInt(navigator.appVersion)
-    if (bV >= 4) window.print();
-    }
+    // function printWindow(){
+    //     bV = parseInt(navigator.appVersion)
+    // if (bV >= 4) window.print();
+    // }
 
   
 </script>
@@ -89,14 +89,14 @@
         </tr>
         <tr>     
             <td  align="center"  rowspan="1" colspan="6"  style="font-weight:bold;font-size: 20px;vertical-align:middle;border-color:black">PART LIST </td>
-        
+          </tr>
         <tr>
-          <td  align="center"  cellspacing ="2" class="text-center " style="font-size:14px;border-color:black;" colspan="6" > PROD NO : {{$param[0]->prodno}}</td>  
-          <td  align="center"  class="text-center "  style="font-size:14px;" colspan="6" > CARTON NO :{{$combine_no}}</td>
-          <td  align="center"  class="text-center"    style="font-size:14px;" colspan="6" > TOTAL ITEM:{{ $totalItem}}</td>
+          <td  align="center"  rowspan ="1" class="text-center " style="font-size:14px;border-color:black;" colspan="2" > PROD NO : {{$param[0]->prodno}}</td>  
+          <td  align="center" rowspan ="1"  class="text-center "  style="font-size:14px;"  colspan="2"> CARTON NO :{{$combine_no}}</td>
+          <td  align="center" rowspan ="1"   class="text-center"    style="font-size:14px;" colspan="2" > TOTAL ITEM:{{ $totalItem}}</td>
         </tr>
 
-      </tr>
+     
         <tr >
           <th class="qrcode "  style="font-size:12px;border-color:black;">QR code</th>
           <th class="custpo"  style="font-size:12px;border-color:black;">Cust PO</th>

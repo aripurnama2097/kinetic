@@ -84,7 +84,7 @@
                                        <div class="mb-3 col-sm-7 col-7">
                                            <input
                                                class="form-control form-control-lg mb-2 text-center border border-secondary "
-                                               type="text" name="combine_no" value="{{$combine_no}}" id="combine_no"
+                                               type="text" name="combine_no" value="{{$combine_no[0]->combine_no}}" id="combine_no"
                                                placeholder="COMBINE NO" disabled>
                                             <input
                                                 class="form-control form-control-lg mb-2 text-center border border-secondary "
