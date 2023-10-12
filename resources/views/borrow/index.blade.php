@@ -285,7 +285,7 @@
                           <td style="font-size: 12px;">{{ $value->prodno}}</td>
                           <td style="font-size: 12px;">{{ $value->custpo}}</td>
                           <td style="font-size: 12px;"> {{ $value->partno }}</td>
-                          <td style="font-size: 12px;"> {{ $value->qty }}</td>
+                          <td class="text-dark text-center" style="font-size: 12px;"> {{ $value->qty }}</td>
                           <td style="font-size: 12px;"> {{ $value->symptom }}</td>
                           <td style="font-size: 12px;"> {{ $value->borrower}}</td>                       
                           <td style="font-size: 12px;"> {{ $value->lender }}</td>
@@ -365,48 +365,53 @@
 
                         $('#status').attr('disabled', false);
                         $('#status').focus();
+                        $('#dept').attr('disabled', false);
+                        $('#reason').attr('disabled', false);
+                        $('#symptom').attr('disabled', false);
+                        $('#est_return').attr('disabled', false);
+                       
                     }
                 }
             })
 
-            $('#status').on('keypress', function(e) {
-                // if (e.which == 13) {
-                var val_status = $('#status').val();
-                if (val_status != '') {
+            // $('#status').on('keypress', function(e) {
+            //     // if (e.which == 13) {
+            //     var val_status = $('#status').val();
+            //     if (val_status != '') {
 
-                    $('#dept').attr('disabled', false);
-                    $('#dept').focus();
-                }
-                // }
-            })
-
-
-            $('#dept').on('click', function(e) {
-                var val_dept = $('#dept').val();
-                if (val_dept != '') {
-                    $('#reason').attr('disabled', false);
-                    $('#reason').focus();
-                }
-            })
-
-            $('#reason').on('click', function(e) {
-                var val_reason = $('#reason').val();
-                if (val_reason != '') {
-                    $('#symptom').attr('disabled', false);
-                    $('#symptom').focus();
-                }
-            })
-
-            $('#symptom').on('click', function(e) {
-                var val_symptom = $('#symptom').val();
-                if (val_symptom != '') {
-                    $('#est_return').attr('disabled', false);
-                    $('#est_return').focus();
-                }
-            })
+            //         $('#dept').attr('disabled', false);
+            //         $('#dept').focus();
+            //     }
+            //     // }
+            // })
 
 
-            $('#est_return').on('click', function(e) {
+            // $('#dept').on('keypress', function(e) {
+            //     var val_dept = $('#dept').val();
+            //     if (val_dept != '') {
+            //         $('#reason').attr('disabled', false);
+            //         $('#reason').focus();
+            //     }
+            // })
+
+            // $('#reason').on('keypress', function(e) {
+            //     var val_reason = $('#reason').val();
+            //     if (val_reason != '') {
+            //         $('#symptom').attr('disabled', false);
+            //         $('#symptom').focus();
+            //     }
+            // })
+
+            // $('#symptom').on('keypress', function(e) {
+            //     var val_symptom = $('#symptom').val();
+            //     if (val_symptom != '') {
+            //         $('#est_return').attr('disabled', false);
+            //         $('#est_return').focus();
+            //     }
+            // })
+
+
+            $('#est_return').on('keypress', function(e) {
                 var val_est_return = $('#est_return').val();
                 if (val_est_return != '') {
                     $('#scan_label').attr('disabled', false);
