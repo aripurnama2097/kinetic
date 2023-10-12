@@ -369,6 +369,7 @@
                         $('#reason').attr('disabled', false);
                         $('#symptom').attr('disabled', false);
                         $('#est_return').attr('disabled', false);
+                        $('#scan_label').attr('disabled', false);
                        
                     }
                 }
@@ -411,15 +412,15 @@
             // })
 
 
-            $('#est_return').on('keypress', function(e) {
-                var val_est_return = $('#est_return').val();
-                if (val_est_return != '') {
-                    $('#scan_label').attr('disabled', false);
-                    $('#scan_label').focus();
+            // $('#est_return').on('keypress', function(e) {
+            //     var val_est_return = $('#est_return').val();
+            //     if (val_est_return != '') {
+            //         $('#scan_label').attr('disabled', false);
+            //         $('#scan_label').focus();
 
-                }
+            //     }
 
-            });
+            // });
 
 
 
