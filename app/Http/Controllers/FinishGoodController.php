@@ -193,6 +193,10 @@ class FinishGoodController extends Controller
         $prodno = DB::connection('sqlsrv')
             ->select("SELECT distinct prodno from schedule");
 
+
+        $custcode = DB::connection('sqlsrv')
+            ->select ("SELECT distinct(custcode) from schedule");
+
         $dest = DB::connection('sqlsrv')
             ->select("SELECT distinct dest from schedule");
 
@@ -203,7 +207,7 @@ class FinishGoodController extends Controller
         $headerskid = DB::connection('sqlsrv')
             ->select("SELECT * from tblheaderskid") ;
 
-        return view('finishgood.viewSkid',compact('prodno','dest','vandate','skidno','headerskid'));
+        return view('finishgood.viewSkid',compact('prodno','dest','vandate','skidno','headerskid','custcode'));
     }
 
     public function printSkid(Request $request)
