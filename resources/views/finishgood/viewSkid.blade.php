@@ -111,10 +111,14 @@
                                                     class="form-control form-control-xs mb-2 text-center border border-secondary "
                                                     type="text" name="skid_no" value="{{$skidno}}" id="skid_no" maxlength="8"
                                                     placeholder="SKID NO"  disabled>
-                                                <input style="font-size:20px"
-                                                    class="form-control form-control-xs mb-2 text-center border border-secondary "
-                                                    type="text" name="custpo"  id="custpo" maxlength="8"
-                                                    placeholder="CUST NO"  disabled>
+                                            
+                                                <select style="font-size:15px"  class="form-control form-control-xs mb-2 text-center border border-secondary "
+                                                    id="custpo" name="custpo" disabled>
+            
+                                                    @foreach ($custcode as $dd)
+                                                        <option value="{{ $dd->custcode }}">{{ $dd->custcode }}</option>
+                                                    @endforeach
+                                                </select>
                                                 <select style="font-size:15px"  class="form-control form-control-xs mb-2 text-center border border-secondary "
                                                     id="vandate" name="vandate" disabled>
             
@@ -314,33 +318,36 @@
                      
                         $('#custpo').attr('disabled', false);
                         $('#custpo').focus();
-                    }
-                }
-            })
-
-            $('#custpo').on('keypress', function(e) {
-                if (e.which == 13) {
-                    var val_custpo = $('#custpo').val();
-                    if (val_custpo != '') {
-                     
                         $('#vandate').attr('disabled', false);
-                        $('#vandate').focus();
+                        $('#dest').attr('disabled', false);                 
+                        $('#type_skid').attr('disabled', false);
                     }
                 }
             })
 
+            // $('#custpo').on('keypress', function(e) {
+            //     if (e.which == 13) {
+            //         var val_custpo = $('#custpo').val();
+            //         if (val_custpo != '') {
+                     
+            //             $('#vandate').attr('disabled', false);
+            //             $('#vandate').focus();
+            //         }
+            //     }
+            // })
 
-            $('#vandate').on('click', function(e) {
-                    var val_vandate = $('#vandate').val();                    
-                        $('#dest').attr('disabled', false);
-                        $('#dest').focus();
-            })
 
-            $('#dest').on('click', function(e) {
-                    var val_dest = $('#dest').val();                  
-                        $('#type_skid').attr('disabled', false);
-                        $('#type_skid').focus();
-            })
+            // $('#vandate').on('click', function(e) {
+            //         var val_vandate = $('#vandate').val();                    
+            //             $('#dest').attr('disabled', false);
+            //             $('#dest').focus();
+            // })
+
+            // $('#dest').on('click', function(e) {
+            //         var val_dest = $('#dest').val();                  
+            //             $('#type_skid').attr('disabled', false);
+            //             $('#type_skid').focus();
+            // })
 
       
             $('#type_skid').on('keypress', function(e) {
