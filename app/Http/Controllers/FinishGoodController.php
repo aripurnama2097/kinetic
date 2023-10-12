@@ -368,17 +368,17 @@ class FinishGoodController extends Controller
                                 set tot_sequence = (tot_sequence + 1) where custpo ='{$custpo}' ");
 
               // STEP 3.UPDATE IN FINISH GOOD LIST     
-               DB::connection('sqlsrv')
-                    ->update("UPDATE finishgood_list 
-                                    set skid_no = '{$skidno}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
+            //    DB::connection('sqlsrv')
+            //         ->update("UPDATE finishgood_list 
+            //                         set skid_no = '{$skidno}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
 
-                DB::connection('sqlsrv')
-                ->update("UPDATE finishgood_list 
-                                set packing_no = '{$packing_no}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
+            //     DB::connection('sqlsrv')
+            //     ->update("UPDATE finishgood_list 
+            //                     set packing_no = '{$packing_no}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
 
               $view_scan = DB::connection('sqlsrv')
-                            ->select("SELECT * from finishgood_list where skid_no ='{$skidno}'
-                                         and packing_no ='{$packing_no}'
+                            ->select("SELECT * from finishgood_list where custpo ='{$custpo}'
+                                         and partno ='{$partno}'
                                     ");
 
             return response()
