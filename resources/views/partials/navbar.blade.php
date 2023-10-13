@@ -1,15 +1,22 @@
+<style>
+<style>
+  .bg-dark{
+    background-color: #10717d
+}
+
+</style>
+
 {{-- <nav class="navbar navbar-expand-lg navbar-dark "> --}}
-  <nav class="card-header text-white bg-white panel-heading" >
+  <nav class="card-header text-white bg-dark panel-heading " >
     
   <div class="container">
-    <a style="font-size:35px;font-weight:bold"class="navbar-brand text-info" href="#"> 
+    <a style="font-size:30px;font-weight:bold"class="navbar-brand text-info" href="#"> 
       <i class="ti ti-device-desktop"></i> 
-      <img style="max-width: 30px" src ="{{asset('../public/css/1.jpg')}}"> </img> 
-     KINETIC</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
+     
+  
+    {{-- <img style="max-width: 30px" src ="{{asset('../public/css/1.jpg')}}"> </img>  --}}
+    {{-- KINETIC --}}
+   </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       </ul>
@@ -45,7 +52,14 @@
     </ul>
 
     </div>
+  
+    <div class="align-self-end d-flex justify-content-end">
+      <div class="text-end upgrade-btn">
+          <img src ="{{asset('../public/css/logojkei.png')}}" alt="Logo JKEI" width="200px">
+      </div>
+    </div>
   </div>
+ 
 
   
 </nav>

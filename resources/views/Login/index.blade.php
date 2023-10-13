@@ -2,7 +2,7 @@
 
 <style>
   body {
-     background-image: url(http://136.198.117.7/mcsp/public/css/8.jpg);
+     /* background-image: url(http://136.198.117.7/mcsp/public/css/8.jpg); */
      background-color:#d8dfe5df;
     border-radius: 100%;
     background-image:cover;
