@@ -420,6 +420,7 @@ class FinishGoodController extends Controller
                                                  where skid_no ='{$skidno}' 
                                                  and packing_no ='{$packing_no}'												
                                      ) as carton_no 
+                                    
                                      ,skid_no,'{$type_skid}','{$height}',packing_no,custpo,partno,partname,qty_running
                                      ,(select count(qty_running) where skid_no ='{$skidno}' 
                                                      and packing_no ='{$packing_no}') as tot_scan 
@@ -435,52 +436,53 @@ class FinishGoodController extends Controller
                  ");
 
           // GET TOT_CARTON
-        $tot_carton = DB::connection('sqlsrv')
-                    ->select("SELECT (select sum(seq)
-                                         from log_printmasterskid
-                                             where skid_no ='{$skidno}' 
-                                            and packing_no ='{$packing_no}'		
-                                    ) as tot_carton
-                            " );
+        // $tot_carton = DB::connection('sqlsrv')
+        //             ->select("SELECT (select sum(seq)
+        //                                  from log_printmasterskid
+        //                                      where skid_no ='{$skidno}' 
+        //                                     and packing_no ='{$packing_no}'		
+        //                             ) as tot_carton
+        //                     " );
 
-        $gw = DB::connection('sqlsrv')
-                    ->select("SELECT (select sum(gw) from scanout
-                                            where skid_no ='{$skidno}' 
-                                            and packing_no ='{$packing_no}'												
-                                    ) as total_gw
+        // $gw = DB::connection('sqlsrv')
+        //             ->select("SELECT (select sum(gw) from scanout
+        //                                     where skid_no ='{$skidno}' 
+        //                                     and packing_no ='{$packing_no}'												
+        //                             ) as total_gw
                                     
-                                " );
+        //                         " );
 
 
 
 
-// dd($tot_carton);
+// dd($tot_carton);p
 
        $data =  DB::connection ('sqlsrv')
-                ->select(" SELECT  (select distinct(carton_no)
-                                                where skid_no ='{$skidno}' 
-                                                and packing_no ='{$packing_no}'												
-                                    ) as carton_no 
-                                    ,custpo,partno,partname,skid_no,packing_no,qty_running
-                                    ,(select count(qty_running) where skid_no ='{$skidno}' 
-                                                    and packing_no ='{$packing_no}') as tot_scan 
-                                    ,(select sum(qty_running) where skid_no ='{$skidno}' 
-                                                    and packing_no ='{$packing_no}') as sum_total 
-                                    from scanout
-                                    where skid_no ='{$skidno}'
-                                    and packing_no ='{$packing_no}'
-                                    group by
-                                    carton_no, custpo,partno,partname,skid_no,packing_no,qty_running 
+                ->select("SELECT  skid_no,
+                            (select count(kit_label) from scanout
+                                where skid_no ='{$skidno}'
+                                and packing_no ='{$packing_no}') as tot_carton
+                            , (select sum(gw) from scanout
+                                    where skid_no ='{$skidno}' 
+                                    and packing_no ='{$packing_no}'												
+                            ) as total_gw
+                            ,custpo,partno,partname,packing_no,qty_running
+                            ,(select count(qty_running) where skid_no ='{$skidno}' 
+                                            and packing_no ='{$packing_no}') as tot_scan 
+                            ,(select sum(qty_running) where skid_no ='{$skidno}' 
+                                            and packing_no ='{$packing_no}') as sum_total 
+                                from scanout
+                                where skid_no ='{$skidno}'
+                                and packing_no ='{$packing_no}'
+                                group by
+                            carton_no, custpo,partno,partname,skid_no,packing_no,qty_running 
                             ");
 
 
-    
 
-    
+        // dd($data);
 
-        // dd($ins);
-
-       return view('finishgood.printmaster',compact('data','packing_no','tot_carton','gw'));
+       return view('finishgood.printmaster',compact('data','packing_no'));
 
 
     }
