@@ -810,7 +810,7 @@ class RepackingController extends Controller
 
      // STEP 3. UPDATE STATUS PRINT
         $update_status = DB::connection('sqlsrv')
-                            -> update("UPDATE log_print_kit_original set status_print = 2, pic_print = '{$pic}',
+                            -> update("UPDATE log_print_kit_original set status_print = 3, pic_print = '{$pic}',
                                         last_print = '{$currentDate}'
                                         where id ='{$id}' ");
 
@@ -895,70 +895,95 @@ class RepackingController extends Controller
                                         and a.custpo = b.jknpo       
                                         where b.id = '{$id}' 
                                 ");
-   
 
-            $stdpack= DB::connection('sqlsrv')
+
+   
+            // $cek_status = DB::connection('sqlsrv')
+            // ->select("SELECT * from log_print_kit_original
+            //             where partno ='{$param[0]->partno}'
+            //             and lotno_inhouse ='{$param[0]->lotno}'  
+            //             and status_print = 2                      
+            //             ");
+
+            // if($cek_status){
+            //        return 'label after print, Check Log Print';   
+            //  }
+
+            //  else{
+                $stdpack= DB::connection('sqlsrv')
                         ->select(" SELECT  *  from std_pack
                                     where partnumber = '{$param[0]->partno}'
                                 ");
 
+                    $label 	= intval($param[0]->qty_input / $stdpack[0]->stdpack);
+                    $sisa  	=$param[0]->qty_input % $stdpack[0]->stdpack;
+                    $qtystd = $label;//jumlah label yang di print
+                    $qtybal = $sisa;
+
+                    if($sisa > 0){$label++;}
+                        $getid       = $param[0]->idnumber;
+                        $splitid     =  substr($getid,1,9);
+                        $no          = + 1;
+
+                    
+
+                    for ($y=1; $y<=$qtystd; $y++){
+                        $currentDate = Carbon::now();
+                        $dateAsNumber = $currentDate->format('Ym');
+                        $date = substr($dateAsNumber,2,8);
+                
+                        $get_id = DB::table('log_print_kit_original')
+                        // ->where('idnumber',$currentDate)
+                        ->max('id');
+
+                        $order = $get_id ? $get_id + 1 : 1;
+                        $idno = $date . 'A' . str_pad($order, 4, '0', STR_PAD_LEFT);
+                        $arridnumber = array();
+                        $idnumber = 'I' . $idno;
             
-          
 
-                $label 	= intval($param[0]->qty_input / $stdpack[0]->stdpack);
-                $sisa  	=$param[0]->qty_input % $stdpack[0]->stdpack;
-                $qtystd = $label;//jumlah label yang di print
-                $qtybal = $sisa;
+                
+                    // STEP 1. masukan data pada log print
+                    DB::connection('sqlsrv')
+                            ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno,lotno_inhouse)
+                                select '{$idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$stdpack[0]->stdpack}',
+                                        '{$param[0]->dest}',
+                                        '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}','{$param[0]->lotno}'
 
-                if($sisa > 0){$label++;}
-                    $getid       = $param[0]->idnumber;
-                    $splitid     =  substr($getid,1,9);
-                    $no          = + 1;
+                                ");
+                    }
 
-                   
-
-                for ($y=1; $y<=$qtystd; $y++){
-                    $currentDate = Carbon::now();
-                    $dateAsNumber = $currentDate->format('Ym');
-                    $date = substr($dateAsNumber,2,8);
             
-                    $get_id = DB::table('log_print_kit_original')
-                    // ->where('idnumber',$currentDate)
-                    ->max('id');
+                    // STEP 3. ambil content data print label KIT
 
-                    $order = $get_id ? $get_id + 1 : 1;
-                    $idno = $date . 'A' . str_pad($order, 4, '0', STR_PAD_LEFT);
-                    $arridnumber = array();
-                    $idnumber = 'I' . $idno;
-          
+                    $labelcontent = DB::connection('sqlsrv')
+                                    ->select("SELECT * from log_print_kit_original
+                                                where partno ='{$param[0]->partno}'
+                                                and lotno_inhouse ='{$param[0]->lotno}'  
+                                                and status_print = 1                      
+                                                ");
 
-                DB::connection('sqlsrv')
-                        ->insert("INSERT into log_print_kit_original(idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno,lotno_inhouse)
-                            select '{$idnumber}', '{$param[0]->partno}','{$param[0]->partname}','{$stdpack[0]->stdpack}',
-                                    '{$param[0]->dest}',
-                                    '{$param[0]->custpo}','{$param[0]->shelfno}','{$param[0]->prodno}','{$param[0]->lotno}'
-        
-                            ");
-                }
+                
 
-                $labelcontent = DB::connection('sqlsrv')
-                                ->select("SELECT * from log_print_kit_original
-                                            where partno ='{$param[0]->partno}'
-                                            and lotno_inhouse ='{$param[0]->lotno}'                        
-                                            ");
+                // STEP 3. update status print pada konten yang diambil dari logprint
+                    DB::table('log_print_kit_original')
+                            ->where('lotno_inhouse', $labelcontent[0]->lotno_inhouse )
+                            ->update(['status_print'=> 2]);
 
-                                  
+                                    
 
-            if (!$param) {
-                echo('Part Not Exist In Schedule');
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Part Not Exist In Schedule',
+                    if (!$param) {
+                        echo('Part Not Exist In Schedule');
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Part Not Exist In Schedule',
 
-                ]);
-            }
-        // }
-                return view('repacking.printassy', compact('labelcontent'));
+                        ]);
+                    }
+            // }
+        return view('repacking.printassy', compact('labelcontent'));
+            //  }
+
 
     }
 
