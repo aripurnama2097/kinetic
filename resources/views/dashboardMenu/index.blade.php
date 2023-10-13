@@ -26,7 +26,7 @@
    
   <div class="page-wrapper">
     <!-- Page header -->
-    <div class="page-header d-print-none text-white">
+    {{-- <div class="page-header d-print-none text-white">
       <div class="container-xl">
         <div class="row g-2 align-items-center">
           <div class="col">
@@ -43,7 +43,7 @@
         
         </div>
       </div>
-    </div>
+    </div> --}}
 
     <!-- START Page body -->
     <div class="page-body">
@@ -189,9 +189,6 @@
                           <th class="text-center" style="font-size: 10px;">Found By</th>
                           <th class="text-center" style="font-size: 10px;">DIC</th>
                           <th class="text-center" style="font-size: 10px;">Cause</th>
-                         
-                      
-    
                       </tr>
                   </thead>
     

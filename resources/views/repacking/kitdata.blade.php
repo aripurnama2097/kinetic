@@ -2,21 +2,10 @@
 
 @section('section')
     <div class="page-wrapper">
-        <!-- Page header -->
-        <div class="page-header d-print-none">
-          <div class="container-xl ml-2">
-              Overview
-              <h2 class="page-title text-light"> SCAN IN - KIT </h2>
-          </div>
-        </div>
-
         <!-- Page body MENU -->
         <div class="bg-dark mt-3">
-            <div class="container-fluid">
-             
-            </div>
             <div class="container-fluid mt-1">
-
+                <h2 style="font-weight:bold" class="page-title text-primary ml-5">KIT DATA </h2>
                     @if (Session::has('success'))
                         <p class="alert alert-success">{{ Session::get('success') }}</p>
                     @endif
@@ -24,16 +13,12 @@
 
                     <div class="col-12 ">
                         <div class="card  col-12 ">
-
-                        
-
                             <div class="card-body border-bottom ">
-                                <a href="{{ url('/repacking/kitdata') }}" class="btn btn-primary ml-2 mb-3">
+                                <a href="{{ url('/repacking/kitdata') }}" class="btn btn-primary ml-2 mb-3 btn-sm">
                                     <i class="ti ti-360"></i>
                                     Refresh
                                 </a>
                                 <div class="table-responsive  rounded-1 shadow-sm">
-                                    {{-- <p class="btn btn-primary btn-sm"style="font-weight:bold;font-size:15px"> Schedule Number: </p>      --}}
                                     <table style="width:100%" id="kit-data"  class="table table-vcenter table-border">
                                        
                                         <thead class="thead-dark">

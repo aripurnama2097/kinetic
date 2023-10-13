@@ -4,7 +4,7 @@
 
 <div class="page-wrapper">
     <!-- Page header -->
-    <div class="page-header d-print-none">
+    {{-- <div class="page-header d-print-none">
       <div class="container-xl">
         <div class="row g-2 align-items-center">
           <div class="col-12 ">
@@ -24,7 +24,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
 
 
 
@@ -81,6 +81,7 @@
                         <th style ="font-size: 10px;">Cust Name</th> 
                         <th style ="font-size: 10px;">Shelf No</th>                       
                         <th style ="font-size: 10px;">Prod No</th>
+                        <th style ="font-size: 10px;">Lot Inhouse</th>
                         <th style ="font-size: 10px;">Create Date</th>
                          <th style ="font-size: 10px;">Last Print</th>  
                          <th style ="font-size: 10px;">Print</th> 
@@ -101,6 +102,7 @@
                          <td style ="font-size: 12px;"> {{$value->dest}}</td>                    
                          <td style ="font-size: 12px;"> {{$value->shelfno}}</td>       
                          <td style ="font-size: 12px;"> {{$value->prodno}}</td> 
+                         <td style ="font-size: 12px;"> {{$value->lotno_inhouse}}</td> 
                          <td style ="font-size: 12px;"> {{$value->created_at}}</td>               
                          </td>    
                          <td style ="font-size: 12px;"> {{$value->last_print}} </td>               

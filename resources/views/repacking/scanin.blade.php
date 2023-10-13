@@ -12,28 +12,7 @@
 @section('section')
     <div class="page-wrapper">
         <!-- Page header -->
-        <div class="page-header d-print-none">
-            <div class="container-fluid">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <!-- Page pre-title -->
-                        <div class="page-pretitle">
-                            Overview
-                        </div>
-                        <h2 class="page-title">
-                            Scan In Menu
-                        </h2>
-                    </div>
-                    <!-- Page title actions -->
-                    <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
-                            <span class="d-none d-sm-inline">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+      
 
 
         <!-- Page body MENU -->
@@ -48,7 +27,7 @@
                             <div class="col-12 mt-3 mb-3 ">
                                 <a style="font-size:20px" class="btn btn-primary col-12" data-bs-toggle="collapse" href="#scan-collapse"
                                     role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    --- START SCAN ---  
+                                    --- START SCANIN ---  
                                 </a>
                             </div>
 

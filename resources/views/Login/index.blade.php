@@ -2,8 +2,8 @@
 
 <style>
   body {
-     /* background-image: url(http://136.198.117.7/mcsp/public/css/8.jpg); */
-     background-color:#f5f8fa;
+     background-image: url(http://136.198.117.7/mcsp/public/css/8.jpg);
+     background-color:#d8dfe5df;
     border-radius: 100%;
     background-image:cover;
     -o-background-size: cover;
@@ -71,10 +71,10 @@
   </div>
 </div> --}}
 
-<div class="container">
+<div class="container ">
   <div class="row my-4">
-      <div class="col-md-8 offset-md-2 col-md-offset-2">
-          <div class="card card-default ">
+      <div class="col-md-6 offset-md-2 col-md-offset-2">
+          <div class="card card-default shadow-lg">
             @if(session()->has('success'))
               <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{session('success')}}

@@ -2,14 +2,10 @@
 
 @section('section')
 <div class="page-wrapper">
-    <div class="page-header d-print-none">
-        <div class="container-xl ml-2">
-            Overview
-            <h2 class="page-title text-light"> SCAN OUT - KIT </h2>
-        </div>
-      </div>
+   
     <div class="col-12 bg-dark">
         <div class="card  ">
+            <h2 class="page-title text-primary ml-5"> SCAN OUT - KIT </h2>
           {{-- <div class="card-header">
             <h3 class="card-title">SCAN OUT</h3>
           </div> --}}

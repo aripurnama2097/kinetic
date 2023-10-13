@@ -3,15 +3,16 @@
 @section('section')
     <div class="page-wrapper">
         <!-- Page header -->
-        <div class="page-header d-print-none">
+        {{-- <div class="page-header d-print-none">
           <div class="container-xl ml-2">
-              Overview
-              <h2 class="page-title text-light"> KIT MONITOR </h2>
+            
           </div>
-        </div>
-
-      
+        </div> --}}
+{{-- 
+        Overview
+              <h2 class="page-title text-light"> KIT MONITOR </h2> --}}
         <div class="card mt-4 shadow">
+            <h1 class="page-title text-primary ml-5"> KIT MONITOR </h1> 
                 <div class="container-fluid mt-4">
                     @if (Session::has('success'))
                         <p class="alert alert-success">{{ Session::get('success') }}</p>

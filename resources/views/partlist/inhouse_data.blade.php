@@ -3,12 +3,12 @@
 @section('section')
     <div class="page-wrapper">
         <!-- Page header -->
-        <div class="page-header d-print-none">
+        {{-- <div class="page-header d-print-none">
           <div class="container-xl ml-2">
               Overview
               <h2 class="page-title text-light">Inhouse Data </h2>
           </div>
-        </div>
+        </div> --}}
 
         <!-- Page body MENU -->
         <div class="bg-light mt-3">
@@ -16,45 +16,10 @@
               <div class="card ml-3 mr-3 mt-3">
                 {{-- <div class="card-header"> --}}
                   {{-- </div> --}}
-                  <div class="card-body">
-                  <h2>FILTER </h2>
-                  <div class="row">
-                    <div class="col-5">
-                      <form id="filter-Data">
-            
-                        <select style="font-size:15px" class="form-control col-3 btn btn-light btn-sm" id="prod-no" name="prodno">
-                          <option value="-">-- PROD NO --</option>
-                          {{-- @foreach ($data2 as $dd)
-                          <option value="{{ $dd->prodno }}">{{ $dd->prodno }}</option>
-                          @endforeach --}}
-                        </select>
-                        <button type="submit" class="btn btn-primary d-none d-sm-inline-block  ">
-                          <i class="ti ti-filter"></i>
-                          Search
-                        </button>
-                      </form>
-                    </div>
-{{-- 
-                    <div class="col-2 ml-6">
-                      <form id="filter-Data" class="form-inline  float-left">
-                        <input type="date" class="form-control mr-2" name="start_date" id="release-date"
-                          value="{{ date('Y-m-d') }}">
-                        <input type="date" class="form-control mr-2" name="end_date" id="release-date"
-                          value="{{ date('Y-m-d') }}">
-                        
-                        <button type="submit" class="btn btn-primary d-none d-sm-inline-block  ">
-                          <i class="ti ti-filter"></i>
-                          Search
-                        </button>
-                      </form>
-                    </div> --}}
-
-                  </div>
-                 
-                </div>
+                
             </div>
             </div>
-            <div class="container-fluid mt-1">
+            <div class="container mt-2">
 
                     @if (Session::has('success'))
                         <p class="alert alert-success">{{ Session::get('success') }}</p>

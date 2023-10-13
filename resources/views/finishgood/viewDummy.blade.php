@@ -404,7 +404,10 @@
     function printMaster(){
             let qr_skid               = $('#qr_skid').val();
 
-            window.location.assign("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid   )
+            var url = ("{{ url('/finishgood/viewSkid/printMaster') }}" + "?qr_skid=" + qr_skid   )
+
+            window.open(url , '_blank');  
+
     }
 
 

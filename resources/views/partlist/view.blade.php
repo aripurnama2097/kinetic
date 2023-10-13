@@ -3,17 +3,19 @@
 @section('section')
     <div class="page-wrapper">
         <!-- Page header -->
-        <div class="page-header d-print-none">
+        {{-- <div class="page-header d-print-none">
           <div class="container-xl ml-2">
               Overview
-              <h2 class="page-title text-light"> MC Data </h2>
+            
           </div>
-        </div>
+        </div> --}}
 
         <!-- Page body MENU -->
         <div class="bg-light mt-3">
+           
             <div class="container-fluid">
               <div class="card ml-3 mr-3 mt-3">
+                <h2 class="page-title text-primary ml-5"> MC Data </h2>
                 {{-- <div class="card-header"> --}}
                   {{-- </div> --}}
                   {{-- <div class="card-body">
@@ -39,7 +41,7 @@
                 </div> --}}
             </div>
             </div>
-            <div class="container-fluid mt-1">
+            <div class="container">
 
                     @if (Session::has('success'))
                         <p class="alert alert-success">{{ Session::get('success') }}</p>

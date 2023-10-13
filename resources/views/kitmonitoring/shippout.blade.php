@@ -91,7 +91,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
-                                    <a  class="btn btn-secondary btn-sm text-light mt-2" href="{{url('/kitmonitoring')}}" ><i class="ti ti-arrow-narrow-left"></i>BACK</a>               
+                                   
                                 </div>
                     </div>
             </div>

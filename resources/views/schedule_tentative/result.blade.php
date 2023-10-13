@@ -3,16 +3,17 @@
 @section('section')
     <div class="page-wrapper">
         <!-- Page header -->
-        <div class="page-header d-print-none">
+        {{-- <div class="page-header d-print-none">
           <div class="container-xl ml-2">
               Overview
               <h2 class="page-title text-light"> Tentative Schedule </h2>
           </div>
-        </div>
+        </div> --}}
 
         <!-- Page body MENU -->
       
         <div class="page-body">
+          <h2 class="page-title text-primary ml-5"> Tentative Schedule </h2>
           <div class="row row-deck row-cards ">          
             <div class="col-12 ">
               <div class="card rounded-1 " >

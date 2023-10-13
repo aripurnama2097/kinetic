@@ -3,15 +3,16 @@
 @section('section')
     <div class="page-wrapper">
         <!-- Page header -->
-        <div class="page-header d-print-none">
+        {{-- <div class="page-header d-print-none">
           <div class="container-xl ml-2">
               Overview
               <h2 class="page-title text-light"> Release Schedule </h2>
           </div>
-        </div>
+        </div> --}}
 
         <!-- Page body MENU -->
         <div class="bg-dark mt-3">
+            <h2 class="page-title text-white ml-5">Release Schedule </h2>
             <div class="container-fluid">
               <div class="card ml-3 mr-3">
                

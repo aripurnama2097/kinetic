@@ -10,21 +10,21 @@
         <div class="col-md-12 ">
             <div class="col-md-12 mt-3 ml-0">
                 <div class="btn-group col-12 mt-5 mb-5" role="group">
-                    <a class="btn btn-primary col-6 text-white" data-bs-toggle="collapse" id="btn-takeout" role="button"
+                    <a class="btn btn-primary col-4 text-white" data-bs-toggle="collapse" id="btn-takeout" role="button"
                         aria-expanded="false" aria-controls="take_out">
                         Borrow Takeout <i class="ti ti-arrow-big-right-lines-filled"></i>
                     </a>
 
-                    <a class="btn btn-success col-6 text-white" data-bs-toggle="collapse" id="btn-return" role="button"
+                    <a class="btn btn-success col-4 text-white" data-bs-toggle="collapse" id="btn-return" role="button"
                         aria-expanded="false" aria-controls="return"><i class="ti ti-arrow-big-left-lines-filled"></i>
                         Borrow Return
                     </a>
-                    <div class="d-flex justify-content-center">
-                        <a class="btn btn-dark col-6 text-white text-center" data-bs-toggle="collapse" id="btn-show"
+                    {{-- <div class="d-flex justify-content-center"> --}}
+                        <a class="btn btn-dark col-4 text-white text-center" data-bs-toggle="collapse" id="btn-show"
                             role="button" aria-expanded="false" aria-controls="return"><i class="ti ti-table-down"></i>
                             Data Borrow
                         </a>
-                    </div>
+                    {{-- </div> --}}
                 </div>
             </div>
 

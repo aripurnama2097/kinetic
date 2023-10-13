@@ -12,7 +12,7 @@
 @section('section')
     <div class="page-wrapper">
         <!-- Page header -->
-        <div class="page-header d-print-none">
+        {{-- <div class="page-header d-print-none">
             <div class="container-fluid">
                 <div class="row g-2 align-items-center">
                     <div class="col">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
 
 
@@ -48,7 +48,7 @@
                             <div class="col-12 mt-3 mb-3 ">
                                 <a style="font-size:20px" class="btn btn-primary col-12" data-bs-toggle="collapse" href="#scan-collapse"
                                     role="button" aria-expanded="false" aria-controls="collapseExample">
-                                    --- START SCAN ---  
+                                    --- SCAN COMBINE ---  
                                 </a>
                             </div>
 
