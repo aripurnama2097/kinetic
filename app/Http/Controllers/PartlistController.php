@@ -281,18 +281,16 @@ class PartlistController extends Controller
 
         // GET ID NUMBER PRINT LABEL KIT
         $currentDate = Carbon::now();
-        $dateAsNumber = $currentDate->format('Ymd');
+        $dateAsNumber = $currentDate->format('Yd');
         $date = substr($dateAsNumber, 2, 8);
         $get_id = DB::table('partscan')
-        ->whereDate('scan_date', $currentDate)
-        ->max('id');
+        // ->whereDate('scan_date', $currentDate)
+        ->min('id');
 
         $order = $get_id ? $get_id + 1 : 1;
         $idnumber = 'I' . $date . str_pad($order, 4, '0', STR_PAD_LEFT);
 
-
-
-
+       
 
         //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
         if (!empty(@$status_print)) {
@@ -602,16 +600,46 @@ class PartlistController extends Controller
 
     public function scan_inhouse(request $request)
     {
+    //    $currentDate = Carbon::now();
+
+    //    Carbon::today())->get();
+    //      // STEP 1. update data status print base on lotno_inhouse
+        
+
+    //    dd($currentDate);
+    //        $query =DB::connection('sqlsrv')
+    //                 ->select("SELECT max(idnumber) FROM inhouse_scanin WHERE created_at = '{$currentDate}'
+    //                 ");
+
+    //                 dd($query);
+
+    //                     $dailyno="";
+    //                     if ($query[0]->idnumber > 0 ){
+    //                         foreach($query[0]->idnumber->result() as $nomor){
+    //                             $tmp=((int) $nomor->idnumber) + 1;
+    //                             $dailyno =sprintf("%04s", $tmp);
+    //                         }
+    //                     }
+    //                         else{
+    //                         $dailyno ="0001";
+    //                         }
+    //                         date_default_timezone_set('Asia/Jakarta');  
+    //                         $idnum = date ('ymd') .  $dailyno;
+
+    //                         $arridnumber = array();
+    //                         $idnumber = 'I' . $idnum;
+
+                            // dd($idnumber);
+
+
         $currentDate = Carbon::now();
-
-
-        $dateAsNumber = $currentDate->format('Ymd');
+        $dateAsNumber = $currentDate->format('Yd');
         $date = substr($dateAsNumber, 2, 8);
 
 
         $get_id = DB::table('inhouse_scanin')
-            ->whereDate('created_at', $currentDate)
-            ->max('id');
+            // ->whereDate('created_at', $currentDate)
+            ->min('id');
             
         $order = $get_id ? $get_id + 1 : 1;
         $idnumber = 'I' . $date . 'A' . str_pad($order, 4, '0', STR_PAD_LEFT);
@@ -720,9 +748,12 @@ class PartlistController extends Controller
                         ");
 
 
+
             $data = DB::connection('sqlsrv')
                 ->select("SELECT * from inhouse_list where lotno ='{$prodno}'
                            and model ='{$partno}'");
+
+            
 
                 $sum = array($cek_total[0]->tot_input, $qty);
                 $act_qty = array_sum($sum);
@@ -814,6 +845,11 @@ class PartlistController extends Controller
                                     inhouse_list.lotno = '{$lotno}' and inhouse_list.model = '{$model}'
 
                 ");
+
+        
+        // DB::table('log_print_kit_original')
+        //     ->where('lotno_inhouse', $lotno )
+        //     ->update(['status_print'=> 2]);
 
         $data = DB::connection('sqlsrv')
             ->select("SELECT * from inhouse_list where lotno ='{$lotno}'");
