@@ -284,7 +284,7 @@ class PartlistController extends Controller
         $dateAsNumber = $currentDate->format('Yd');
         $date = substr($dateAsNumber, 2, 8);
         $get_id = DB::table('partscan')
-        // ->whereDate('scan_date', $currentDate)
+        ->whereDate('scan_date', $currentDate)
         ->min('id');
 
         $order = $get_id ? $get_id + 1 : 1;
@@ -638,7 +638,7 @@ class PartlistController extends Controller
 
 
         $get_id = DB::table('inhouse_scanin')
-            // ->whereDate('created_at', $currentDate)
+            ->whereDate('created_at', $currentDate)
             ->min('id');
             
         $order = $get_id ? $get_id + 1 : 1;
