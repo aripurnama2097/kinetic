@@ -469,8 +469,8 @@ class RepackingController extends Controller
 
         // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custcode,idnumber,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
-                select top 1  custcode,'{$idnumber}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
+        ->insert("INSERT into scanin_repacking(custcode,prodno,idnumber,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
+                select top 1  custcode,prodno,'{$idnumber}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
                 from repacking_list
                     where partno = '{$partno}' 
                     and custpo ='{$custpo}'
@@ -532,6 +532,8 @@ class RepackingController extends Controller
         $dateAsNumber = $currentDate->format('Ymd');
         $combine_no = DB::connection('sqlsrv')
             ->select("SELECT top 1 combine_no from tblcombine_no order by id desc ");
+
+     
 
                      
                         //  $order = $lastOrder ? $lastOrder + 1 : 1;
@@ -617,8 +619,8 @@ class RepackingController extends Controller
             // STEP 2.INSERT INTO REPACKING SCAN IN
             DB::connection('sqlsrv')
                     ->insert("INSERT into 
-                                        scanin_repacking(custcode,idnumber,combine_no,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
-                                SELECT top 1 custcode,'{$idnumber}','{$combine_no}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}','{$lenght}','{$widht}','{$height}'
+                                        scanin_repacking(custcode,prodno,idnumber,combine_no,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
+                                SELECT top 1 custcode,prodno,'{$idnumber}','{$combine_no}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}', '{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$gw}','{$lenght}','{$widht}','{$height}'
                                 from repacking_list
                                 where partno = '{$partno}' 
                                 and custpo ='{$custpo}'
@@ -1127,8 +1129,8 @@ class RepackingController extends Controller
            }
 
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custcode,idnumber,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_kit,scan_nik,gw,lenght,widht,height)
-                            select top 1  custcode,'{$idnumber}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
+        ->insert("INSERT into scanin_repacking(custcode,prodno,idnumber,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_kit,scan_nik,gw,lenght,widht,height)
+                            select top 1  custcode,prodno,'{$idnumber}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}', '{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
                             from repacking_list
                     where
                      partno = '{$partno}' and custpo ='{$custpo}'
@@ -1243,8 +1245,8 @@ class RepackingController extends Controller
            }
 
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custcode,idnumber,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_panel,label_kit,scan_nik,gw,lenght,widht,height)
-                            select top 1  custcode,'{$idnumber}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}', '{$qr_panel}','{$qr_kit}', '{$input_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
+        ->insert("INSERT into scanin_repacking(custcode,prodno,idnumber,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_panel,label_kit,scan_nik,gw,lenght,widht,height)
+                            select top 1  custcode,prodno,'{$idnumber}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}', '{$qr_panel}','{$qr_kit}', '{$input_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
                             from repacking_list
                     where
                      partno = '{$partno}' and custpo ='{$custpo}'
