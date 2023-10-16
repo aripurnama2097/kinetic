@@ -285,7 +285,7 @@ class PartlistController extends Controller
         $date = substr($dateAsNumber, 2, 8);
         $get_id = DB::table('partscan')
         ->whereDate('scan_date', $currentDate)
-        ->min('id');
+        ->max('id');
 
         $order = $get_id ? $get_id + 1 : 1;
         $idnumber = 'I' . $date . str_pad($order, 4, '0', STR_PAD_LEFT);
@@ -639,7 +639,7 @@ class PartlistController extends Controller
 
         $get_id = DB::table('inhouse_scanin')
             ->whereDate('created_at', $currentDate)
-            ->min('id');
+            ->max('id');
             
         $order = $get_id ? $get_id + 1 : 1;
         $idnumber = 'I' . $date . 'A' . str_pad($order, 4, '0', STR_PAD_LEFT);
