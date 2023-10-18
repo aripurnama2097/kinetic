@@ -1010,21 +1010,23 @@ class RepackingController extends Controller
                             left join schedule as b on a.partno = b.partno  
                                                     and  a.jknpo = b.custpo
                                 where a.partno ='{$partno}'
+                                and a.lotno ='{$prodno}'
                                 and a.type ='scanin panel'
                     ");
 
 
 
-            // // STEP 1. INSERT TO PRINT LOG
-            // $logPrint = DB::connection('sqlsrv')
-            //     ->insert(" INSERT
-            //                     into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,  prodno)
-            //                     SELECT distinct
-            //                     b.idnumber,a.partno,a.partname,  b.scan_issue,a.dest,a.custpo,a.mcshelfno, a.prodno
-            //                                 from partlist as a
-            //                     inner join partscan as b on a.partno = b.partno and a.demand = b.demand
-            //                     where 	 a.custpo ='{$custpo}' and a.partno ='{$partno}'
-            //                 ");
+            // STEP 1. INSERT TO PRINT LOG
+            $logPrint = DB::connection('sqlsrv')
+                ->insert("INSERT into log_print_kit_original (idnumber,partno,partname,qty_scan,dest,custpo,shelfno,prodno,lotno_inhouse)
+                        SELECT  a.idnumber,a.partno,a.partname,a.qty_input,a.dest,a.jknpo,b.shelfno,b.prodno,a.lotno  from inhouse_scanin as a
+                        left join schedule as b on a.partno = b.partno  
+                                                and  a.jknpo = b.custpo
+                            where a.partno ='{$partno}'
+                            and a.lotno ='{$prodno}'
+                            and a.type ='scanin panel'
+                            ");
+                            
 
             return view('repacking.printassy_scan', compact('param'));
 
