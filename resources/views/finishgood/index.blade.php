@@ -107,13 +107,7 @@
                                                         class="form-control form-control-xs mb-2 text-center border border-secondary "
                                                         type="text" name="box_no" value="{{$boxno}}" id="box_no" maxlength="8"
                                                         placeholder="BOX NO"  disabled>
-                                                    <select style="font-size:15px"  class="form-control form-control-xs mb-2 text-center border border-secondary "
-                                                        id="prodno" name="prodno" disabled>
-                
-                                                        @foreach ($prodno as $dd)
-                                                            <option value="{{ $dd->prodno }}">{{ $dd->prodno }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                   
                                                     <input
                                                         class="form-control form-control-lg mb-2 text-center border border-secondary "
                                                         type="text" name="kit_label" value="" id="kit_label"
@@ -191,23 +185,14 @@
                     var val_box_no = $('#box_no').val();
                     if (val_box_no != '') {
                      
-                        $('#prodno').attr('disabled', false);
-                        $('#prodno').focus();
+                        $('#kit_label').attr('disabled', false);
+                        $('#kit_label').focus();
                     }
                 }
             })
 
 
-            $('#prodno').on('click', function(e) {
-                // if (e.which == 13) {
-                    var val_prodno = $('#prodno').val();
-                    // if (val_prodno != '') {
-                     
-                        $('#kit_label').attr('disabled', false);
-                        $('#kit_label').focus();
-                    // }
-                // }
-            })
+        
 
 
                //STEP 2. SCAN OUT LABEL KIT
@@ -234,7 +219,6 @@
                                 scan_nik : scan_nik,
                                 packing_no : packing_no,
                                 box_no: box_no,
-                                prodno: prodno,
                                 kit_label:kit_label,
                                 _token: '{{ csrf_token() }}'
                             },          
