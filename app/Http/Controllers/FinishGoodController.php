@@ -413,45 +413,8 @@ class FinishGoodController extends Controller
 
 
 
-         $ins =  DB::connection('sqlsrv')
-         ->insert("INSERT INTO log_printmasterskid(carton_no,skid_no,type_skid,height,packing_no,custpo,partno,partname,qty_running,seq,total_running,gw)
-                 
-                 SELECT  (select distinct(carton_no)
-                                                 where skid_no ='{$skidno}' 
-                                                 and packing_no ='{$packing_no}'												
-                                     ) as carton_no 
-                                    
-                                     ,skid_no,'{$type_skid}','{$height}',packing_no,custpo,partno,partname,qty_running
-                                     ,(select count(qty_running) where skid_no ='{$skidno}' 
-                                                     and packing_no ='{$packing_no}') as tot_scan 
-                                     ,(select sum(qty_running) where skid_no ='{$skidno}' 
-                                                     and packing_no ='{$packing_no}') as sum_total 
-                                     ,(select sum(gw) where skid_no ='{$skidno}' 
-                                                     and packing_no ='{$packing_no}') as gw               
-                                     from scanout
-                                     where skid_no ='{$skidno}'
-                                     and packing_no ='{$packing_no}'
-                                     group by
-                                     carton_no, custpo,partno,partname,skid_no,packing_no,qty_running 
-                 ");
 
-          // GET TOT_CARTON
-        // $tot_carton = DB::connection('sqlsrv')
-        //             ->select("SELECT (select sum(seq)
-        //                                  from log_printmasterskid
-        //                                      where skid_no ='{$skidno}' 
-        //                                     and packing_no ='{$packing_no}'		
-        //                             ) as tot_carton
-        //                     " );
-
-        // $gw = DB::connection('sqlsrv')
-        //             ->select("SELECT (select sum(gw) from scanout
-        //                                     where skid_no ='{$skidno}' 
-        //                                     and packing_no ='{$packing_no}'												
-        //                             ) as total_gw
-                                    
-        //                         " );
-
+         
 
 
 
@@ -474,8 +437,44 @@ class FinishGoodController extends Controller
                                 from scanout
                                 where skid_no ='{$skidno}'
                                 and packing_no ='{$packing_no}'
+                                and status_print is null
                                 group by
                             carton_no, custpo,partno,partname,skid_no,packing_no,qty_running 
+                            ");
+
+
+
+
+
+                $ins =  DB::connection('sqlsrv')
+                ->insert("INSERT INTO log_printmasterskid(carton_no,skid_no,type_skid,height,packing_no,custpo,partno,partname,qty_running,seq,total_running,gw)
+                        
+                        SELECT  (select distinct(carton_no)
+                                                        where skid_no ='{$skidno}' 
+                                                        and packing_no ='{$packing_no}'												
+                                            ) as carton_no 
+                                        
+                                            ,skid_no,'{$type_skid}','{$height}',packing_no,custpo,partno,partname,qty_running
+                                            ,(select count(qty_running) where skid_no ='{$skidno}' 
+                                                            and packing_no ='{$packing_no}') as tot_scan 
+                                            ,(select sum(qty_running) where skid_no ='{$skidno}' 
+                                                            and packing_no ='{$packing_no}') as sum_total 
+                                            ,(select sum(gw) where skid_no ='{$skidno}' 
+                                                            and packing_no ='{$packing_no}') as gw               
+                                            from scanout
+                                            where skid_no ='{$skidno}'
+                                            and packing_no ='{$packing_no}'
+                                            and status_print is null
+                                            group by
+                                            carton_no, custpo,partno,partname,skid_no,packing_no,qty_running 
+                        ");
+
+
+                DB::connection('sqlsrv')
+                    ->update("UPDATE scanout
+                                set status_print = 1
+                                where skid_no ='{$skidno}'
+                                and packing_no ='{$packing_no}'
                             ");
 
 
@@ -493,9 +492,14 @@ class FinishGoodController extends Controller
         $pagination = 10;
         $keyword= $request->keyword;
 
+        // $data = DB::connection('sqlsrv')
+        //             ->select("SELECT DISTINCT skid_no,packing_no
+        //             FROM scanout");
+
+
         $data = LogPrintMasterlist::where('packing_no', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('skid_no', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('partno', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('packing_no', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
                         ->latest()->paginate(10);
@@ -504,6 +508,7 @@ class FinishGoodController extends Controller
      return view ('/finishgood.logmaster',compact(
                                             'data'
                                            ))->with('i', (request()->input('page', 1) -1) * $pagination);
+
      }
 
 
