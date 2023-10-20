@@ -26,7 +26,10 @@ class ProblemFoundController extends Controller
 
         // return $request;
         $pic = $request->found_by;
-        $kitLabel = $request->label_kit;
+        $labelmc = $request->label_kit;
+        $partno = substr($labelmc, 0, 15);
+        $qty2 = substr($labelmc, 24, 5);
+        $qty = trim($qty2);
         $symptom = $request->symptom;
         $found_date = Carbon::now();    
         $dic = $request->dic;
@@ -43,8 +46,8 @@ class ProblemFoundController extends Controller
 
         // public/images/file.png
 
-        $datakit = $kitLabel;
-        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
+        // $datakit = $kitLabel;
+        // list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
 
 
         if(isset($request->image)){
@@ -54,14 +57,14 @@ class ProblemFoundController extends Controller
       
             DB::connection('sqlsrv')
             ->insert("INSERT into problemfound(cust_po,part_no,qty,found_by,symptom,image,timefound)
-                      SELECT '{$custpo}','{$partno}','{$qty}','{$pic}','{$symptom}','{$foto}','{$found_date}' 
+                      SELECT '{$partno}','{$partno}','{$qty}','{$pic}','{$symptom}','{$foto}','{$found_date}' 
                       ");
         }
 
         else{
             DB::connection('sqlsrv')
             ->insert("INSERT into problemfound(cust_po,part_no,qty,found_by,symptom,timefound)
-                      SELECT '{$custpo}','{$partno}','$qty','{$pic}','{$symptom}','{$found_date}' 
+                      SELECT '{$partno}','{$partno}','$qty','{$pic}','{$symptom}','{$found_date}' 
                       ");
 
         }
