@@ -1012,7 +1012,8 @@ class RepackingController extends Controller
                                 where a.partno ='{$partno}'
                                 and a.lotno ='{$prodno}'
                                 and a.type ='scanin panel'
-                    ");
+                                and a.status_print is null
+                     ");
 
 
 
@@ -1025,8 +1026,16 @@ class RepackingController extends Controller
                             where a.partno ='{$partno}'
                             and a.lotno ='{$prodno}'
                             and a.type ='scanin panel'
+                            and a.status_print is null
                             ");
                             
+            
+           DB::connection('sqlsrv')
+                            ->update("UPDATE inhouse_scanin
+                                        set status_print = 1
+                                        where partno ='{$partno}'
+                                        and lotno ='{$prodno}'
+                                    ");
 
             return view('repacking.printassy_scan', compact('param'));
 
