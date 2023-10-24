@@ -284,15 +284,13 @@
                                             console.log("message",warningMessage.indexOf('FINISH'))
                                             console.log("message",warningMessage.indexOf('PART'))
                                                 if(warningMessage.indexOf('DOUBLE') == 0){
-                                                    // Swal.fire({
+                                                    Swal.fire({
                                                     
-                                                    //     icon: 'warning',
-                                                    //     title: response.message,
-                                                    //     showConfirmButton :false,
-                                                    //     timer:200
-                                                    
-
-                                                    // })
+                                                        icon: 'warning',
+                                                        title: response.message,
+                                                        showConfirmButton :false,
+                                                        timer:50                                              
+                                                    })
                                                 
                                                     
                                                     var audio = document.getElementById('audio');
