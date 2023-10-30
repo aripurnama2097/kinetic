@@ -65,6 +65,8 @@ class KitmonitorController extends Controller
         DB::connection('sqlsrv')
             ->insert("INSERT into tbl_invoice(prodno,invoice_no,created_by)
                     select '{$prodno}','{$inv}', '{$pic}'");
+
+        return redirect()->back()->with('success', 'Update Invoice Success');
     }
 
 

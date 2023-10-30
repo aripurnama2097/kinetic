@@ -219,6 +219,8 @@ Route::post('borrow/cancelation/return',[BorrowController::class,'cancelationAll
 
 // =======================================PROBLEM FOUND  ROUTING===========================
 Route::get('kitmonitoring',[KitmonitorController::class,'index']);
+Route::post('kitmonitoring/update/{prodno}',[KitmonitorController::class,'update_invoice']);
+
 Route::get('kitmonitoring/shippout',[KitmonitorController::class,'view_shippedout']);
 Route::get('/user_setting',[UserSettingController::class,'index'])->middleware(['checkRole:Admin Planning,admin']);;
 Route::post('/user_setting/add',[UserSettingController::class,'create'])->middleware(['checkRole:Admin Planning,admin']);;
