@@ -465,6 +465,9 @@
                     }
 
                 }
+                 $('#mc_label').val("");
+                 $('#kit_label').val("");
+                 $('#mc_label').focus();
             })
 
             // END SCAN IN KIT LABEL
