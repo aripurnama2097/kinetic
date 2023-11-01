@@ -54,7 +54,6 @@
                     <i class="ti ti-360"></i>
                     Refresh
                   </a>
-                  <button type="button" id="export-csv" data-toggle="tooltip" data-placement="left" title="" class="btn btn-secondary btn-sm" data-original-title="Download Report"><i class="ti ti-download"></i>export-csv</buton>
                 </div>
 
                 <form class="mt-2 mb-2"action="{{url('/stdpack')}}" method="GET">			
@@ -471,20 +470,7 @@
             }
         });
     });
-
-
-    $("#export-csv").on("click",function(){
-					// let start_date = $('#start-date').val();
-    			// 	let end_date = $('#end-date').val();
-
-					window.open("{{url('/stdpack/download')}}");	
-
-				});
-
-
   });
-
-
  
  
 
