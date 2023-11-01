@@ -10,13 +10,6 @@
 
      <div class="col-md-12">
       <div class="col-md-12 mt-3">
-      {{-- <a href="#" class="btn btn-light mb-3 btn-sm" data-bs-toggle="modal" data-bs-target="#stdpack-upload"><i class="ti ti-user-plus"></i>
-        Add User
-      </a>
-
-      <a href="{{url('problem/view')}}" class="btn btn-success mb-3 btn-sm" ><i class="ti ti-ban"></i>
-        In House Monitoring
-      </a> --}}
       <div class="btn-group col-12 mt-2 mb-2" role="group">
         <a class="btn btn-primary col-6 text-white" id="btn_scan_qr" role="button"
         aria-expanded="false" aria-controls="scan_qr">

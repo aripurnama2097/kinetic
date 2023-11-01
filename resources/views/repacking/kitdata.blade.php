@@ -3,7 +3,7 @@
 @section('section')
     <div class="page-wrapper">
         <!-- Page body MENU -->
-        <div class="bg-dark mt-3">
+        <div class="bg-light mt-3">
             <div class="container-fluid mt-1">
                 <h2 style="font-weight:bold" class="page-title text-primary ml-5">KIT DATA </h2>
                     @if (Session::has('success'))
@@ -96,6 +96,7 @@
         $(document).ready(function() {
             $('#kit-data').DataTable( {
                 dom: 'Bfrtip',
+                // order: [26,'desc'],  
                 buttons: [
                 
                     'excelHtml5',

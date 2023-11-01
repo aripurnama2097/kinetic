@@ -250,7 +250,22 @@
                             $('#delete-tbltemp').attr('disabled', false);
                         
                         }
-                    if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
+
+
+                        if((getPO[7])){
+                            Swal.fire({
+                            icon: 'warning',
+                            title: 'LABEL MULTIPLE SCAN',
+                            showConfirmButton :true,
+                            timer:1000
+                        })                
+                            $('#kit_label').val("");
+                            $('#mc_label').val("");
+                            $('#mc_label').focus();
+                        }
+
+                        else{
+                            if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
                         console.log(qty_kit)
         
                         $.ajax({
@@ -478,10 +493,7 @@
                    
 
                     }
-                    $('#kit_label').val("");
-                    $('#mc_label').val("");
-                    $('#kit_label').focus();
-                    $('#mc_label').focus();
+                        }
                     // $('#print-master').attr('disabled', true);
                     // $('#delete-tbltemp').attr('disabled', true);
                 }

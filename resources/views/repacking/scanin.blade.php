@@ -196,125 +196,175 @@
                     let height = $('#height').val();
                     let gw = $('#gw').val();
 
-                    if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
-                        console.log(qty_kit)
-                      
-                        // alert('Result Oke')
-
-                        $.ajax({
-                            type: "POST",
-                            dataType: "json",
-                            url: "{{ url('/repacking/scanIn/inputData/') }}",
-                            data: {
-                                scan_nik : scan_nik,
-                                mc_label : val_mcLabel,
-                                lenght : lenght,
-                                widht: widht,
-                                height : height,
-                                gw : gw,                         
-                                kit_label: val_kitLabel,
-                                _token: '{{ csrf_token() }}'
-                            },
-                       
-                            success: function(response) {                  
-                                console.log(response)
-                                var data = ""
-                                $.each(response.data, function(key, value) {
-
-                                 
-
-                                    data = data + "<tr>"
-                                    if (value.act_receive == 0 && value.bal_receive == 0) {
-                                        data = data + "<tr class=table-light>";
-                                    }
-                                    if (value.act_receive != 0 && value.bal_receive != 0) {
-                                        data = data + "<tr class=table-warning>";
-                                    }
-                                    if (value.act_receive == value.demand && value
-                                        .bal_receive == 0) {
-                                        data = data + "<tr class=table-success>";
-                                    }
-
-                                    // data = data + "<td>" + value.id + "</td>"
-                                    data = data + "<td>" + value.custcode + "</td>"
-                                    data = data + "<td>" + value.custpo + "</td>"
-                                    data = data + "<td>" + value.prodno + "</td>"
-                                    data = data + "<td>" + value.partno + "</td>"
-                                    data = data + "<td>" + value.partname + "</td>"
-                                    data = data + "<td>" + value.demand + "</td>"
-                                    data = data + "<td>" + value.act_receive+ "</td>"
-                                    data = data + "<td>" + value.bal_receive +
-                                        "</td>"
-
-                                    data = data + "</tr>"
-                                    })
-                                    $('#scanin-view').html(data);
+                    console.log(getPO);
 
 
-                                        if (response.success) {
-                                            var audio = document.getElementById('audio');
-                                            var source = document.getElementById('audioSource');
-                                            var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
-                                            audio.load()
-                                            audio.play();
 
-                                            $('#mc_label').val("");
-                                            $('#kit_label').val("");
-                                            $('#mc_label').focus();
-                                        
-                                                // swal.fire({
-                                                //     icon: 'success',
-                                                //     title: response.message,
-                                                //     showConfirmButton :false,
-                                                //     timer: 200,
-                                                
+                    if((getPO[7])){
+                        // alert('Label Double Scan');
+                            Swal.fire({
+                            icon: 'warning',
+                            title: 'LABEL MULTIPLE SCAN',
+                            showConfirmButton :true,
+                            timer:1000
+                        })
 
-                                                // })
-                                        } 
-                                        else {
-                                            swal.fire({
-                                            icon: 'warning',
-                                            title: response.message,
-                                            showConfirmButton :false,
-                                        })  
-                                            let warningMessage = response.message;
-                                            console.log("warning",response.message);
-                                            console.log("message",warningMessage.indexOf('DOUBLE'))
-                                            console.log("message",warningMessage.indexOf('OVER'))
-                                            console.log("message",warningMessage.indexOf('FINISH'))
-                                            console.log("message",warningMessage.indexOf('PART'))
-                                                if(warningMessage.indexOf('DOUBLE') == 0){
-                                                    Swal.fire({
-                                                    
-                                                        icon: 'warning',
-                                                        title: response.message,
-                                                        showConfirmButton :false,
-                                                        timer:50                                              
-                                                    })
-                                                
-                                                    
-                                                    var audio = document.getElementById('audio');
-                                                                var source = document.getElementById('audioSource');
-                                                                var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
-                                                                audio.load();
-                                                                audio.play();
-                                                                $('#mc_label').val("");
-                                                                $('#kit_label').val("");
-                                                                $('#mc_label').focus();
-                                                                return;
+                        $('#mc_label').val("");
+                        $('#kit_label').val("");
+                        $('#mc_label').focus();
 
-                                                              
-                                                            
+                    }
+
+                    else{
+
+                        if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
+                            console.log(qty_kit)
+                        
+                            // alert('Result Oke')
+
+                            $.ajax({
+                                type: "POST",
+                                dataType: "json",
+                                url: "{{ url('/repacking/scanIn/inputData/') }}",
+                                data: {
+                                    scan_nik : scan_nik,
+                                    mc_label : val_mcLabel,
+                                    lenght : lenght,
+                                    widht: widht,
+                                    height : height,
+                                    gw : gw,                         
+                                    kit_label: val_kitLabel,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                        
+                                success: function(response) {                  
+                                    console.log(response)
+                                    var data = ""
+                                    $.each(response.data, function(key, value) {
+
+                                    
+
+                                        data = data + "<tr>"
+                                        if (value.act_receive == 0 && value.bal_receive == 0) {
+                                            data = data + "<tr class=table-light>";
+                                        }
+                                        if (value.act_receive != 0 && value.bal_receive != 0) {
+                                            data = data + "<tr class=table-warning>";
+                                        }
+                                        if (value.act_receive == value.demand && value
+                                            .bal_receive == 0) {
+                                            data = data + "<tr class=table-success>";
+                                        }
+
+                                        // data = data + "<td>" + value.id + "</td>"
+                                        data = data + "<td>" + value.custcode + "</td>"
+                                        data = data + "<td>" + value.custpo + "</td>"
+                                        data = data + "<td>" + value.prodno + "</td>"
+                                        data = data + "<td>" + value.partno + "</td>"
+                                        data = data + "<td>" + value.partname + "</td>"
+                                        data = data + "<td>" + value.demand + "</td>"
+                                        data = data + "<td>" + value.act_receive+ "</td>"
+                                        data = data + "<td>" + value.bal_receive +
+                                            "</td>"
+
+                                        data = data + "</tr>"
+                                        })
+                                        $('#scanin-view').html(data);
+
+
+                                            if (response.success) {
+                                                var audio = document.getElementById('audio');
+                                                var source = document.getElementById('audioSource');
+                                                var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                                audio.load()
+                                                audio.play();
+
+                                                $('#mc_label').val("");
+                                                $('#kit_label').val("");
+                                                $('#mc_label').focus();
                                             
-                                                }
+                                                    // swal.fire({
+                                                    //     icon: 'success',
+                                                    //     title: response.message,
+                                                    //     showConfirmButton :false,
+                                                    //     timer: 200,
+                                                    
 
-                                                if(warningMessage.indexOf('OVER') == 0){
+                                                    // })
+                                            } 
+                                            else {
+                                                swal.fire({
+                                                icon: 'warning',
+                                                title: response.message,
+                                                showConfirmButton :false,
+                                            })  
+                                                let warningMessage = response.message;
+                                                console.log("warning",response.message);
+                                                console.log("message",warningMessage.indexOf('DOUBLE'))
+                                                console.log("message",warningMessage.indexOf('OVER'))
+                                                console.log("message",warningMessage.indexOf('FINISH'))
+                                                console.log("message",warningMessage.indexOf('PART'))
+                                                console.log("message",warningMessage.indexOf('BEFORE'))
+                                                    if(warningMessage.indexOf('DOUBLE') == 0){
+                                                        Swal.fire({
+                                                        
+                                                            icon: 'warning',
+                                                            title: response.message,
+                                                            showConfirmButton :false,
+                                                            timer:50                                              
+                                                        })
+                                                    
+                                                        
+                                                        var audio = document.getElementById('audio');
+                                                                    var source = document.getElementById('audioSource');
+                                                                    var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                                    audio.load();
+                                                                    audio.play();
+                                                                    $('#mc_label').val("");
+                                                                    $('#kit_label').val("");
+                                                                    $('#mc_label').focus();
+                                                                    return;
+
+                                                                
+                                                                
+                                                
+                                                    }
+
+                                                    if(warningMessage.indexOf('OVER') == 0){
+                                                            Swal.fire({
+
+                                                                icon: 'warning',
+                                                                title: response.message,
+                                                                showConfirmButton :false,
+                                                                timer:300
+
+
+                                                            })
+
+
+                                                                        var audio = document.getElementById('audio');
+                                                                        var source = document.getElementById('audioSource');
+                                                                        var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                                        audio.load();
+                                                                        audio.play();
+                                                                        $('#mc_label').val("");
+                                                                        $('#kit_label').val("");
+                                                                        $('#mc_label').focus();
+
+
+                                                            return;
+
+                                                                
+                                                    }
+
+
+                                                    if(warningMessage.indexOf('PART') == 0){
                                                         Swal.fire({
 
                                                             icon: 'warning',
                                                             title: response.message,
                                                             showConfirmButton :false,
-                                                            timer:300
+                                                            timer:500
 
 
                                                         })
@@ -322,119 +372,102 @@
 
                                                                     var audio = document.getElementById('audio');
                                                                     var source = document.getElementById('audioSource');
-                                                                    var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
-                                                                    audio.load();
+                                                                    var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
+                                                                    audio.load()
                                                                     audio.play();
                                                                     $('#mc_label').val("");
                                                                     $('#kit_label').val("");
                                                                     $('#mc_label').focus();
 
 
-                                                        return;
-
-                                                             
-                                                }
+                                                return;
+                                            }
 
 
-                                                if(warningMessage.indexOf('PART') == 0){
-                                                    Swal.fire({
-
-                                                        icon: 'warning',
-                                                        title: response.message,
-                                                        showConfirmButton :false,
-                                                        timer:500
-
-
-                                                    })
-
-
-                                                                var audio = document.getElementById('audio');
-                                                                var source = document.getElementById('audioSource');
-                                                                var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
-                                                                audio.load()
-                                                                audio.play();
-                                                                $('#mc_label').val("");
-                                                                $('#kit_label').val("");
-                                                                $('#mc_label').focus();
-
-
-                                            return;
-                                        }
-
-
-                                                if(warningMessage.indexOf('FINISH') == 0){
+                                            if(warningMessage.indexOf('BEFORE') == 0){
                                                         Swal.fire({
 
                                                             icon: 'warning',
                                                             title: response.message,
                                                             showConfirmButton :false,
-                                                            timer:300
-
+                                                            timer:500
 
                                                         })
 
-
-                                                                    var audio = document.getElementById('audio');
-                                                                    var source = document.getElementById('audioSource');
-                                                                    var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
-                                                                    audio.load();
-                                                                    audio.play();
+                                                                
                                                                     $('#mc_label').val("");
-                                                                $('#kit_label').val("");
-                                                                $('#mc_label').focus();
+                                                                    $('#kit_label').val("");
+                                                                    $('#mc_label').focus();
 
 
-                                                        return;
-                                                }
+                                                return;
+                                            }
+
+
+                                                    if(warningMessage.indexOf('FINISH') == 0){
+                                                            Swal.fire({
+
+                                                                icon: 'warning',
+                                                                title: response.message,
+                                                                showConfirmButton :false,
+                                                                timer:300
+
+
+                                                            })
+
+
+                                                                        var audio = document.getElementById('audio');
+                                                                        var source = document.getElementById('audioSource');
+                                                                        var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
+                                                                        audio.load();
+                                                                        audio.play();
+                                                                        $('#mc_label').val("");
+                                                                    $('#kit_label').val("");
+                                                                    $('#mc_label').focus();
+
+
+                                                            return;
+                                                    }
 
 
 
-                                        }
+                                            }
 
-                            }
-                        })
-                    }
-                    else{
-
-                        Swal.fire({
-
-                            icon: 'error',
-                            title: "WRONG PART",
-                            showConfirmButton :false,
-                            timer:300
-
-
+                                }
                             })
+                        }
 
-                          var audio = document.getElementById('audio');
-                            var source = document.getElementById('audioSource');
-                            var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
-                        
-                            audio.load()
-                            audio.play();
-                            $('#mc_label').val("");
-                            $('#kit_label').val("");
-                            $('#mc_label').focus();
+
+                        else{
+
+                            Swal.fire({
+
+                                icon: 'error',
+                                title: "WRONG PART",
+                                showConfirmButton :false,
+                                timer:300
+
+
+                                })
+
+                            var audio = document.getElementById('audio');
+                                var source = document.getElementById('audioSource');
+                                var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
+                            
+                                audio.load()
+                                audio.play();
+                                $('#mc_label').val("");
+                                $('#kit_label').val("");
+                                $('#mc_label').focus();
+
+                        }
 
                     }
-               
 
-
-
-                    $('#mc_label').val("");
-                    $('#kit_label').val("");
-                    $('#mc_label').focus();
                 }
             })
 
             // END SCAN IN KIT LABEL
-           
-
-
-
-
-
-
         });
     </script>
 @endsection

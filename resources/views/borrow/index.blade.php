@@ -285,7 +285,7 @@
                           <td style="font-size: 12px;">{{ $value->prodno}}</td>
                           <td style="font-size: 12px;">{{ $value->custpo}}</td>
                           <td style="font-size: 12px;"> {{ $value->partno }}</td>
-                          <td class="text-dark text-center" style="font-size: 12px;"> {{ $value->qty }}</td>
+                          <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->qty }}</td>
                           <td style="font-size: 12px;"> {{ $value->symptom }}</td>
                           <td style="font-size: 12px;"> {{ $value->borrower}}</td>                       
                           <td style="font-size: 12px;"> {{ $value->lender }}</td>

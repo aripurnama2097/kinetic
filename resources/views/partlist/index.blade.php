@@ -586,7 +586,7 @@
                 // e.preventDefault();
                 if (e.which == 13) {
 
-                    // var scan_nik = $('#scan_nik').val();
+                    var scan_nik = $('#scan_nik').val();
                     var partlist_no = $('#partlist_no').val();
                     var scan_label = $('#scan_label').val();
                     console.log("1. Label Scan: ",scan_label);
@@ -598,7 +598,7 @@
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         },
                         data: {
-                            // scan_nik:scan_nik,
+                            scan_nik:scan_nik,
                             partlist_no: partlist_no,
                             scan_label: scan_label
                         },

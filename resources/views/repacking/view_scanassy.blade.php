@@ -256,8 +256,6 @@
 
 
 
-
-
                 //STEP 2. SCAN LABEL MC  MECHA
                 $('#kit_label').on('keypress', function(e) {
                     // event.preventDefault();
@@ -275,8 +273,19 @@
                         let height = $('#height').val();
                         let gw = $('#gw').val();
 
-                        // if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
-                        //     console.log(qty_kit)
+
+                        if((getPO[7])){
+                            Swal.fire({
+                            icon: 'warning',
+                            title: 'LABEL MULTIPLE SCAN',
+                            showConfirmButton :true,
+                            timer:1000
+                        })                
+                            $('#kit_label').val("");
+                            $('#kit_label').focus();
+                        }
+
+                        else{
                             $.ajax({
                                 type: "POST",
                                 dataType: "json",
@@ -429,28 +438,15 @@
                                             
                                 }
                             })
+
+                        }
+                        // if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
+                        //     console.log(qty_kit)
+                           
                         // }
 
                         $('#kit_label').val("");
 
-                        // else{
-
-                        //     alert('part not same')
-                        //     $.ajax({
-                        //         success : function(data){
-                        //             var audio = document.getElementById('audio');
-                        //             var source = document.getElementById('audioSource');
-                        //             var audio = new Audio("{{asset('')}}storage/sound/WRONG.mp3");
-                        //             document.getElementById("result_NG").innerHTML = "NG";
-                        //             document.getElementById("result_NG").style.display = "block";
-                        //             document.getElementById("result_OK").style.display = "none";
-                        //             audio.load()
-                        //             audio.play();  
-                        //     }
-
-                        //  })
-
-                        // }
                     }
                 })
 
@@ -523,11 +519,23 @@
                     let tinggi = $('#tinggi').val();
                     let berat = $('#berat').val();
 
+                    if((getPO[7])){
+                            Swal.fire({
+                            icon: 'warning',
+                            title: 'LABEL MULTIPLE SCAN',
+                            showConfirmButton :true,
+                            timer:1000
+                        })                
+                        $('#qr_panel').val("");
+                        $('#qr_kit').val("");
+                        $('#qr_kit').focus();
+                        $('#qr_panel').focus();
+                        }
 
-                    if(qr_panel.search(scan_qrkit)>= 0 ){
+                    else{
+                        
+                        if(qr_panel.search(scan_qrkit)>= 0 ){
                         console.log(qty_kit)
-
-
                         $.ajax({
                                 type: "POST",
                                 dataType: "json",
@@ -698,6 +706,10 @@
                         audio.load()
                         audio.play();
                     }
+
+                    }
+
+               
 
                         $('#qr_panel').val("");
                         $('#qr_kit').val("");

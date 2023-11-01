@@ -14,7 +14,7 @@
                                     <table style="width:100%" id="problem-data"  class="table table-vcenter table-striped">
                                         <thead >
                                             <tr class="headings">                   
-                                               
+                                         
                                                 <th class="text-center" style="font-size: 10px;">Dest</th>
                                                 <th class="text-center" style="font-size: 10px;">Model</th>
                                                 <th class="text-center" style="font-size: 10px;">Prod No</th>

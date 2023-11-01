@@ -156,6 +156,7 @@
         $(document).ready(function() {
             $('#kit-monitor').DataTable( {
                 dom: 'Bfrtip',
+                order: [6,'desc'], 
                 buttons: [
                 
                     'excelHtml5',

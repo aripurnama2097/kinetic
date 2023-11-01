@@ -339,7 +339,7 @@ class RepackingController extends Controller
 
     public function inputData(Request $request){
 
-        $scan_nik = $request->scan_nik;
+        $scan_nik = substr($request->scan_nik,2,5);
         $mcLabel = $request->mc_label;
         $kitLabel = $request->kit_label;
 
@@ -548,7 +548,7 @@ class RepackingController extends Controller
 
     public function inputCombine(Request $request){
 
-        $scan_nik = $request->scan_nik;
+        $scan_nik = substr($request->scan_nik,2,5);
         $mcLabel = $request->mc_label;
         $kitLabel = $request->kit_label;
 
@@ -1081,7 +1081,7 @@ class RepackingController extends Controller
 
     public function inputassy_mecha(Request $request){
 
-        $scan_nik = $request->scan_nik;
+        $scan_nik = substr($request->scan_nik,2,5);
         $kitLabel = $request->kit_label;
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
@@ -1193,7 +1193,7 @@ class RepackingController extends Controller
 
     public function inputassy_panel(Request $request){
 
-        $input_nik = $request->input_nik;
+        $input_nik = substr($request->input_nik,2,5);
         $qr_panel = $request->qr_panel;
         $qr_kit = $request->qr_kit;
         $data = $qr_kit;

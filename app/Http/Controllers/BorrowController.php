@@ -17,9 +17,9 @@ class BorrowController extends Controller
 
     public function takeout(request $request){
 
-     
-        $borrower = $request->borrower;
-        $lender = $request->lender;
+        $borrower = substr($request->borrower,2,5);
+        $lender =  substr($request->lender,2,5);
+
         $status = $request->status;
         $dept = $request->dept;
         $reason = $request->reason;
@@ -258,6 +258,8 @@ class BorrowController extends Controller
         // dd($prodno);
         // ADD HISTORY BORROW
         $qtynew = $qtylabel - $qty;
+
+
         // STEP 1. INSERT DATA KE TABLE HISTORY CANCEL
 
         DB::connection('sqlsrv')
@@ -265,8 +267,21 @@ class BorrowController extends Controller
                         select '{$custpo}', '{$prodno[0]->prodno}','{$partno}','{$partname}','{$qtylabel}','{$qty}','{$dest}','{$shelfno}','{$dic}','{$qtynew}','{$idnumber}'
                         ");
      
-        // // STEP 2. UPDATE DATA PADA MC BERDASARKAN CUSTPO DAN QTY 
-        //         // 2.1 UPDATE PARTSCAN
+
+
+        // CEK TYPE PACKING  ORIGINAL/COMBINE
+        $cek_type = DB::connection('sqlsrv')
+                        ->select("SELECT *
+                                        from partscan where idnumber ='{$idnumber}'
+                                ");
+
+        if($cek_type[0]->status_print == 'start_combine' && $cek_type[0]->status_print == 'continue_combine') {
+             DB::table('partscan')
+                ->where('idnumber',$idnumber)
+                ->delete();
+        }  
+        
+        else{
                 DB::connection('sqlsrv')
                 ->update("UPDATE partscan
                                 set  remark ='{$remark}',
@@ -274,9 +289,10 @@ class BorrowController extends Controller
                                 scan_issue = (scan_issue - '{$qty}')
                                 where  idnumber ='{$idnumber}'                
                         ");
-
-
-                // 2.2 UPDATE PARTLIST
+        }
+        // // STEP 2. UPDATE DATA PADA MC BERDASARKAN CUSTPO DAN QTY 
+        //         /         // 2.2 UPDATE PARTLIST
+              
                 DB::connection('sqlsrv')
                 ->update("UPDATE partlist
                                 set
@@ -284,7 +300,6 @@ class BorrowController extends Controller
                                 tot_scan = (tot_scan - '{$qty}')
                                 where  custpo ='{$custpo}'                 
                         ");
-
 
 
 

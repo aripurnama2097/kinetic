@@ -139,7 +139,8 @@ class PartlistController extends Controller
 
         $partlist_no = $request->partlist_no;
 
-        $scan_nik = $request->scan_nik;
+        $nik = $request->scan_nik;
+        $scan_nik   =  substr($nik, 2,5); 
         $scan_label = $request->scan_label;
         $label_scan = substr($scan_label, 0, 15);
 
@@ -645,7 +646,7 @@ class PartlistController extends Controller
         $idnumber = 'I' . $date . 'A' . str_pad($order, 4, '0', STR_PAD_LEFT);
 
         $assylabel = $request->assy_label;
-        $pic       = $request->pic;
+        $pic       = substr($request->pic,2,5);
         $type       = 'scanin panel';
 
         $partno = substr($assylabel, 0, 11);

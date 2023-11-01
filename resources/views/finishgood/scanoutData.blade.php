@@ -3,7 +3,7 @@
 @section('section')
 <div class="page-wrapper">
    
-    <div class="col-12 bg-dark">
+    <div class="col-12 bg-light">
         <div class="card  ">
             <h2 class="page-title text-primary ml-5"> SCAN OUT - KIT </h2>
           {{-- <div class="card-header">
@@ -97,12 +97,13 @@
 
 
             $('#schedule-release').DataTable( {
-        // dom: 'Bfrtip',
-        buttons: [
-           
-            'excelHtml5',
-            'csvHtml5'
-        ]
+                dom: 'Bfrtip',
+                order: [7,'desc'],
+                buttons: [
+                
+                    'excelHtml5',
+                    'csvHtml5'
+                ]
     } );
 
 

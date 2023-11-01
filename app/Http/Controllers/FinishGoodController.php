@@ -39,7 +39,7 @@ class FinishGoodController extends Controller
     public function scanout_box(Request $request)
     {
 
-        $nik        = $request->scan_nik;
+        $nik        = substr($request->scan_nik,2,5);
         $packing_no = $request->packing_no;
         $boxno      = $request->box_no;
         $prodno     = $request->prodno;
@@ -146,7 +146,7 @@ class FinishGoodController extends Controller
 
     public function printid_box(Request $request)
     {
-        $nik        = $request->scan_nik;
+        $nik        = substr($request->scan_nik,2,5);
         $packing_no = $request->packing_no;
         $boxno      = $request->box_no;
         $prodno     = $request->prodno;
@@ -257,7 +257,7 @@ class FinishGoodController extends Controller
     public function scanout_skid(Request $request)
     {
 
-        $nik        = $request->scan_nik;
+        $nik        = substr($request->scan_nik,2,5);
         $qrskid     = $request->qr_skid;
         $skidheight = $request->skid_height;
         $kitLabel   = $request->kit_label;

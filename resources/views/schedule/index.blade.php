@@ -11,8 +11,7 @@
         </div> --}}
 
         <!-- Page body MENU -->
-        <div class="bg-dark mt-3">
-            <h2 class="page-title text-white ml-5">Release Schedule </h2>
+        <div class="bg-light mt-3">
             <div class="container-fluid">
               <div class="card ml-3 mr-3">
                
@@ -368,6 +367,8 @@
 
             $('#schedule-release').DataTable( {
                     dom: 'Bfrtip',
+                    order: [6,'desc'], 
+                    // order:[22,'desc'],
                     buttons: [
                     
                         'excelHtml5',
