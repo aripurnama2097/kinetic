@@ -229,13 +229,15 @@
                 if (e.which == 13) {
                     let scan_nik        = $('#scan_nik').val();
                     let val_mcLabel     = $('#mc_label').val();
-                    let scan_mcLabel    = val_mcLabel.substr(0, 11); // get PARTNO
+                    let scan_mc  = val_mcLabel.substr(0, 11); // get PARTNO
+                    let scan_mcLabel    = scan_mc.trim(); 
                     let qty_mcLabel     = val_mcLabel.substr(24, 26); // get QTY MC
 
                     let val_kitLabel    = $('#kit_label').val();
                     let scan_kitLabel   = val_kitLabel.substr(0, 11); //get PARTNO KIT
                     let getPO           = val_kitLabel.split(":");
       	            let qty_kit         = getPO[2];// GET PO KIT
+                      let label_kit = getPO[0];
 
 
 
@@ -245,6 +247,10 @@
                      let gw = $('#gw').val();
                      let combine_no = $('#combine_no').val();
 
+
+
+                     console.log(label_kit)
+                     
                         if (val_kitLabel != '') {                  
                             $('#print-master').attr('disabled', false);
                             $('#delete-tbltemp').attr('disabled', false);
@@ -265,7 +271,7 @@
                         }
 
                         else{
-                            if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
+                            // if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
                         console.log(qty_kit)
         
                         $.ajax({
@@ -462,37 +468,37 @@
                             }
                                      
                         })
-                    }
+                    // }
 
 
 
-                    else{
+                    // else{
 
-                        Swal.fire({
+                    //     Swal.fire({
                                                 
-                                                icon: 'error',
-                                                title: "WRONG PART",
-                                                showConfirmButton :false,
-                                                timer:400
+                    //                             icon: 'error',
+                    //                             title: "WRONG PART",
+                    //                             showConfirmButton :false,
+                    //                             timer:400
                                             
-                                            })
+                    //                         })
                                         
-                        // $.ajax({
-                        //     success : function(data){
-                                var audio = document.getElementById('audio');
-                                var source = document.getElementById('audioSource');
-                                var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
+                    //     // $.ajax({
+                    //     //     success : function(data){
+                    //             var audio = document.getElementById('audio');
+                    //             var source = document.getElementById('audioSource');
+                    //             var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
                              
-                                audio.load()
-                                audio.play();  
-                                $('#mc_label').val("");
-                                $('#kit_label').val("");
-                                $('#mc_label').focus();
+                    //             audio.load()
+                    //             audio.play();  
+                    //             $('#mc_label').val("");
+                    //             $('#kit_label').val("");
+                    //             $('#mc_label').focus();
                        
 
                    
 
-                    }
+                    // }
                         }
                     // $('#print-master').attr('disabled', true);
                     // $('#delete-tbltemp').attr('disabled', true);
