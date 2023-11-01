@@ -716,6 +716,10 @@
                         $('#qr_kit').focus();
                         $('#qr_panel').focus();
                 }
+                      $('#qr_panel').val("");
+                        $('#qr_kit').val("");
+                        $('#qr_kit').focus();
+                        $('#qr_panel').focus();
              });
         });
     </script>
