@@ -8,6 +8,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ImportStdPack;
 use Illuminate\Support\Facades\DB;
 
+use Carbon\Carbon;
+use App\Exports\StdpackExport;
 use Yajra\DataTables\DataTables;
 
 class StdpackController extends Controller
@@ -126,6 +128,16 @@ class StdpackController extends Controller
         DB::table('std_pack')->truncate();
 
          return redirect()->back()->with('delete', 'All records have been deleted.');
+    }
+
+    public function download(){
+        $date = Carbon::now()->format('Y-m-d'); 
+        $filename = 'ItemMaster' . '-' . $date . '.csv';
+
+        $data = DB::table('std_pack')
+        ->get();
+
+        return Excel::download(new StdpackExport($data), $filename);
     }
 
 
