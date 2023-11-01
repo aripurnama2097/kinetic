@@ -159,11 +159,11 @@ class BorrowController extends Controller
 
     }
 
-    public function return(request $request){
+    public function return_borrow(request $request){
 
      
-        $dic_return = $request->dic_return;
-        $receiver = $request->receiver;
+        $dic_return = substr($request->dic_return,2,5);
+        $receiver = substr($request->receiver,2,5);
         $remark = $request->remark;
         $kitLabel = $request->label_kit;
         $actreturn_date = Carbon::now();    
@@ -243,8 +243,8 @@ class BorrowController extends Controller
         public function cancelationAll(request $request){
 
            
-        $dic = $request->dic;
-        $kitLabel = $request->label_kit;
+        $dic = substr($request->dic,2,5);
+        $kitLabel = substr($request->label_kit,2,5);
         $qty = $request->qty;   
         $lastdate = Carbon::now();    
         $remark ='cancelation';
