@@ -54,6 +54,7 @@
                     <i class="ti ti-360"></i>
                     Refresh
                   </a>
+                  <button type="button" id="export-csv" data-toggle="tooltip" data-placement="left" title="" class="btn btn-secondary btn-sm" data-original-title="Download Report"><i class="ti ti-download"></i>export-csv</buton>
                 </div>
 
                 <form class="mt-2 mb-2"action="{{url('/stdpack')}}" method="GET">			
@@ -411,17 +412,6 @@
       
     });
    
-    // $('#stdpack').DataTable( {
-    //             // dom: 'Bfrtip',
-    //             bInfo: false, 
-    //             paginate:false,
-    //             buttons: [
-                
-    //                 'excelHtml5',
-    //                 'csvHtml5'
-    //             ]
-    //         } );
-
     $('#delete-all-data').click(function() {
         
         const swalWithBootstrapButtons = Swal.mixin({
@@ -470,6 +460,12 @@
             }
         });
     });
+
+    $("#export-csv").on("click",function(){
+      window.open("{{url('/stdpack/download')}}");    
+    });
+
+
   });
  
  

@@ -76,6 +76,7 @@ Route::post('/stdpack/upload-stdpack',[StdpackController::class, 'uploadstdpack'
 Route::post('/stdpack/update/{id}',[StdpackController::class, 'update']);
 Route::get('stdpack/{id}/destroy', [StdpackController::class,'destroy']);
 Route::get('/stdpack/delete_all',[StdpackController::class, 'delete_all']);
+Route::get('/stdpack/download',[StdpackController::class, 'download']);
 
 
 // ========================================SCHEDULE TENTATIVE ROUTING===========================
@@ -212,7 +213,7 @@ Route::post('problem/update/{id}',[ProblemFoundController::class,'responProblem'
 // =======================================BORROW  ROUTING===========================
 Route::get('borrow',[BorrowController::class,'index']);
 Route::post('borrow/takeout',[BorrowController::class,'takeout']);
-Route::post('borrow/return',[BorrowController::class,'return']);
+Route::post('borrow/return',[BorrowController::class,'return_borrow']);
 Route::get('borrow/cancelation',[BorrowController::class,'view_cancelation']);
 Route::post('borrow/cancelation/return',[BorrowController::class,'cancelationAll']);
 
