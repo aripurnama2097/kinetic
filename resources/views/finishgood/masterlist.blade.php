@@ -61,6 +61,7 @@
                         <th  class="text-center"style ="font-size: 10px;">End Carton</th>
                         <th style ="font-size: 10px;">Packing No</th>
                         <th style ="font-size: 10px;">Skid No</th>
+                        <th style ="font-size: 10px;">Custpo</th>        
                         <th style ="font-size: 10px;">Part No</th>           
                         <th style ="font-size: 10px;">Part Name</th>  
                         <th style="border-color:black"class="text-center" colspan="3">PACKING DETAIL</td>
@@ -82,6 +83,7 @@
                         <td  class="text-center"style ="font-size: 12px;">{{$value->end_carton}} </td>
                          <td style ="font-size: 12px;">{{$value->packing_no}} </td>
                          <td style ="font-size: 12px;">{{$value->skid_no}} </td>
+                         <td style ="font-size: 12px;">{{$value->custpo}} </td> 
                          <td style ="font-size: 12px;">{{$value->partno}} </td> 
                          <td style ="font-size: 12px;">{{$value->partname}} </td>
                          <td style="border-color:black"class="text-center">{{$value->seq}} </td>
