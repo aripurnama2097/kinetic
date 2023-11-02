@@ -487,11 +487,13 @@
                         }
                     // $('#print-master').attr('disabled', true);
                     // $('#delete-tbltemp').attr('disabled', true);
-                }
                  $('#mc_label').val("");
                  $('#kit_label').val("");
+                 $('#kit_label').focus("");
                  $('#mc_label').focus();
                
+                }
+                
               
             })
             // END SCAN IN KIT LABEL

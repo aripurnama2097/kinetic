@@ -172,7 +172,7 @@
                         $('#widht').attr('disabled', false);
                         $('#height').attr('disabled', false);
                         $('#gw').attr('disabled', false);
-                    $('#kit_label').focus();
+                        $('#kit_label').focus();
                 }
             });
 
@@ -215,10 +215,7 @@
                     // else{
 
                         if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
-                            console.log(qty_kit)
-                        
-                            // alert('Result Oke')
-
+                            console.log(qty_kit)                  
                             $.ajax({
                                 type: "POST",
                                 dataType: "json",
@@ -238,9 +235,6 @@
                                     console.log(response)
                                     var data = ""
                                     $.each(response.data, function(key, value) {
-
-                                    
-
                                         data = data + "<tr>"
                                         if (value.act_receive == 0 && value.bal_receive == 0) {
                                             data = data + "<tr class=table-light>";
@@ -253,7 +247,6 @@
                                             data = data + "<tr class=table-success>";
                                         }
 
-                                        // data = data + "<td>" + value.id + "</td>"
                                         data = data + "<td>" + value.custcode + "</td>"
                                         data = data + "<td>" + value.custpo + "</td>"
                                         data = data + "<td>" + value.prodno + "</td>"
@@ -268,7 +261,6 @@
                                         })
                                         $('#scanin-view').html(data);
 
-
                                             if (response.success) {
                                                 var audio = document.getElementById('audio');
                                                 var source = document.getElementById('audioSource');
@@ -276,16 +268,8 @@
                                                 audio.load()
                                                 audio.play();
 
-                                          
-                                            
-                                                    // swal.fire({
-                                                    //     icon: 'success',
-                                                    //     title: response.message,
-                                                    //     showConfirmButton :false,
-                                                    //     timer: 200,
-                                                    
+                                         
 
-                                                    // })
                                             } 
                                             else {
                                                 swal.fire({
@@ -293,6 +277,7 @@
                                                 title: response.message,
                                                 showConfirmButton :false,
                                             })  
+
                                                 let warningMessage = response.message;
                                                 console.log("warning",response.message);
                                                 console.log("message",warningMessage.indexOf('DOUBLE'))
@@ -300,36 +285,58 @@
                                                 console.log("message",warningMessage.indexOf('FINISH'))
                                                 console.log("message",warningMessage.indexOf('PART'))
                                                 console.log("message",warningMessage.indexOf('BEFORE'))
-                                                    if(warningMessage.indexOf('DOUBLE') == 0){
-                                                        Swal.fire({
-                                                        
-                                                            icon: 'warning',
-                                                            title: response.message,
-                                                            showConfirmButton :false,
-                                                            timer:200                                              
-                                                        })
-                                                    
-                                                        
-                                                        var audio = document.getElementById('audio');
-                                                                    var source = document.getElementById('audioSource');
-                                                                    var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
-                                                                    audio.load();
-                                                                    audio.play();
-                                                             
-                                                                    return;
-
-                                                                
-                                                                
                                                 
-                                                    }
+                                                if(warningMessage.indexOf('DOUBLE') == 0){
+                                                            Swal.fire({
+                                                            
+                                                                icon: 'warning',
+                                                                title: response.message,
+                                                                showConfirmButton :false,
+                                                                timer:200                                              
+                                                            })
+                                                                                                                   
+                                                                        var audio = document.getElementById('audio');
+                                                                        var source = document.getElementById('audioSource');
+                                                                        var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                                        audio.load();
+                                                                        audio.play();
+                                                                    
+                                                                                                                                                                                          
+                                                }
 
-                                                    if(warningMessage.indexOf('OVER') == 0){
+                                                if(warningMessage.indexOf('OVER') == 0){
+                                                                Swal.fire({
+
+                                                                    icon: 'warning',
+                                                                    title: response.message,
+                                                                    showConfirmButton :false,
+                                                                    timer:300
+
+
+                                                                })
+
+
+                                                                            var audio = document.getElementById('audio');
+                                                                            var source = document.getElementById('audioSource');
+                                                                            var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
+                                                                            audio.load();
+                                                                            audio.play();
+                                                                    
+
+
+                                                                return;
+
+                                                                    
+                                                }
+
+
+                                                if(warningMessage.indexOf('PART') == 0){
                                                             Swal.fire({
 
                                                                 icon: 'warning',
                                                                 title: response.message,
                                                                 showConfirmButton :false,
-                                                                timer:300
+                                                                timer:500
 
 
                                                             })
@@ -337,99 +344,62 @@
 
                                                                         var audio = document.getElementById('audio');
                                                                         var source = document.getElementById('audioSource');
-                                                                        var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
-                                                                        audio.load();
+                                                                        var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
+                                                                        audio.load()
                                                                         audio.play();
-                                                                   
-
-
-                                                            return;
-
                                                                 
-                                                    }
 
+                                                    return;
+                                                }
 
-                                                    if(warningMessage.indexOf('PART') == 0){
-                                                        Swal.fire({
-
-                                                            icon: 'warning',
-                                                            title: response.message,
-                                                            showConfirmButton :false,
-                                                            timer:500
-
-
-                                                        })
-
-
-                                                                    var audio = document.getElementById('audio');
-                                                                    var source = document.getElementById('audioSource');
-                                                                    var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
-                                                                    audio.load()
-                                                                    audio.play();
-                                                             
-
-                                                return;
-                                            }
-
-
-                                            if(warningMessage.indexOf('BEFORE') == 0){
-                                                        Swal.fire({
-
-                                                            icon: 'warning',
-                                                            title: response.message,
-                                                            showConfirmButton :false,
-                                                            timer:500
-
-                                                        })
-
-                                                    
-
-
-                                                return;
-                                            }
-
-
-                                                    if(warningMessage.indexOf('FINISH') == 0){
+                                                if(warningMessage.indexOf('BEFORE') == 0){
                                                             Swal.fire({
 
                                                                 icon: 'warning',
                                                                 title: response.message,
                                                                 showConfirmButton :false,
-                                                                timer:300
-
+                                                                timer:500
 
                                                             })
 
-
-                                                                        var audio = document.getElementById('audio');
-                                                                        var source = document.getElementById('audioSource');
-                                                                        var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
-                                                                        audio.load();
-                                                                        audio.play();
-                                                               
-
-                                                            return;
-                                                    }
+                                                        
 
 
+                                                    return;
+                                                }
 
-                                            }
+                                                if(warningMessage.indexOf('FINISH') == 0){
+                                                                Swal.fire({
+
+                                                                    icon: 'warning',
+                                                                    title: response.message,
+                                                                    showConfirmButton :false,
+                                                                    timer:300
+                                                                })
+
+
+                                                                            var audio = document.getElementById('audio');
+                                                                            var source = document.getElementById('audioSource');
+                                                                            var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
+                                                                            audio.load();
+                                                                            audio.play();
+                                                                
+
+                                                                return;
+                                                }
+
+                                                }
 
                                 }
                             })
                         }
 
-
                         else{
-
                             Swal.fire({
-
                                 icon: 'error',
                                 title: "WRONG PART",
                                 showConfirmButton :false,
                                 timer:300
-
-
                                 })
 
                             var audio = document.getElementById('audio');
@@ -438,17 +408,15 @@
                             
                                 audio.load()
                                 audio.play();
-                              
-
                         }
 
                     // }
+                    $('#mc_label').val("");
+                    $('#kit_label').val("");
+                    $('#kit_label').focus();
+                    $('#mc_label').focus();
 
-                }
-                                                $('#mc_label').val("");
-                                                $('#kit_label').val("");
-                                                $('#mc_label').focus();
-               
+                }               
             })
 
             // END SCAN IN KIT LABEL
