@@ -279,9 +279,7 @@
                                                 audio.load()
                                                 audio.play();
 
-                                                $('#mc_label').val("");
-                                                $('#kit_label').val("");
-                                                $('#mc_label').focus();
+                                          
                                             
                                                     // swal.fire({
                                                     //     icon: 'success',
@@ -311,7 +309,7 @@
                                                             icon: 'warning',
                                                             title: response.message,
                                                             showConfirmButton :false,
-                                                            timer:50                                              
+                                                            timer:200                                              
                                                         })
                                                     
                                                         
@@ -320,9 +318,7 @@
                                                                     var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
                                                                     audio.load();
                                                                     audio.play();
-                                                                    $('#mc_label').val("");
-                                                                    $('#kit_label').val("");
-                                                                    $('#mc_label').focus();
+                                                             
                                                                     return;
 
                                                                 
@@ -347,9 +343,7 @@
                                                                         var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
                                                                         audio.load();
                                                                         audio.play();
-                                                                        $('#mc_label').val("");
-                                                                        $('#kit_label').val("");
-                                                                        $('#mc_label').focus();
+                                                                   
 
 
                                                             return;
@@ -375,10 +369,7 @@
                                                                     var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
                                                                     audio.load()
                                                                     audio.play();
-                                                                    $('#mc_label').val("");
-                                                                    $('#kit_label').val("");
-                                                                    $('#mc_label').focus();
-
+                                                             
 
                                                 return;
                                             }
@@ -394,10 +385,7 @@
 
                                                         })
 
-                                                                
-                                                                    $('#mc_label').val("");
-                                                                    $('#kit_label').val("");
-                                                                    $('#mc_label').focus();
+                                                    
 
 
                                                 return;
@@ -421,10 +409,7 @@
                                                                         var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
                                                                         audio.load();
                                                                         audio.play();
-                                                                        $('#mc_label').val("");
-                                                                    $('#kit_label').val("");
-                                                                    $('#mc_label').focus();
-
+                                                               
 
                                                             return;
                                                     }
@@ -456,18 +441,17 @@
                             
                                 audio.load()
                                 audio.play();
-                                $('#mc_label').val("");
-                                $('#kit_label').val("");
-                                $('#mc_label').focus();
+                              
 
                         }
 
                     }
 
                 }
-                 $('#mc_label').val("");
-                 $('#kit_label').val("");
-                 $('#mc_label').focus();
+                                                $('#mc_label').val("");
+                                                $('#kit_label').val("");
+                                                $('#mc_label').focus();
+               
             })
 
             // END SCAN IN KIT LABEL

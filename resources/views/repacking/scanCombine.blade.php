@@ -267,9 +267,7 @@
                             showConfirmButton :true,
                             timer:1000
                         })                
-                            $('#kit_label').val("");
-                            $('#mc_label').val("");
-                            $('#mc_label').focus();
+                           
                         }
 
                         else{
@@ -337,9 +335,7 @@
                                                         var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
                                                         audio.load()
                                                         audio.play();
-                                                        $('#mc_label').val("");
-                                                        $('#kit_label').val("");
-                                                        $('#mc_label').focus();
+                                                       
                                                     
                                                             // swal.fire({
                                                             //     icon: 'success',
@@ -349,6 +345,7 @@
                                                             
 
                                                             // })
+                                                        return;
                                                     } 
                                                     else {
                                                         swal.fire({
@@ -379,9 +376,7 @@
                                                                             var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
                                                                             audio.load();
                                                                             audio.play();
-                                                                            $('#mc_label').val("");
-                                                                            $('#kit_label').val("");
-                                                                            $('#mc_label').focus();
+                                                                        
                                                                             return;
                                                                         
                                                         
@@ -404,9 +399,7 @@
                                                                                 var audio = new Audio("{{asset('')}}storage/sound/over_demand.mp3");
                                                                                 audio.load();
                                                                                 audio.play();
-                                                                                $('#mc_label').val("");
-                                                                                $('#kit_label').val("");
-                                                                                $('#mc_label').focus();
+                                                                          
 
 
                                                                     return;
@@ -430,9 +423,7 @@
                                                                             var audio = new Audio("{{asset('')}}storage/sound/part_notstdpack.mp3");
                                                                             audio.load()
                                                                             audio.play();
-                                                                            $('#mc_label').val("");
-                                                                            $('#kit_label').val("");
-                                                                            $('#mc_label').focus();
+                                                                       
 
 
                                                         return;
@@ -457,10 +448,7 @@
                                                                                 var audio = new Audio("{{asset('')}}storage/sound/scan_complete.mp3");
                                                                                 audio.load();
                                                                                 audio.play();
-                                                                                $('#mc_label').val("");
-                                                                                $('#kit_label').val("");
-                                                                                $('#mc_label').focus();
-
+                                                                            
 
                                                                     return;
                                                             }
@@ -493,22 +481,18 @@
                                         var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
                                     
                                         audio.load()
-                                        audio.play();  
-                                        $('#mc_label').val("");
-                                        $('#kit_label').val("");
-                                        $('#mc_label').focus();
-                            
-
-                        
+                                        audio.play();                                                           
 
                             }
                         }
                     // $('#print-master').attr('disabled', true);
                     // $('#delete-tbltemp').attr('disabled', true);
                 }
-                $('#mc_label').val("");
+                 $('#mc_label').val("");
                  $('#kit_label').val("");
                  $('#mc_label').focus();
+               
+              
             })
             // END SCAN IN KIT LABEL
         });
