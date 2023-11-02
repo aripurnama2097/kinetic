@@ -197,25 +197,22 @@
                     let gw = $('#gw').val();
 
                     console.log(getPO);
+                    // if((getPO[7])){
+                    //     // alert('Label Double Scan');
+                    //         Swal.fire({
+                    //         icon: 'warning',
+                    //         title: 'LABEL MULTIPLE SCAN',
+                    //         showConfirmButton :true,
+                    //         timer:1000
+                    //     })
 
+                    //     $('#mc_label').val("");
+                    //     $('#kit_label').val("");
+                    //     $('#mc_label').focus();
 
+                    // }
 
-                    if((getPO[7])){
-                        // alert('Label Double Scan');
-                            Swal.fire({
-                            icon: 'warning',
-                            title: 'LABEL MULTIPLE SCAN',
-                            showConfirmButton :true,
-                            timer:1000
-                        })
-
-                        $('#mc_label').val("");
-                        $('#kit_label').val("");
-                        $('#mc_label').focus();
-
-                    }
-
-                    else{
+                    // else{
 
                         if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
                             console.log(qty_kit)
@@ -445,7 +442,7 @@
 
                         }
 
-                    }
+                    // }
 
                 }
                                                 $('#mc_label').val("");
