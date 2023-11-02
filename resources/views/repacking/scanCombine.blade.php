@@ -276,8 +276,7 @@
 
                             if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
                                 console.log(qty_kit)
-
-                                alert('oke');
+                                
         
                                     $.ajax({
                                         type: "POST",
