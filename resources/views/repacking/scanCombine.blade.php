@@ -234,7 +234,8 @@
                     let qty_mcLabel     = val_mcLabel.substr(24, 26); // get QTY MC
 
                     let val_kitLabel    = $('#kit_label').val();
-                    // let scan_kitLabel   = val_kitLabel.substr(0, 11); //get PARTNO KIT
+                    let scan_kitLabel   = val_kitLabel.substr(0, 11); //get PARTNO KIT
+        
                     let getPO           = val_kitLabel.split(":");
       	            let qty_kit         = getPO[2];// GET PO KIT
                     let labelkitsplit   = getPO[0];
@@ -273,7 +274,7 @@
 
                         else{
 
-                            if(scan_mcLabel == label_kit){
+                            if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
                                 console.log(qty_kit)
 
                                 alert('oke');
