@@ -53,7 +53,7 @@
                             </div>
 
                             {{-- DATA SCAN IN --}}
-                            <div class="collapse " id="scan-collapse">
+                            <div >
                                 <div class="justify-content-center mt-3 ml-3 mr-3 mb-3">
 
                                     <div class="row row-cards col-12">
@@ -229,17 +229,16 @@
                 if (e.which == 13) {
                     let scan_nik        = $('#scan_nik').val();
                     let val_mcLabel     = $('#mc_label').val();
-                    let scan_mc         = val_mcLabel.substr(0, 11); // get PARTNO
-                    let scan_mcLabel    = scan_mc.trim(); 
+                    let scan_mcLabel    = val_mcLabel.substr(0, 15);
+                    let partmc          = scan_mcLabel.trim(); // get PARTNO
                     let qty_mcLabel     = val_mcLabel.substr(24, 26); // get QTY MC
 
                     let val_kitLabel    = $('#kit_label').val();
                     let scan_kitLabel   = val_kitLabel.substr(0, 11); //get PARTNO KIT
         
-                    let getPO           = val_kitLabel.split(":");
-      	            let qty_kit         = getPO[2];// GET PO KIT
-                    let labelkitsplit   = getPO[0];
-                    let label_kit      = labelkitsplit.trim();
+                    let getContent           = val_kitLabel.split(":");
+      	            let qty_kit         = getContent[2];// GET PO KIT
+                    let partkit         = getContent[0];
 
 
 
@@ -250,8 +249,8 @@
                      let combine_no = $('#combine_no').val();
 
                     
-                     console.log(scan_mcLabel)
-                     console.log(label_kit)
+                     console.log(partmc)
+                     console.log(partkit)
 
                         if (val_kitLabel != '') {                  
                             $('#print-master').attr('disabled', false);
@@ -260,7 +259,7 @@
                         }
 
 
-                        if((getPO[7])){
+                        if((getContent[7])){
                             Swal.fire({
                             icon: 'warning',
                             title: 'LABEL MULTIPLE SCAN',
@@ -272,7 +271,7 @@
 
                         else{
 
-                            if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
+                            if(partmc == partkit ){
                                 console.log(qty_kit)
                                 
         

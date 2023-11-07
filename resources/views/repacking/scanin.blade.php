@@ -33,7 +33,7 @@
 
                             {{-- DATA SCAN IN --}}
                             <div class="card border shadow-lg">
-                                <div class="collapse " id="scan-collapse">
+                                <div  id="scan-collapse">
                                     <div class="justify-content-center mt-3 ml-3 mr-3 ">
     
                                         <div class="row row-cards col-12">
@@ -168,11 +168,16 @@
             $('#mc_label').on('keypress', function(e){
                 if(e.which == 13) {
                     let val_mcLabel      = $('#mc_label').val()
+                    if (val_mcLabel != '') {
                          $('#lenght').attr('disabled', false);
                         $('#widht').attr('disabled', false);
                         $('#height').attr('disabled', false);
                         $('#gw').attr('disabled', false);
                         $('#kit_label').focus();
+                    }
+                    else{
+                        $('#mc_label').focus();
+                    }
                 }
             });
 
@@ -183,20 +188,23 @@
                 if (e.which == 13) {
                     let scan_nik        = $('#scan_nik').val();
                     let val_mcLabel     = $('#mc_label').val();
-                    let scan_mcLabel    = val_mcLabel.substr(0, 11); // get PARTNO
+                    let scan_mcLabel    = val_mcLabel.substr(0, 15);
+                    let partmc          = scan_mcLabel.trim(); // get PARTNO
                     let qty_mcLabel     = val_mcLabel.substr(24, 26); // get QTY MC
 
                     let val_kitLabel    = $('#kit_label').val();
                     let scan_kitLabel   = val_kitLabel.substr(0, 11); //get PARTNO KIT
-                    let getPO           = val_kitLabel.split(":");
-      	            let qty_kit         = getPO[2];// GET PO KIT
+                    let getContent      = val_kitLabel.split(":");
+      	            let qty_kit         = getContent[2];// GET PO KIT
+                    let partkit        = getContent[0];
 
                     let lenght = $('#lenght').val();
                     let widht = $('#widht').val();
                     let height = $('#height').val();
                     let gw = $('#gw').val();
 
-                    console.log(getPO);
+                    console.log(partmc);
+                    console.log(partkit);
                     // if((getPO[7])){
                     //     // alert('Label Double Scan');
                     //         Swal.fire({
@@ -214,7 +222,8 @@
 
                     // else{
 
-                        if(scan_mcLabel.search(scan_kitLabel)>= 0 ){
+                        if(partmc == partkit ){
+                            // alert('part oke');
                             console.log(qty_kit)                  
                             $.ajax({
                                 type: "POST",
@@ -392,9 +401,11 @@
 
                                 }
                             })
+                  
                         }
 
                         else{
+                            alert('part NG');
                             Swal.fire({
                                 icon: 'error',
                                 title: "WRONG PART",
@@ -402,21 +413,22 @@
                                 timer:300
                                 })
 
-                            var audio = document.getElementById('audio');
+                                var audio = document.getElementById('audio');
                                 var source = document.getElementById('audioSource');
                                 var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
                             
                                 audio.load()
-                                audio.play();
+                                audio.play();                           
                         }
 
                     // }
-                    $('#mc_label').val("");
-                    $('#kit_label').val("");
-                    $('#kit_label').focus();
-                    $('#mc_label').focus();
+                                $('#mc_label').val("");
+                                $('#mc_label').focus();
+                                $('#kit_label').val("");    
+                  
 
-                }               
+                }
+                                         
             })
 
             // END SCAN IN KIT LABEL
