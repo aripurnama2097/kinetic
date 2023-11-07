@@ -7,7 +7,7 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use App\Models\Inhouse;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithUpserts;
-class InhouseImport implements Tomodel, WithUpserts
+class InhouseImport implements Tomodel
 {
     /**
     * @param Collection $collection
@@ -28,8 +28,8 @@ class InhouseImport implements Tomodel, WithUpserts
         ]);
     }
 
-    public function uniqueBy()
-    {
-        return 'lotno';
-    }
+    // public function uniqueBy()
+    // {
+    //     return 'lotno';
+    // }
 }
