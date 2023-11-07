@@ -109,6 +109,7 @@ Route::get('schedule_tentative/SA90/delete',[SA90Controller::class, 'delete']);
 
 Route::get('/schedule_tentative/inhouse',[SchTentativeController::class, 'view_inhouse']);
 Route::post('/schedule_tentative/inhouse/upload',[SchTentativeController::class, 'import_Inhouse']);
+Route::get('schedule_tentative/inhouse/delete',[SchTentativeController::class, 'deleteInhouse']);
 
 
 

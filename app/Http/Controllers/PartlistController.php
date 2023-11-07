@@ -137,23 +137,35 @@ class PartlistController extends Controller
     public function scan_issue(Request $request, $status_print = null)
     {
 
-        $partlist_no = $request->partlist_no;
-
+        // return strlen($request->scan_label);
         $nik = $request->scan_nik;
         $scan_nik   =  substr($nik, 2,5); 
+        $partlist_no = $request->partlist_no;
+    
+
         $scan_label = $request->scan_label;
         $label_scan = substr($scan_label, 0, 15);
-
-        //PARAM LABEL
         $trim_label = trim($label_scan);
-        $qty2 = substr($scan_label, 24, 5);
-        $qty = trim($qty2);
-        $unique = substr($scan_label, 28, 49);
 
+        if (strlen($scan_label) == 76) {
+                $qty2 = substr($scan_label, 24, 5);
+                $qty = trim($qty2);
+                $unique = substr($scan_label, 28, 49);
 
+          
+    
+            }
+        else {
+                $qty2 = substr($scan_label, 16, 4);
+                $qty = trim($qty2);
+                $unique = substr($scan_label, 20, 10);
+            }
+
+        
         // STEP 1. CEK ISI PART NO DIPARTLIST
         $cek_stdpack = DB::connection('sqlsrv')
-                    ->select("SELECT * FROM std_pack where partnumber ='{$label_scan}'");
+                              ->select("SELECT * FROM std_pack 
+                                                    where partnumber ='{$label_scan}'");
 
         if (!$cek_stdpack) {
                         return response()->json(['success' => false,
@@ -486,6 +498,8 @@ class PartlistController extends Controller
         // return "tes";
         return $this->scan_issue($request, "loosecarton");
 
+        $nik = $request->scan_nik;
+        $scan_nik   =  substr($nik, 2,5); 
         $partlist_no = $request->partlist_no;
         $scan_label = $request->scan_label;
 
@@ -511,6 +525,8 @@ class PartlistController extends Controller
     {
         $this->scan_issue($request, "start_combine");
 
+        $nik = $request->scan_nik;
+        $scan_nik   =  substr($nik, 2,5); 
         $partlist_no = $request->partlist_no;
         $scan_label = $request->scan_label;
 
@@ -541,7 +557,9 @@ class PartlistController extends Controller
 
             ]);
         }
-
+        
+        $nik = $request->scan_nik;
+        $scan_nik   =  substr($nik, 2,5); 
         $partlist_no = $request->partlist_no;
         $scan_label = $request->scan_label;
 
