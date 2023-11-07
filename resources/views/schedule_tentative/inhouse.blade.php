@@ -153,7 +153,7 @@ $(document).ready(function () {
 
         swalWithBootstrapButtons.fire({
         title: 'Are you sure ?',        
-        text: "Reset SA90!",
+        text: "Reset Inhouse Master!",
        
         icon: 'warning',
         showCancelButton: true,
@@ -164,7 +164,7 @@ $(document).ready(function () {
   if (result.isConfirmed) {
 
     $.ajax({
-                url: "{{url('schedule_tentative/SA90/delete')}}",
+                url: "{{url('schedule_tentative/inhouse/delete')}}",
                 type: 'get',
                 success: function(result) {
                   swalWithBootstrapButtons.fire(
@@ -175,6 +175,7 @@ $(document).ready(function () {
                 }
 
             });
+    ajax.reload();
     
   } else if (
     /* Read more about handling dismissals below */
@@ -191,79 +192,9 @@ $(document).ready(function () {
 
 
 
-    // $('#example').DataTable();
-    
-    // CONFIRM SUMMARY SB98
-    $('#confirm-sb98').on('click', function() {
-      
-      $('#example .check:checked').each(function() {
-        selected.push($(this).val());
-      });
-
-      Swal.fire({
-        icon: 'warning',
-          title: 'Are you sure summary SB98?',
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: 'Yes'
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          $.ajax({
-            type: 'get',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: "{{url('/schedule/sumsb98')}}",    
-            success: function(result) {
-                    swal.fire(
-                  'SUCCESS!',
-                  'Summary Finish.',
-                  'success'
-                    )
-              }
-          });
-        }
-      });
-    });
-
+   
   
-    //GENERATE SCHEDULE 
-    $('#generate-sch').on('click', function() {
-      
-      $('#example .check:checked').each(function() {
-        selected.push($(this).val());
-      });
-
-      Swal.fire({
-        icon: 'warning',
-          title: 'Are you sure Generate schedule?',
-          // input :text,
-          showDenyButton: false,
-          showCancelButton: true,
-          confirmButtonText: 'Yes',
-        
-      }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-          $.ajax({
-            type: 'get',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: "{{url('schedule_tentative/generate')}}",    
-            success: function(result) {
-                    swal.fire(
-                  'SUCCESS!',
-                  'Update Schedule',
-                  'success'
-                    )
-              }
-          });
-        }
-      });
-    });
-
+ 
 
 
     table = $('#datatable').DataTable( {

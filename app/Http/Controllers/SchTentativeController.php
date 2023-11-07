@@ -463,6 +463,11 @@ class SchTentativeController extends Controller
     return view('schedule_tentative.check_stdpack',compact('data'));
 }
 
+  public function deleteInhouse(){
+
+    DB::table('masterinhouse')
+        ->truncate();   
+  }
 
   
    
