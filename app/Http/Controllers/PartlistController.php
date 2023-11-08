@@ -301,7 +301,8 @@ class PartlistController extends Controller
         ->max('id');
 
         $order = $get_id ? $get_id + 1 : 1;
-        $idnumber = 'I' . $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $dailyno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $idnumber = 'I' . $dailyno;
 
        
 
@@ -319,7 +320,8 @@ class PartlistController extends Controller
                  $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
 
                  $order = $get_id ? $get_id + 1 : 1;
-                 $idnumbercont = 'I' . $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+                 $dailyno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+                 $idnumbercont = 'I' . $dailyno;
 
                 //  dd($idnumbercont);
             }
@@ -329,9 +331,9 @@ class PartlistController extends Controller
 
                 $get_num = DB::table('partscan')
                 ->where('status_print', 'start_combine')
-                ->max('idnumber');
+                ->max('dailyno');
 
-                $idnumbercont =  $get_num;     
+                $idnumbercont = 'I' . $get_num;     
                 $compare_stdpack = DB::connection('sqlsrv')->select("SELECT stdpack, (sum(scan_issue))+$qty as scan_issue
                                                                         from partscan
                                                                         where unique_continue = '{$uniq_cont}'
@@ -343,10 +345,10 @@ class PartlistController extends Controller
             }
 
             DB::connection('sqlsrv')
-                ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
+                ->insert("INSERT into partscan(dailyno,custcode, dest,model, prodno, vandate, dateissue,partlist_no
                                      ,orderitem,custpo,partno,partname,shelfno,label,demand,unique_id,stdpack,scan_issue, scan_nik,
                                       status_print,idnumber,unique_continue)
-                          select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
+                          select top 1 '{$dailyno}',custcode,dest, model,prodno,vandate,date_issue,partlist_no,
                                     orderitem,custpo,partno, partname,mcshelfno,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$status_print}','{$idnumbercont}','{$uniq_cont}'
                                     from partlist
                                     where partlist_no ='{$partlist_no}'
@@ -415,9 +417,9 @@ class PartlistController extends Controller
         //STEP 7. SIMPAN DATA  ke partscan + TANPA UPDATE STATUS PRINT
         else {
             DB::connection('sqlsrv')
-                ->insert("INSERT into partscan(custcode, dest,model, prodno, vandate, dateissue,partlist_no
+                ->insert("INSERT into partscan(dailyno,custcode, dest,model, prodno, vandate, dateissue,partlist_no
                     ,orderitem,custpo,partno,partname,shelfno,label,demand,unique_id,stdpack,scan_issue, scan_nik,idnumber)
-                    select top 1 custcode,dest, model,prodno,vandate,date_issue,partlist_no,
+                    select top 1 '{$dailyno}',custcode,dest, model,prodno,vandate,date_issue,partlist_no,
                     orderitem,custpo,partno, partname,mcshelfno,'{$scan_label}', demand,'{$unique}', stdpack,'{$qty}', '{$scan_nik}','{$idnumber}'
                     from partlist
                     where  partlist_no ='{$partlist_no}'

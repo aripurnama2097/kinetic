@@ -7,54 +7,49 @@
 @section('section')
 <div class="page-wrapper">
     <!-- Page header -->
-    <div class="page-header d-print-none">
-      {{-- <div class="container-xl"> --}}
-        <div class="row g-2 align-items-center d-flex justify-content-center">
+  
+
+<div class="container">
+  <div class="row g-2 align-items-center d-flex justify-content-center">
           
-          <!-- Page title actions -->
-       <h2>UPLOAD MASTER </h2>
-            <div class="btn-group col-8 ">
-             
-              <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-light" >
-                SB98 Master                 
-               </a>
-
-               <a   href="{{url('/schedule_tentative/SA90')}}" class="btn btn-light">
-                 SA90 Master
-               </a>
-               
-                {{-- <a  href="{{url('/schedule_tentative/master_scheduleTemp')}}" class="btn btn-light" >
-                  Excell Schedule           
-                 </a> --}}
-                 <a   href="{{url('/schedule_tentative/inhouse')}}" class="btn btn-info">
-                  Inhouse Master
-                 </a>
-            </div>
+    <!-- Page title actions -->
+ <h2>UPLOAD MASTER </h2>
+      <div class="btn-group col-8 mt-3">
        
-        </div>
+        <a  href="{{url('/schedule_tentative/SB98')}}" class="btn btn-info" >
+          SB98 Master                 
+         </a>
+
+         <a   href="{{url('/schedule_tentative/SA90')}}" class="btn btn-info">
+           SA90 Master
+         </a>
+         
+          {{-- <a  href="{{url('/schedule_tentative/master_scheduleTemp')}}" class="btn btn-light" >
+            Excell Schedule           
+           </a> --}}
+           <a   href="{{url('/schedule_tentative/inhouse')}}" class="btn btn-success">
+            Inhouse Master
+           </a>
       </div>
+ 
+  </div>
+</div>
+
+  <div class="btn-group col-12 mt-5 " role="group">
+    <a class="btn btn-primary" href="{{url('/schedule_tentative/skdpart')}}">
+        {{-- <i class="ti ti-printer"></i> --}}
+        SKD PART
+    </a>
+    <div class="col-6  ">
+        <a class="btn btn-dark col-12" href="{{url('/schedule_tentative/master_scheduleTemp')}}">
+            ---SERVICE PART---
+        </a>
     </div>
+ </div>
 
-
-
-    <div class="btn-group col-12 mt-5 " role="group">
-      <a class="btn btn-primary" href="{{url('/schedule_tentative/skdpart')}}">
-          {{-- <i class="ti ti-printer"></i> --}}
-          SKD PART
-      </a>
-      <div class="col-6  ">
-          <a class="btn btn-dark col-12" href="{{url('/schedule_tentative/master_scheduleTemp')}}">
-              ---SERVICE PART---
-          </a>
-      </div>
-   </div>
-    <!-- Page body MENU -->
-    
    
+    <!-- Page body MENU -->
 
-
-
-</a>
 </div>
 
 <script type="text/javascript" src="{{asset ('')}}js/jquery-3.7.0.js "></script>
