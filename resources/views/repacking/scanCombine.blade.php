@@ -558,6 +558,8 @@
 
                 var url = ("{{url('repacking/scanCombine/printMaster')}}" + "?combine_no=" + combine_no)
                 window.open(url , '_blank'); 
+                location.reload();
+                
 
             
             }
