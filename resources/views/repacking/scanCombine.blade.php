@@ -121,9 +121,9 @@
                                         <button id="print-master" onclick="printCombine()" class="btn btn-success text-white  col-12 mb-3" disabled ><i class="ti ti-printer"></i>
                                             PRINT MASTER LABEL
                                         </button>
-                                        <button  id="delete-tbltemp" class="btn btn-danger text-white  col-12 mb-3" disabled><i class="ti ti-delete"></i>
+                                        {{-- <button  id="delete-tbltemp" class="btn btn-danger text-white  col-12 mb-3" disabled><i class="ti ti-delete"></i>
                                             RESET DATA
-                                        </button>
+                                        </button> --}}
                                     </div>
                                 </div>
                                 <div class="col-2">

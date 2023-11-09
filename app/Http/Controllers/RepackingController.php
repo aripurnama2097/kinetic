@@ -531,7 +531,7 @@ class RepackingController extends Controller
         $currentDate = Carbon::now();
         $dateAsNumber = $currentDate->format('Ymd');
         $combine_no = DB::connection('sqlsrv')
-            ->select("SELECT top 1 combine_no from tblcombine_no order by id desc ");
+            ->select("SELECT (select max(combine_no) + 1  from tblcombine_no) as combine_no ");
 
      
 
