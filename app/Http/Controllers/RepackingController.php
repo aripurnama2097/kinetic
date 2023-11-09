@@ -763,7 +763,12 @@ class RepackingController extends Controller
                                 FROM temp_print
                                 where combine_no ='{$combine_no}'");
 
-      $totalItem = DB::table('temp_print')->distinct('custpo')->count('custpo');
+      $totalItem = DB::table('temp_print')
+                            ->where('combine_no',$combine_no)
+                            ->distinct('custpo')
+                            ->count('custpo');
+
+                     
 
        // STEP 2. INSERT INTO TBLIDBOX
        DB::connection('sqlsrv')
