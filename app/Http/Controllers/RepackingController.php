@@ -660,14 +660,12 @@ class RepackingController extends Controller
             // GET SEQUENCE NO
             $currentDate = Carbon::now();
             $dateAsNumber = $currentDate->format('Ymd');
-            $lastOrder = DB::table('temp_print')
-                             ->whereDate('created_at',$currentDate)
-                             ->max('id');
+            $getseq = DB::table('temp_print')
+                             ->where('combine_no',$combine_no)
+                             ->max('uniq_seq');
 
-            $order = $lastOrder ? $lastOrder + 1 : 1;
-            $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
-            $sequence_no = substr($uniqueNumber,12,1);
-            $seq = $get_prodno[0]->prodno . '-'  . $combine_no . '-' . $sequence_no;
+            $uniq_seq =  $getseq ? $getseq + 1 : 1;        
+            $seq = $get_prodno[0]->prodno . '-'  . $combine_no . '-' . $uniq_seq;
 
             // dd($seq);
             // END SEQUENCE
@@ -680,8 +678,8 @@ class RepackingController extends Controller
                             // INSERT DATA TO TEMP PRINT TABLE
                             DB::connection('sqlsrv')
                                     ->insert("INSERT INTO temp_print
-                                                            (custpo,dest,prodno,partno,partname,shelfno,qty,combine_no,sequence_no,idnumber)
-                                                    select '{$custpo}','{$dest}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$qty}','{$combine_no}','{$seq}','{$idnumber}'
+                                                            (custpo,dest,prodno,partno,partname,shelfno,qty,combine_no,uniq_seq,sequence_no,idnumber)
+                                                    select '{$custpo}','{$dest}','{$get_prodno[0]->prodno}', '{$partno}','{$partname}','{$shelfno}', '{$qty}','{$combine_no}','{$uniq_seq}','{$seq}','{$idnumber}'
                                             ");
                                                $sum = array($selectPart[0]->act_receive, $qty);
                                                $act_qty = array_sum($sum);
@@ -762,7 +760,8 @@ class RepackingController extends Controller
         // $combine_no = $lastOrder ? $lastOrder + 1 : 1;
       $param= DB::connection('sqlsrv')
                      ->select("SELECT distinct custpo, prodno,partno,partname,dest,shelfno, qty,combine_no,sequence_no,idnumber
-                                FROM temp_print");
+                                FROM temp_print
+                                where combine_no ='{$combine_no}'");
 
       $totalItem = DB::table('temp_print')->distinct('custpo')->count('custpo');
 
