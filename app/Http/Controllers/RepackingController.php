@@ -346,6 +346,7 @@ class RepackingController extends Controller
         // GET PARAM FROM KIT LABEL
 
         $label_scan = substr($mcLabel,0,15);
+        $unique_mc = substr($mcLabel, 28, 49);
         $partno = substr($kitLabel, 0,11);
 
         
@@ -395,6 +396,8 @@ class RepackingController extends Controller
         $cek_label = DB::connection('sqlsrv')
                     ->select("SELECT * FROM scanin_repacking 
                                 where idnumber ='{$idnumber}'
+                                        or
+                                      unique_mc ='{$unique_mc}'
                                 ");
 
 
@@ -469,8 +472,8 @@ class RepackingController extends Controller
 
         // STEP 2.INSERT INTO REPACKING SCAN IN
         DB::connection('sqlsrv')
-        ->insert("INSERT into scanin_repacking(custcode,prodno,idnumber,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
-                select top 1  custcode,prodno,'{$idnumber}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
+        ->insert("INSERT into scanin_repacking(custcode,prodno,idnumber,unique_mc,custpo,partno, partname,demand,stdpack,qty_receive,dest,label_mc,label_kit,scan_nik,gw,lenght,widht,height)
+                select top 1  custcode,prodno,'{$idnumber}','{$unique_mc}','{$custpo}', '{$partno}','{$partname}',demand,stdpack,'{$qty}', '{$dest}','{$mcLabel}','{$kitLabel}', '{$scan_nik}','{$get_stdpack[0]->weight}','{$get_stdpack[0]->lenght}','{$get_stdpack[0]->widht}','{$get_stdpack[0]->height}'
                 from repacking_list
                     where partno = '{$partno}' 
                     and custpo ='{$custpo}'
