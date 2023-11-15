@@ -75,9 +75,10 @@
                                     <a class="btn btn-success mb-2" href="{{ url('finishgood/viewSkid') }}"> Refresh <i
                                             class="ti ti-refresh"></i> </a>
                                    
-                                    <a class="btn btn-danger mb-2 text-white" data-bs-toggle="collapse" id="btn-cancelskid"
-                                    role="button" aria-expanded="false" aria-controls="scan-out"> Cancel Skid <i
+                                    <a class="btn btn-dark mb-2 text-white" data-bs-toggle="collapse" id="btn-cancelskid"
+                                    role="button" aria-expanded="false" aria-controls="scan-out"> Log Skid <i
                                                 class="ti ti-back"></i> </a>
+                                                
                                   
                                     <h1 class="text-dark text-center"> --SKID PRINT--</h1>                
                                     <div class="d-flex justify-content-center">
@@ -207,7 +208,7 @@
                     <div class="collapse mt-4"id="cancel-skid">
                         <div class="col-12 ">
                             <div class="table-responsive ml-2 mr-2">
-                                <table style="width:100%"
+                                <table id="log-skid" style="width:100%"
                                 class="text-nowrap  table border-bordered border border-primary shadow-sm">
                                 <thead class="thead-dark">
                                       <tr>
@@ -246,6 +247,8 @@
                             </div>
                         </div>
                     </div>
+
+                    
                 </div>         
             </div>
          </div>
@@ -255,6 +258,18 @@
     <script type="text/javascript">
     
         $(document).ready(function() {
+
+
+            $('#log-skid').DataTable( {
+                    dom: 'Bfrtip',
+                    order: [6,'desc'], 
+                    // order:[22,'desc'],
+                    buttons: [
+                    
+                        'excelHtml5',
+                        'csvHtml5'
+                    ]
+                } );
 
             $('#btn-print').on('click', function(){
           

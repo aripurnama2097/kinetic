@@ -180,12 +180,15 @@ class FinishGoodController extends Controller
         $currentDate = Carbon::now();     
         $date        = $currentDate->format('Ymd');      
   
+        $skid_No = DB::table('tblheaderskid')
+        ->orderBy('id', 'desc')
+        ->value('skid_no');
+
+        // $lastOrder = DB::table('tblheaderskid')
+        // // ->where('box_no')
+        // ->max('skid_no');
   
-        $lastOrder = DB::table('tblheaderskid')
-        // ->where('box_no')
-        ->max('skid_no');
-  
-        $skidno = $lastOrder ? $lastOrder + 1 : 1;
+        $skidno =  $skid_No  + 1;
 
         // $skidcode = 'SKD' . $date . str_pad($order, 3, '0', STR_PAD_LEFT);
 
@@ -205,7 +208,7 @@ class FinishGoodController extends Controller
 
 
         $headerskid = DB::connection('sqlsrv')
-            ->select("SELECT * from tblheaderskid") ;
+            ->select("SELECT * from tblheaderskid order by id desc") ;
 
         return view('finishgood.viewSkid',compact('prodno','dest','vandate','skidno','headerskid','custcode'));
     }
