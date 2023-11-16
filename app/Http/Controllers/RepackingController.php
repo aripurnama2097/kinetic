@@ -31,9 +31,6 @@ class RepackingController extends Controller
     }
 
 
-
-
-
     public function startPrint(Request $request){
 
 
@@ -43,7 +40,7 @@ class RepackingController extends Controller
     }
 
      // PROCESS PRINT LABEL KIT
-     public function printlbl_kit(Request $request){
+    public function printlbl_kit(Request $request){
 
         $scan_nik = $request ->scan_nik;
         $scan_label = $request->scan_label;
@@ -330,12 +327,9 @@ class RepackingController extends Controller
     }
 
     public function scanIn(){
-
-       
-
-
         return view('repacking.scanin');
     }
+
 
     public function inputData(Request $request){
 
@@ -691,7 +685,11 @@ class RepackingController extends Controller
 
             //CEK CUST PO       
             $cek_po = DB::connection('sqlsrv')
-                            ->select("SELECT  count(custpo) as custpo from temp_print where custpo ='{$custpo}'");
+                            ->select("SELECT 
+                                             count(custpo) as custpo from temp_print 
+                                                where custpo ='{$custpo}'
+                                                and combine_no='{$combine_no}'
+                                    ");
                     // 2. MASUKAN DATA KE TEMP PRINT JIKA PO MASIH BELUM ADA PADA TABLE
                         if($cek_po[0]->custpo == 0  ){
                             // INSERT DATA TO TEMP PRINT TABLE
@@ -723,8 +721,10 @@ class RepackingController extends Controller
                             $update =  DB::connection('sqlsrv')
                                         ->update("UPDATE temp_print
                                                     SET
-                                                    qty = (qty + {$qty}) where 
+                                                    qty = (qty + {$qty}) 
+                                                    where 
                                                     custpo ='{$custpo}' 
+                                                    and combine_no ='{$combine_no}'
                                                 ") ;
 
                             $sum = array($selectPart[0]->act_receive, $qty);
