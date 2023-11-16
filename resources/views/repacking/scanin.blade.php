@@ -276,9 +276,6 @@
                                                 var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
                                                 audio.load()
                                                 audio.play();
-
-                                         
-
                                             } 
                                             else {
                                                 swal.fire({
@@ -294,6 +291,7 @@
                                                 console.log("message",warningMessage.indexOf('FINISH'))
                                                 console.log("message",warningMessage.indexOf('PART'))
                                                 console.log("message",warningMessage.indexOf('BEFORE'))
+                                                console.log("message",warningMessage.indexOf('QTY'))
                                                 
                                                 if(warningMessage.indexOf('DOUBLE') == 0){
                                                             Swal.fire({
@@ -307,6 +305,24 @@
                                                                         var audio = document.getElementById('audio');
                                                                         var source = document.getElementById('audioSource');
                                                                         var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                                        audio.load();
+                                                                        audio.play();
+                                                                    
+                                                                                                                                                                                          
+                                                }
+
+                                                if(warningMessage.indexOf('QTY') == 0){
+                                                            Swal.fire({
+                                                            
+                                                                icon: 'error',
+                                                                title: response.message,
+                                                                showConfirmButton :false,
+                                                                timer:200                                              
+                                                            })
+                                                                                                                   
+                                                                        var audio = document.getElementById('audio');
+                                                                        var source = document.getElementById('audioSource');
+                                                                        var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
                                                                         audio.load();
                                                                         audio.play();
                                                                     
@@ -422,11 +438,10 @@
                         }
 
                     // }
-                                $('#mc_label').val("");
-                                $('#mc_label').focus();
-                                $('#kit_label').val("");    
-                  
-
+                    $('#mc_label').val("");
+                    $('#kit_label').val("");
+                    $('#kit_label').focus("");
+                    $('#mc_label').focus();  
                 }
                                          
             })

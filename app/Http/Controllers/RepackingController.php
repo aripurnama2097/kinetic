@@ -348,8 +348,6 @@ class RepackingController extends Controller
         $label_scan = substr($mcLabel,0,15);
         $unique_mc = substr($mcLabel, 28, 49);
         $partno = substr($kitLabel, 0,11);
-
-        
         $qty2    = substr($kitLabel, 17,19);
         $qty = trim($qty2);
 
@@ -361,11 +359,6 @@ class RepackingController extends Controller
         $widht = $request->widht;
         $height = $request->height;
         $gw = $request->gw;
-
-        // dd($qty);
-
-      
-
         // if($cek_stdpack[0]->stdpack != $qty){
         //     echo'isi gross weight';
         //     return response()
@@ -375,14 +368,12 @@ class RepackingController extends Controller
         //         ]);
         // }
 
-                $valid = DB::connection('sqlsrv')
-                ->select("SELECT * from partscan
-                                where label ='{$mcLabel}'                        
-                        ");
+         // STEP 1. CEK LABEL IN SCAN MC
+         $valid = DB::connection('sqlsrv')
+         ->select("SELECT * from partscan
+                         where label ='{$mcLabel}'                        
+                 ");
 
-        // CEK DATA PADA REPACKING
-
-            // dd($valid);
             if($valid == null){
                 return response()
                     ->json([
@@ -390,9 +381,34 @@ class RepackingController extends Controller
                         'message' => 'BEFORE SCAN MC'
                     ]);
                 }
+
+
+                   // STEP 2. COMPARE QTY LABEL MC DAN KIT
+                    $cekid = DB::connection('sqlsrv')
+                    ->select("SELECT idnumber from partscan
+                                where
+                                unique_id ='{$unique_mc}'                      
+                            ");
+
+    
+                   $qtymc = DB::connection('sqlsrv')
+                        ->select("SELECT (select sum(scan_issue) from partscan 
+                                        where idnumber ='{$cekid[0]->idnumber}') 
+                                                as scan_mc                    
+                                "); 
+                                
+
+                    if($qtymc[0]->scan_mc != $qty){
+                        return response()
+                            ->json([
+                                'success' => false,
+                                'message' => 'QTY NOT MATCH'
+                            ]);
+                        }
+                        //END CEK COMPARE QTY
     
 
-        // STEP 1.CEK LABEL SCAN PADA SCAN IN
+        // STEP 3.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
                     ->select("SELECT * FROM scanin_repacking 
                                 where idnumber ='{$idnumber}'
