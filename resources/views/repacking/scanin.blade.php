@@ -316,15 +316,15 @@
                                                             
                                                                 icon: 'error',
                                                                 title: response.message,
-                                                                showConfirmButton :false,
+                                                                showConfirmButton :true,
                                                                 timer:200                                              
                                                             })
                                                                                                                    
-                                                                        var audio = document.getElementById('audio');
-                                                                        var source = document.getElementById('audioSource');
-                                                                        var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
-                                                                        audio.load();
-                                                                        audio.play();
+                                                                        // var audio = document.getElementById('audio');
+                                                                        // var source = document.getElementById('audioSource');
+                                                                        // var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
+                                                                        // audio.load();
+                                                                        // audio.play();
                                                                     
                                                                                                                                                                                           
                                                 }

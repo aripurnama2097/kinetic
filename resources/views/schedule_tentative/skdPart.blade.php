@@ -62,6 +62,7 @@
                       <thead class="thead-dark">
                         <tr>                                           
                             <th style ="font-size: 10px;">Customer Code</th>
+                            <th style ="font-size: 10px;">Dest</th>
                             <th style ="font-size: 10px;">Cust PO</th>
                             <th style ="font-size: 10px;">Part Number</th>
                             <th style ="font-size: 10px;">Part Name</th>                                               
@@ -83,6 +84,7 @@
                         @foreach($data as $key => $value)
                         <tr>
                          <td style ="font-size: 12px;"> {{$value->custcode}}</td>
+                         <td style ="font-size: 12px;"> {{$value->dest}}</td>
                          <td style ="font-size: 12px;"> {{$value->custpo}} </td>
                          <td style ="font-size: 12px;"> {{$value->partno}} </td>
                          <td style ="font-size: 12px;"> {{$value->partname}} </td>                
