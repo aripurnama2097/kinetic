@@ -1,6 +1,16 @@
 @extends('layouts.main')
 @section('section')
 
+<style>
+.bg-header{
+ background-color: #068c9b;;
+}
+
+.bg-header1{
+ color: #068c9b;;
+}
+</style>
+{{-- #9ed9df --}}
 
 <div class="page-wrapper">
     <!-- Page header -->
@@ -41,10 +51,45 @@
             <div class="col-12 ">
               <div class="card rounded-1 col-12 " >
                 <div class="card-header text-center justify-content-center">
-                  <h2 style="font-size:30px"class="text-dark " >--LOG PRINT LABEL KIT-</h2> 
+                  <h2 style="font-size:30px"class="text-primary bg-header1" >LOG PRINT LABEL KIT</h2> 
+                  
                 </div>
-              
-
+                <form class="mt-2 mb-2"action="{{url('repacking/logPrintOrg')}}" method="GET">			
+                  <div class="row">
+                    <div class="col-lg-3 ">
+                      <div class="card shadow-lg">
+                          <div class="card-body bg-header">
+                              <h5 style="font-weight:bold;font-size:18px" class="card-subtitle text-light  mb-0 text-center">CUSTPO</h5>
+                          </div>
+                          <input type="text" name="custpo" class="form-control form-control-sm" placeholder="please fill in" autocomplete="off" autofocus>
+                      </div>
+                  </div>
+      
+                  <div class="col-lg-3">
+                    <div class="card shadow-lg ">
+                        <div class="card-body bg-header ">
+                            <h5 style="font-weight:bold;font-size:18px" class="card-subtitle text-light  mb-0 text-center">PART NUMBER</h5>
+                        </div>
+                        <input type="text"  name="partno" class="form-control form-control-sm" placeholder="please fill in"  autocomplete="off" autofocus>
+                    </div>
+                  </div>
+    
+                  <div class="col-lg-3">
+                    <div class="card shadow-lg">
+                        <div class="card-body bg-header">
+                            <h5 style="font-weight:bold;font-size:18px" class="card-subtitle text-light  mb-0 text-center">ID NUMBER</h5>
+                        </div>
+                        <input type="text" name="idnumber" class="form-control form-control-sm" placeholder="please fill in" autocomplete="off" autofocus>
+                    </div>
+                </div>
+              </div>  
+              <div class="col-2 btn-group btn btn-sm mt-0">
+                <button class="btn btn-info btn-sm col-4" type="submit" ><i class="ti ti-search"></i> SEARCH</button> 
+                <a class="btn btn-success btn-sm" href="{{ url('/repacking/logPrintOrg') }}"> Refresh <i
+                  class="ti ti-refresh"></i> </a>
+                  {{-- <button type="button" class="btn btn-primary mx-auto mx-md-0" onclick="printlabel()">Print label</button> --}}
+              </div>
+            </form>
               </div>
             </div>
 
@@ -52,26 +97,21 @@
                   @if(Session::has('success'))
                   <p class="alert alert-success">{{Session::get('success')}}</p>
                   @endif
-  
-              
+
             <div class="col-12">
               <div class="card  col-12 " >    
-                <div class="col-6">
+                {{-- <div class="col-6">
                   <form class="mt-2 mb-2"action="{{url('repacking/logPrintOrg')}}" method="GET">			
-                    <input type="text" name="keyword"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
-                    <button class="btn btn-warning btn-sm" type="submit" ><i class="ti ti-search"></i> SEARCH</button>
-                                        
+                    <input type="text" name="name"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
+                    <button class="btn btn-warning btn-sm" type="submit" ><i class="ti ti-search"></i> SEARCH</button>                   
                 </form>		
-                  </div>  
-             
+                  </div>   --}}           
                 <div class="card-body border-bottom ">                
-
-                  <div class="table-responsive  rounded-1 shadow-sm">      
-                              
-                  
-                   <table style="width:100%"class="table table-striped border border-primary shadow-sm" >
+                  <div class="table-responsive  rounded-1 shadow-sm">                      
+                   <table id="log-data" style="width:100%"class="table table-striped border border-primary shadow-sm" >
                      <thead class="thead-dark">
-                       <tr>                   
+                       <tr>      
+                        {{-- <th scope="col"><input type="checkbox" id="check_all" /></th>          --}}
                         <th style ="font-size: 10px;">No</th>
                         <th style ="font-size: 10px;">ID Number</th>
                         <th style ="font-size: 10px;">Cust PO</th>
@@ -84,16 +124,19 @@
                         <th style ="font-size: 10px;">Lot Inhouse</th>
                         <th style ="font-size: 10px;">Create Date</th>
                          <th style ="font-size: 10px;">Last Print</th>  
-                         <th style ="font-size: 10px;">Print</th> 
-                              
+                         <th style ="font-size: 10px;">Print</th>                             
                        </tr>
                       </thead>
          
                      <tbody>
-                       @foreach($data as $key => $value)
-                  
-                        </td> 
-                        <td class="text-center">{{ ++$i }}</td>
+                       @foreach($data_log as $key => $value)
+                       {{-- {{$no = ++$i}}; --}}
+                        <tr>
+                          {{-- <td><input type="checkbox" id="nomor{{$no}}" name="nomor{{$no}}" value="{{$value->idnumber}}" />
+                            <input type="hidden" id="custpo{{$no}}" name="custpo{{$no}}" value="{{$value->custpo}}" />
+                            <input type="hidden" id="partno{{$no}}" name="partno{{$no}}" value="{{$value->partno}}"/>             
+                        </td>                         --}}
+                        <td class="text-center">{{ ++$i}}</td>
                          <td style ="font-size: 12px;"> {{$value->idnumber}}</td>
                          <td style ="font-size: 12px;">{{$value->custpo}} </td>
                          <td style ="font-size: 12px;">{{$value->partno}} </td>
@@ -107,12 +150,8 @@
                          </td>    
                          <td style ="font-size: 12px;"> {{$value->last_print}} </td>               
                          </td>   
-
                          <td style ="font-size: 12px;">
-
-                        
                           <a  class="btn btn-primary btn-sm text-white"  data-toggle="modal" data-target="#logPrintOrg_{{$value->id}}">Print KIT</a>
-                        
                           <div class="modal modal-blur fade" id="logPrintOrg_{{$value->id}}" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
                               <div class="modal-content">
@@ -160,7 +199,7 @@
                   
                   </div>
                   <div class="d-flex justify-content-center col-12 btn-sm">
-                    {{ $data->links('vendor.pagination.custom') }}
+                    {{ $data_log->links('vendor.pagination.custom') }}
   
                   </div>
               </div>
@@ -181,7 +220,7 @@
 // });  
 $(document).ready( function () { 
 
-
+  //               } );
 $('#print_kitOrg').on('submit', function(e) {
        e.preventDefault(); 
 
@@ -232,6 +271,28 @@ $('#print_kitOrg').on('submit', function(e) {
 
 
   });
+
+
+  // function printlabel(){
+  //   var array = [];
+  //   $("input:checked").each(function() {
+  //       array.push($(this).val());
+  //   });
+
+  //   var array = [];
+  //   var arrayid = [];
+  //   $("input:checked").each(function() {
+  //       array.push($(this).val());
+  //       arrayid.push($(this).attr('id').replace("nomor", ""));
+  //   });
+
+  //   var idnumber = array[0];
+  //   var nomor = arrayid[0];
+
+  //   console.log(idnumber,nomor)
+
+
+  // }
 
 </script>
 @endsection

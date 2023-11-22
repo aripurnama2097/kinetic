@@ -8,34 +8,81 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
     public function index(){      
-
-      $data = DB::connection('sqlsrv')
-      ->select("SELECT  b.*, a.act_receive,a.bal_receive  from repacking_list as a
-              inner join partlist as b 
-              on a.partno = b.partno and a.custpo = b.custpo  order by id desc");
-
      
-                    
-         $problem = DB::table('problemfound')
-                    ->where('status','=','waiting')->count('status');
+         $monthly = date('Y-m');            
+         $tot_problem = DB::connection('sqlsrv')
+                  ->select("SELECT (select count(cust_po) FROM problemfound
+                            where convert(nvarchar(50), created_at,126) LIKE '%$monthly%')as total_problem");
+
+         
+        $tot_borrow_unclear = DB::connection('sqlsrv')
+                    ->select("SELECT (select count(custpo) FROM borrow
+                                    where convert(nvarchar(50), created_at,126) LIKE '%$monthly%'
+                                    and act_return is null
+                                      )as total_borrow_unclear 
+                              ");
+
+
+          $tot_borrow_clear = DB::connection('sqlsrv')
+                  ->select("SELECT (select count(custpo) FROM borrow
+                                  where convert(nvarchar(50), created_at,126) LIKE '%$monthly%'
+                                  and act_return is not null
+                                    )as total_borrow_clear 
+                            ");
+
+        
+          $total_shipping = DB::connection('sqlsrv')
+                      ->select("SELECT (select count(distinct a.prodno) from tbl_invoice as a
+									inner join schedule as  b on a.prodno = b.prodno
+                                    where
+                                          convert(nvarchar(50), b.vandate,126) LIKE'%$monthly%') as total_shipping
+                            ");
+
 
          $dataproblem = DB::connection('sqlsrv')
-                    ->select("SELECT a.*, b.* from problemfound as b
-                                inner join finishgood_list as a on a.partno = b.part_no and a.custpo = b.cust_po");
-
-
-        $databorrow = DB::connection('sqlsrv')
-        ->select("SELECT * from  borrow");
-        
-         $borrow = DB::table('borrow')
-                    ->count('custpo');
-                
-                    
-
-                    // return $problem;
+                      ->select("SELECT a.*, b.* from problemfound as b
+                                inner join finishgood_list as a on a.partno = b.part_no and a.custpo = b.cust_po
+                                where convert(nvarchar(50), b.created_at,126) LIKE '%$monthly%' ");
+                        
       
+
+         $databorrow = DB::connection('sqlsrv')
+                      ->select("SELECT a.custcode, b.* from borrow as b
+                                      inner join finishgood_list as a on a.partno = b.partno and a.custpo = b.custpo
+                              where convert(nvarchar(50), b.created_at,126) LIKE '%$monthly%'
+                              and act_return is null
+                            ");
+
+                      
+         $history_borrow = DB::connection('sqlsrv')
+                    ->select(" 	SELECT * from borrow
+                                where act_return is not null
+                                and
+                                convert(nvarchar(50), created_at,126) LIKE '%$monthly%'
+                              ");
+
+
+          $datashipping = DB::connection('sqlsrv')
+                    ->select(" 	SELECT  
+                                      a.custcode,a.dest,a.model,a.prodno           
+                                      ,a.jkeipodate,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem    
+                                  
+                                        ,f.invoice_no
+                                      from schedule as a
+                                          left join partlist as b on a.prodno = b.prodno and b.demand = a.demand
+                                          left join finishgood_list as c on a.prodno = c.prodno  and c.demand = a.demand
+                                          left join inhouse_list as d on a.prodno = d.lotno and d.shipqty = a.demand
+                                          --left join borrow as e on a.prodno = e.prodno
+                                          inner join tbl_invoice as f on a.prodno = f.prodno
+                                          --where f.invoice_no = null and a.prodno = f.prodno
+                                where convert(nvarchar(50), a.vandate,126) LIKE '%$monthly%'
+                                      group by
+                                          a.custcode,a.dest,a.model,a.prodno,a.jkeipodate,a.vandate,a.etd,a.eta,a.shipvia,a.orderitem
+                                        ,f.invoice_no,b.prodno
+                                        order by max(a.vandate)
+                              ");
         
         return view('dashboardMenu.index',
-                    compact('data','problem','borrow','dataproblem','databorrow'));
+                    compact('tot_problem','tot_borrow_unclear','tot_borrow_clear','total_shipping','dataproblem','databorrow','monthly','history_borrow','datashipping'));
     }
 }

@@ -303,23 +303,32 @@ class RepackingController extends Controller
 
     public function logPrintOrg(request $request){
 
-
-  
         $pagination = 10;
-        $keyword= $request->keyword;
-
-        $data = LogPrintKit::where('idnumber', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('prodno', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('partno', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('lotno_inhouse', 'LIKE', '%'.$keyword.'%')
+        $custpo= $request->custpo;
+        $partno= $request->partno;
+        $idnumber= $request->idnumber;
+        $keyword= $request->idnumber;
+      
+        $data_log = LogPrintKit::where('custpo','LIKE', '%'.$custpo.'%')
+                                 ->where('partno','LIKE', '%'.$partno.'%')
+                                ->where('idnumber', 'LIKE', '%'.$idnumber.'%')
+                                // ->orWhere('partno', 'LIKE', '%'.$keyword.'%')
+                                // ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
+                                // ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
+                                // ->orWhere('lotno_inhouse', 'LIKE', '%'.$keyword.'%')
                         ->latest()->paginate(10);
-                        $data->appends($request->all());
+                        $data_log->appends($request->all());
 
-     return view ('/repacking.logPrintOrg',compact(
-                                            'data'
-                                           ))->with('i', (request()->input('page', 1) -1) * $pagination
+    // $data_log = DB::connection('sqlsrv')
+    //             ->select("SELECT * from log_print_kit_original
+    //                         where partno like '%$idnumber%'
+    //                         and custpo like '%$idnumber%'
+    //                         and idnumber like '%$idnumber%'
+    //                     ");
+                        // dd($data_log);
+     return view ('/repacking.logPrintOrg',compact('data_log')
+                                         
+                                         )->with('i', (request()->input('page', 1) -1) * $pagination
                  );
 
 
@@ -338,14 +347,12 @@ class RepackingController extends Controller
         $kitLabel = $request->kit_label;
 
         // GET PARAM FROM KIT LABEL
-
         $label_scan = substr($mcLabel,0,15);
         $unique_mc = substr($mcLabel, 28, 49);
         $partno = substr($kitLabel, 0,11);
         $qty2    = substr($kitLabel, 17,19);
         $qty = trim($qty2);
 
-        // $data = "K2K-0165-02:KNOB assy:40:JK NAGANO:9344785::2306260005";
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
@@ -429,7 +436,7 @@ class RepackingController extends Controller
                                 order by custpo asc
                                 ");
 
-    // dd($cek_total);
+
 
             $sum = array($cek_total[0]->act_receive, $qty);
             $act_qty = array_sum($sum);
@@ -546,15 +553,6 @@ class RepackingController extends Controller
         $combine_no = DB::connection('sqlsrv')
             ->select("SELECT (select max(combine_no) + 1  from tblcombine_no) as combine_no ");
 
-     
-
-                     
-                        //  $order = $lastOrder ? $lastOrder + 1 : 1;
-                        //  $uniqueNumber = $dateAsNumber . str_pad($order, 5, '0', STR_PAD_LEFT);
-                        //  $combine_no = substr($uniqueNumber,12,1);              
-
-
-        // $combine_no = + 1;
 
         return view('repacking.scanCombine', compact('combine_no'));
     }
@@ -801,11 +799,9 @@ class RepackingController extends Controller
     }
 
 
-
     //  PRINT LOG KIT
      public function get_Print(Request $request, $id){
 
-    
         $pic = $request->pic_print;
         $id = $request->id;
         $currentDate = Carbon::now();
@@ -818,8 +814,6 @@ class RepackingController extends Controller
         $get_id = DB::table('log_print_kit_original')
                     ->whereDate('created_at',$currentDate)
                     ->max('id');
-
-
 
 
         $order = $get_id ? $get_id + 1 : 1;
@@ -854,23 +848,14 @@ class RepackingController extends Controller
 
     public function cancel_scanin(Request $request){
 
-        // return $request;
+
         $nik = $request->scan_nik;
         $kitLabel = $request->kit_label;
-        // $data = "K2K-0165-02:KNOB assy:40:JK NAGANO:9344785::2306260005";
         $datakit = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
 
         $deleted = DB::table('scanin_repacking')->where('label_kit', '=', $kitLabel)
                       ->delete();
-
-
-        // $update = DB::table('repacking_list')
-        //               ->where('partno', '=', $partno)
-    //               ->orWhere('custpo', '=', $custpo)
-        //               ->update(['actual_receive' => 'actual_receive' - $qty]);
-
-
 
         $update =    DB::connection('sqlsrv')
         ->update("UPDATE repacking_list
@@ -908,8 +893,7 @@ class RepackingController extends Controller
       
         $pic = $request->pic_print;
         $id = $request->id;
-
-     
+ 
 
         //STEP 1. GET PARAM UNTUK PRINT DATA DARI INHOUSE TABLE
             $param = DB::connection('sqlsrv')
