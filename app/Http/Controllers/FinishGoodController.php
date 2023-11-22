@@ -333,7 +333,7 @@ class FinishGoodController extends Controller
         }
 
         $get_data = DB::connection('sqlsrv')
-        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where idnumber ='{$idnumber}'      
+        ->select("SELECT combine_no,gw,lenght,widht,height from scanin_repacking where idnumber ='{$idnumber}'      
                 ");
 
         if (!$get_data) {
@@ -349,7 +349,7 @@ class FinishGoodController extends Controller
             DB::connection('sqlsrv')
                 ->insert("INSERT into scanout
                                         (prodno,carton_no, custpo,partno, partname, qty_running,kit_label,packing_no,skid_no,scan_nik,gw,lenght,widht,height) 
-                                SELECT  '{$selectPart[0]->prodno}','{$get_data[0]->carton_no}','{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}','{$get_data[0]->gw}','{$get_data[0]->lenght}','{$get_data[0]->widht}','{$get_data[0]->height}'
+                                SELECT  '{$selectPart[0]->prodno}','{$get_data[0]->combine_no}','{$custpo}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$skidno}', '{$nik}','{$get_data[0]->gw}','{$get_data[0]->lenght}','{$get_data[0]->widht}','{$get_data[0]->height}'
                     ");
 
             $seq = '1';
@@ -415,14 +415,6 @@ class FinishGoodController extends Controller
          list($skidcode, $skidno, $destSkid, $packing_no, $type_skid, $vandate) = explode(":", $qrdata);
 
 
-
-
-         
-
-
-
-// dd($tot_carton);p
-
        $data =  DB::connection ('sqlsrv')
                 ->select("SELECT  skid_no,
                             (select count(kit_label) from scanout
@@ -481,8 +473,6 @@ class FinishGoodController extends Controller
                             ");
 
 
-
-        // dd($data);
 
        return view('finishgood.printmaster',compact('data','packing_no'));
 
