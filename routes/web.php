@@ -150,6 +150,8 @@ Route::get('partlist/inhouse_data',[PartlistController::class,'inhouse_data']);
 Route::get('repacking',[RepackingController::class,'index']);
 Route::get('repacking/viewscan',[RepackingController::class,'view']);
 Route::get('repacking/kitdata',[RepackingController::class,'kitdata']);
+Route::get('repacking/kitdata/download',[RepackingController::class,'downloadkit']);
+
 Route::get('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit']);
 Route::get('repacking/printlbl_kit_combine',[RepackingController::class,'printlbl_kitcombine']);
 Route::get('repacking/printlbl_assy',[RepackingController::class,'printlbl_assy']);
@@ -182,7 +184,8 @@ Route::get('repacking/scanCombine/delete',[RepackingController::class,'reset_tbl
 Route::get('finishgood',[FinishGoodController::class,'index']);
 Route::post('finishgood/scanout_box',[FinishGoodController::class,'scanout_box']);
 Route::get('finishgood/printID',[FinishGoodController::class,'printid_box']);
-Route::get('/finishgood/scanoutData',[FinishGoodController::class,'scanout_data']);
+Route::get('finishgood/scanoutData',[FinishGoodController::class,'scanout_data']);
+Route::get('finishgood/scanoutData/download',[FinishGoodController::class,'download_fg']);
 Route::get('finishgood/masterlist',[FinishGoodController::class,'masterlist']);
 
 Route::get('finishgood/viewSkid',[FinishGoodController::class,'viewSkid']);

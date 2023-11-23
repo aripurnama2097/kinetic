@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\TblHeaderSkid;
 use App\Models\LogPrintMasterlist;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\FinishgoodExport;
 class FinishGoodController extends Controller
 {
     public function index()
@@ -570,27 +572,74 @@ class FinishGoodController extends Controller
 
     
 
-    public function scanout_data(){
+    // public function scanout_data(){
 
-        $data = DB::connection('sqlsrv')
-        ->select("SELECT distinct a.prodno, a.custcode,a.custpo,a.vandate, a.orderitem,a.jkeipodate, a.model, a.partno,a.partname,
-                    a.dest,a.demand,a.act_running,a.bal_running,b.box_no,b.skid_no  from finishgood_list as a
-                    left join scanout as b 
-                    on a.partno = b.partno and a.custpo = b.custpo  order by vandate asc");
+    //     $data = DB::connection('sqlsrv')
+    //     ->select("SELECT distinct a.prodno, a.custcode,a.custpo,a.vandate, a.orderitem,a.jkeipodate, a.model, a.partno,a.partname,
+    //                 a.dest,a.demand,a.act_running,a.bal_running,b.box_no,b.skid_no  from finishgood_list as a
+    //                 left join scanout as b 
+    //                 on a.partno = b.partno and a.custpo = b.custpo  order by vandate asc");
 
-        return view('finishgood.scanoutData',compact('data'));
+    //     return view('finishgood.scanoutData',compact('data'));
 
+    // }
+
+    public function scanout_data(request $request){
+
+        $pagination = 10;
+        $custcode= $request->custcode;
+        $custpo= $request->custpo;
+        $partno= $request->partno;
+        $prodno= $request->prodno;
+
+        $data = DB::table('finishgood_list')
+                               ->where('custcode', 'LIKE', '%'.$custcode.'%')
+                                ->where('prodno', 'LIKE', '%'.$prodno.'%')
+                                ->where('custpo','LIKE', '%'.$custpo.'%')
+                                ->where('partno','LIKE', '%'.$partno.'%')
+                            
+                        ->latest()->paginate(10);
+                        $data->appends($request->all());
+
+        return view ('finishgood.scanoutData',compact('data')
+                                        
+                                        )->with('i', (request()->input('page', 1) -1) * $pagination
+                );
     }
+
+    public function download_fg(request $request){
+        $custcode= $request->custcode;
+        $custpo= $request->custpo;
+        $partno= $request->partno;
+        $prodno= $request->prodno;
+
+        $data = DB::table('finishgood_list')
+                               ->where('custcode', 'LIKE', '%'.$custcode.'%')
+                                ->where('prodno', 'LIKE', '%'.$prodno.'%')
+                                ->where('custpo','LIKE', '%'.$custpo.'%')
+                                ->where('partno','LIKE', '%'.$partno.'%')
+                            
+                        ->latest()->paginate(10);
+                        $data->appends($request->all());
+
+        $date = Carbon::now()->format('Y-m-d'); 
+        $filename = 'FinishgoodData' . '-' . $date . '.csv';
+ 
+        return Excel::download(new FinishgoodExport($data), $filename);
+    }
+
 
     public function view_dummy(){
 
         return view('finishgood.viewDummy');
     }
 
+
     public function view_check(){
 
         return view('finishgood.view_check');
     }
+
 
     public function check_data(request $request){
 
@@ -602,13 +651,7 @@ class FinishGoodController extends Controller
     
            $data =  DB::connection ('sqlsrv')
                ->select("SELECT * FROM finishgood_list where skid_no ='{$skidno}'");
-    
-            // return $data;
-            // return response()->json([
 
-            //     "data" => $data,
-            //     "qr" => $qr
-            // ]);
             return response()->json(['success'=>TRUE,
                                     'message'=>'Success',
                                     'data'  => $data,
@@ -625,14 +668,6 @@ class FinishGoodController extends Controller
         // $model->delete();// METHOD DELETE
         return redirect('/finishgood/viewSkid')->with('success', 'Success! Cancel Skid');
     }
-
-
-    // public function destroy($id)
-    // {
-    //     $model=TblHeaderSkid::find($id);
-    //     $model->delete();// METHOD DELETE
-    //     return redirect('/stdpack')->with('success', 'Success! Data Berhasil Dihapus');
-    // }
 
 
  
