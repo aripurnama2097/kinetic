@@ -483,22 +483,25 @@ class FinishGoodController extends Controller
     public function viewlogMaster(request $request){
 
         $pagination = 10;
-        $keyword= $request->keyword;
+        $skidno= $request->skid_no;
+        $packingno= $request->packing_no;
+        $custpo= $request->custpo;
+        $partno= $request->partno;
 
         // $data = DB::connection('sqlsrv')
         //             ->select("SELECT DISTINCT skid_no,packing_no
         //             FROM scanout");
 
 
-        $data = LogPrintMasterlist::where('packing_no', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('skid_no', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('packing_no', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
-                        ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
-                        ->latest()->paginate(10);
-                        $data->appends($request->all());
+        $data = LogPrintMasterlist::where('skid_no', 'LIKE', '%'.$skidno.'%')
+                                    ->where('packing_no', 'LIKE', '%'.$packingno.'%')
+                                    ->where('custpo', 'LIKE', '%'.$custpo.'%')
+                                    ->where('partno', 'LIKE', '%'.$partno.'%')
+                                    ->latest()->paginate(10);
+                                    $data->appends($request->all());
 
-     return view ('/finishgood.logmaster',compact(
+        return view ('/finishgood.logmaster',
+                                    compact(
                                             'data'
                                            ))->with('i', (request()->input('page', 1) -1) * $pagination);
 

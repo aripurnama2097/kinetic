@@ -1,10 +1,18 @@
 @extends('layouts.main')
 @section('section')
-
+<style>
+  .bg-header{
+   background-color: rgb(44, 138, 188);;
+  }
+  
+  .bg-header1{
+   color: #068c9b;;
+  }
+  </style>
 
 <div class="page-wrapper">
     <!-- Page header -->
-    <div class="page-header d-print-none">
+    {{-- <div class="page-header d-print-none">
       <div class="container-xl">
         <div class="row g-2 align-items-center">
           <div class="col-12 ">
@@ -24,7 +32,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> --}}
 
 
 
@@ -41,14 +49,61 @@
             <div class="col-12 ">
               <div class="card rounded-1 col-12 " >
                 <div class="card-header text-center justify-content-center">
-                  <h2 style="font-size:30px"class="text-dark " >--LOG PRINT MASTER-</h2> 
+                  <h2 style="font-size:30px"class="text-dark " >LOG PRINT MASTER</h2> 
                 </div>
             
                 <form class="mt-2 mb-2"action="{{url('finishgood/viewSkid/logprintMaster')}}" method="GET">			
-                  <input type="text" name="keyword"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
+                  {{-- <input type="text" name="keyword"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
                   <button class="btn btn-success btn-sm" type="submit" ><i class="ti ti-search"></i> SEARCH</button>
                                       
-              </form>		
+              </form>		 --}}
+
+              <form class="mt-2 mb-2"action="{{url('finishgood/viewSkid/logprintMaster')}}" method="GET">			
+                <div class="row">
+                  <div class="col-lg-3 ">
+                    <div class="card shadow-lg">
+                        <div class="card-body bg-header">
+                            <h5 style="font-weight:bold;font-size:18px" class="card-subtitle text-light  mb-0 text-center">SKID NO</h5>
+                        </div>
+                        <input type="text" name="skid_no" class="form-control form-control-sm" placeholder="please fill in" autocomplete="off" autofocus>
+                    </div>
+                </div>
+    
+                <div class="col-lg-3">
+                  <div class="card shadow-lg ">
+                      <div class="card-body bg-header ">
+                          <h5 style="font-weight:bold;font-size:18px" class="card-subtitle text-light  mb-0 text-center">PACKING NO</h5>
+                      </div>
+                      <input type="text"  name="packing_no" class="form-control form-control-sm" placeholder="please fill in"  autocomplete="off" autofocus>
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="card shadow-lg ">
+                      <div class="card-body bg-header ">
+                          <h5 style="font-weight:bold;font-size:18px" class="card-subtitle text-light  mb-0 text-center">CUSTPO</h5>
+                      </div>
+                      <input type="text"  name="custpo" class="form-control form-control-sm" placeholder="please fill in"  autocomplete="off" autofocus>
+                  </div>
+                </div>
+
+                <div class="col-lg-3">
+                  <div class="card shadow-lg ">
+                      <div class="card-body bg-header ">
+                          <h5 style="font-weight:bold;font-size:18px" class="card-subtitle text-light  mb-0 text-center">PART NUMBER</h5>
+                      </div>
+                      <input type="text"  name="partno" class="form-control form-control-sm" placeholder="please fill in"  autocomplete="off" autofocus>
+                  </div>
+                </div>
+  
+            </div>  
+            <div class="col-3 btn-group btn btn-sm mt-0 float-right">
+              <button class="btn btn-info btn-sm " type="submit" ><i class="ti ti-search"></i> SEARCH</button> 
+              <a class="btn btn-success btn-sm" href="{{ url('finishgood/viewSkid/logprintMaster') }}"> Refresh <i
+                class="ti ti-refresh"></i> </a>
+                {{-- <button type="button" class="btn btn-primary mx-auto mx-md-0" onclick="printlabel()">Print label</button> --}}
+            </div>
+          </form>
               </div>
             </div>
 
@@ -56,16 +111,12 @@
                   @if(Session::has('success'))
                   <p class="alert alert-success">{{Session::get('success')}}</p>
                   @endif
-  
-              
+         
             <div class="col-12">
-              <div class="card  col-12 " >      
-             
+              <div class="card  col-12 " >                 
                 <div class="card-body border-bottom ">                
-
-                  <div class="table-responsive  rounded-1 shadow-sm">      
-                              
-                    <a  href="{{url('/finishgood/viewSkid')}}"class="btn btn-info btn-sm float-right mb-2 ">
+                  <div class="table-responsive  rounded-1 shadow-sm">                                   
+                    <a  href="{{url('/finishgood/viewSkid')}}"class="btn btn-dark btn-sm float-right mb-2 ">
                       <i class="ti ti-arrow-narrow-up"></i>
                       Go Top Menu
                     </a>
