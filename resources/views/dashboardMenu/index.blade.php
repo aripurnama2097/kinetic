@@ -68,7 +68,7 @@
                   <div class="col-12">
                     <div class="row">
                       <h6 style="font-size:13px"  class="text-dark col-4 text-start outset">{{$monthly}}</h6> 
-                      <h6   style="font-size:13px" class="text-dark  col-8 text-center outset">BORROW TAKEOUT</h6> 
+                      <h6   style="font-size:13px" class="text-dark  col-8 text-center outset">BORROW UNCLEAR</h6> 
                   </div>
                   </div>
                 </div>
@@ -212,7 +212,7 @@
                 {{-- DATA BORROW--}}
               {{-- <div class="card"> --}}
                 <div class="collapse mt-4" class="col-6 card ml-3" id="data-borrow" hide>
-                  <h4 class="card-title">BORROW TAKEOUT</h4>
+                  <h4 class="card-title">BORROW UNCLEAR</h4>
                    <div class="card bg-light">
                     <div class="table-responsive  rounded-1 shadow-sm mt-3"hide>
                       <table style="width:100%" id="kit-monitor"  class="table table-vcenter table-striped">
@@ -230,6 +230,12 @@
                                 <th style="font-size: 14px;">Dept</th>
                                 <th style="font-size: 14px;">Reason</th>
                                 <th style="font-size: 14px;">Est return</th>
+                                <th style="font-size: 14px;">Act return</th>
+                                <th style="font-size: 14px;">Dic return</th>
+                                <th style="font-size: 14px;">Receiver</th>
+                                <th style="font-size: 14px;">Total Return</th>
+                                <th style="font-size: 14px;">Diff</th>
+                                <th style="font-size: 14px;">Create</th>
         
                               </tr>
                           </thead>
@@ -248,6 +254,12 @@
                             <td style=font-size:14px>{{$value->dept }}</td>
                             <td style=font-size:14px>{{$value->reason }}</td>
                             <td style=font-size:14px>{{$value->est_return }}</td>
+                            <td style=font-size:14px>{{$value->act_return }}</td>
+                            <td style=font-size:14px>{{$value->dic_return }}</td>
+                            <td style=font-size:14px>{{$value->receiver }}</td>
+                            <td style=font-size:14px>{{$value->tot_return }}</td>
+                            <td style=font-size:14px>{{$value->diff }}</td>
+                            <td style=font-size:14px>{{$value->created_at }}</td>
                               </tr>
                               @endforeach
                           </tbody>
@@ -278,6 +290,13 @@
                                 <th style="font-size: 14px;">Dept</th>
                                 <th style="font-size: 14px;">Reason</th>
                                 <th style="font-size: 14px;">Est return</th>
+                                <th style="font-size: 14px;">Act return</th>
+                                <th style="font-size: 14px;">Dic return</th>
+                                <th style="font-size: 14px;">Receiver</th>
+                                <th style="font-size: 14px;">Total Return</th>
+                                <th style="font-size: 14px;">Diff</th>
+                                <th style="font-size: 14px;">Create</th>
+        
         
                               </tr>
                           </thead>
@@ -296,6 +315,12 @@
                             <td style=font-size:14px>{{$value->dept }}</td>
                             <td style=font-size:14px>{{$value->reason }}</td>
                             <td style=font-size:14px>{{$value->est_return }}</td>
+                            <td style=font-size:14px>{{$value->act_return }}</td>
+                            <td style=font-size:14px>{{$value->dic_return }}</td>
+                            <td style=font-size:14px>{{$value->receiver }}</td>
+                            <td style=font-size:14px>{{$value->tot_return }}</td>
+                            <td style=font-size:14px>{{$value->diff }}</td>
+                            <td style=font-size:14px>{{$value->created_at }}</td>
                               </tr>
                               @endforeach
                           </tbody>

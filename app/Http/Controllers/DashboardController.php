@@ -47,16 +47,15 @@ class DashboardController extends Controller
       
 
          $databorrow = DB::connection('sqlsrv')
-                      ->select("SELECT a.custcode, b.* from borrow as b
-                                      inner join finishgood_list as a on a.partno = b.partno and a.custpo = b.custpo
-                              where convert(nvarchar(50), b.created_at,126) LIKE '%$monthly%'
-                              and act_return is null
+                      ->select(" SELECT * from borrow                                    
+                                     where convert(nvarchar(50), created_at,126) LIKE '%2023-11%'
+                                     and qty != tot_return
                             ");
 
                       
          $history_borrow = DB::connection('sqlsrv')
                     ->select(" 	SELECT * from borrow
-                                where act_return is not null
+                                where qty = tot_return
                                 and
                                 convert(nvarchar(50), created_at,126) LIKE '%$monthly%'
                               ");
