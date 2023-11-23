@@ -50,48 +50,38 @@
                                                 <th class="text-center" style="font-size: 13px;">Dest</th>
                                                 <th class="text-center" style="font-size: 13px;">Model</th>
                                                 <th class="text-center" style="font-size: 13px;">Prod No</th>
-                                                <th class="text-center" style="font-size: 13px;">Lot Qty</th>
                                                 <th class="text-center" style="font-size: 13px;">JKEI Po Date</th>
                                                 <th class="text-center" style="font-size: 13px;">VanDate</th>
                                                 <th class="text-center" style="font-size: 13px;">ETD</th>
                                                 <th class="text-center" style="font-size: 13px;">ETA</th>
                                                 <th class="text-center" style="font-size: 13px;">Shipvia</th>
-                                                <th class="text-center" style="font-size: 13px;">Order Item</th>
-                                               
+                                                <th class="text-center" style="font-size: 13px;">Order Item</th>                                 
                                                 <th class="text-center" style="font-size: 13px;">Part No</th>
                                                 <th class="text-center" style="font-size: 13px;">Problem</th>
-                                        
                                                 <th class="text-center" style="font-size: 13px;">Invoice No</th>
-                                                <th class="text-center" style="font-size: 13px;">Last Updated</th>
-                                                               
+                                                <th class="text-center" style="font-size: 13px;">Last Updated</th>                                     
                                             </tr>
-                                        </thead>
-                          
+                                        </thead>                 
                                         <tbody>
                                             @foreach ($data as $key => $value)             
                                             <td class="text-center" style="font-size: 12px;">{{ $value->custcode }}</td>
                                             <td class="text-center" style="font-size: 12px;">{{ $value->dest }}</td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->model }}</td>
-                                            <td class="text-center" style="font-size: 12px;"> {{ $value->prodno }}</td>                                         
-                                            <td class="text-center text-dark" style="font-size: 13px;font-weight:bold">{{ $value->lot_qty}}</td>             
+                                            <td class="text-center" style="font-size: 12px;"> {{ $value->prodno }}</td>                                                  
                                             <td class="text-center" style="font-size: 12px;">{{ $value->jkeipodate }} </td>
                                             <td class="text-center" style="font-size: 12px;">{{ $value->vandate}} </td>
                                             <td class="text-center" style="font-size: 12px;">{{ $value->etd}}  </td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->eta}} </td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->shipvia}} </td>
-                                            <td class="text-center text-dark" style="font-size: 13px;font-weight:bold">{{ $value->orderitem}}  </td>
-                                           
+                                            <td class="text-center text-dark" style="font-size: 13px;font-weight:bold">{{ $value->orderitem}}  </td>                                    
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->partno}}</td>                                       
-                                            <td class="text-center" style="font-size: 12px;">{{$value->symptom}}</td>
-                                            
+                                            <td class="text-center" style="font-size: 12px;">{{$value->symptom}}</td>                                            
                                             <td class="text-center text-primary" style="font-size: 13px;font-weight:bold">{{$value->invoice_no}} </td>                                          
-                                            <td class="text-dark text-center"   style="font-size: 13px; font-weight:bold"> </td>
-                                         
+                                            <td class="text-dark text-center"   style="font-size: 13px; font-weight:bold"> </td>                                         
                                             </tr>
                                             @endforeach
                                         </tbody>
-                                    </table>
-                                   
+                                    </table>                                  
                                 </div>
                     </div>
             </div>

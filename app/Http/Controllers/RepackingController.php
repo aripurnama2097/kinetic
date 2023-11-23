@@ -307,11 +307,12 @@ class RepackingController extends Controller
         $custpo= $request->custpo;
         $partno= $request->partno;
         $idnumber= $request->idnumber;
-        $keyword= $request->idnumber;
+        $prodno= $request->prodno;
       
         $data_log = LogPrintKit::where('custpo','LIKE', '%'.$custpo.'%')
                                  ->where('partno','LIKE', '%'.$partno.'%')
                                 ->where('idnumber', 'LIKE', '%'.$idnumber.'%')
+                                ->where('prodno', 'LIKE', '%'.$prodno.'%')
                                 // ->orWhere('partno', 'LIKE', '%'.$keyword.'%')
                                 // ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
                                 // ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')

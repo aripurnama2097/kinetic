@@ -3,7 +3,7 @@
 
 <style>
 .bg-header{
- background-color: #068c9b;;
+  background-color: rgb(44, 138, 188);;
 }
 
 .bg-header1{
@@ -14,28 +14,7 @@
 
 <div class="page-wrapper">
     <!-- Page header -->
-    {{-- <div class="page-header d-print-none">
-      <div class="container-xl">
-        <div class="row g-2 align-items-center">
-          <div class="col-12 ">
-            <!-- Page pre-title -->
-            <div class="page-pretitle">
-              Overview
-            </div>
-            <h2 class="page-title">
-              Page Print
-            </h2>
-          </div>
-          <!-- Page title actions -->
-          <div class="col-auto ms-auto d-print-none">
-            <div class="btn-list">
-              <span class="d-none d-sm-inline">             
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> --}}
-
+  
 
 
     <!-- Page body MENU -->
@@ -56,6 +35,15 @@
                 </div>
                 <form class="mt-2 mb-2"action="{{url('repacking/logPrintOrg')}}" method="GET">			
                   <div class="row">
+                    <div class="col-lg-3">
+                      <div class="card shadow-lg">
+                          <div class="card-body bg-header">
+                              <h5 style="font-weight:bold;font-size:18px" class="card-subtitle text-light  mb-0 text-center">PROD NUMBER</h5>
+                          </div>
+                          <input type="text" name="prodno" class="form-control form-control-sm" placeholder="please fill in" autocomplete="off" autofocus>
+                      </div>
+                  </div>
+                  
                     <div class="col-lg-3 ">
                       <div class="card shadow-lg">
                           <div class="card-body bg-header">
@@ -83,8 +71,8 @@
                     </div>
                 </div>
               </div>  
-              <div class="col-2 btn-group btn btn-sm mt-0">
-                <button class="btn btn-info btn-sm col-4" type="submit" ><i class="ti ti-search"></i> SEARCH</button> 
+              <div class="col-3 btn-group btn btn-sm mt-0 float-right">
+                <button class="btn btn-info btn-sm " type="submit" ><i class="ti ti-search"></i> SEARCH</button> 
                 <a class="btn btn-success btn-sm" href="{{ url('/repacking/logPrintOrg') }}"> Refresh <i
                   class="ti ti-refresh"></i> </a>
                   {{-- <button type="button" class="btn btn-primary mx-auto mx-md-0" onclick="printlabel()">Print label</button> --}}
