@@ -18,7 +18,7 @@ class DashboardController extends Controller
         $tot_borrow_unclear = DB::connection('sqlsrv')
                     ->select("SELECT (select count(custpo) FROM borrow
                                     where convert(nvarchar(50), created_at,126) LIKE '%$monthly%'
-                                    and act_return is null
+                                    and qty != tot_return
                                       )as total_borrow_unclear 
                               ");
 
@@ -26,7 +26,7 @@ class DashboardController extends Controller
           $tot_borrow_clear = DB::connection('sqlsrv')
                   ->select("SELECT (select count(custpo) FROM borrow
                                   where convert(nvarchar(50), created_at,126) LIKE '%$monthly%'
-                                  and act_return is not null
+                                  and qty = tot_return
                                     )as total_borrow_clear 
                             ");
 

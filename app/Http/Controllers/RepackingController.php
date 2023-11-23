@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\LogPrintKit;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RepackingExport;
 class RepackingController extends Controller
 {
     public function index(){
@@ -313,27 +315,14 @@ class RepackingController extends Controller
                                  ->where('partno','LIKE', '%'.$partno.'%')
                                 ->where('idnumber', 'LIKE', '%'.$idnumber.'%')
                                 ->where('prodno', 'LIKE', '%'.$prodno.'%')
-                                // ->orWhere('partno', 'LIKE', '%'.$keyword.'%')
-                                // ->orWhere('partname', 'LIKE', '%'.$keyword.'%')
-                                // ->orWhere('custpo', 'LIKE', '%'.$keyword.'%')
-                                // ->orWhere('lotno_inhouse', 'LIKE', '%'.$keyword.'%')
+                               
                         ->latest()->paginate(10);
                         $data_log->appends($request->all());
 
-    // $data_log = DB::connection('sqlsrv')
-    //             ->select("SELECT * from log_print_kit_original
-    //                         where partno like '%$idnumber%'
-    //                         and custpo like '%$idnumber%'
-    //                         and idnumber like '%$idnumber%'
-    //                     ");
-                        // dd($data_log);
      return view ('/repacking.logPrintOrg',compact('data_log')
                                          
                                          )->with('i', (request()->input('page', 1) -1) * $pagination
                  );
-
-
-        // return view('repacking.logprintOrg', compact('data'));
     }
 
     public function scanIn(){
@@ -757,13 +746,47 @@ class RepackingController extends Controller
     }
 
 
-    public function kitdata(){
-        $data = DB::connection('sqlsrv')
-            ->select("SELECT  b.*, a.act_receive,a.bal_receive  from repacking_list as a
-                    inner join partlist as b
-                    on a.partno = b.partno and a.custpo = b.custpo  order by id desc");
+    public function kitdata(request $request){
+        $pagination = 10;
+        $custcode= $request->custcode;
+        $custpo= $request->custpo;
+        $partno= $request->partno;
+        $prodno= $request->prodno;
 
-        return view('repacking.kitdata',compact('data'));
+        $data = DB::table('repacking_list')
+                               ->where('custcode', 'LIKE', '%'.$custcode.'%')
+                                ->where('prodno', 'LIKE', '%'.$prodno.'%')
+                                ->where('custpo','LIKE', '%'.$custpo.'%')
+                                ->where('partno','LIKE', '%'.$partno.'%')
+                            
+                        ->latest()->paginate(10);
+                        $data->appends($request->all());
+
+        return view ('/repacking.kitdata',compact('data')
+                                        
+                                        )->with('i', (request()->input('page', 1) -1) * $pagination
+                );
+    }
+
+    public function downloadkit(request $request){
+        $custcode= $request->custcode;
+        $custpo= $request->custpo;
+        $partno= $request->partno;
+        $prodno= $request->prodno;
+
+        $data = DB::table('repacking_list')
+                               ->where('custcode', 'LIKE', '%'.$custcode.'%')
+                                ->where('prodno', 'LIKE', '%'.$prodno.'%')
+                                ->where('custpo','LIKE', '%'.$custpo.'%')
+                                ->where('partno','LIKE', '%'.$partno.'%')
+                            
+                        ->latest()->paginate(10);
+                        $data->appends($request->all());
+
+        $date = Carbon::now()->format('Y-m-d'); 
+        $filename = 'RepackingData' . '-' . $date . '.csv';
+ 
+        return Excel::download(new RepackingExport($data), $filename);
     }
 
 

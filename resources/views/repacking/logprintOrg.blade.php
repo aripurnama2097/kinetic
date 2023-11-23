@@ -43,7 +43,7 @@
                           <input type="text" name="prodno" class="form-control form-control-sm" placeholder="please fill in" autocomplete="off" autofocus>
                       </div>
                   </div>
-                  
+
                     <div class="col-lg-3 ">
                       <div class="card shadow-lg">
                           <div class="card-body bg-header">
@@ -87,16 +87,10 @@
                   @endif
 
             <div class="col-12">
-              <div class="card  col-12 " >    
-                {{-- <div class="col-6">
-                  <form class="mt-2 mb-2"action="{{url('repacking/logPrintOrg')}}" method="GET">			
-                    <input type="text" name="name"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Search..." autofocus>
-                    <button class="btn btn-warning btn-sm" type="submit" ><i class="ti ti-search"></i> SEARCH</button>                   
-                </form>		
-                  </div>   --}}           
+              <div class="card  col-12 " >      
                 <div class="card-body border-bottom ">                
                   <div class="table-responsive  rounded-1 shadow-sm">                      
-                   <table id="log-data" style="width:100%"class="table table-striped border border-primary shadow-sm" >
+                   <table id="log-data" style="width:100%" class="table table-striped border border-primary shadow-sm" >
                      <thead class="thead-dark">
                        <tr>      
                         {{-- <th scope="col"><input type="checkbox" id="check_all" /></th>          --}}
