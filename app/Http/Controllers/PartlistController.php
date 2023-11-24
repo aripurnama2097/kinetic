@@ -698,7 +698,10 @@ class PartlistController extends Controller
         // STEP 2. CEK TOTAL SCAN PART UNTUK DI UPDATE DATA
         $cek_total = DB::connection('sqlsrv')
             ->select("SELECT top 1 * from inhouse_list
-                                where  model = '{$partno}' and lotno='{$prodno}'
+                                where  model = '{$partno}' 
+                                and lotno='{$prodno}'
+                                and shipqty >= (coalesce(tot_input,0) + $qty)
+                                order by jknpo asc
                                 ");
 
                             
@@ -706,7 +709,7 @@ class PartlistController extends Controller
         if (!$cek_total ) {
             return response()->json([
                 'success' => false,
-                'message' => 'Part Not Exist In Master',
+                'message' => 'Error Get Content Master Inhouse',
 
             ]);
         }
@@ -761,10 +764,13 @@ class PartlistController extends Controller
                                             where
                                             inhouse_list.lotno = b.lotno
                                             and  
-                                            inhouse_list.model = b.partno),
-                            balance =  inhouse_list.shipqty -  ( inhouse_list.tot_input + $qty) where
-                                            inhouse_list.lotno = '{$prodno}'
-                                            and   inhouse_list.model = '{$partno}'
+                                            inhouse_list.model = b.partno
+                                            and 
+                                            inhouse_list.jknpo = b.jknpo
+                                            ),
+                            balance =  inhouse_list.shipqty -  ( inhouse_list.tot_input + {$qty}) 
+                            from inhouse_scanin as b where
+                            inhouse_list.id = '{$cek_total[0]->id}'
 
                         ");
 
