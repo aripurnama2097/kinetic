@@ -72,7 +72,12 @@
                                     </a>
                                 </div>
                             </div>
-                           
+                            <div class="col-12 mb-3 text-center  d-flex justify-content-center">
+                                <a class="btn btn-dark col-12 text-light" href="{{url('/finishgood/view_check')}}">
+                                    <i class="ti ti-check"></i>
+                                    SCAN OUT CHECK
+                                </a>
+                            </div>
                         </div>
                     </div>
 

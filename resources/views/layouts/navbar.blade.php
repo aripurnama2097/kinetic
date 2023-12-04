@@ -224,9 +224,9 @@
                                    <a class="dropdown-item" href="{{url('/finishgood/scanoutData')}}">
                                        Data FinishGood
                                    </a>           
-                                   <a class="dropdown-item" href="{{url('/finishgood/view_check')}}">
+                                   {{-- <a class="dropdown-item" href="{{url('/finishgood/view_check')}}">
                                        Scan Out Check
-                                 </a>  
+                                 </a>   --}}
                                  <a class="dropdown-item" href="{{url('/finishgood/masterlist')}}">
                                      Download Master List
                                </a>  

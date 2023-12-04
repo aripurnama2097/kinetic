@@ -20,7 +20,7 @@
                             Overview
                         </div>
                         <h2 class="page-title">
-                            Finish Good Menu
+                            Final Check Menu
                         </h2>
                     </div>
                     <!-- Page title actions -->
