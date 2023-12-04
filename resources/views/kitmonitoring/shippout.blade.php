@@ -56,10 +56,11 @@
                                                 <th class="text-center" style="font-size: 13px;">ETA</th>
                                                 <th class="text-center" style="font-size: 13px;">Shipvia</th>
                                                 <th class="text-center" style="font-size: 13px;">Order Item</th>                                 
-                                                <th class="text-center" style="font-size: 13px;">Part No</th>
-                                                <th class="text-center" style="font-size: 13px;">Problem</th>
+                                                {{-- <th class="text-center" style="font-size: 13px;">Part No</th>
+                                                <th class="text-center" style="font-size: 13px;">Problem</th> --}}
                                                 <th class="text-center" style="font-size: 13px;">Invoice No</th>
-                                                <th class="text-center" style="font-size: 13px;">Last Updated</th>                                     
+                                                <th class="text-center" style="font-size: 13px;">Update By</th>   
+                                                <th class="text-center" style="font-size: 13px;">Shipping Date</th>                                         
                                             </tr>
                                         </thead>                 
                                         <tbody>
@@ -74,10 +75,11 @@
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->eta}} </td>
                                             <td class="text-center" style="font-size: 12px;"> {{ $value->shipvia}} </td>
                                             <td class="text-center text-dark" style="font-size: 13px;font-weight:bold">{{ $value->orderitem}}  </td>                                    
-                                            <td class="text-center" style="font-size: 12px;"> {{ $value->partno}}</td>                                       
-                                            <td class="text-center" style="font-size: 12px;">{{$value->symptom}}</td>                                            
+                                            {{-- <td class="text-center" style="font-size: 12px;"> {{ $value->partno}}</td>                                       
+                                            <td class="text-center" style="font-size: 12px;">{{$value->symptom}}</td>                                             --}}
                                             <td class="text-center text-primary" style="font-size: 13px;font-weight:bold">{{$value->invoice_no}} </td>                                          
-                                            <td class="text-dark text-center"   style="font-size: 13px; font-weight:bold"> </td>                                         
+                                            <td class="text-dark text-center"   style="font-size: 13px; font-weight:bold">{{$value->created_by}} </td> 
+                                            <td class="text-dark text-center"   style="font-size: 13px; font-weight:bold">{{$value->created_at}} </td>                                         
                                             </tr>
                                             @endforeach
                                         </tbody>
