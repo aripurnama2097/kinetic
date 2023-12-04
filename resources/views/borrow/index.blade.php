@@ -461,20 +461,27 @@
                                 swal.fire({
                                     icon: 'success',
                                     title: response.message,
-
-                                    timer: 5000,
-
+                                    showConfirmButton :false,
+                                    timer: 300,
 
                                 })
+                                    var audio = document.getElementById('audio');
+                                    var source = document.getElementById('audioSource');
+                                    var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                    audio.load();
+                                    audio.play();
                             } else {
                                 swal.fire({
                                     icon: 'error',
                                     title: response.message,
-
-                                    timer: 5000,
-
-
+                                    showConfirmButton :false,
+                                    timer: 1000,
                                 })
+                                    var audio = document.getElementById('audio');
+                                    var source = document.getElementById('audioSource');
+                                    var audio = new Audio("{{asset('')}}storage/sound/mistake.mp3");
+                                    audio.load()
+                                    audio.play();
                             }
 
                             var data = ""
@@ -631,20 +638,32 @@
                                 swal.fire({
                                     icon: 'success',
                                     title: response.message,
+                                    showConfirmButton :false,
 
-                                    timer: 5000,
+                                    timer: 300,
 
 
                                 })
+                                   var audio = document.getElementById('audio');
+                                    var source = document.getElementById('audioSource');
+                                    var audio = new Audio("{{asset('')}}storage/sound/OK.mp3");
+                                    audio.load()
+                                    audio.play();
                             } else {
                                 swal.fire({
                                     icon: 'error',
                                     title: response.message,
-
-                                    timer: 5000,
-
+                                    showConfirmButton :false,
+                                    timer: 1000,
 
                                 })
+                                    var audio = document.getElementById('audio');
+                                    var source = document.getElementById('audioSource');
+                                    var audio = new Audio("{{asset('')}}storage/sound/mistake.mp3");
+                                    audio.load()
+                                    audio.play();
+                                    
+                                                    
                             }
                         }
                     })
