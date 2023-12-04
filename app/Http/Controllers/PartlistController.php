@@ -17,8 +17,9 @@ class PartlistController extends Controller
             ->get();
 
         $dataprodno = DB::connection('sqlsrv')
-            ->select("SELECT distinct (prodno),(created_at) from partlist 
-                        order by created_at desc");
+            ->select("SELECT distinct top 10  (prodno),(created_at) 
+                                from partlist 
+                    order by created_at desc");
 
         $datajkeipo = DB::connection('sqlsrv')
             ->select("SELECT distinct (jkeipodate) from partlist");
@@ -37,9 +38,6 @@ class PartlistController extends Controller
         $partlistno = DB::connection('sqlsrv')
             ->select("SELECT distinct(partlist_no) from partlist ");
 
-        //  return $qrdata;
-        // Membuat QR code dari konten tabel
-        //  $qrCode = QrCode::size(200)->generate($dataQR);
 
         return view('partlist.index', compact('data', 'dataprodno', 'qrcode', 'partlistno', 'sch_mc'));
     }
