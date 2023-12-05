@@ -51,7 +51,8 @@ class FinishGoodController extends Controller
 
         // GET PARAM FROM KIT LABEL
         $data = $kitLabel;
-        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
+        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber,$seq) = explode(":", $data);
+        // F0K-0264-10:FAN:254:JPN HACHIOJI:PD1323001:-:I23050001:PD1323-262-3
 
         // STEP 1. CEK LABEL KIT DI SCAN OUT
         // STEP 1. CEK LABEL KIT DI SCAN OUT
@@ -99,9 +100,16 @@ class FinishGoodController extends Controller
         // return $selectPart;
 
         $get_data = DB::connection('sqlsrv')
-                        ->select("SELECT carton_no,gw,lenght,widht,height from scanin_repacking where label_kit ='{$kitLabel}'
-                                  
-                                ");
+        ->select("SELECT combine_no,gw,lenght,widht,height from scanin_repacking where idnumber ='{$idnumber}'      
+                ");
+
+        if (!$get_data) {
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'Error Get GW Data!...'
+                ]);
+        }
 
         // TAMBAHKAN LENGHT DAN GW
         if ($selectPart == true) {
