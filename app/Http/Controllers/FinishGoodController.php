@@ -117,7 +117,7 @@ class FinishGoodController extends Controller
             DB::connection('sqlsrv')
                 ->insert("INSERT into scanout
                                     (carton_no, custpo,prodno,partno, partname, qty_running,kit_label,packing_no,box_no,scan_nik,gw,lenght,widht,height) 
-                            SELECT  '{$get_data[0]->carton_no}', '{$custpo}','{$prodno}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$boxno}', '{$nik}','{$get_data[0]->gw}','{$get_data[0]->lenght}','{$get_data[0]->widht}','{$get_data[0]->height}'
+                            SELECT  '{$get_data[0]->combine_no}', '{$custpo}','{$prodno}','{$partno}','{$partname}','{$qty}',  '{$kitLabel}','{$packing_no}','{$boxno}', '{$nik}','{$get_data[0]->gw}','{$get_data[0]->lenght}','{$get_data[0]->widht}','{$get_data[0]->height}'
                     ");
 
             // STEP 3.UPDATE IN FINISH GOOD LIST     
