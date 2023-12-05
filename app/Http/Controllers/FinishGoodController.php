@@ -51,7 +51,7 @@ class FinishGoodController extends Controller
 
         // GET PARAM FROM KIT LABEL
         $data = $kitLabel;
-        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber,$seq) = explode(":", $data);
+        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
         // F0K-0264-10:FAN:254:JPN HACHIOJI:PD1323001:-:I23050001:PD1323-262-3
 
         // STEP 1. CEK LABEL KIT DI SCAN OUT
