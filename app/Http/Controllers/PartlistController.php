@@ -291,47 +291,49 @@ class PartlistController extends Controller
 
 
         // GET ID NUMBER PRINT LABEL KIT
+        // GET ID NUMBER PRINT LABEL KIT
         $currentDate = Carbon::now();
-        $dateAsNumber = $currentDate->format('Yd');
+        $dateAsNumber = $currentDate->format('Ymd');
         $date = substr($dateAsNumber, 2, 8);
         $get_id = DB::table('partscan')
         ->whereDate('scan_date', $currentDate)
-        ->max('id');
+        ->orderBy('id', 'desc')
+        ->limit(1)
+         ->value('dailyno');
+
+        //  dd($get_id);
 
         $order = $get_id ? $get_id + 1 : 1;
-        $dailyno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $dailyno =  str_pad($order, 4, '0', STR_PAD_LEFT);
         $idnumber = 'I' . $dailyno;
-
-       
 
         //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
         if (!empty(@$status_print)) {
-
-
              // STEP SCAN ISSUE
             $get_lastuniq = DB::table('partscan')
                             ->max('unique_continue');
 
             $uniq_cont = $get_lastuniq;
+            if($status_print != 'continue_combine'){// STATUS PRINT = START COMBINE OR LOOSE CARTON
+                $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
 
-            if($status_print != 'continue_combine'){
-                 $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
-
-                 $order = $get_id ? $get_id + 1 : 1;
-                 $dailyno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
-                 $idnumbercont = 'I' . $dailyno;
-
-                //  dd($idnumbercont);
+                $order = $get_id ? $get_id + 1 : 1;
+                $dailyno = str_pad($order, 4, '0', STR_PAD_LEFT);
+                $idnumbercont = 'I' . $dailyno;
             }
 
             // compare stdpack dg part continue
             if($status_print == 'continue_combine'){
 
                 $get_num = DB::table('partscan')
-                ->where('status_print', 'start_combine')
-                ->max('dailyno');
+                ->select('dailyno')
+                ->where('status_print', '=', 'start_combine')
+                ->orderBy('id', 'desc')
+                ->limit(1)
+                ->value('dailyno');
 
-                $idnumbercont = 'I' . $get_num;     
+                $dailyno        = $get_num;
+                $idnumbercont   = 'I' . $get_num;     
                 $compare_stdpack = DB::connection('sqlsrv')->select("SELECT stdpack, (sum(scan_issue))+$qty as scan_issue
                                                                         from partscan
                                                                         where unique_continue = '{$uniq_cont}'
