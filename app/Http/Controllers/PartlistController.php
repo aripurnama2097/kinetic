@@ -840,7 +840,9 @@ class PartlistController extends Controller
             ->update("UPDATE inhouse_list
                     set
                     tot_input =  (SELECT sum(qty_input) FROM inhouse_scanin as b where
-                                    inhouse_list.lotno = b.lotno and inhouse_list.model = b.model),
+                                    inhouse_list.lotno = b.lotno and inhouse_list.model = b.model
+                                    and 
+                                            inhouse_list.jknpo = b.jknpo),
                     balance =  inhouse_list.shipqty -  ( inhouse_list.tot_input + {$qty}) 
                             from inhouse_scanin as b where
                             inhouse_list.id = '{$cek_total[0]->id}'
