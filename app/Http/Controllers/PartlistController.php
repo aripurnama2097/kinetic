@@ -304,7 +304,7 @@ class PartlistController extends Controller
         //  dd($get_id);
 
         $order = $get_id ? $get_id + 1 : 1;
-        $dailyno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+        $dailyno =  str_pad($order, 4, '0', STR_PAD_LEFT);
         $idnumber = 'I' . $dailyno;
 
         //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
@@ -318,7 +318,7 @@ class PartlistController extends Controller
                 $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
 
                 $order = $get_id ? $get_id + 1 : 1;
-                $dailyno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
+                $dailyno =  str_pad($order, 4, '0', STR_PAD_LEFT);
                 $idnumbercont = 'I' . $dailyno;
             }
 
