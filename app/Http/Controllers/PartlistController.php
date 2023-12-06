@@ -304,7 +304,7 @@ class PartlistController extends Controller
         //  dd($get_id);
 
         $order = $get_id ? $get_id + 1 : 1;
-        $dailyno =  str_pad($order, 4, '0', STR_PAD_LEFT);
+        $dailyno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
         $idnumber = 'I' . $dailyno;
 
         //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
@@ -318,7 +318,7 @@ class PartlistController extends Controller
                 $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
 
                 $order = $get_id ? $get_id + 1 : 1;
-                $dailyno = str_pad($order, 4, '0', STR_PAD_LEFT);
+                $dailyno = $date . str_pad($order, 4, '0', STR_PAD_LEFT);
                 $idnumbercont = 'I' . $dailyno;
             }
 
@@ -621,36 +621,6 @@ class PartlistController extends Controller
 
     public function scan_inhouse(request $request)
     {
-    //    $currentDate = Carbon::now();
-
-    //    Carbon::today())->get();
-    //      // STEP 1. update data status print base on lotno_inhouse
-        
-
-    //    dd($currentDate);
-    //        $query =DB::connection('sqlsrv')
-    //                 ->select("SELECT max(idnumber) FROM inhouse_scanin WHERE created_at = '{$currentDate}'
-    //                 ");
-
-    //                 dd($query);
-
-    //                     $dailyno="";
-    //                     if ($query[0]->idnumber > 0 ){
-    //                         foreach($query[0]->idnumber->result() as $nomor){
-    //                             $tmp=((int) $nomor->idnumber) + 1;
-    //                             $dailyno =sprintf("%04s", $tmp);
-    //                         }
-    //                     }
-    //                         else{
-    //                         $dailyno ="0001";
-    //                         }
-    //                         date_default_timezone_set('Asia/Jakarta');  
-    //                         $idnum = date ('ymd') .  $dailyno;
-
-    //                         $arridnumber = array();
-    //                         $idnumber = 'I' . $idnum;
-
-                            // dd($idnumber);
 
 
         $currentDate = Carbon::now();
@@ -839,7 +809,10 @@ class PartlistController extends Controller
         // STEP 3. CEK TOTAL SCAN PART UNTUK DI UPDATE DATA
         $cek_total = DB::connection('sqlsrv')
             ->select("SELECT top 1 * from inhouse_list
-                    where  model = '{$model}' and lotno='{$lotno}'
+                    where  model = '{$model}' 
+                    and lotno='{$lotno}'
+                    and shipqty >= (coalesce(tot_input,0) + $qty)
+                      order by jknpo asc
                     ");
 
         $sum = array($cek_total[0]->tot_input, $qty);
@@ -868,19 +841,19 @@ class PartlistController extends Controller
                     set
                     tot_input =  (SELECT sum(qty_input) FROM inhouse_scanin as b where
                                     inhouse_list.lotno = b.lotno and inhouse_list.model = b.model),
-                    balance = shipqty -  (tot_input + $qty) where
-                                    inhouse_list.lotno = '{$lotno}' and inhouse_list.model = '{$model}'
+                    balance =  inhouse_list.shipqty -  ( inhouse_list.tot_input + {$qty}) 
+                            from inhouse_scanin as b where
+                            inhouse_list.id = '{$cek_total[0]->id}'
 
                 ");
 
-        
-        // DB::table('log_print_kit_original')
-        //     ->where('lotno_inhouse', $lotno )
-        //     ->update(['status_print'=> 2]);
+ 
 
         $data = DB::connection('sqlsrv')
             ->select("SELECT * from inhouse_list where lotno ='{$lotno}'");
-        return response()
+       
+       
+            return response()
 
             ->json([
                 'success' => true,
@@ -888,16 +861,7 @@ class PartlistController extends Controller
                 'data'    => $data
 
             ]);
-        // return redirect()->back()->with('success','Created data inhouse success!');
-
-
-
-        //     return response()->json([
-        //                         'success'=>TRUE,
-        //                         'message'=>'Scan Sucessfully',
-        // ]);
-
-        // STEP 2. UPDATE ASSY LIST
+       
 
 
 
