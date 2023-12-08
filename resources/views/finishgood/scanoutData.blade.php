@@ -63,10 +63,10 @@
                 class="ti ti-refresh"></i> </a>
             </div>
         </form>
-        <button class="btn btn-dark btn-sm " onclick="downloadfg()"><i class="ti ti-download"></i> Download</button>
+        {{-- <button class="btn btn-dark btn-sm " onclick="downloadfg()"><i class="ti ti-download"></i> Download</button> --}}
          
           <div class="table-responsive  rounded-1 shadow-lg mt-2 ">
-            <table style="width:100%"  class="table table-striped border border-primary shadow-sm">
+            <table id="scanout-data" style="width:100%"  class="table table-striped border border-primary shadow-sm">
                
                 <thead class="thead-dark" >
                     <tr class="headings">
@@ -121,7 +121,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-center col-12 btn-sm">
-            {{ $data->links('vendor.pagination.custom') }}
+            {{-- {{ $data->links('vendor.pagination.custom') }} --}}
 
           </div>
         </div>
@@ -134,7 +134,7 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
-            $('#schedule-release').DataTable( {
+            $('#scanout-data').DataTable( {
                 dom: 'Bfrtip',
                 order: [7,'desc'],
                 buttons: [

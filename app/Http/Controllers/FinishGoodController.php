@@ -601,17 +601,16 @@ class FinishGoodController extends Controller
         $prodno= $request->prodno;
 
         $data = DB::table('finishgood_list')
-                               ->where('custcode', 'LIKE', '%'.$custcode.'%')
-                                ->where('prodno', 'LIKE', '%'.$prodno.'%')
-                                ->where('custpo','LIKE', '%'.$custpo.'%')
-                                ->where('partno','LIKE', '%'.$partno.'%')
-                            
-                        ->latest()->paginate(10);
-                        $data->appends($request->all());
+                            ->where('custcode', 'LIKE', '%'.$custcode.'%')
+                            ->where('custpo','LIKE', '%'.$custpo.'%')
+                            ->where('partno','LIKE', '%'.$partno.'%')
+                            ->where('prodno', 'LIKE', '%'.$prodno.'%')
+                            ->get();
+                     
 
         return view ('finishgood.scanoutData',compact('data')
                                         
-                                        )->with('i', (request()->input('page', 1) -1) * $pagination
+                                        )->with('i', (request()->input('page', 1) -1) 
                 );
     }
 

@@ -755,16 +755,17 @@ class RepackingController extends Controller
 
         $data = DB::table('repacking_list')
                                ->where('custcode', 'LIKE', '%'.$custcode.'%')
-                                ->where('prodno', 'LIKE', '%'.$prodno.'%')
-                                ->where('custpo','LIKE', '%'.$custpo.'%')
-                                ->where('partno','LIKE', '%'.$partno.'%')
+                               ->where('custpo','LIKE', '%'.$custpo.'%')
+                               ->where('partno','LIKE', '%'.$partno.'%')
+                               ->where('prodno', 'LIKE', '%'.$prodno.'%')
+                               ->get();
                             
-                        ->latest()->paginate(10);
-                        $data->appends($request->all());
+                        // ->latest()->paginate(10);
+                        // $data->appends($request->all());
 
         return view ('/repacking.kitdata',compact('data')
                                         
-                                        )->with('i', (request()->input('page', 1) -1) * $pagination
+                                        )->with('i', (request()->input('page', 1) -1) 
                 );
     }
 

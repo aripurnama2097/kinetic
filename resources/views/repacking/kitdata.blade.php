@@ -68,10 +68,10 @@
                                     class="ti ti-refresh"></i> </a>
                                 </div>
                             </form>
-                            <button class="btn btn-dark btn-sm " onclick="download()"><i class="ti ti-download"></i> Download</button>
+                            {{-- <button class="btn btn-dark btn-sm " onclick="download()"><i class="ti ti-download"></i> Download</button> --}}
                              
                                 <div class="table-responsive  rounded-1 shadow-sm">
-                                    <table style="width:100%"  class="table table-striped border border-primary shadow-sm">
+                                    <table style="width:100%"  id="kit-data" class="table table-striped border border-primary shadow-sm">
                                        
                                         <thead class="thead-dark">
                                             <tr class="headings">
@@ -137,7 +137,7 @@
                                     </table>
                                 </div>
                                 <div class="d-flex justify-content-center col-12 btn-sm">
-                                    {{ $data->links('vendor.pagination.custom') }}
+                                    {{-- {{ $data->links('vendor.pagination.custom') }} --}}
                   
                                   </div>
                             </div>
