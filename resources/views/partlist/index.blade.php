@@ -105,18 +105,18 @@
                             </div>
                                 <div class="card card-body col-12 mt-4">
                                     <h2>FILTER PRINT</h2>
-
-                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                   
+                                {{-- </select> --}}
+                                    <div class="btn-group " role="group" aria-label="Basic example" data-bs-spy="scroll" shadow>
                                         {{-- FILTER PROD NO --}}
-                                        <form class="col-12 d-flex justify-content-left" id="print-Partlist">
-                                            {{-- <input type="date" class="form-control rounded-3 form-control-sm col-2" name="jkeipodate" id="release-date" value="{{date('Y-m-d')}}">	 --}}
-                                            <select style="font-size:15px" class="form-control col-2 btn btn-light btn-sm"
-                                                id="filtprod-no" name="prodno">
-                                                <option value="-">-- PROD NO --</option>
+                                        <form class="col-12 d-flex justify-content-left" id="print-Partlist">                         
+                                            <input list="browsers"  id="filtprod-no" name="prodno" class="form-select form-select-lg shadow-none bg-dark  col-2 text-light" placeholder="Input Prodno"> 
+                                            <datalist id="browsers">
+                                                <option style="font-weight:bold;font-size:20px"class="text-light" >PROD NO / RELEASE DATE</option>
                                                 @foreach ($dataprodno as $dd)
-                                                    <option value="{{ $dd->prodno }}">{{ $dd->prodno }} / {{ $dd->created_at }}</option>
+                                                    <option class="text-light"  value="{{ $dd->prodno }}">{{ $dd->prodno }} / {{ $dd->created_at }}</option>
                                                 @endforeach
-                                            </select>
+                                            </datalist>
                                             <button type="submit" class="btn btn-info d-none d-sm-inline-block">
                                                 <i class="ti ti-filter"></i>
                                                 View
@@ -308,10 +308,7 @@
             }
         });
 
-
-
         $(document).ready(function() {
-
             $('#sch-mc').DataTable( {
                 dom: 'Bfrtip',
                 buttons: [

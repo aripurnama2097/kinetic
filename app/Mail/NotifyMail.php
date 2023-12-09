@@ -29,7 +29,9 @@ class NotifyMail extends Mailable
      */
     public function build()
     {
-        return $this->subject('Mail from KINETIC')
+        return $this->subject('Update Release Schedule KIT & Service Part')
         ->view('emails.index');
     }
 }
+
+
