@@ -17,7 +17,7 @@ class PartlistController extends Controller
             ->get();
 
         $dataprodno = DB::connection('sqlsrv')
-            ->select("SELECT distinct top 10  (prodno),(created_at) 
+            ->select("SELECT distinct top 15  (prodno),(created_at) 
                                 from partlist 
                     order by created_at desc");
 
@@ -71,8 +71,6 @@ class PartlistController extends Controller
         ]);
     }
 
-
-
     public function filter_scan(Request $request)
     {
 
@@ -106,36 +104,9 @@ class PartlistController extends Controller
         }
     }
 
-    public function filter_scancoopy(Request $request)
-    {
-
-
-        $partlistNo = $request->partlist_no;
-
-        $data = DB::table('partlist')
-            ->where('partlist_no', '=',  $partlistNo)
-            ->get();
-
-        $cek_partlist = DB::connection('sqlsrv')
-            ->select("SELECT * FROM partlist where partlist_no ='{$partlistNo}'");
-
-
-        if (empty($cek_partlist)) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Part list Not Available...'
-            ]);
-        } else {
-            return response()->json($data);
-        }
-    }
-
-
-
     public function scan_issue(Request $request, $status_print = null)
     {
 
-        // return strlen($request->scan_label);
         $nik = $request->scan_nik;
         $scan_nik   =  substr($nik, 2,5); 
         $partlist_no = $request->partlist_no;
@@ -249,10 +220,7 @@ class PartlistController extends Controller
             ]);
         }
          // ENDSTEP 3
-
-
-
-        // STEP 4.PILIH PART UNTUK DI UPDATE DATA
+        // STEP 4.PILIH PART UNTUK DI MASUKAN KE TRANSAKSI SCANISSUE
         $selectPart = DB::connection('sqlsrv')
             ->select("SELECT top 1 * from partlist
                                     where  partlist_no ='{$partlist_no}'
@@ -268,7 +236,6 @@ class PartlistController extends Controller
                             'message' => 'Loose Carton ?'
                         ]);
                 }
-
                 else if($qty > $selectPart[0]->stdpack  && $status_print == null)
                     {
                         return response()
@@ -289,19 +256,19 @@ class PartlistController extends Controller
                 }
         //--------------END CEK-----------------
 
-
-        // GET ID NUMBER PRINT LABEL KIT
         // GET ID NUMBER PRINT LABEL KIT
         $currentDate = Carbon::now();
         $dateAsNumber = $currentDate->format('Ymd');
         $date = substr($dateAsNumber, 2, 8);
         $get_id = DB::table('partscan')
-        ->whereDate('scan_date', $currentDate)
-        ->orderBy('id', 'desc')
-        ->limit(1)
-         ->value('dailyno');
-
-        //  dd($get_id);
+                    ->whereDate('scan_date', $currentDate)
+                    ->orderBy('id', 'desc')
+                    ->limit(1)
+                    ->value('dailyno');
+        
+        // if($get_id == null){
+        //     $get_id = $date;
+        // }
 
         $order = $get_id ? $get_id + 1 : 1;
         $dailyno =  str_pad($order, 4, '0', STR_PAD_LEFT);
@@ -413,7 +380,6 @@ class PartlistController extends Controller
         }
         //--------------END STEP-----------------
 
-
         //STEP 7. SIMPAN DATA  ke partscan + TANPA UPDATE STATUS PRINT
         else {
             DB::connection('sqlsrv')
@@ -484,14 +450,8 @@ class PartlistController extends Controller
 
                 ]);
         }
-
-
         //--------------END STEP-----------------
-
-
     }
-
-
 
     // INSERT KE PARTSCAN DAN CEK LOOSE CARTON LAGI
     public function looseCarton(Request $request)
