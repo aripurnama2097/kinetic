@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Carbon\Carbon;
-
+use App\Models\PartScan;
 class PartlistController extends Controller
 {
     public function index()
@@ -260,20 +260,30 @@ class PartlistController extends Controller
         $currentDate = Carbon::now();
         $dateAsNumber = $currentDate->format('Ymd');
         $date = substr($dateAsNumber, 2, 8);
+
+        // dd($date);
         $get_id = DB::table('partscan')
                     ->whereDate('scan_date', $currentDate)
                     ->orderBy('id', 'desc')
                     ->limit(1)
                     ->value('dailyno');
         
-        // if($get_id == null){
-        //     $get_id = $date;
-        // }
+        // TAMBAHKAN KONDISI KETIKA GET ID MASIH KOSONG => GET ID = DATE
+        if($get_id == null){
+            $order = $get_id ? $get_id + 1 : 1;
+            $dailyno = $date . str_pad($order, 3, '0', STR_PAD_LEFT);
+            $idnumber = 'I' . $dailyno;   
+            // dd($dailyno);
+        }
+        else if($get_id != null){
+            $order = $get_id ? $get_id + 1 : 1;
+            $dailyno =  str_pad($order, 3, '0', STR_PAD_LEFT);
+            $idnumber = 'I' . $dailyno;   
+        
+        }
 
-        $order = $get_id ? $get_id + 1 : 1;
-        $dailyno =  str_pad($order, 4, '0', STR_PAD_LEFT);
-        $idnumber = 'I' . $dailyno;
-
+         
+        
         //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
         if (!empty(@$status_print)) {
              // STEP SCAN ISSUE
@@ -285,7 +295,7 @@ class PartlistController extends Controller
                 $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
 
                 $order = $get_id ? $get_id + 1 : 1;
-                $dailyno =  str_pad($order, 4, '0', STR_PAD_LEFT);
+                $dailyno =  str_pad($order, 3, '0', STR_PAD_LEFT);
                 $idnumbercont = 'I' . $dailyno;
             }
 
@@ -293,11 +303,24 @@ class PartlistController extends Controller
             if($status_print == 'continue_combine'){
 
                 $get_num = DB::table('partscan')
-                ->select('dailyno')
-                ->where('status_print', '=', 'start_combine')
-                ->orderBy('id', 'desc')
-                ->limit(1)
-                ->value('dailyno');
+                        ->where('status_print', 'start_combine')
+                        ->where('partno', $label_scan)
+                        ->orderBy('id', 'desc')
+                        ->take(1)
+                        ->pluck('dailyno')
+                        ->first();
+
+                // dd($get_num);
+                //MASIH PROBLEM UNTUK DAPATKAN GET NUM NULL
+                if($get_num == null){
+                    echo'failed';
+                    return response()
+                        ->json([
+                            'success' => false,
+                            'message' => 'PART BEFORE START COMBINE...'                     
+
+                        ]);
+                }
 
                 $dailyno        = $get_num;
                 $idnumbercont   = 'I' . $get_num;     
