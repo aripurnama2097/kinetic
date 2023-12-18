@@ -10,12 +10,13 @@ class BorrowController extends Controller
     public function index(){
 
         $data = DB::table('borrow')
-                 ->paginate(10);
+                 ->get();
 
         return  view('borrow.index',compact('data'));
     }
 
     public function takeout(request $request){
+        return $request;
 
         $borrower = substr($request->borrower,2,5);
         $lender =  substr($request->lender,2,5);
@@ -171,11 +172,27 @@ class BorrowController extends Controller
         $datakit = $kitLabel;
         list($partno, $partname, $qtyscan, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
 
+ // STEP 2. CEK LABEL/UNIQUE ID PART PADA BORROW DETAIL TABLE
+        $cek_takeout = DB::connection('sqlsrv')
+                        ->select("SELECT label 
+                                        from borrow_detail 
+                                        where 
+                                        label ='{$kitLabel}'");
 
+        if(!$cek_takeout){
+                return response()
+                        ->json([
+                        'success' => false,
+                        'message' => 'BEFORE TAKEOUT...',
+
+        ]);
+        }
 
            // STEP 2. CEK LABEL/UNIQUE ID PART PADA BORROW DETAIL TABLE
            $cek_label = DB::connection('sqlsrv')
-           ->select("SELECT label_return from borrow_detail where label_return ='{$kitLabel}'");
+                        ->select("SELECT label_return 
+                                from borrow_detail 
+                                where label_return ='{$kitLabel}'");
    
            if($cek_label){
                    return response()

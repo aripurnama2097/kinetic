@@ -71,11 +71,6 @@
                             <div class="mb-3 col-6">
                                 <label class="form-label required">Symptom</label>
                                 <div>
-                                    {{-- <input type="text" class="form-control" name="symptom" id="symptom"
-                                        placeholder="SYMPTOM" required disabled>
-                                    <small class="form-hint">
-                                    </small> --}}
-
                                     <select class="form-control" name="symptom" id="symptom" required >
                                         <option>--Select Symptom--</option>
                                         <option>Bending</option>
@@ -298,7 +293,6 @@
                           <td style="font-size: 12px;">{{ $value->act_return }} </td>
                           <td style="font-size: 12px;">{{ $value->dic_return }} </td>
                           <td style="font-size: 12px;">{{ $value->receiver }} </td>
-                         
                           <td class="text-dark text-center" style="font-size: 14px; font-weight:bold"> {{ $value->tot_return }}</td> 
                           <td class="text-danger text-center" style="font-size: 14px; font-weight:bold"> {{ $value->diff }}</td> 
                           <td style="font-size: 12px;"> {{ $value->remark }}</td>
@@ -311,20 +305,20 @@
               </table>
           </div>
       </div>
-      {{ $data->links('vendor.pagination.custom') }}
+   
     </div>
     <script type="text/javascript" src="{{ asset('') }}js/jquery-3.7.0.js "></script>
     <script type="text/javascript">
         $(document).ready(function() {
 
             $('#data-borrow').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-           
-            'excelHtml5',
-            'csvHtml5'
-        ]
-      });
+                dom: 'Bfrtip',
+                buttons: [
+                
+                    'excelHtml5',
+                    'csvHtml5'
+                ]
+            });
 
             $('#btn-takeout').on('click', function() {
                 $('#return').hide();
@@ -525,7 +519,7 @@
 
 
 
-            //================================= STEP 2. START BORROW TAKE OUT==================================
+            //================================= STEP 2. START BORROW RETURN==================================
             $('#dic_return').on('keypress', function(e) {
                 if (e.which == 13) {
                     var val_dic_return = $('#dic_return').val();
@@ -662,6 +656,53 @@
                                     var audio = new Audio("{{asset('')}}storage/sound/mistake.mp3");
                                     audio.load()
                                     audio.play();
+
+                                    let warningMessage = response.message;
+                                    console.log("message",warningMessage.indexOf('BEFORE'))
+                                    console.log("message",warningMessage.indexOf('DOUBLE'))
+                                    if(warningMessage.indexOf('BEFORE') == 0){
+                                        Swal.fire({
+
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:1000
+
+
+                                        })
+                                                     var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/wrong_part.mp3");
+                                                    audio.load()
+                                                    audio.play();
+                                                    $('#label_kit').focus();
+                                                    $('#label_kit').val("");
+                                                    return;
+                                                  
+                                    }
+
+                                    if(warningMessage.indexOf('DOUBLE') == 0){
+                                        Swal.fire({
+
+                                            icon: 'warning',
+                                            title: response.message,
+                                            showConfirmButton :false,
+                                            timer:100
+
+
+                                        })
+
+                                                    var audio = document.getElementById('audio');
+                                                    var source = document.getElementById('audioSource');
+                                                    var audio = new Audio("{{asset('')}}storage/sound/double_scan.mp3");
+                                                    audio.load()
+                                                    audio.play();
+                                                    $('#label_kit').focus();
+                                                    $('#label_kit').val("");
+                                                    return;
+
+                                                   
+                                    }
                                     
                                                     
                             }
