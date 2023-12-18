@@ -16,7 +16,6 @@ class BorrowController extends Controller
     }
 
     public function takeout(request $request){
-        return $request;
 
         $borrower = substr($request->borrower,2,5);
         $lender =  substr($request->lender,2,5);
