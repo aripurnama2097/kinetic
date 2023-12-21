@@ -48,7 +48,7 @@ class DashboardController extends Controller
 
          $databorrow = DB::connection('sqlsrv')
                       ->select(" SELECT * from borrow                                    
-                                     where convert(nvarchar(50), created_at,126) LIKE '%2023-11%'
+                                     where convert(nvarchar(50), created_at,126) LIKE '%$monthly%'
                                      and qty != tot_return
                             ");
 
