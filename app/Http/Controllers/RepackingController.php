@@ -46,6 +46,7 @@ class RepackingController extends Controller
 
         $scan_nik = $request ->scan_nik;
         $scan_label = $request->scan_label;
+        $scan_label = str_replace("_","+",$scan_label);
 
         //PARAM LABEL
         $label_scan = substr($scan_label,0,15);
@@ -58,6 +59,8 @@ class RepackingController extends Controller
                         ->select(" SELECT * FROM  partscan
                                     where label = '{$scan_label}'
                                   ");
+
+                         
 
        
         if (!$cek_status ){

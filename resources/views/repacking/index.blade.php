@@ -465,8 +465,10 @@
 
 
                     var scan_label = $('#scan_label').val();
-                    window.location.assign("{{ url('/repacking/printlbl_kit/') }}" + "?scan_label=" +
-                        scan_label)
+
+                    var scan_label = scan_label.replaceAll("+","_");
+                    
+                    window.location.assign("{{ url('/repacking/printlbl_kit/') }}" + "?scan_label=" + scan_label)
                     $('#scan_label').val("");
                     $('#scan_label').focus();
                 }
