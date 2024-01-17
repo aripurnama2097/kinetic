@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\LogPrintKit;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RepackingExport;
+use App\Models\RepackingScanin;
 class RepackingController extends Controller
 {
     public function index(){
@@ -338,14 +339,12 @@ class RepackingController extends Controller
         $scan_nik = substr($request->scan_nik,2,5);
         $mcLabel = $request->mc_label;
         $kitLabel = $request->kit_label;
-
         // GET PARAM FROM KIT LABEL
         $label_scan = substr($mcLabel,0,15);
         $unique_mc = substr($mcLabel, 28, 49);
         $partno = substr($kitLabel, 0,11);
         $qty2    = substr($kitLabel, 17,19);
         $qty = trim($qty2);
-
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
@@ -353,15 +352,35 @@ class RepackingController extends Controller
         $widht = $request->widht;
         $height = $request->height;
         $gw = $request->gw;
-        // if($cek_stdpack[0]->stdpack != $qty){
-        //     echo'isi gross weight';
-        //     return response()
-        //         ->json([
-        //             'success' => false,
-        //             'message' => 'ISI GROSS WEIGHT...'
-        //         ]);
-        // }
+       
+ 
+         // STEP 3.CEK LABEL SCAN PADA SCAN IN
+         $cek_kit = DB::connection('sqlsrv')
+         ->select("SELECT * FROM scanin_repacking 
+                     where idnumber ='{$idnumber}'
+                     ");  
 
+            if($cek_kit){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'DOUBLE SCAN KIT LABEL...'
+                ]);
+            }
+
+             $cek_mc = DB::connection('sqlsrv')
+             ->select("SELECT * FROM scanin_repacking 
+                         where 
+                               unique_mc ='{$unique_mc}'
+                         ");
+
+            if($cek_mc){
+            return response()
+                ->json([
+                    'success' => false,
+                    'message' => 'DOUBLE SCAN MC LABEL...'
+                ]);
+            }
          // STEP 1. CEK LABEL IN SCAN MC
          $valid = DB::connection('sqlsrv')
          ->select("SELECT * from partscan
@@ -402,24 +421,6 @@ class RepackingController extends Controller
                         //END CEK COMPARE QTY
     
 
-        // STEP 3.CEK LABEL SCAN PADA SCAN IN
-        $cek_label = DB::connection('sqlsrv')
-                    ->select("SELECT * FROM scanin_repacking 
-                                where idnumber ='{$idnumber}'
-                                        or
-                                      unique_mc ='{$unique_mc}'
-                                ");
-
-
-        if($cek_label){
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'DOUBLE SCAN...'
-                ]);
-        }
-        // END CEK LABEL SCAN
-
 
         $cek_total = DB::connection('sqlsrv')
                     ->select("SELECT  * from repacking_list
@@ -459,7 +460,6 @@ class RepackingController extends Controller
                         'message' => 'PART NOT EXIST IN SCHEDULE...'
                     ]);
             }
-
 
 
           //AMBIL CONTENT GROSS WEIGHT
@@ -554,22 +554,45 @@ class RepackingController extends Controller
 
         $scan_nik = substr($request->scan_nik,2,5);
         $mcLabel = $request->mc_label;
+        $unique_mc = substr($mcLabel, 28, 49);
         $kitLabel = $request->kit_label;
-
         // GET PARAM FROM KIT LABEL
         $label_scan = substr($mcLabel,0,15);
-        $status_print = 'combine';
-
-       
+        $status_print = 'combine';       
         $datakit = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $datakit);
-
         $lenght = $request->lenght;
         $widht = $request->widht;
         $height = $request->height;
         $gw = $request->gw;
         $combine_no = $request->combine_no;
 
+        $cek_kit = DB::connection('sqlsrv')
+        ->select("SELECT * FROM scanin_repacking 
+                    where idnumber ='{$idnumber}'
+                    ");  
+
+           if($cek_kit){
+           return response()
+               ->json([
+                   'success' => false,
+                   'message' => 'DOUBLE SCAN KIT LABEL...'
+               ]);
+           }
+
+            $cek_mc = DB::connection('sqlsrv')
+            ->select("SELECT * FROM scanin_repacking 
+                        where 
+                              unique_mc ='{$unique_mc}'
+                        ");
+
+           if($cek_mc){
+           return response()
+               ->json([
+                   'success' => false,
+                   'message' => 'DOUBLE SCAN MC LABEL...'
+               ]);
+           }
 
         $valid = DB::connection('sqlsrv')
                 ->select("SELECT * from partscan
@@ -586,24 +609,6 @@ class RepackingController extends Controller
                     ]);
                 }
 
-      
-        // STEP 1.CEK LABEL SCAN PADA SCAN IN
-        $cek_label = DB::connection('sqlsrv')
-                    ->select("SELECT * FROM scanin_repacking 
-                            where label_mc ='{$mcLabel}' or
-                                  label_kit ='{$kitLabel}'");
-
-
-        if($cek_label){
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'DOUBLE SCAN...'
-                ]);
-        }
-        // END CEK LABEL SCAN
-
-
         // ambil part dari list repacking
         if(empty($cek_label)){
             $selectPart = DB::connection('sqlsrv')
@@ -611,7 +616,7 @@ class RepackingController extends Controller
                                         where  partno = '{$partno}' and custpo ='{$custpo}'
                                         and demand >= (coalesce(act_receive,0) + $qty)
                                         order by custpo asc");
-
+                                
                 if(!$selectPart){
                     return response()
                         ->json([

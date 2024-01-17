@@ -46,24 +46,30 @@ class FinishGoodController extends Controller
         $boxno      = $request->box_no;
         $prodno     = $request->prodno;
         $kitLabel   = $request->kit_label;
-
-
-
         // GET PARAM FROM KIT LABEL
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
         // F0K-0264-10:FAN:254:JPN HACHIOJI:PD1323001:-:I23050001:PD1323-262-3
 
-        // STEP 1. CEK LABEL KIT DI SCAN OUT
-        // STEP 1. CEK LABEL KIT DI SCAN OUT
+        // STEP 1. CEK LABEL KIT DI SCAN OUT\
+          
+           $cek_label = DB::connection('sqlsrv')
+           ->select("SELECT * FROM scanout where kit_label ='{$kitLabel}'");
+
+       if ($cek_label) {
+           return response()
+               ->json([
+                   'success' => false,
+                   'message' => 'DOUBLE SCAN...'
+               ]);
+       }
+       // END CEK LABEL SCAN
+        // STEP 2. CEK LABEL KIT DI SCAN OUT
         $valid = DB::connection('sqlsrv')
         ->select("SELECT * from scanin_repacking
                           where idnumber ='{$idnumber}'                        
                   ");
-
-        
-// CEK DATA PADA REPACKING
-
+            // CEK DATA PADA REPACKING
        // dd($valid);
        if($valid == null){
            return response()
@@ -72,22 +78,6 @@ class FinishGoodController extends Controller
                    'message' => 'BEFORE SCAN REPACKING'
                ]);
            }
-    
-
-
-        // STEP 1. CEK LABEL KIT DI SCAN OUT
-        $cek_label = DB::connection('sqlsrv')
-            ->select("SELECT * FROM scanout where kit_label ='{$kitLabel}'");
-
-        if ($cek_label) {
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'DOUBLE SCAN...'
-                ]);
-        }
-        // END CEK LABEL SCAN
-
 
         // ambil part dari  finishgoodlist -> kondisi part apabila  part dan custpo di list = custpo  pada kit label
         $selectPart = DB::connection('sqlsrv')
@@ -97,7 +87,7 @@ class FinishGoodController extends Controller
                         and demand >= (coalesce(act_running,0) + $qty)
                         order by custpo asc
                     ");
-        // return $selectPart;
+   
 
         $get_data = DB::connection('sqlsrv')
         ->select("SELECT combine_no,gw,lenght,widht,height from scanin_repacking where idnumber ='{$idnumber}'      
@@ -269,15 +259,10 @@ class FinishGoodController extends Controller
     // SCAN OUT DENGAN SKID
     public function scanout_skid(Request $request)
     {
-
         $nik        = substr($request->scan_nik,2,5);
         $qrskid     = $request->qr_skid;
         $skidheight = $request->skid_height;
         $kitLabel   = $request->kit_label;
-
-
-        // GET PARAM FROM QR SKID
-        
         // SKD20230712001:1:PAKISTAN:NA356:03:2022-06-17
         $qrdata = $qrskid;
         list($skidcode, $skidno, $destSkid, $packing_no, $type_skid, $vandate) = explode(":", $qrdata);
@@ -286,14 +271,20 @@ class FinishGoodController extends Controller
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
-  
 
 
-         // STEP 1. CEK LABEL KIT DI SCAN OUT
-        //  $valid = DB::connection('sqlsrv')
-        //  ->select("SELECT * from scanin_repacking
-        //                    where label_kit ='{$kitLabel}'                          
-        //            ");
+           // STEP 1. CEK LABEL KIT DI SCAN OUT
+           $cek_label = DB::connection('sqlsrv')
+           ->select("SELECT * FROM scanout where kit_label ='{$kitLabel}'");
+
+            if ($cek_label) {
+                return response()
+                    ->json([
+                        'success' => false,
+                        'message' => 'DOUBLE SCAN...'
+                    ]);
+            }
+       // END CEK LABEL SCA
 
 
             $valid = DB::connection('sqlsrv')
@@ -301,28 +292,14 @@ class FinishGoodController extends Controller
                             where idnumber ='{$idnumber}'                          
                     ");
 
-// CEK DATA PADA REPACKING
-        if($valid == null){
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'BEFORE SCAN REPACKING'
-                ]);
-            }
-
-        // STEP 1. CEK LABEL KIT DI SCAN OUT
-        $cek_label = DB::connection('sqlsrv')
-            ->select("SELECT * FROM scanout where kit_label ='{$kitLabel}'");
-
-        if ($cek_label) {
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'DOUBLE SCAN...'
-                ]);
-        }
-        // END CEK LABEL SCAN
-
+        // CEK DATA PADA REPACKING
+                if($valid == null){
+                    return response()
+                        ->json([
+                            'success' => false,
+                            'message' => 'BEFORE SCAN REPACKING'
+                        ]);
+                    }
 
         // ambil part dari  finishgoodlist -> kondisi part apabila  part dan custpo di list = custpo  pada kit label
         $selectPart = DB::connection('sqlsrv')
@@ -379,15 +356,6 @@ class FinishGoodController extends Controller
                $seq1 =  DB::connection('sqlsrv')
                 ->update("UPDATE finishgood_list 
                                 set tot_sequence = (tot_sequence + 1) where custpo ='{$custpo}' ");
-
-              // STEP 3.UPDATE IN FINISH GOOD LIST     
-            //    DB::connection('sqlsrv')
-            //         ->update("UPDATE finishgood_list 
-            //                         set skid_no = '{$skidno}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
-
-            //     DB::connection('sqlsrv')
-            //     ->update("UPDATE finishgood_list 
-            //                     set packing_no = '{$packing_no}' where  finishgood_list.id = '{$selectPart[0]->id}' ");
 
               $view_scan = DB::connection('sqlsrv')
                             ->select("SELECT * from finishgood_list where custpo ='{$custpo}'
