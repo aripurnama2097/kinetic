@@ -1135,7 +1135,7 @@ class RepackingController extends Controller
         // STEP 1.CEK LABEL SCAN PADA SCAN IN
         $cek_label = DB::connection('sqlsrv')
                     ->select("SELECT * FROM scanin_repacking where
-                            label_kit ='{$kitLabel}'");
+                            idnumber ='{$idnumber}'");
 
 
         if($cek_label){
@@ -1245,21 +1245,34 @@ class RepackingController extends Controller
         $berat = $request->berat;
 
 
-        // STEP 1.CEK LABEL SCAN PADA SCAN IN
-        $cek_label = DB::connection('sqlsrv')
-                    ->select("SELECT * FROM scanin_repacking where
-                             label_panel ='{$qr_panel}' or
-                            label_kit ='{$qr_kit}'
-                            ");
 
+        $cek_kit = DB::connection('sqlsrv')
+                 ->select("SELECT * FROM scanin_repacking 
+                    where idnumber ='{$idnumber}'
+                    ");  
 
-        if($cek_label){
-            return response()
-                ->json([
-                    'success' => false,
-                    'message' => 'DOUBLE SCAN...'
-                ]);
-        }
+           if($cek_kit){
+           return response()
+               ->json([
+                   'success' => false,
+                   'message' => 'DOUBLE SCAN KIT LABEL...'
+               ]);
+           }
+
+            $cek_panel = DB::connection('sqlsrv')
+            ->select("SELECT * FROM scanin_repacking where
+                                 label_panel ='{$qr_panel}'
+                        ");
+
+           if($cek_panel){
+           return response()
+               ->json([
+                   'success' => false,
+                   'message' => 'DOUBLE SCAN PANEL LABEL...'
+               ]);
+           }
+
+      
         // END CEK LABEL SCAN
             // ambil part dari list repacking
             $selectPart = DB::connection('sqlsrv')
