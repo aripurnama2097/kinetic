@@ -128,7 +128,9 @@ class SchTentativeController extends Controller
   public function reset_mastersch(){
 
     DB::table('schedule_temp')
-            ->where('dest','!=','PAKISTAN')->delete();
+            ->where('dest','!=','PAKISTAN')
+            ->where('dest','!=','JVIC')
+            ->delete();
 
     return redirect()->back()->with('error', 'All records have been deleted.');
 
@@ -136,7 +138,9 @@ class SchTentativeController extends Controller
 
   public function deleteskd(){
     DB::table('schedule_temp')
-      ->where('dest','=','PAKISTAN')->delete();
+      ->where('dest','=','PAKISTAN')
+      ->where('dest','=','JVIC')
+      ->delete();
 
     return redirect()->back()->with('error', 'All records have been deleted.');
   }
