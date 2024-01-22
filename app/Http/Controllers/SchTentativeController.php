@@ -280,6 +280,7 @@ class SchTentativeController extends Controller
                                               a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand, '{$pic}' from schedule_temp as a 
                                               inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                               where a.dest ='PAKISTAN'
+                              or a.dest ='JVIC'
                               and a.prodno ='{$prodno}'
 
                              
@@ -300,6 +301,7 @@ class SchTentativeController extends Controller
                                               a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
                                               inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                               where a.dest ='PAKISTAN'
+                              or a.dest ='JVIC'
                               and a.prodno ='{$prodno}'
                      
                       order by vandate asc ");
@@ -319,6 +321,7 @@ class SchTentativeController extends Controller
                                         a.shipvia, a.orderitem, a.custpo, a.partno, a.partname,a.shelfno,a.demand,a.demand from schedule_temp as a 
                                         inner join tblSA90 as d ON    a.model = d.modelname  AND a.prodno = d.prodNo  AND a.partno = d.partnumber AND  a.demand = d.qty
                       where a.dest ='PAKISTAN'      
+                      or a.dest ='JVIC'
                       and a.prodno ='{$prodno}'           
                       order by vandate asc ");
                       
