@@ -129,7 +129,7 @@ class SchTentativeController extends Controller
 
     DB::table('schedule_temp')
             ->where('dest','!=','PAKISTAN')
-            ->where('dest','!=','JVIC')
+            ->orWhere('dest','!=','JVIC')
             ->delete();
 
     return redirect()->back()->with('error', 'All records have been deleted.');
@@ -139,7 +139,7 @@ class SchTentativeController extends Controller
   public function deleteskd(){
     DB::table('schedule_temp')
       ->where('dest','=','PAKISTAN')
-      ->where('dest','=','JVIC')
+      ->orWhere('dest','=','JVIC')
       ->delete();
 
     return redirect()->back()->with('error', 'All records have been deleted.');
