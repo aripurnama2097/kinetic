@@ -293,7 +293,7 @@ class FinishGoodController extends Controller
 
             $valid = DB::connection('sqlsrv')
             ->select("SELECT * from scanin_repacking
-                            where idnumber ='{$idnumber}
+                            where idnumber ='{$idnumber}'
                             and partno ='{$partno}'                          
                     ");
 
