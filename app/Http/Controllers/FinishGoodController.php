@@ -67,10 +67,12 @@ class FinishGoodController extends Controller
         // STEP 2. CEK LABEL KIT DI SCAN OUT
         $valid = DB::connection('sqlsrv')
         ->select("SELECT * from scanin_repacking
-                          where idnumber ='{$idnumber}'                        
+                          where idnumber ='{$idnumber}' 
+                          and partno ='{$partno}'                       
                   ");
+
+
             // CEK DATA PADA REPACKING
-       // dd($valid);
        if($valid == null){
            return response()
                ->json([
@@ -271,6 +273,8 @@ class FinishGoodController extends Controller
         $data = $kitLabel;
         list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
+        $data = $kitLabel;
+        list($partno, $partname, $qty, $dest, $custpo, $shelfno, $idnumber) = explode(":", $data);
 
 
            // STEP 1. CEK LABEL KIT DI SCAN OUT
@@ -289,8 +293,10 @@ class FinishGoodController extends Controller
 
             $valid = DB::connection('sqlsrv')
             ->select("SELECT * from scanin_repacking
-                            where idnumber ='{$idnumber}'                          
+                            where idnumber ='{$idnumber}
+                            and partno ='{$partno}'                          
                     ");
+
 
         // CEK DATA PADA REPACKING
                 if($valid == null){
