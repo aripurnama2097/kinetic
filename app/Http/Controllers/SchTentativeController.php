@@ -345,16 +345,16 @@ class SchTentativeController extends Controller
 
       $pic = $request->nik;
       
-            // DB::connection('sqlsrv')
-            //         ->insert("INSERT into inhouse_list(model,lotno,shipqty,jknpo,balance,pic_release)
-            //                     select model,lotno,shipqty,jknpo,shipqty,'{$pic}' from masterinhouse"
-            //                 );
-        DB::table('inhouse_list')->insert(
-            DB::table('masterinhouse')
-                  ->select(['model', 'lotno', 'shipqty', 'jknpo', 'shipqty as balance', DB::raw("'{$pic}' as pic_release")])
-                  ->get()
-                  ->toArray()
-            );
+            DB::connection('sqlsrv')
+                    ->insert("INSERT into inhouse_list(model,lotno,shipqty,jknpo,balance,pic_release)
+                                select model,lotno,shipqty,jknpo,shipqty,'{$pic}' from masterinhouse"
+                            );
+        // DB::table('inhouse_list')->insert(
+        //     DB::table('masterinhouse')
+        //           ->select(['model', 'lotno', 'shipqty', 'jknpo', 'shipqty as balance', DB::raw("'{$pic}' as pic_release")])
+        //           ->get()
+        //           ->toArray()
+        //     );
  
         
          DB::table('masterinhouse')->truncate(); 
