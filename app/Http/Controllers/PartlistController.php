@@ -276,10 +276,17 @@ class PartlistController extends Controller
             // dd($dailyno);
         }
         else if($get_id != null){
-            $order = $get_id ? $get_id + 1 : 1;
-            $dailyno =  str_pad($order, 3, '0', STR_PAD_LEFT);
-            $idnumber = 'I' . $dailyno;   
-        
+            // $order = $get_id ? $get_id + 1 : 1;
+            // $dailyno =  str_pad($order, 3, '0', STR_PAD_LEFT);
+            // $idnumber = 'I' . $dailyno;   
+
+          $get_dailyno = DB::table('partscan')
+                            ->whereDate('scan_date', $currentDate)
+                            ->max('dailyno');
+          $dailyno  = $get_dailyno + 1;
+          $idnumber = 'I' . $dailyno;
+
+        //   dd($idnumber);
         }
 
          
@@ -294,9 +301,9 @@ class PartlistController extends Controller
             if($status_print != 'continue_combine'){// STATUS PRINT = START COMBINE OR LOOSE CARTON
                 $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
 
-                $order = $get_id ? $get_id + 1 : 1;
-                $dailyno =  str_pad($order, 3, '0', STR_PAD_LEFT);
-                $idnumbercont = 'I' . $dailyno;
+                // $order = $get_id ? $get_id + 1 : 1;
+                // $dailyno =  str_pad($order, 3, '0', STR_PAD_LEFT);
+                $idnumbercont = 'I' . $dailyno; // IDNUMBER UNTUK STATUS PRINT LOOSE, DAN START CONTINUE
             }
 
             // compare stdpack dg part continue
@@ -313,7 +320,6 @@ class PartlistController extends Controller
                 // dd($get_num);
                 //MASIH PROBLEM UNTUK DAPATKAN GET NUM NULL
                 if($get_num == null){
-                    echo'failed';
                     return response()
                         ->json([
                             'success' => false,
