@@ -22,12 +22,9 @@
               <div class="navbar-nav flex-row order-md-last">
                 <div class="nav-item d-none d-md-flex me-3">
                   <div class="btn-list">
-                    <a class="btn btn-dark" target="_blank" rel="noreferrer" style="font-size:30px">
-
-                   
+                    <a class="btn btn-dark" target="_blank" rel="noreferrer" style="font-size:30px">                
                     KINETIC
                     </a>
-
                   </div>
                 </div>
                
@@ -68,7 +65,7 @@
                     </li>
 
                   {{-- ====ADMIN || ADMIN PLANNING==== --}}
-                  <?php if (Auth::user()->role === 'admin'||Auth::user()->role === 'Admin Planning') { ?>
+                  @if(Auth::user()->role === 'Super Admin'|| Auth::user()->role === 'Admin' ||Auth::user()->role === 'Admin Planning') 
                     <li class="nav-item dropdown">
                       <a class="nav-link " href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
                          <i class="ti ti-book-upload mr-2"></i>
@@ -288,41 +285,32 @@
                    </li>
        
                    {{-- USER SETTING --}}
+                   @if(Auth::user()->role === 'Super Admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{url('/user_setting')}}">
+                                <span style="font-size:16px" class="nav-link-title">
+                                    User Setting
+                                </span>
+                                <i class="ti ti-user-plus mr-2"></i>
+                            </a>
+                        </li>
+                  @endif
+
+                   {{-- GUIDANCE --}}
                    <li class="nav-item">
-                     <a class="nav-link" href="{{url('/user_setting')}}">
-                         {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
-                         </span> --}}
-                       
-                         <span style="font-size:16px" class="nav-link-title">
-                             User Setting
-                         </span>
-                         <i class="ti ti-user-plus mr-2"></i>
-                     </a>
-                  </li>
-       
-       
-       
-                   {{-- USER SETTING --}}
-                   <li class="nav-item">
-                     <a class="nav-link  bg-primary" href="{{asset('')}}storage/WI/KINETIC_GUIDANCE.pdf">
-                    
+                     <a class="nav-link  bg-primary" href="{{asset('')}}storage/WI/KINETIC_GUIDANCE.pdf">                  
                          <span style="font-size:16px" class="nav-link-title">
                             Guidance
                          </span>
                      </a>
-                  </li>
-                 
-                  <?php } ?>
-
-                  
+                  </li>   
+                 @endif
+               
                       {{-- ==== ADMIN MC=========== --}}
                       <?php if (Auth::user()->role === 'user' || Auth::user()->role === 'Admin MC') { ?>
                         {{-- SCHDEULE RELEASE --}}
                       <li class="nav-item">
                          <a class="nav-link" href="{{ url('/schedule/release_schedule') }}">
-                             {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
-                             
-                             </span> --}}
                              <i class="ti ti-calendar-minus mr-2"></i>
                              <span style="font-size:14px" class="nav-link-title">  
                                  Schedule Release 
@@ -333,9 +321,6 @@
                        {{-- MC ISSUE --}}
                        <li class="nav-item ">
                          <a class="nav-link" href="{{ url('/partlist') }}"  class="text-light">
-                             {{-- <span class="nav-link-icon d-md-none d-lg-inline-block">
-                             
-                             </span> --}}
                              <i class="ti ti-file-text mr-2"></i>
                              <span style="font-size:15px" class="nav-link-title">  
                                MC Partlist

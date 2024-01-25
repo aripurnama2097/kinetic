@@ -43,7 +43,7 @@ class StdpackController extends Controller
 
         // if()
         //   StdPack ::create($request->all());
-
+        $pic = auth()->user()->name;
 
           $this->validate($request, [
             'partnumber'=>'required|unique:std_pack,partnumber',
@@ -61,6 +61,13 @@ class StdpackController extends Controller
             $model->jknshelf        = $request->jknshelf;
             $model->save();
 
+
+            DB::connection('sqlsrv')
+            ->update("UPDATE std_pack
+                      SET created_by = '{$pic}'
+                     
+                     ");
+       
           return redirect()->back()->with('success', 'Data Berhasil Disimpan');
     }
 
@@ -87,6 +94,10 @@ class StdpackController extends Controller
         public function update(Request $request, $id)
     {
 
+        $pic = auth()->user()->name;
+        $currentDate = Carbon::now();    
+        $date        = $currentDate->format('Ymd');   
+
         $model = stdPack::find($id);   
 
         $model->partnumber      = $request->partnumber;
@@ -98,6 +109,8 @@ class StdpackController extends Controller
         $model->stdpack         = $request->stdpack;
         $model->vendor          = $request->vendor;
         $model->jknshelf        = $request->jknshelf;
+        $model->updated_at       = $date;
+        $model->updated_by       = $pic;
         $model->save();
         
 
@@ -109,10 +122,6 @@ class StdpackController extends Controller
        $data =  DB::table('partlist')
             ->where('partno',$model->partnumber)
             ->update(['stdpack'=> $request->stdpack]);
-
-            // dd($data);
-
-        
 
         return redirect('/stdpack')->with('success', 'Success! Data Berhasil Diupdate');
     }
