@@ -35,7 +35,7 @@
     <div class="page-body">
       <div class="container-xl">
         <div class="row row-deck row-cards">
-          <?php if (Auth::user()->role === 'admin'||Auth::user()->role === 'Admin Planning') { ?>
+          @if (Auth::user()->role === 'Super Admin'||Auth::user()->role === 'Admin Planning')
 
           <div class="col-sm-6 col-lg-3" data-bs-toggle="collapse" id="btn-problem"  role="button"
                        aria-expanded="false" aria-controls="partlist">
@@ -133,7 +133,7 @@
             </div>
           </div>
 
-          <?php } ?>
+          @endif
   
           <div class="col-12">
             <div class="card card-md">
