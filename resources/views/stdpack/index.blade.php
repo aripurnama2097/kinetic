@@ -39,8 +39,11 @@
               <div class="card-body border-bottom py-2">            
                 @if(Session::has('success'))
                 <p class="alert alert-success bg-success">{{Session::get('success')}}</p>
-                @endif             
-                <div class=" btn-group-sm">                
+                @endif     
+
+                <div class=" btn-group-sm">  
+
+                     @if (Auth::user()->role === 'Super Admin')              
                   <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>                
                     <a href="#" class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#stdpack-upload"> <i class="ti ti-arrow-big-down-filled"></i>
                       Upload Master
@@ -50,6 +53,8 @@
                     <i class="ti ti-plus"></i>
                     Create Std Pack
                   </a>
+
+                  @endif
                   <a href="{{url('/stdpack')}}" class="btn btn-success btn-sm " >
                     <i class="ti ti-360"></i>
                     Refresh
@@ -82,6 +87,10 @@
                         <th>Vendor</th>
                         <th>JKN Shelf No</th>   
                         <th>MC Shelf No</th>         
+                        <th>Create By</th>   
+                        <th>Update By</th> 
+                        <th>Create At</th>   
+                        <th>Update At</th>     
                         <th>Action</th>    
                       </tr>
                     </thead>
@@ -100,7 +109,10 @@
                         <td> {{$value->vendor}}</td>
                         <td> {{$value->jknshelf}}</td>
                         <td> {{$value->mcshelfno}}</td>
-                       
+                        <td> {{$value->created_by}}</td>
+                        <td> {{$value->updated_by}}</td>
+                        <td> {{$value->created_at}}</td>
+                        <td> {{$value->updated_at}}</td>                   
                         <td class="btn-group"> 
                          
                            <form  action="{{url('/stdpack/'.$value->id. '/destroy')}}" onclick="return confirm('Delete This data?')" method="GET" >
