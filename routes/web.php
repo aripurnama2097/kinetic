@@ -159,6 +159,8 @@ Route::get('repacking/printlbl_assy',[RepackingController::class,'printlbl_assy'
 Route::post('repacking/printassy/{id}',[RepackingController::class,'printassy']);
 Route::get('repacking/logPrintOrg',[RepackingController::class,'logPrintOrg']);
 Route::post('repacking/logPrintOrg/{id}',[RepackingController::class,'get_Print']);
+Route::get('repacking/logPrintOrg/download',[RepackingController::class,'download_logprint']);
+
 
 Route::get('repacking/scanIn',[RepackingController::class,'scanIn']);
 Route::post('repacking/scanIn/inputData',[RepackingController::class,'inputData']);

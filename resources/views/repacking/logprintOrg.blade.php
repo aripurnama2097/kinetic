@@ -33,6 +33,7 @@
                   <h2 style="font-size:30px"class="text-primary bg-header1" >LOG PRINT LABEL KIT</h2> 
                   
                 </div>
+              
                 <form class="mt-2 mb-2"action="{{url('repacking/logPrintOrg')}}" method="GET">			
                   <div class="row">
                     <div class="col-lg-3">
@@ -75,6 +76,7 @@
                 <button class="btn btn-info btn-sm " type="submit" ><i class="ti ti-search"></i> SEARCH</button> 
                 <a class="btn btn-success btn-sm" href="{{ url('/repacking/logPrintOrg') }}"> Refresh <i
                   class="ti ti-refresh"></i> </a>
+                  <button type="button" id="export-csv" data-toggle="tooltip" data-placement="left" title="" class="btn btn-secondary btn-sm" data-original-title="Download Report"><i class="ti ti-download"></i>export-csv</buton>
                   {{-- <button type="button" class="btn btn-primary mx-auto mx-md-0" onclick="printlabel()">Print label</button> --}}
               </div>
             </form>
@@ -251,6 +253,11 @@ $('#print_kitOrg').on('submit', function(e) {
 
     });
 
+
+
+    $("#export-csv").on("click",function(){
+      window.open("{{url('/repacking/logPrintOrg/download')}}");    
+    });
 
   });
 

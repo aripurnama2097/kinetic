@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\LogPrintKit;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RepackingExport;
+use App\Exports\LogPrintExport;
 use App\Models\RepackingScanin;
 class RepackingController extends Controller
 {
@@ -1369,6 +1370,18 @@ class RepackingController extends Controller
         return redirect()->back()->with('delete', 'All records have been deleted.');
     }
 
+
+    public function   download_logprint(){
+        $date = Carbon::now()->format('Y-m-d'); 
+        $filename = 'LogPrint' . '-' . $date . '.csv';
+
+        $data = DB::table('log_print_kit_original')
+                     ->select('id','idnumber','partno','partname','qty_scan','dest','custpo','shelfno','prodno','created_at')
+                     ->orderBy('id','desc')
+                     ->get();
+
+        return Excel::download(new LogPrintExport($data), $filename);
+    }
 
 
 }
