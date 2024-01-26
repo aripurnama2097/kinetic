@@ -9,6 +9,7 @@ use App\Models\LogPrintKit;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\RepackingExport;
 use App\Exports\LogPrintExport;
+use App\Exports\RepackingScaninExport;
 use App\Models\RepackingScanin;
 class RepackingController extends Controller
 {
@@ -1381,6 +1382,21 @@ class RepackingController extends Controller
                      ->get();
 
         return Excel::download(new LogPrintExport($data), $filename);
+    }
+
+
+    public function download_logrepacking(){
+        $date = Carbon::now()->format('Y-m-d'); 
+        $filename = 'LogRepacking' . '-' . $date . '.csv';
+
+        $data = DB::table('scanin_repacking')
+                     ->select('id','custcode','idnumber','combine_no','dest','prodno','custpo','partno','partname','demand','gw','lenght'
+                                ,'widht','height','qty_receive','label_panel','label_mc','label_kit','scan_nik','scan_date')
+                     ->orderBy('id','desc')
+                     ->get();
+
+        return Excel::download(new RepackingScaninExport($data), $filename);
+
     }
 
 

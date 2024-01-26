@@ -66,6 +66,7 @@
                                   <button class="btn btn-info btn-sm " type="submit" ><i class="ti ti-search"></i> SEARCH</button> 
                                   <a class="btn btn-success btn-sm" href="{{ url('/repacking/kitdata') }}"> Refresh <i
                                     class="ti ti-refresh"></i> </a>
+                                    <button type="button" id="export-csv" data-toggle="tooltip" data-placement="left" title="" class="btn btn-secondary btn-sm" data-original-title="Download Report"><i class="ti ti-download"></i>export-csv</buton>
                                 </div>
                             </form>
                             {{-- <button class="btn btn-dark btn-sm " onclick="download()"><i class="ti ti-download"></i> Download</button> --}}
@@ -159,18 +160,12 @@
                     'csvHtml5'
                 ]
             } );
+
+
+         $("#export-csv").on("click",function(){
+                 window.open("{{url('/repacking/kitdata/downloadscanin')}}");    
+            });
         });
 
-
-        function download(){
-            var custcode               = $('#custcode').val();
-            var prodno                 = $('#prodno').val();
-            var custpo                 = $('#custpo').val();
-            var partno                 = $('#partno').val();
-        
-            var url = ("{{ url('/repacking/kitdata/download') }}" + "?custcode=" + custcode + "&prodno="+ prodno + "&custpo="+custpo + "&partno="+ partno)
-            window.location.assign(url);
-
-        }
     </script>
 @endsection

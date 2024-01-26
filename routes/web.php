@@ -150,7 +150,7 @@ Route::get('partlist/inhouse_data',[PartlistController::class,'inhouse_data']);
 Route::get('repacking',[RepackingController::class,'index']);
 Route::get('repacking/viewscan',[RepackingController::class,'view']);
 Route::get('repacking/kitdata',[RepackingController::class,'kitdata']);
-Route::get('repacking/kitdata/download',[RepackingController::class,'downloadkit']);
+Route::get('repacking/kitdata/downloadscanin',[RepackingController::class,'download_logrepacking']);
 
 Route::get('repacking/printlbl_kit',[RepackingController::class,'printlbl_kit']);
 Route::get('repacking/printlbl_kit_combine',[RepackingController::class,'printlbl_kitcombine']);
