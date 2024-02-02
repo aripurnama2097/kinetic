@@ -10,11 +10,24 @@ use Carbon\Carbon;
 
 class UserSettingController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+        $pagination = 10;
+        $keyword= $request->keyword;
 
+        $data = DB::table('users')
+                    ->where('name', 'LIKE', '%'.$keyword.'%')
+                    ->orWhere('nik', 'LIKE', '%'.$keyword.'%')
+                     ->latest()->paginate(10);
+                    // ->orderBy('id','asc');
+                    $data->withPath('user_setting');
+                    $data->appends($request->all());
+    // $data->orderBy('id','asc')->get();
+// $data2= $data->orderBy('id', 'asc')->get();
+     return view ('/user_setting.index',compact(
+                                        'data'
+                                       ))->with('i', (request()->input('page', 1) -1) * $pagination
+             );
 
-        $data = DB::connection('sqlsrv')
-                ->select("SELECT * FROM users");
 
         return view('user_setting.index',compact('data'));       
     }

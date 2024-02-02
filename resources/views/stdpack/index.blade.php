@@ -44,17 +44,23 @@
                 <div class=" btn-group-sm">  
 
                      @if (Auth::user()->role === 'Super Admin')              
-                  <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>                
-                    <a href="#" class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#stdpack-upload"> <i class="ti ti-arrow-big-down-filled"></i>
-                      Upload Master
-                    </a>
-              
-                  <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#create-stdpack">
-                    <i class="ti ti-plus"></i>
-                    Create Std Pack
-                  </a>
+                        <button  id="delete-all-data" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i> Reset Master</button>                
+                          <a href="#" class="btn btn-dark " data-bs-toggle="modal" data-bs-target="#stdpack-upload"> <i class="ti ti-arrow-big-down-filled"></i>
+                            Upload Master
+                          </a>
 
-                  @endif
+                          <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#create-stdpack">
+                            <i class="ti ti-plus"></i>
+                            Create Std Pack
+                          </a>
+                      @endif
+                      
+                          @if (Auth::user()->role === 'Admin Planning')   
+                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#create-stdpack">
+                              <i class="ti ti-plus"></i>
+                              Create Std Pack
+                            </a>
+                         @endif
                   <a href="{{url('/stdpack')}}" class="btn btn-success btn-sm " >
                     <i class="ti ti-360"></i>
                     Refresh

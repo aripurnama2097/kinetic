@@ -285,7 +285,7 @@
                    </li>
        
                    {{-- USER SETTING --}}
-                   @if(Auth::user()->role === 'Super Admin')
+                   {{-- @if(Auth::user()->role === 'Super Admin') --}}
                         <li class="nav-item">
                             <a class="nav-link" href="{{url('/user_setting')}}">
                                 <span style="font-size:16px" class="nav-link-title">
@@ -294,7 +294,7 @@
                                 <i class="ti ti-user-plus mr-2"></i>
                             </a>
                         </li>
-                  @endif
+                  {{-- @endif --}}
 
                    {{-- GUIDANCE --}}
                    <li class="nav-item">

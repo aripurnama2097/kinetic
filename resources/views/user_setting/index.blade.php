@@ -18,6 +18,8 @@
         Problem History
       </a> --}}
     </div>
+
+   
         <form  action ="{{url('user_setting/add')}}" method="post" class="card" enctype="multipart/form-data">
           @csrf
           <div class="card-header">
@@ -67,12 +69,18 @@
           </div>
         </form>
 
+       
       <div class="card mt-2 mb-2 ">
+        <form class="mt-2 mb-2 col-8"action="{{url('/user_setting')}}" method="GET">			
+          <input type="text" name="keyword"  value="" class="form-control mb-2 pad-l20 border border-secondary" placeholder="Filter User" autofocus>
+          <button class="btn btn-success btn-sm" type="submit" ><i class="ti ti-search"></i> Search</button>
+                              
+      </form>		
         <div class="table-responsive  rounded-1 shadow-sm mt-3 mb-3 ml-0 mr-1 col-12 ">
-          <table style="width:100%" id="problem-data"  class="table table-vcenter table-striped">
+          <table style="width:100%"  class="table table-vcenter table-striped">
               <thead >
                   <tr class="headings">                   
-                     
+                    <th style="font-size: 13px;">No</th>
                       <th style="font-size: 13px;">Name</th>
                       <th style="font-size: 13px;">Nik</th>
                       <th style="font-size: 13px;">Level User</th>              
@@ -84,7 +92,8 @@
               </thead>
 
               <tbody>
-                  @foreach ($data as $key => $value)             
+                  @foreach ($data as $key => $value)    
+                  <td class="text-center">{{ ++$i }}</td>         
                   <td style="font-size: 13px;">{{ $value->name }}</td>
                   <td style="font-size: 13px;"> {{ $value->nik }}</td>
                   <td style="font-size: 13px;"> {{ $value->role }}</td>            
@@ -148,6 +157,10 @@
                   @endforeach
               </tbody>
           </table>
+          <div class="d-flex justify-content-center col-12 btn-sm">
+            {{ $data->links('vendor.pagination.custom') }}
+
+          </div>
         </div>
       </div>
      </div>
@@ -159,6 +172,17 @@
 
     $(document).ready(function() {
      
+      $('#user-setting').DataTable( {
+                    dom: 'Bfrtip',
+                    order: [6,'desc'], 
+                    // order:[22,'desc'],
+                    buttons: [
+                    
+                        'excelHtml5',
+                        'csvHtml5'
+                    ]
+                } );
+
        
 }); 
 
