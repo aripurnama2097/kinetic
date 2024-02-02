@@ -273,37 +273,28 @@ class PartlistController extends Controller
             $order = $get_id ? $get_id + 1 : 1;
             $dailyno = $date . str_pad($order, 3, '0', STR_PAD_LEFT);
             $idnumber = 'I' . $dailyno;   
-            // dd($dailyno);
         }
+
         else if($get_id != null){
-            // $order = $get_id ? $get_id + 1 : 1;
-            // $dailyno =  str_pad($order, 3, '0', STR_PAD_LEFT);
-            // $idnumber = 'I' . $dailyno;   
-
-          $get_dailyno = DB::table('partscan')
-                            ->whereDate('scan_date', $currentDate)
-                            ->max('dailyno');
-          $dailyno  = $get_dailyno + 1;
-          $idnumber = 'I' . $dailyno;
-
-        //   dd($idnumber);
+            $get_dailyno = DB::table('partscan')
+                                ->whereDate('scan_date', $currentDate)
+                                ->max('dailyno');
+            $dailyno  = $get_dailyno + 1;
+            $idnumber = 'I' . $dailyno;
         }
 
-         
-        
         //STEP 6. SIMPAN DATA  ke partscan + UPDATE STATUS PRINT
         if (!empty(@$status_print)) {
-             // STEP SCAN ISSUE
-            $get_lastuniq = DB::table('partscan')
+             $scan_nik   =  substr($nik, 2,5); 
+             $get_lastuniq = DB::table('partscan')
                             ->max('unique_continue');
-
-            $uniq_cont = $get_lastuniq;
+    
+             $uniq_cont = $get_lastuniq;
             if($status_print != 'continue_combine'){// STATUS PRINT = START COMBINE OR LOOSE CARTON
                 $uniq_cont = $get_lastuniq ? $get_lastuniq + 1 : 1;
 
-                // $order = $get_id ? $get_id + 1 : 1;
-                // $dailyno =  str_pad($order, 3, '0', STR_PAD_LEFT);
                 $idnumbercont = 'I' . $dailyno; // IDNUMBER UNTUK STATUS PRINT LOOSE, DAN START CONTINUE
+                // dd($idnumbercont);
             }
 
             // compare stdpack dg part continue
@@ -312,6 +303,7 @@ class PartlistController extends Controller
                 $get_num = DB::table('partscan')
                         ->where('status_print', 'start_combine')
                         ->where('partno', $label_scan)
+                        ->whereDate('scan_date',$date )
                         ->orderBy('id', 'desc')
                         ->take(1)
                         ->pluck('dailyno')
@@ -332,7 +324,8 @@ class PartlistController extends Controller
                 $idnumbercont   = 'I' . $get_num;     
                 $compare_stdpack = DB::connection('sqlsrv')->select("SELECT stdpack, (sum(scan_issue))+$qty as scan_issue
                                                                         from partscan
-                                                                        where unique_continue = '{$uniq_cont}'
+                                                                        where partno ='{$label_scan}'
+                                                                        and dailyno = '{$dailyno}'
                                                                         group by stdpack");
                 $comparing = $compare_stdpack[0];
                 if($comparing->scan_issue > $comparing->stdpack){
@@ -375,18 +368,16 @@ class PartlistController extends Controller
 
 
             // GET PARTLIST NO
-            $partlistno   =   $param[0]->partlist_no;
-
-
-
-            $data = DB::connection('sqlsrv')
-                ->select("SELECT * from partlist where partlist_no ='{$partlist_no}'
-                                                    and partno ='{$label_scan}' and tot_scan != 0");
+            $partlistno =   $param[0]->partlist_no;
+            $data       = DB::connection('sqlsrv')
+                ->select("SELECT * from partlist 
+                                where partlist_no ='{$partlist_no}'
+                                and partno ='{$label_scan}' and tot_scan != 0");
 
             // return $data;
 
-            $sum = array($selectPart[0]->tot_scan, $qty);
-            $act_qty = array_sum($sum);
+            $sum        = array($selectPart[0]->tot_scan, $qty);
+            $act_qty    = array_sum($sum);
 
             // TAMPILKAN DATA HASIL SCANIN
                 if (($act_qty  == $selectPart[0]->demand)) {
@@ -486,7 +477,6 @@ class PartlistController extends Controller
     public function looseCarton(Request $request)
     {
 
-        // return "tes";
         return $this->scan_issue($request, "loosecarton");
 
         $nik = $request->scan_nik;
@@ -500,10 +490,6 @@ class PartlistController extends Controller
         $data = DB::connection('sqlsrv')
                 ->select("SELECT * from partlist where partlist_no ='{$partlist_no}'
                                                     and partno ='{$label_scan}' and tot_scan != 0");
-
-        // return $data;
-
-
         return response()
             ->json([
                 'success' => true,
@@ -544,11 +530,15 @@ class PartlistController extends Controller
         if($issuing == false){
             return response()->json([
                 'success' => false,
-                'message' => 'QTY LARGER THAN STDPACK !!!'
+                'message' => 'LARGER QTY THAN STDPACK !!!'
 
             ]);
         }
         
+        $currentDate = Carbon::now();
+        $dateAsNumber = $currentDate->format('Ymd');
+        $date = substr($dateAsNumber, 2, 8);
+
         $nik = $request->scan_nik;
         $scan_nik   =  substr($nik, 2,5); 
         $partlist_no = $request->partlist_no;
@@ -556,6 +546,26 @@ class PartlistController extends Controller
 
         //PARAM LABEL
         $label_scan = substr($scan_label, 0, 15);
+
+
+        $get_num = DB::table('partscan')
+                        ->where('status_print', 'start_combine')
+                        ->where('partno', $label_scan)
+                        ->whereDate('scan_date',$date )
+                        ->orderBy('id', 'desc')
+                        ->take(1)
+                        ->pluck('dailyno')
+                        ->first();
+
+                //MASIH PROBLEM UNTUK DAPATKAN GET NUM NULL
+                if($get_num == null){
+                    return response()
+                        ->json([
+                            'success' => false,
+                            'message' => 'CONTINUE COMBINE WRONG...'                     
+
+                        ]);
+                }
 
         $data = DB::connection('sqlsrv')
         ->select("SELECT * from partlist where partlist_no ='{$partlist_no}'
@@ -627,7 +637,6 @@ class PartlistController extends Controller
         $assylabel = $request->assy_label;
         $pic       = substr($request->pic,2,5);
         $type       = 'scanin panel';
-
         $partno = substr($assylabel, 0, 11);
 
      
